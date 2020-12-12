@@ -9,7 +9,7 @@ import {
 } from 'esbuild'
 import { Config } from '../config'
 import { cleanUrl, generateCodeFrame } from '../utils'
-import { PluginHooks } from '../plugin'
+import { OnTransformResult, PluginHooks } from '../plugin'
 
 const debug = require('debug')('esbuild')
 
@@ -81,7 +81,7 @@ export const transform = async ({
     filePath: string
     jsxOption?: Config['jsx']
     exitOnFailure?: boolean
-}) => {
+}): Promise<OnTransformResult> => {
     const service = await ensureService()
 
     const options = {
@@ -101,7 +101,7 @@ export const transform = async ({
             result.warnings.forEach((m) => printMessage(m, src))
         }
 
-        let code = result.code
+        let contents = result.code
         // if transpiling (j|t)sx file, inject the imports for the jsx helper and
         // Fragment.
         if (filePath.endsWith('x')) {
@@ -111,12 +111,12 @@ export const transform = async ({
             //         `\nimport { Fragment } from 'vue'`
             // }
             if (jsxOption === 'preact') {
-                code += `\nimport { h, Fragment } from 'preact'`
+                contents += `\nimport { h, Fragment } from 'preact'`
             }
         }
 
         return {
-            code,
+            contents,
             map: result.map,
         }
     } catch (e) {
@@ -135,7 +135,7 @@ export const transform = async ({
         //     process.exit(1)
         // }
         return {
-            code: '',
+            contents: '',
             map: undefined,
         }
     }

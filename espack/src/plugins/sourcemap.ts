@@ -8,11 +8,11 @@ const debug = require('debug')('esbuild')
 
 export function sourcemapPlugin({} = {}) {
     return {
-        name: 'esbuild',
-        setup: ({ onTransform, onLoad }: PluginHooks) => {
+        name: 'sourcemaps',
+        setup: ({ onLoad }: PluginHooks) => {
             onLoad({ filter: /\.(map)$/ }, async (args) => {
                 const file = args.path
-                const content = await readFile(file)
+                const content = await readFile(file) // TODO convert to onTransform or this loadFile won't work
                 const map: RawSourceMap = JSON.parse(content)
                 if (
                     !map.sourcesContent ||

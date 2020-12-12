@@ -37,7 +37,7 @@ export interface OnTransformArgs {
 }
 
 export interface OnTransformResult {
-    code?: string
+    contents?: string
     map?: any
     loader?: esbuild.Loader
 }
