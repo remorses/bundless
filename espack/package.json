@@ -8,24 +8,35 @@
     "repository": "https://github.com/remorses/esbuild-plugins.git",
     "scripts": {
         "build": "tsc && tsc -m es6 --outDir esm",
-        "watch": "tsc -w"
+        "watch": "tsc -w",
+        "cli": "node bin.js"
     },
     "files": [
         "dist",
         "src",
-        "esm"
+        "esm",
+        "cli.js"
     ],
+    "bin": "cli.js",
     "keywords": [],
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
     "devDependencies": {
-        "@types/chokidar": "^2.1.3"
+        "@types/chokidar": "^2.1.3",
+        "@types/koa": "^2.11.6",
+        "@types/yargs": "^15.0.11"
     },
     "dependencies": {
+        "chalk": "^4.1.0",
         "chokidar": "3.4.2",
+        "deepmerge": "^4.2.2",
         "esbuild": "^0.8.22",
         "koa": "^2.13.0",
-        "listhen": "^0.1.2"
+        "koa-etag": "^4.0.0",
+        "koa-send": "^5.0.1",
+        "koa-static": "^5.0.0",
+        "listhen": "^0.1.2",
+        "yargs": "^16.2.0"
     },
     "peerDependencies": {}
 }

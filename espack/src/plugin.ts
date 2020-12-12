@@ -71,34 +71,34 @@ export function createPluginsExecutor({
             },
         })
     }
-    async function load(filePath) {
+    async function load(arg) {
         let result
         for (let { callback, options } of loaders) {
             const { filter } = options
-            if (filter && filter.test(filePath)) {
-                result = await callback(filePath)
+            if (filter && filter.test(arg)) {
+                result = await callback(arg)
                 // break
             }
         }
         return result
     }
-    async function transform(filePath) {
+    async function transform(arg) {
         let result
         for (let { callback, options } of transforms) {
             const { filter } = options
-            if (filter && filter.test(filePath)) {
-                result = await callback(filePath)
+            if (filter && filter.test(arg)) {
+                result = await callback(arg)
                 // break
             }
         }
         return result
     }
-    async function resolve(id) {
+    async function resolve(arg) {
         let result
         for (let { callback, options } of resolvers) {
             const { filter } = options
-            if (filter && filter.test(id)) {
-                result = await callback(id)
+            if (filter && filter.test(arg)) {
+                result = await callback(arg)
                 // break
             }
         }

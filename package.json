@@ -1,8 +1,9 @@
 {
-    "name": "espack",
+    "name": "root",
     "scripts": {
         "test": "NODE_ENV=test jest",
         "watch": "ultra -r watch",
+        "cli": "ultra -r cli",
         "build": "ultra --build -r build",
         "release": "yarn build && changeset publish"
     },
