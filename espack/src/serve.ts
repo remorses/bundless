@@ -6,6 +6,7 @@ import { pluginAssetsPlugin, serveStaticPlugin } from './middleware'
 export interface ServerPluginContext {
     root: string
     app: Koa
+    pluginExecutor: PluginsExecutor
     // server: Server
     watcher: FSWatcher
     config: Config
@@ -13,10 +14,6 @@ export interface ServerPluginContext {
 }
 
 export type ServerPlugin = (ctx: ServerPluginContext) => void
-
-export interface Config {
-    root: string
-}
 
 export async function serve(config) {
     const handler = createHandler(config)
@@ -29,9 +26,10 @@ export async function serve(config) {
 
 import Koa, { DefaultState, DefaultContext } from 'koa'
 import chokidar from 'chokidar'
-import { createPluginsExecutor } from './plugin'
+import { createPluginsExecutor, PluginsExecutor } from './plugin'
+import { Config } from './config'
 
-export function createHandler(config) {
+export function createHandler(config: Config) {
     const { root = process.cwd() } = config
 
     const app = new Koa<DefaultState, DefaultContext>()
@@ -41,17 +39,18 @@ export function createHandler(config) {
         //   ...chokidarWatchOptions
     })
 
+    const pluginExecutor = createPluginsExecutor({ plugins: [] })
+
     const context: ServerPluginContext = {
         root,
         app,
         watcher,
         config,
+        pluginExecutor,
         // port is exposed on the context for hmr client connection
         // in case the files are served under a different port
         port: config.port || 3000,
     }
-
-    const pluginExecutor = createPluginsExecutor({ plugins: [] })
 
     // attach server context to koa context
     app.use((ctx, next) => {

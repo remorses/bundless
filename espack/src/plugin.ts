@@ -42,7 +42,7 @@ export interface OnTransformResult {
 
 type Maybe<x> = x | undefined | null
 
-interface PluginsExecutor {
+export interface PluginsExecutor {
     load(args: esbuild.OnLoadArgs): Promise<Maybe<esbuild.OnLoadResult>>
     transform(args: OnTransformArgs): Promise<Maybe<OnTransformResult>>
     resolve(args: esbuild.OnResolveArgs): Promise<Maybe<esbuild.OnResolveArgs>>
