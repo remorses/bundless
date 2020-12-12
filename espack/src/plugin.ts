@@ -6,6 +6,7 @@ export interface Plugin {
 }
 
 export interface PluginHooks {
+    resolve: PluginsExecutor['resolve']
     onResolve(
         options: esbuild.OnResolveOptions,
         callback: (
@@ -47,13 +48,18 @@ interface PluginsExecutor {
     resolve(args: esbuild.OnResolveArgs): Promise<Maybe<esbuild.OnResolveArgs>>
 }
 
-function pipeline(plugins: Plugin[]): PluginsExecutor {
+export function createPluginsExecutor({
+    plugins,
+}: {
+    plugins: Plugin[]
+}): PluginsExecutor {
     const transforms: any[] = []
     const resolvers: any[] = []
     const loaders: any[] = []
-    plugins.forEach((plugin) => {
+    for (let plugin of plugins) {
         const { name, setup } = plugin
         setup({
+            resolve,
             onLoad: (options, callback) => {
                 loaders.push({ options, callback, name })
             },
@@ -64,7 +70,7 @@ function pipeline(plugins: Plugin[]): PluginsExecutor {
                 transforms.push({ options, callback, name })
             },
         })
-    })
+    }
     async function load(filePath) {
         let result
         for (let { callback, options } of loaders) {
