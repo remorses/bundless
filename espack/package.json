@@ -19,6 +19,9 @@
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
     "devDependencies": {},
-    "dependencies": {},
+    "dependencies": {
+        "esbuild": "^0.8.22",
+        "koa": "^2.13.0"
+    },
     "peerDependencies": {}
 }

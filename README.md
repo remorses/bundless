@@ -8,3 +8,11 @@
     <br/>
     <br/>
 </div>
+
+
+
+
+
+plugin can become koa middleware or esbuild plugin, this way i can use same plugins for both pipelines
+
+Some hooks won't be used in 
