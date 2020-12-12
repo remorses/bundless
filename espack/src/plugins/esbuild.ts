@@ -15,7 +15,7 @@ const debug = require('debug')('esbuild')
 
 export const tjsxRE = /\.(tsx?|jsx)$/
 
-export function esbuildPlugin({}) {
+export function esbuildPlugin({} = {}) {
     return {
         name: 'esbuild',
         setup: ({ onTransform, config }: PluginHooks) => {

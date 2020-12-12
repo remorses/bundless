@@ -3,6 +3,7 @@ import { DEFAULT_PORT } from './constants'
 import { FSWatcher } from 'chokidar'
 import { Server } from 'http'
 import { pluginAssetsPlugin, serveStaticPlugin } from './middleware'
+import { esbuildPlugin, sourcemapPlugin } from './plugins'
 export interface ServerPluginContext {
     root: string
     app: Koa
@@ -41,7 +42,10 @@ export function createHandler(config: Config) {
         //   ...chokidarWatchOptions
     })
 
-    const pluginExecutor = createPluginsExecutor({ plugins: [], config })
+    const pluginExecutor = createPluginsExecutor({
+        plugins: [esbuildPlugin(), sourcemapPlugin()],
+        config,
+    })
 
     const context: ServerPluginContext = {
         root,

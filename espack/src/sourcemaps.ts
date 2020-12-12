@@ -1,6 +1,4 @@
 import merge from 'merge-source-map'
-import { ExistingRawSourceMap } from 'rollup'
-import { RawSourceMap } from 'source-map'
 
 export interface SourceMap {
     version: number | string
