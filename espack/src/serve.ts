@@ -28,6 +28,8 @@ import Koa, { DefaultState, DefaultContext } from 'koa'
 import chokidar from 'chokidar'
 import { createPluginsExecutor, PluginsExecutor } from './plugin'
 import { Config } from './config'
+import { requestToFile } from './utils'
+import { genSourceMapString } from './sourcemaps'
 
 export function createHandler(config: Config) {
     const { root = process.cwd() } = config
@@ -39,7 +41,7 @@ export function createHandler(config: Config) {
         //   ...chokidarWatchOptions
     })
 
-    const pluginExecutor = createPluginsExecutor({ plugins: [] })
+    const pluginExecutor = createPluginsExecutor({ plugins: [], config })
 
     const context: ServerPluginContext = {
         root,
@@ -53,9 +55,32 @@ export function createHandler(config: Config) {
     }
 
     // attach server context to koa context
-    app.use((ctx, next) => {
+    app.use(async (ctx, next) => {
         Object.assign(ctx, context)
+        // TODO if type is not js, only load imported files (must have an ?import query)
+        const filePath = requestToFile(root, ctx.path)
+        const loaded = await pluginExecutor.load({
+            path: filePath,
+            namespace: '',
+        })
+        if (loaded == null || loaded.contents == null) {
+            return
+        }
+        const transformed = await pluginExecutor.transform({
+            path: filePath,
+            // TODO add loader as arg
+            contents: String(loaded.contents),
+        })
+        if (transformed == null) {
+            return
+        }
 
+        const sourcemap = transformed.map
+            ? genSourceMapString(transformed.map)
+            : ''
+
+        ctx.body = transformed.code + sourcemap
+        ctx.type = 'js' // TODO get content type from loader
         return next()
     })
 

@@ -1,4 +1,5 @@
 import * as esbuild from 'esbuild'
+import { Config } from './config'
 
 export interface Plugin {
     name: string
@@ -7,6 +8,7 @@ export interface Plugin {
 
 export interface PluginHooks {
     resolve: PluginsExecutor['resolve']
+    config: Config
     onResolve(
         options: esbuild.OnResolveOptions,
         callback: (
@@ -40,7 +42,7 @@ export interface OnTransformResult {
     loader?: esbuild.Loader
 }
 
-type Maybe<x> = x | undefined | null
+type Maybe<x> = x | undefined | null | void
 
 export interface PluginsExecutor {
     load(args: esbuild.OnLoadArgs): Promise<Maybe<esbuild.OnLoadResult>>
@@ -50,8 +52,10 @@ export interface PluginsExecutor {
 
 export function createPluginsExecutor({
     plugins,
+    config,
 }: {
     plugins: Plugin[]
+    config: Config
 }): PluginsExecutor {
     const transforms: any[] = []
     const resolvers: any[] = []
@@ -60,6 +64,7 @@ export function createPluginsExecutor({
         const { name, setup } = plugin
         setup({
             resolve,
+            config,
             onLoad: (options, callback) => {
                 loaders.push({ options, callback, name })
             },

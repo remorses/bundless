@@ -29,6 +29,7 @@
     "dependencies": {
         "chalk": "^4.1.0",
         "chokidar": "3.4.2",
+        "debug": "^4.3.1",
         "deepmerge": "^4.2.2",
         "esbuild": "^0.8.22",
         "koa": "^2.13.0",
@@ -36,6 +37,7 @@
         "koa-send": "^5.0.1",
         "koa-static": "^5.0.0",
         "listhen": "^0.1.2",
+        "merge-source-map": "^1.1.0",
         "yargs": "^16.2.0"
     },
     "peerDependencies": {}
