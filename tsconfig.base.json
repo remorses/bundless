@@ -17,6 +17,7 @@
         "esModuleInterop": true,
         "noImplicitAny": false,
         "sourceMap": true,
+        "downlevelIteration": true,
         "jsx": "react",
         "skipLibCheck": true
     }

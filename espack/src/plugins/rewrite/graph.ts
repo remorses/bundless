@@ -1,5 +1,7 @@
 // importee and importers must be relative paths from root, they can be converted to requests just prepending /
 
+import path from 'path'
+
 export interface Node {
     importers(): Set<string> // traverses the graph and finds nodes that have this in importees
     importees: Set<string>
@@ -33,5 +35,18 @@ export class Graph {
             },
         }
         return this.nodes[key]
+    }
+    toString() {
+        const content = Object.keys(this.nodes)
+            .map((k) => {
+                const node = this.nodes[k]
+                return `  '${path.relative(process.cwd(), k)}' -> [${[
+                    ...node.importees,
+                ]
+                    .map((x) => `'${x}`)
+                    .join(', ')}]`
+            })
+            .join('\n')
+        return `Graph {\n${content}\n}\n`
     }
 }
