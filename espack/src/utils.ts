@@ -44,15 +44,23 @@ export const isImportRequest = (ctx): boolean => {
     return ctx.query.import != null
 }
 
+const dotdot = '...'
+
 export function requestToFile(root: string, request: string) {
+    request = decodeURIComponent(request)
     request = cleanUrl(request)
     request = request.startsWith('/') ? request.slice(1) : request
-    return path.resolve(root, request)
+    request = path.resolve(root, request)
+    request = request.replace(dotdot, '..')
+    return request
 }
 
 export function fileToRequest(root: string, filePath: string) {
     filePath = path.resolve(filePath)
-    return '/' + path.relative(root, filePath)
+    filePath = path.relative(root, filePath)
+    filePath = filePath.replace('..', dotdot)
+    filePath = '/' + filePath
+    return filePath
 }
 
 const range: number = 2
@@ -163,7 +171,7 @@ export function isNodeModule(p: string) {
 }
 
 import { parse as _parse } from '@babel/parser'
-import { Statement } from '@babel/types'
+import { file, Statement } from '@babel/types'
 
 export function parse(source: string): Statement[] {
     return _parse(source, {
