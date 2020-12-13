@@ -2,10 +2,12 @@ import chalk from 'chalk'
 import { ImportSpecifier, parse as parseImports } from 'es-module-lexer'
 import LRUCache from 'lru-cache'
 import MagicString from 'magic-string'
-import qs from 'qs'
 import path from 'path'
+import qs from 'qs'
 import { CLIENT_PUBLIC_PATH } from '../../constants'
+import { Graph } from '../../graph'
 import { PluginHooks, PluginsExecutor } from '../../plugin'
+import { osAgnosticPath } from '../../prebundle/support'
 import {
     cleanUrl,
     fileToRequest,
@@ -13,19 +15,39 @@ import {
     parseWithQuery,
 } from '../../utils'
 import { isOptimizedCjs, transformCjsImport } from './commonjs'
-import { Graph } from '../../graph'
-import { osAgnosticPath } from '../../prebundle/support'
 
 const debug = require('debug')('vite:rewrite')
 
 const rewriteCache = new LRUCache({ max: 1024 })
+
+export function RewritePlugin({} = {}) {
+    return {
+        name: 'rewrite',
+        setup: ({ onTransform, resolve, graph, config }: PluginHooks) => {
+            onTransform({ filter: /.*/ }, async (args) => {
+                // console.log(graph.toString())
+                // TODO skip non js files
+                const contents = await rewriteImports({
+                    graph,
+                    importer: args.path,
+                    root: config.root!,
+                    resolve,
+                    source: args.contents,
+                })
+                return {
+                    contents, // TODO module rewrite needs sourcemaps?
+                }
+            })
+        },
+    }
+}
 
 export async function rewriteImports({
     source,
     importer,
     graph,
     resolve,
-    root
+    root,
 }: {
     source: string
     importer: string
@@ -96,11 +118,19 @@ export async function rewriteImports({
                         resolveDir: path.dirname(importer),
                         path: id,
                     })
-                    const resolved = fileToRequest(root, resolveResult?.path || '')  // TODO add ?import ...
+                    const resolved = fileToRequest(
+                        root,
+                        resolveResult?.path || '',
+                    ) // TODO add ?import ...
 
                     if (resolved !== id) {
                         debug(`    "${id}" --> "${resolved}"`)
-                        if (isOptimizedCjs(root, osAgnosticPath(resolveResult?.path))) {
+                        if (
+                            isOptimizedCjs(
+                                root,
+                                osAgnosticPath(resolveResult?.path),
+                            )
+                        ) {
                             if (dynamicIndex === -1) {
                                 const exp = source.substring(expStart, expEnd)
                                 const replacement = transformCjsImport(
@@ -194,28 +224,6 @@ export async function rewriteImports({
         )
         debug(source)
         return source
-    }
-}
-
-export function RewritePlugin({} = {}) {
-    return {
-        name: 'rewrite',
-        setup: ({ onTransform, resolve, graph, config }: PluginHooks) => {
-            onTransform({ filter: /.*/ }, async (args) => {
-                // console.log(graph.toString())
-                const contents = await rewriteImports({
-                    graph,
-                    importer: args.path,
-                    root: config.root!,
-                    resolve,
-                    source: args.contents,
-                    
-                })
-                return {
-                    contents, // TODO module rewrite needs sourcemaps?
-                }
-            })
-        },
     }
 }
 

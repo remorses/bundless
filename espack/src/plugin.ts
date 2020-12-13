@@ -1,6 +1,7 @@
 import * as esbuild from 'esbuild'
 import { Config } from './config'
 import { Graph } from './graph'
+import { osAgnosticPath } from './prebundle/support'
 
 export interface Plugin {
     name: string
@@ -87,7 +88,7 @@ export function createPluginsExecutor({
         for (let { callback, options, name } of loaders) {
             const { filter } = options
             if (filter && filter.test(arg.path)) {
-                console.log(`loading '${arg.path}' with '${name}'`)
+                console.log(`loading '${osAgnosticPath(arg.path)}' with '${name}'`)
                 result = await callback(arg)
                 // break
             }

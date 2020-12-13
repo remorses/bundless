@@ -7,8 +7,10 @@
     "types": "dist/index.d.ts",
     "repository": "https://github.com/remorses/esbuild-plugins.git",
     "scripts": {
-        "build": "tsc && tsc -m es6 --outDir esm",
-        "watch": "tsc -w",
+        "build": "tsc && tsc -m esnext --outDir esm",
+        "watch:esm": "tsc -w -m esnext --outDir esm ",
+        "watch:cjs": "tsc -w",
+        "watch": "run-p watch:esm watch:cjs",
         "cli": "node bin.js"
     },
     "files": [
@@ -29,6 +31,7 @@
         "@types/node": "^14.14.13",
         "@types/qs": "^6.9.5",
         "@types/yargs": "^15.0.11",
+        "npm-run-all": "^4.1.5",
         "qs": "^6.9.4"
     },
     "dependencies": {

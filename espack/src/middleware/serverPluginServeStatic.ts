@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
-import { ServerPlugin } from '../serve'
+import { ServerMiddleware } from '../serve'
 import { isStaticAsset, readFile, requestToFile } from '../utils'
 
 const send = require('koa-send')
@@ -9,7 +9,7 @@ const debug = require('debug')('vite:history')
 
 export const seenUrls = new Set()
 
-export const serveStaticPlugin: ServerPlugin = ({ root, app }) => {
+export const serveStaticMiddleware: ServerMiddleware = ({ root, app }) => {
     app.use(async (ctx, next) => {
         // short circuit requests that have already been explicitly handled
         if (ctx.body || ctx.status !== 404) {

@@ -1,7 +1,7 @@
-import { ServerPlugin } from '../serve'
+import { ServerMiddleware } from '../serve'
 import { isImportRequest, isStaticAsset } from '../utils'
 
-export const pluginAssetsPlugin: ServerPlugin = ({ app }) => {
+export const pluginAssetsMiddleware: ServerMiddleware = ({ app }) => {
     app.use(async (ctx, next) => {
         if (isStaticAsset(ctx.path) && isImportRequest(ctx)) {
             ctx.type = 'js'

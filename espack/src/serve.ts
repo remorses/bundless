@@ -1,28 +1,25 @@
-import { listen } from 'listhen'
-import { DEFAULT_PORT, WEB_MODULES_PATH } from './constants'
-import { FSWatcher } from 'chokidar'
-import { Server } from 'http'
-import { pluginAssetsPlugin, serveStaticPlugin } from './middleware'
-import {
-    EsbuildTransformPlugin,
-    SourcemapPlugin,
-    RewritePlugin,
-    NodeResolvePlugin,
-    NodeModulesPolyfillPlugin,
-} from './plugins'
-
-import Koa, { DefaultState, DefaultContext } from 'koa'
-import chokidar from 'chokidar'
-import { createPluginsExecutor, PluginsExecutor } from './plugin'
-import { Config } from './config'
-import { isNodeModule, requestToFile } from './utils'
-import { genSourceMapString } from './sourcemaps'
-import { Graph } from './graph'
+import chokidar, { FSWatcher } from 'chokidar'
 import deepmerge from 'deepmerge'
-import { prebundle } from './prebundle'
+import Koa, { DefaultContext, DefaultState } from 'koa'
+import { listen } from 'listhen'
 import path from 'path'
-import { BundleMap } from './prebundle/esbuild'
 import slash from 'slash'
+import { Config } from './config'
+import { DEFAULT_PORT, JS_EXTENSIONS, WEB_MODULES_PATH } from './constants'
+import { Graph } from './graph'
+import * as middlewares from './middleware'
+import { createPluginsExecutor, PluginsExecutor } from './plugin'
+import {
+    CssPlugin,
+    EsbuildTransformPlugin,
+    NodeResolvePlugin,
+    RewritePlugin,
+    SourcemapPlugin,
+} from './plugins'
+import { prebundle } from './prebundle'
+import { BundleMap } from './prebundle/esbuild'
+import { genSourceMapString } from './sourcemaps'
+import { isNodeModule, requestToFile } from './utils'
 
 export interface ServerPluginContext {
     root: string
@@ -34,7 +31,7 @@ export interface ServerPluginContext {
     port: number
 }
 
-export type ServerPlugin = (ctx: ServerPluginContext) => void
+export type ServerMiddleware = (ctx: ServerPluginContext) => void
 
 export async function serve(config) {
     const handler = createHandler(config)
@@ -61,6 +58,7 @@ export function createHandler(config: Config) {
     const pluginExecutor = createPluginsExecutor({
         plugins: [
             NodeResolvePlugin({
+                resolveOptions: { extensions: [...JS_EXTENSIONS, '.css'] },
                 async onResolved(resolvedPath) {
                     if (!isNodeModule(resolvedPath)) {
                         return
@@ -86,6 +84,7 @@ export function createHandler(config: Config) {
             EsbuildTransformPlugin(),
             RewritePlugin(),
             SourcemapPlugin(),
+            CssPlugin(),
         ],
         config,
         graph,
@@ -102,40 +101,46 @@ export function createHandler(config: Config) {
         port: config.port || 3000,
     }
 
-    // attach server context to koa context
-    app.use(async (ctx, next) => {
-        Object.assign(ctx, context)
-        // TODO skip non js code
-        if (ctx.path == '/') {
-            return next()
-        }
-        const filePath = requestToFile(root, ctx.path)
-        const loaded = await pluginExecutor.load({
-            path: filePath,
-            namespace: '',
+    const pluginsMiddleware: ServerMiddleware = ({ app }) => {
+        // attach server context to koa context
+        app.use(async (ctx, next) => {
+            Object.assign(ctx, context)
+            // TODO skip non js code
+            if (ctx.path == '/') {
+                return next()
+            }
+            const filePath = requestToFile(root, ctx.path)
+            const loaded = await pluginExecutor.load({
+                path: filePath,
+                namespace: '',
+            })
+            if (loaded == null || loaded.contents == null) {
+                return next()
+            }
+            const transformed = await pluginExecutor.transform({
+                path: filePath,
+                loader: loaded.loader,
+                contents: String(loaded.contents),
+            })
+            if (transformed == null) {
+                return next()
+            }
+
+            const sourcemap = transformed.map
+                ? genSourceMapString(transformed.map)
+                : ''
+
+            ctx.body = transformed.contents + sourcemap
+            ctx.type = 'js' // TODO get content type from loader
         })
-        if (loaded == null || loaded.contents == null) {
-            return next()
-        }
-        const transformed = await pluginExecutor.transform({
-            path: filePath,
-            loader: loaded.loader,
-            contents: String(loaded.contents),
-        })
-        if (transformed == null) {
-            return next()
-        }
+    }
 
-        const sourcemap = transformed.map
-            ? genSourceMapString(transformed.map)
-            : ''
-
-        ctx.body = transformed.contents + sourcemap
-        ctx.type = 'js' // TODO get content type from loader
-        return next()
-    })
-
-    const serverMiddleware = [pluginAssetsPlugin, serveStaticPlugin]
+    const serverMiddleware = [
+        middlewares.clientMiddleware,
+        middlewares.pluginAssetsMiddleware,
+        pluginsMiddleware,
+        middlewares.serveStaticMiddleware,
+    ]
     for (const middleware of serverMiddleware) {
         middleware(context)
     }
