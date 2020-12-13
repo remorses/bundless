@@ -4,6 +4,16 @@ import { FSWatcher } from 'chokidar'
 import { Server } from 'http'
 import { pluginAssetsPlugin, serveStaticPlugin } from './middleware'
 import { esbuildPlugin, sourcemapPlugin } from './plugins'
+
+import Koa, { DefaultState, DefaultContext } from 'koa'
+import chokidar from 'chokidar'
+import { createPluginsExecutor, PluginsExecutor } from './plugin'
+import { Config } from './config'
+import { requestToFile } from './utils'
+import { genSourceMapString } from './sourcemaps'
+import { Graph } from './plugins/rewrite/graph'
+import { rewritePlugin } from './plugins/rewrite'
+
 export interface ServerPluginContext {
     root: string
     app: Koa
@@ -25,13 +35,6 @@ export async function serve(config) {
     return server
 }
 
-import Koa, { DefaultState, DefaultContext } from 'koa'
-import chokidar from 'chokidar'
-import { createPluginsExecutor, PluginsExecutor } from './plugin'
-import { Config } from './config'
-import { requestToFile } from './utils'
-import { genSourceMapString } from './sourcemaps'
-
 export function createHandler(config: Config) {
     const { root = process.cwd() } = config
 
@@ -42,9 +45,11 @@ export function createHandler(config: Config) {
         //   ...chokidarWatchOptions
     })
 
+    const graph = new Graph()
     const pluginExecutor = createPluginsExecutor({
-        plugins: [esbuildPlugin(), sourcemapPlugin()],
+        plugins: [rewritePlugin(), esbuildPlugin(), sourcemapPlugin()],
         config,
+        graph,
     })
 
     const context: ServerPluginContext = {
@@ -83,7 +88,7 @@ export function createHandler(config: Config) {
             ? genSourceMapString(transformed.map)
             : ''
 
-        ctx.body = transformed.code + sourcemap
+        ctx.body = transformed.contents + sourcemap
         ctx.type = 'js' // TODO get content type from loader
         return next()
     })

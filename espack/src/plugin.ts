@@ -1,5 +1,6 @@
 import * as esbuild from 'esbuild'
 import { Config } from './config'
+import { Graph } from './plugins/rewrite/graph'
 
 export interface Plugin {
     name: string
@@ -9,6 +10,7 @@ export interface Plugin {
 export interface PluginHooks {
     resolve: PluginsExecutor['resolve']
     config: Config
+    graph: Graph
     onResolve(
         options: esbuild.OnResolveOptions,
         callback: (
@@ -42,7 +44,7 @@ export interface OnTransformResult {
     loader?: esbuild.Loader
 }
 
-type Maybe<x> = x | undefined | null | void
+type Maybe<x> = x | undefined | null
 
 export interface PluginsExecutor {
     load(args: esbuild.OnLoadArgs): Promise<Maybe<esbuild.OnLoadResult>>
@@ -53,9 +55,11 @@ export interface PluginsExecutor {
 export function createPluginsExecutor({
     plugins,
     config,
+    graph,
 }: {
     plugins: Plugin[]
     config: Config
+    graph: Graph
 }): PluginsExecutor {
     const transforms: any[] = []
     const resolvers: any[] = []
@@ -65,6 +69,7 @@ export function createPluginsExecutor({
         setup({
             resolve,
             config,
+            graph,
             onLoad: (options, callback) => {
                 loaders.push({ options, callback, name })
             },

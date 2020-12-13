@@ -1,4 +1,8 @@
 import path from 'path'
+import qs, { ParsedQs } from 'qs'
+import slash from 'slash'
+import { Readable } from 'stream'
+
 const imageRE = /\.(png|jpe?g|gif|svg|ico|webp)(\?.*)?$/
 const mediaRE = /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/
 const fontsRE = /\.(woff2?|eot|ttf|otf)(\?.*)?$/i
@@ -13,6 +17,17 @@ export const isStaticAsset = (file: string) => {
     // TODO adds configurable assets extensions
     return imageRE.test(file) || mediaRE.test(file) || fontsRE.test(file)
 }
+
+export const jsSrcRE = /\.(?:(?:j|t)sx?|vue)$|\.mjs$/
+export const urlRE = /url\(\s*('[^']+'|"[^"]+"|[^'")]+)\s*\)/
+export const cssPreprocessLangRE = /\.(less|sass|scss|styl|stylus|postcss)$/
+export const cssModuleRE = /\.module\.(less|sass|scss|styl|stylus|postcss|css)$/
+
+export const isCSSRequest = (file: string) =>
+    file.endsWith('.css') || cssPreprocessLangRE.test(file)
+
+const externalRE = /^(https?:)?\/\//
+export const isExternalUrl = (url: string) => externalRE.test(url)
 
 /**
  * Check if a request is an import from js instead of a native resource request
@@ -76,4 +91,47 @@ export function generateCodeFrame(
         }
     }
     return res.join('\n')
+}
+
+/**
+ * Read already set body on a Koa context and normalize it into a string.
+ * Useful in post-processing middlewares.
+ */
+export async function readBody(
+    stream: Readable | Buffer | string | null,
+): Promise<string | null> {
+    if (stream instanceof Readable) {
+        return new Promise((resolve, reject) => {
+            let res = ''
+            stream
+                .on('data', (chunk) => (res += chunk))
+                .on('error', reject)
+                .on('end', () => {
+                    resolve(res)
+                })
+        })
+    } else {
+        return !stream || typeof stream === 'string'
+            ? stream
+            : stream.toString()
+    }
+}
+
+export const parseWithQuery = (
+    id: string,
+): {
+    path: string
+    query: ParsedQs
+} => {
+    const queryMatch = id.match(queryRE)
+    if (queryMatch) {
+        return {
+            path: slash(cleanUrl(id)),
+            query: qs.parse(queryMatch[0].slice(1)),
+        }
+    }
+    return {
+        path: id,
+        query: {},
+    }
 }
