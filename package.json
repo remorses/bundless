@@ -9,7 +9,8 @@
     },
     "workspaces": {
         "packages": [
-            "espack"
+            "espack",
+            "examples/*"
         ]
     },
     "devDependencies": {

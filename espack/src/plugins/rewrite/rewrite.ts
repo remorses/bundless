@@ -14,6 +14,7 @@ import {
 } from '../../utils'
 import { isOptimizedCjs, transformCjsImport } from './commonjs'
 import { Graph } from '../../graph'
+import { osAgnosticPath } from '../../prebundle/support'
 
 const debug = require('debug')('vite:rewrite')
 
@@ -24,12 +25,12 @@ export async function rewriteImports({
     importer,
     graph,
     resolve,
-    isOptimizedCjs,
+    root
 }: {
     source: string
     importer: string
     resolve: PluginsExecutor['resolve']
-    isOptimizedCjs: (p: string) => boolean
+    root: string
     graph: Graph
 }): Promise<string> {
     // #806 strip UTF-8 BOM
@@ -95,11 +96,11 @@ export async function rewriteImports({
                         resolveDir: path.dirname(importer),
                         path: id,
                     })
-                    const resolved = resolveResult?.path || ''
+                    const resolved = fileToRequest(root, resolveResult?.path || '')  // TODO add ?import ...
 
                     if (resolved !== id) {
                         debug(`    "${id}" --> "${resolved}"`)
-                        if (isOptimizedCjs(resolved)) {
+                        if (isOptimizedCjs(root, osAgnosticPath(resolveResult?.path))) {
                             if (dynamicIndex === -1) {
                                 const exp = source.substring(expStart, expEnd)
                                 const replacement = transformCjsImport(
@@ -205,18 +206,10 @@ export function RewritePlugin({} = {}) {
                 const contents = await rewriteImports({
                     graph,
                     importer: args.path,
-                    isOptimizedCjs: (p) => isOptimizedCjs(config.root!, p),
+                    root: config.root!,
+                    resolve,
                     source: args.contents,
-                    async resolve(args) {
-                        const resolved = await resolve(args)
-                        if (!resolved) {
-                            return
-                        }
-                        return {
-                            ...resolved,
-                            path: fileToRequest(config.root!, resolved.path), // TODO add ?import ...
-                        }
-                    },
+                    
                 })
                 return {
                     contents, // TODO module rewrite needs sourcemaps?

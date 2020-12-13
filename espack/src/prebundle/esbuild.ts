@@ -134,7 +134,6 @@ function metafileToAnalysis(_options: {
     entryPoints: string[]
 }): OptimizeAnalysisResult {
     const { meta, entryPoints } = _options
-    const inputFiles = new Set(entryPoints.map((x) => path.resolve(x)))
     const analysis: OptimizeAnalysisResult = {
         isCommonjs: fromEntries(
             Object.keys(meta.outputs)
@@ -152,14 +151,8 @@ function metafileToAnalysis(_options: {
                     if (!isCommonjs) {
                         return
                     }
-                    const inputs = Object.keys(meta.outputs[output].inputs) // TODO implicitly relative to cwd
-                    const input = inputs.find((x) =>
-                        inputFiles.has(path.resolve(x)),
-                    )
-                    if (!input) {
-                        throw new Error(`missing input for ${[...inputFiles]}`)
-                    }
-                    return [osAgnosticPath(input), isCommonjs]
+                    // what if imported path ahs not yet been converted by prebundler? then prebundler should lock server, it's impossible
+                    return [osAgnosticPath(output), isCommonjs]
                 })
                 .filter(Boolean) as any,
         ),
