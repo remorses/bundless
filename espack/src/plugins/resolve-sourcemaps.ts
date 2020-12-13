@@ -5,7 +5,7 @@ import { RawSourceMap } from 'source-map'
 import { PluginHooks } from '../plugin'
 import { fileToRequest, readFile } from '../utils'
 
-const sourcemapRegex = /\/\/#\ssourceMappingURL=([\w\.]+)\n*$/
+const sourcemapRegex = /\/\/#\ssourceMappingURL=([\w\d-_\.]+)\n*$/ // TODO do not match data:, support for spaces in file paths and non word characters
 
 export function ResolveSourcemapPlugin({} = {}) {
     return {
