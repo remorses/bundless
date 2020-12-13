@@ -73,8 +73,7 @@ export function createHandler(config: Config) {
     // attach server context to koa context
     app.use(async (ctx, next) => {
         Object.assign(ctx, context)
-        // TODO if type is not js, only load imported files (must have an ?import query)
-        // TODO handle the / path
+        // TODO skip non js code
         if (ctx.path == '/') {
             return next()
         }

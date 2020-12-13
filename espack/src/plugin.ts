@@ -83,11 +83,11 @@ export function createPluginsExecutor({
         })
     }
     async function load(arg) {
-        console.log(`executor loading '${arg.path}'`)
         let result
-        for (let { callback, options } of loaders) {
+        for (let { callback, options, name } of loaders) {
             const { filter } = options
-            if (filter && filter.test(arg)) {
+            if (filter && filter.test(arg.path)) {
+                console.log(`loading '${arg.path}' with '${name}'`)
                 result = await callback(arg)
                 // break
             }
@@ -95,23 +95,26 @@ export function createPluginsExecutor({
         return result
     }
     async function transform(arg) {
-        console.log(`executor transforming '${arg.path}'`)
         let result
-        for (let { callback, options } of transforms) {
+        for (let { callback, options, name } of transforms) {
             const { filter } = options
-            if (filter && filter.test(arg)) {
+            if (filter && filter.test(arg.path)) {
+                console.log(`transforming '${arg.path}' with '${name}'`)
                 result = await callback(arg)
+                if (result?.contents) {
+                    arg.contents = result.contents
+                }
                 // break
             }
         }
         return result
     }
     async function resolve(arg) {
-        console.log(`executor resolving '${arg.path}'`)
         let result
-        for (let { callback, options } of resolvers) {
+        for (let { callback, options, name } of resolvers) {
             const { filter } = options
-            if (filter && filter.test(arg)) {
+            if (filter && filter.test(arg.path)) {
+                console.log(`resolving '${arg.path}' with '${name}'`)
                 result = await callback(arg)
                 // break
             }

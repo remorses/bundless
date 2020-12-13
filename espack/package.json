@@ -30,6 +30,7 @@
         "qs": "^6.9.4"
     },
     "dependencies": {
+        "@esbuild-plugins/all": "^0.0.1",
         "@rollup/pluginutils": "^4.1.0",
         "chalk": "^4.1.0",
         "chokidar": "3.4.2",
