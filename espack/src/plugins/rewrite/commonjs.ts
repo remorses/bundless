@@ -35,7 +35,7 @@ function getAnalysis(root: string): OptimizeAnalysisResult | null {
 }
 
 export function isOptimizedCjs(root: string, filename: string) {
-    console.log(`isOptimizedCjs ${filename}`)
+    // console.log(`isOptimizedCjs ${filename}`)
     const analysis = getAnalysis(root)
     if (!analysis) return false
     return !!analysis.isCommonjs[slash(path.relative(root, filename))]
