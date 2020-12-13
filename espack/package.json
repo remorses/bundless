@@ -32,6 +32,8 @@
         "qs": "^6.9.4"
     },
     "dependencies": {
+        "@babel/parser": "^7.12.10",
+        "@babel/types": "^7.12.10",
         "@esbuild-plugins/all": "^0.0.1",
         "@rollup/pluginutils": "^4.1.0",
         "chalk": "^4.1.0",

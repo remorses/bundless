@@ -73,7 +73,6 @@ export function createHandler(config: Config) {
                     }
                     // node module path not bundled, rerun bundling
                     const entryPoints = [...Object.keys(graph.nodes)]
-                    console.log({ entryPoints })
                     bundleMap = await prebundle({
                         entryPoints, // TODO get root from graph
                         dest: path.resolve(root, WEB_MODULES_PATH),

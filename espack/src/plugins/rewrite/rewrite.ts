@@ -12,7 +12,7 @@ import {
     isExternalUrl,
     parseWithQuery,
 } from '../../utils'
-import { transformCjsImport } from './commonjs'
+import { isOptimizedCjs, transformCjsImport } from './commonjs'
 import { Graph } from '../../graph'
 
 const debug = require('debug')('vite:rewrite')
@@ -205,7 +205,7 @@ export function RewritePlugin({} = {}) {
                 const contents = await rewriteImports({
                     graph,
                     importer: args.path,
-                    isOptimizedCjs: () => false, // TODO detect commonjs
+                    isOptimizedCjs: (p) => isOptimizedCjs(config.root!, p),
                     source: args.contents,
                     async resolve(args) {
                         const resolved = await resolve(args)

@@ -27,7 +27,6 @@ export async function prebundle({ entryPoints, root, dest }) {
     await fs.writeFile(analysisFile, JSON.stringify(analysis, null, 4))
 
     console.info(printStats(stats))
-    console.log({bundleMap})
     return bundleMap
 }
 
