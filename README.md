@@ -9,6 +9,26 @@
     <br/>
 </div>
 
+
+
+
+## Features:
+
+-   can consume commonjs packages
+-   prebundles dependencies in bundles
+-   supports jsx, typescript, css out of the box
+-   support for monorepos and complex node_modules structures
+
+
+
+Still in progress
+-   HMR
+-   css modules
+-   css preprocessors
+-   plugins for react refresh, prefresh
+-   Vue support
+
+
 todos:
 
 -   loading file imported from js is different than loading paths to serve directly
