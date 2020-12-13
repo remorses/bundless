@@ -7,7 +7,7 @@ import { readFile } from '../utils'
 
 const debug = require('debug')('esbuild')
 
-export function sourcemapPlugin({} = {}) {
+export function SourcemapPlugin({} = {}) {
     return {
         name: 'sourcemaps',
         setup: ({ onLoad }: PluginHooks) => {

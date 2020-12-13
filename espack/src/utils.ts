@@ -3,6 +3,7 @@ import qs, { ParsedQs } from 'qs'
 import slash from 'slash'
 import fs from 'fs'
 import { Readable } from 'stream'
+import { forOwn, isPlainObject } from 'lodash'
 
 const imageRE = /\.(png|jpe?g|gif|svg|ico|webp)(\?.*)?$/
 const mediaRE = /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/
@@ -147,4 +148,16 @@ export async function readFile(p: string) {
     } catch (e) {
         throw new Error(`cannot read ${p}, ${e}`)
     }
+}
+
+export function flatten<T>(arr: T[][]): T[] {
+    return arr.reduce(function(flat, toFlatten) {
+        return flat.concat(
+            Array.isArray(toFlatten) ? flatten(toFlatten as any) : toFlatten,
+        )
+    }, [])
+}
+
+export function isNodeModule(p: string) {
+    return p.includes('node_modules')
 }

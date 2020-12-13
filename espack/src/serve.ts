@@ -1,11 +1,11 @@
 import { listen } from 'listhen'
-import { DEFAULT_PORT } from './constants'
+import { DEFAULT_PORT, WEB_MODULES_PATH } from './constants'
 import { FSWatcher } from 'chokidar'
 import { Server } from 'http'
 import { pluginAssetsPlugin, serveStaticPlugin } from './middleware'
 import {
     EsbuildTransformPlugin,
-    sourcemapPlugin,
+    SourcemapPlugin,
     RewritePlugin,
     NodeResolvePlugin,
     NodeModulesPolyfillPlugin,
@@ -15,10 +15,14 @@ import Koa, { DefaultState, DefaultContext } from 'koa'
 import chokidar from 'chokidar'
 import { createPluginsExecutor, PluginsExecutor } from './plugin'
 import { Config } from './config'
-import { requestToFile } from './utils'
+import { isNodeModule, requestToFile } from './utils'
 import { genSourceMapString } from './sourcemaps'
 import { Graph } from './graph'
 import deepmerge from 'deepmerge'
+import { prebundle } from './prebundle'
+import path from 'path'
+import { BundleMap } from './prebundle/esbuild'
+import slash from 'slash'
 
 export interface ServerPluginContext {
     root: string
@@ -53,13 +57,36 @@ export function createHandler(config: Config) {
     })
 
     const graph = new Graph()
+    let bundleMap: BundleMap | undefined
     const pluginExecutor = createPluginsExecutor({
         plugins: [
-            NodeResolvePlugin(),
-            NodeModulesPolyfillPlugin(),
+            NodeResolvePlugin({
+                async onResolved(resolvedPath) {
+                    if (!isNodeModule(resolvedPath)) {
+                        return
+                    }
+                    const relativePath = slash(
+                        path.relative(root, resolvedPath),
+                    )
+                    if (bundleMap && bundleMap[relativePath]) {
+                        return bundleMap[relativePath]
+                    }
+                    // node module path not bundled, rerun bundling
+                    const entryPoints = [...Object.keys(graph.nodes)]
+                    console.log({ entryPoints })
+                    bundleMap = await prebundle({
+                        entryPoints, // TODO get root from graph
+                        dest: path.resolve(root, WEB_MODULES_PATH),
+                        root: root,
+                    })
+                    return bundleMap[relativePath]
+                    // lock server, start optimization, unlock, send refresh message
+                },
+            }),
+            // NodeModulesPolyfillPlugin(),
             EsbuildTransformPlugin(),
             RewritePlugin(),
-            sourcemapPlugin(),
+            SourcemapPlugin(),
         ],
         config,
         graph,
