@@ -3,16 +3,20 @@ import { DEFAULT_PORT } from './constants'
 import { FSWatcher } from 'chokidar'
 import { Server } from 'http'
 import { pluginAssetsPlugin, serveStaticPlugin } from './middleware'
-import { esbuildPlugin, sourcemapPlugin } from './plugins'
-import { NodeResolvePlugin } from '@esbuild-plugins/all'
+import {
+    esbuildPlugin,
+    sourcemapPlugin,
+    rewritePlugin,
+    NodeResolvePlugin,
+} from './plugins'
+
 import Koa, { DefaultState, DefaultContext } from 'koa'
 import chokidar from 'chokidar'
 import { createPluginsExecutor, PluginsExecutor } from './plugin'
 import { Config } from './config'
 import { requestToFile } from './utils'
 import { genSourceMapString } from './sourcemaps'
-import { Graph } from './plugins/rewrite/graph'
-import { rewritePlugin } from './plugins/rewrite'
+import { Graph } from './graph'
 import deepmerge from 'deepmerge'
 
 export interface ServerPluginContext {

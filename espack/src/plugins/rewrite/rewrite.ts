@@ -13,7 +13,7 @@ import {
     parseWithQuery,
 } from '../../utils'
 import { transformCjsImport } from './commonjs'
-import { Graph } from './graph'
+import { Graph } from '../../graph'
 
 const debug = require('debug')('vite:rewrite')
 

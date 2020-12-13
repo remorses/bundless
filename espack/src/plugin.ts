@@ -1,6 +1,6 @@
 import * as esbuild from 'esbuild'
 import { Config } from './config'
-import { Graph } from './plugins/rewrite/graph'
+import { Graph } from './graph'
 
 export interface Plugin {
     name: string
