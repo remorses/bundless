@@ -1,6 +1,7 @@
 import path from 'path'
 import qs, { ParsedQs } from 'qs'
 import slash from 'slash'
+import fs from 'fs'
 import { Readable } from 'stream'
 
 const imageRE = /\.(png|jpe?g|gif|svg|ico|webp)(\?.*)?$/
@@ -134,4 +135,8 @@ export const parseWithQuery = (
         path: id,
         query: {},
     }
+}
+
+export async function readFile(p: string) {
+    return await (await fs.promises.readFile(p)).toString()
 }

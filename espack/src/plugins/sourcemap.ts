@@ -3,6 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { RawSourceMap } from 'source-map'
 import { PluginHooks } from '../plugin'
+import { readFile } from '../utils'
 
 const debug = require('debug')('esbuild')
 
@@ -58,6 +59,3 @@ export function sourcemapPlugin({} = {}) {
     }
 }
 
-async function readFile(p: string) {
-    return await (await fs.promises.readFile(p)).toString()
-}

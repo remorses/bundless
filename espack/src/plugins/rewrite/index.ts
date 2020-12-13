@@ -218,14 +218,14 @@ export function rewritePlugin({} = {}) {
                     },
                 })
                 return {
-                    contents, // no need for sourcemaps because later processed by esbuild?
+                    contents, // TODO module rewrite needs sourcemaps?
                 }
             })
         },
     }
 }
 
-export function removeUnRelatedHmrQuery(url: string) {
+function removeUnRelatedHmrQuery(url: string) {
     const { path, query } = parseWithQuery(url)
     delete query.t
     delete query.import

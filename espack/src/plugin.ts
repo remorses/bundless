@@ -35,6 +35,7 @@ export interface PluginHooks {
 
 export interface OnTransformArgs {
     path: string
+    loader?: esbuild.Loader
     contents: string
 }
 

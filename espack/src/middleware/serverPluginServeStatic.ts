@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
 import { ServerPlugin } from '../serve'
-import { isStaticAsset, requestToFile } from '../utils'
+import { isStaticAsset, readFile, requestToFile } from '../utils'
 
 const send = require('koa-send')
 const debug = require('debug')('vite:history')
@@ -40,7 +40,7 @@ export const serveStaticPlugin: ServerPlugin = ({ root, app }) => {
                 fs.existsSync(filePath) &&
                 fs.statSync(filePath).isFile()
             ) {
-                await ctx.read(filePath)
+                await readFile(filePath)
             }
         }
 

@@ -47,7 +47,7 @@ export function createHandler(config: Config) {
 
     const graph = new Graph()
     const pluginExecutor = createPluginsExecutor({
-        plugins: [rewritePlugin(), esbuildPlugin(), sourcemapPlugin()],
+        plugins: [esbuildPlugin(), rewritePlugin(), sourcemapPlugin()],
         config,
         graph,
     })
@@ -73,15 +73,15 @@ export function createHandler(config: Config) {
             namespace: '',
         })
         if (loaded == null || loaded.contents == null) {
-            return
+            return next()
         }
         const transformed = await pluginExecutor.transform({
             path: filePath,
-            // TODO add loader as arg
+            loader: loaded.loader,
             contents: String(loaded.contents),
         })
         if (transformed == null) {
-            return
+            return next()
         }
 
         const sourcemap = transformed.map
