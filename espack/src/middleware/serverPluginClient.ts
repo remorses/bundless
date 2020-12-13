@@ -10,7 +10,7 @@ export const clientMiddleware: ServerMiddleware = ({ app, config }) => {
         .readFileSync(clientFilePath, 'utf-8')
         .replace(`__MODE__`, JSON.stringify('development'))
         .replace(`__DEFINES__`, JSON.stringify({}))
-        .replace(`//# sourceMappingURL=template.js.map`, '')
+        // .replace(`//# sourceMappingURL=template.js.map`, '')
 
     app.use(async (ctx, next) => {
         if (ctx.path === CLIENT_PUBLIC_PATH) {

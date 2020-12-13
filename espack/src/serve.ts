@@ -19,6 +19,7 @@ import {
     NodeResolvePlugin,
     RewritePlugin,
     SourcemapPlugin,
+    ResolveSourcemapPlugin
 } from './plugins'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
@@ -71,7 +72,7 @@ export function createApp(config: Config) {
     const pluginExecutor = createPluginsExecutor({
         plugins: [
             NodeResolvePlugin({
-                resolveOptions: { extensions: [...JS_EXTENSIONS, '.css'] },
+                resolveOptions: { extensions: [...JS_EXTENSIONS, '.js.map','.css'] },
                 async onResolved(resolvedPath) {
                     if (!isNodeModule(resolvedPath)) {
                         return
@@ -96,6 +97,7 @@ export function createApp(config: Config) {
             // NodeModulesPolyfillPlugin(),
             EsbuildTransformPlugin(),
             RewritePlugin(),
+            ResolveSourcemapPlugin(),
             SourcemapPlugin(),
             CssPlugin(),
         ],
