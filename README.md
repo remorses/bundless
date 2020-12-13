@@ -9,9 +9,6 @@
     <br/>
 </div>
 
-
-
-
 ## Features:
 
 -   can consume commonjs packages
@@ -19,15 +16,23 @@
 -   supports jsx, typescript, css out of the box
 -   support for monorepos and complex node_modules structures
 
-
-
 Still in progress
+
 -   HMR
+-   hmr plugins for react refresh
+-   build command to bundle with esbuild
+-   create-app templates
+-   aliases support
 -   css modules
 -   css preprocessors
--   plugins for react refresh, prefresh
--   Vue support
+-   auto detect aliases from tsconfig.json
+-   extract css to chunks and add them in html
 
+Later:
+
+-   Vue support
+-   multi entry
+-   SSR
 
 todos:
 
@@ -41,4 +46,3 @@ todos:
 -   when should i resolve paths? do it in module rewrite phase, also add the prefixing /
 -   how to interact with html? don't do it (for now, maybe later i can create an onEmit handler that can output new files and add these in html links)
 -   what if a file does not exist but is virtual, how can loaders handle it? it should be already be handled by middleware, this way loaders won't load it
-
