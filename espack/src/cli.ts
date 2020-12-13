@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('source-map-support').install();
 import yargs, { CommandModule } from 'yargs'
 import deepMerge from 'deepmerge'
 import { serve } from './serve'

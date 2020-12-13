@@ -4,7 +4,7 @@ import { FSWatcher } from 'chokidar'
 import { Server } from 'http'
 import { pluginAssetsPlugin, serveStaticPlugin } from './middleware'
 import { esbuildPlugin, sourcemapPlugin } from './plugins'
-
+import { NodeResolvePlugin } from '@esbuild-plugins/all'
 import Koa, { DefaultState, DefaultContext } from 'koa'
 import chokidar from 'chokidar'
 import { createPluginsExecutor, PluginsExecutor } from './plugin'
@@ -13,6 +13,7 @@ import { requestToFile } from './utils'
 import { genSourceMapString } from './sourcemaps'
 import { Graph } from './plugins/rewrite/graph'
 import { rewritePlugin } from './plugins/rewrite'
+import deepmerge from 'deepmerge'
 
 export interface ServerPluginContext {
     root: string
@@ -36,6 +37,7 @@ export async function serve(config) {
 }
 
 export function createHandler(config: Config) {
+    config = deepmerge({ root: process.cwd() }, config)
     const { root = process.cwd() } = config
 
     const app = new Koa<DefaultState, DefaultContext>()
@@ -47,7 +49,12 @@ export function createHandler(config: Config) {
 
     const graph = new Graph()
     const pluginExecutor = createPluginsExecutor({
-        plugins: [esbuildPlugin(), rewritePlugin(), sourcemapPlugin()],
+        plugins: [
+            NodeResolvePlugin(),
+            esbuildPlugin(),
+            rewritePlugin(),
+            sourcemapPlugin(),
+        ],
         config,
         graph,
     })
@@ -67,6 +74,10 @@ export function createHandler(config: Config) {
     app.use(async (ctx, next) => {
         Object.assign(ctx, context)
         // TODO if type is not js, only load imported files (must have an ?import query)
+        // TODO handle the / path
+        if (ctx.path == '/') {
+            return next()
+        }
         const filePath = requestToFile(root, ctx.path)
         const loaded = await pluginExecutor.load({
             path: filePath,

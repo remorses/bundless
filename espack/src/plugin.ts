@@ -83,6 +83,7 @@ export function createPluginsExecutor({
         })
     }
     async function load(arg) {
+        console.log(`executor loading '${arg.path}'`)
         let result
         for (let { callback, options } of loaders) {
             const { filter } = options
@@ -94,6 +95,7 @@ export function createPluginsExecutor({
         return result
     }
     async function transform(arg) {
+        console.log(`executor transforming '${arg.path}'`)
         let result
         for (let { callback, options } of transforms) {
             const { filter } = options
@@ -105,6 +107,7 @@ export function createPluginsExecutor({
         return result
     }
     async function resolve(arg) {
+        console.log(`executor resolving '${arg.path}'`)
         let result
         for (let { callback, options } of resolvers) {
             const { filter } = options

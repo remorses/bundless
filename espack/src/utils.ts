@@ -46,7 +46,7 @@ export const isImportRequest = (ctx): boolean => {
 export function requestToFile(root: string, request: string) {
     request = cleanUrl(request)
     request = request.startsWith('/') ? request.slice(1) : request
-    return path.resolve(path.relative(root, request))
+    return path.resolve(root, request)
 }
 
 export function fileToRequest(root: string, filePath: string) {
@@ -101,20 +101,24 @@ export function generateCodeFrame(
 export async function readBody(
     stream: Readable | Buffer | string | null,
 ): Promise<string | null> {
-    if (stream instanceof Readable) {
-        return new Promise((resolve, reject) => {
-            let res = ''
-            stream
-                .on('data', (chunk) => (res += chunk))
-                .on('error', reject)
-                .on('end', () => {
-                    resolve(res)
-                })
-        })
-    } else {
-        return !stream || typeof stream === 'string'
-            ? stream
-            : stream.toString()
+    try {
+        if (stream instanceof Readable) {
+            return new Promise((resolve, reject) => {
+                let res = ''
+                stream
+                    .on('data', (chunk) => (res += chunk))
+                    .on('error', reject)
+                    .on('end', () => {
+                        resolve(res)
+                    })
+            })
+        } else {
+            return !stream || typeof stream === 'string'
+                ? stream
+                : stream.toString()
+        }
+    } catch (e) {
+        throw new Error(`Cannot read body, ${e}`)
     }
 }
 
@@ -138,5 +142,9 @@ export const parseWithQuery = (
 }
 
 export async function readFile(p: string) {
-    return await (await fs.promises.readFile(p)).toString()
+    try {
+        return await (await fs.promises.readFile(p)).toString()
+    } catch (e) {
+        throw new Error(`cannot read ${p}, ${e}`)
+    }
 }

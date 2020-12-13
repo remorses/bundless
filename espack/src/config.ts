@@ -11,3 +11,4 @@ export interface Config {
               fragment?: string
           }
 }
+
