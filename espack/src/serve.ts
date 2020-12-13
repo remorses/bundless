@@ -1,11 +1,15 @@
 import chokidar, { FSWatcher } from 'chokidar'
+import WebSocket from 'ws'
 import deepmerge from 'deepmerge'
+import { Server } from 'http'
 import Koa, { DefaultContext, DefaultState } from 'koa'
 import { listen } from 'listhen'
+import { HMRPayload } from './client/types'
+
 import path from 'path'
 import slash from 'slash'
 import { Config } from './config'
-import { DEFAULT_PORT, JS_EXTENSIONS, WEB_MODULES_PATH } from './constants'
+import { DEFAULT_PORT, HMR_SERVER_NAME, JS_EXTENSIONS, WEB_MODULES_PATH } from './constants'
 import { Graph } from './graph'
 import * as middlewares from './middleware'
 import { createPluginsExecutor, PluginsExecutor } from './plugin'
@@ -20,33 +24,42 @@ import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { genSourceMapString } from './sourcemaps'
 import { isNodeModule, requestToFile } from './utils'
+import chalk from 'chalk'
 
+const debug = require('debug')('espack')
 export interface ServerPluginContext {
     root: string
     app: Koa
     pluginExecutor: PluginsExecutor
     // server: Server
     watcher: FSWatcher
+    server?: Server
     config: Config
+    sendHmrMessage: (payload: HMRPayload) => void
     port: number
 }
 
 export type ServerMiddleware = (ctx: ServerPluginContext) => void
 
 export async function serve(config) {
-    const handler = createHandler(config)
-    const { server } = await listen(handler, {
+    const app = createApp(config)
+    const { server } = await listen(app.callback(), {
         port: config.port || DEFAULT_PORT,
         showURL: true,
     })
+    app.context.server = server
+    const port = server.address()?.['port']
+    console.log({ port })
+    app.context.port = port
     return server
 }
 
-export function createHandler(config: Config) {
+export function createApp(config: Config) {
     config = deepmerge({ root: process.cwd() }, config)
     const { root = process.cwd() } = config
 
     const app = new Koa<DefaultState, DefaultContext>()
+
     const watcher = chokidar.watch(root, {
         ignored: ['**/node_modules/**', '**/.git/**'],
         ignoreInitial: true,
@@ -96,6 +109,9 @@ export function createHandler(config: Config) {
         watcher,
         config,
         pluginExecutor,
+        sendHmrMessage: () => {
+            throw new Error(`hmr ws client has not started yet`)
+        },
         // port is exposed on the context for hmr client connection
         // in case the files are served under a different port
         port: config.port || 3000,
@@ -134,8 +150,52 @@ export function createHandler(config: Config) {
             ctx.type = 'js' // TODO get content type from loader
         })
     }
+    const hmrMiddleware: ServerMiddleware = ({ app }) => {
+        // attach server context to koa context
+        const wss = new WebSocket.Server({ noServer: true })
+        let done = false
+        app.use((_, next) => {
+            if (done) {
+                return next()
+            }
+
+            app.context.server.on('upgrade', (req, socket, head) => {
+                if (req.headers['sec-websocket-protocol'] === HMR_SERVER_NAME) {
+                    wss.handleUpgrade(req, socket, head, (ws) => {
+                        wss.emit('connection', ws, req)
+                    })
+                }
+            })
+
+            wss.on('connection', (socket) => {
+                debug('ws client connected')
+                socket.send(JSON.stringify({ type: 'connected' }))
+            })
+
+            wss.on('error', (e: Error & { code: string }) => {
+                if (e.code !== 'EADDRINUSE') {
+                    console.error(chalk.red(`[vite] WebSocket server error:`))
+                    console.error(e)
+                }
+            })
+
+            context.sendHmrMessage = (payload: HMRPayload) => {
+                const stringified = JSON.stringify(payload, null, 2)
+                debug(`update: ${stringified}`)
+
+                wss.clients.forEach((client) => {
+                    if (client.readyState === WebSocket.OPEN) {
+                        client.send(stringified)
+                    }
+                })
+            }
+            done = true
+            return next()
+        })
+    }
 
     const serverMiddleware = [
+        hmrMiddleware,
         middlewares.clientMiddleware,
         middlewares.pluginAssetsMiddleware,
         pluginsMiddleware,
@@ -154,5 +214,5 @@ export function createHandler(config: Config) {
         )
     }
 
-    return app.callback()
+    return app
 }

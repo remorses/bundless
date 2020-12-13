@@ -8,7 +8,7 @@
     "repository": "https://github.com/remorses/esbuild-plugins.git",
     "scripts": {
         "build": "tsc && tsc -m esnext --outDir esm",
-        "watch:esm": "tsc -w -m esnext --outDir esm ",
+        "watch:esm": "tsc -w -m esnext --outDir esm",
         "watch:cjs": "tsc -w",
         "watch": "run-p watch:esm watch:cjs",
         "cli": "node bin.js"
