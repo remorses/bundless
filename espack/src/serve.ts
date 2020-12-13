@@ -4,10 +4,11 @@ import { FSWatcher } from 'chokidar'
 import { Server } from 'http'
 import { pluginAssetsPlugin, serveStaticPlugin } from './middleware'
 import {
-    esbuildPlugin,
+    EsbuildTransformPlugin,
     sourcemapPlugin,
-    rewritePlugin,
+    RewritePlugin,
     NodeResolvePlugin,
+    NodeModulesPolyfillPlugin,
 } from './plugins'
 
 import Koa, { DefaultState, DefaultContext } from 'koa'
@@ -55,8 +56,9 @@ export function createHandler(config: Config) {
     const pluginExecutor = createPluginsExecutor({
         plugins: [
             NodeResolvePlugin(),
-            esbuildPlugin(),
-            rewritePlugin(),
+            NodeModulesPolyfillPlugin(),
+            EsbuildTransformPlugin(),
+            RewritePlugin(),
             sourcemapPlugin(),
         ],
         config,

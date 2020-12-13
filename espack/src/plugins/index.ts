@@ -1,4 +1,4 @@
 export { sourcemapPlugin } from './sourcemap'
-export { esbuildPlugin } from './esbuild'
-export { rewritePlugin } from './rewrite'
-export { NodeResolvePlugin } from '@esbuild-plugins/all'
+export { EsbuildTransformPlugin } from './esbuild'
+export { RewritePlugin } from './rewrite'
+export * from '@esbuild-plugins/all'

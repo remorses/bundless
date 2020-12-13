@@ -196,7 +196,7 @@ export async function rewriteImports({
     }
 }
 
-export function rewritePlugin({} = {}) {
+export function RewritePlugin({} = {}) {
     return {
         name: 'rewrite',
         setup: ({ onTransform, resolve, graph, config }: PluginHooks) => {
