@@ -2,19 +2,19 @@ import {
     NodeModulesPolyfillPlugin,
     NodeResolvePlugin,
 } from '@esbuild-plugins/all'
-import type { Metadata } from 'esbuild'
+import * as esbuild from 'esbuild'
+import { Metadata } from 'esbuild'
 import fromEntries from 'fromentries'
 import fs from 'fs'
 import path from 'path'
 import toUnixPath from 'slash'
 import tmpfile from 'tmpfile'
-import { removeColonsFromMeta } from './support'
 import { DependencyStatsOutput } from './stats'
-import { OptimizeAnalysisResult, osAgnosticPath, stripColon } from './support'
-
-const esbuild: typeof import('esbuild').build = process.env.USE_MY_LOCAL_ESBUILD
-    ? require('my-esbuild').build
-    : require('esbuild').build
+import {
+    OptimizeAnalysisResult,
+    osAgnosticPath,
+    removeColonsFromMeta,
+} from './support'
 
 export async function bundleWithEsBuild({
     entryPoints,
@@ -35,7 +35,7 @@ export async function bundleWithEsBuild({
     await fs.promises.writeFile(tsconfigTempFile, makeTsConfig({ alias }))
 
     // rimraf.sync(destLoc) // do not delete or on flight imports will return 404
-    await esbuild({
+    await esbuild.build({
         splitting: true, // needed to dedupe modules
         external: externalPackages,
         minifyIdentifiers: Boolean(minify),
@@ -57,6 +57,7 @@ export async function bundleWithEsBuild({
         tsconfig: tsconfigTempFile,
         bundle: true,
         format: 'esm',
+
         write: true,
         entryPoints,
         outdir: destLoc,
@@ -71,7 +72,7 @@ export async function bundleWithEsBuild({
         await (await fs.promises.readFile(metafile)).toString(),
     )
 
-    meta = removeColonsFromMeta(meta, )
+    meta = removeColonsFromMeta(meta)
 
     const bundleMap = metafileToBundleMap({
         entryPoints,
@@ -122,9 +123,7 @@ function metafileToBundleMap(_options: {
         })
         .filter(Boolean) as any
 
-    const bundleMap = fromEntries(
-        maps,
-    )
+    const bundleMap = fromEntries(maps)
 
     return bundleMap
 }
@@ -139,7 +138,7 @@ function metafileToAnalysis(_options: {
             Object.keys(meta.outputs)
                 .map((output): [string, true] | undefined => {
                     if (path.basename(output).startsWith('chunk.')) {
-                        return 
+                        return
                     }
                     const info = meta.outputs[output]
                     if (!info) {

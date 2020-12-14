@@ -13,7 +13,7 @@
 
 -   can consume commonjs packages
 -   prebundles dependencies in bundles
--   supports jsx, typescript, css out of the box
+-   supports importing jsx, typescript, css out of the box
 -   support for monorepos and complex node_modules structures
 
 Still in progress
