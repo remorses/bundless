@@ -4,9 +4,9 @@
 
 import { traverseEsModules, urlResolver } from 'es-module-traversal'
 import { serve } from 'espack'
-import fetch from 'node-fetch'
 import fs from 'fs-extra'
 import glob from 'glob'
+import fetch from 'node-fetch'
 import path from 'path'
 import slash from 'slash'
 import { URL } from 'url'
@@ -29,7 +29,6 @@ it('works', async () => {
     })
 })
 describe('snapshots', () => {
-    const ENTRY_NAME = 'entry.js'
     const casesPath = 'fixtures'
     const cases = fs
         .readdirSync(casesPath, {
@@ -51,10 +50,9 @@ describe('snapshots', () => {
                 const downloadFilesToDir = path.join(casePath, 'mirror')
                 const contentTypes = {}
                 const res = await traverseEsModules({
-                    // TODO use html as entrypoint
-                    entryPoints: [new URL(ENTRY_NAME, baseUrl).toString()],
+                    entryPoints: [new URL('index.html', baseUrl).toString()],
                     resolver: urlResolver({ root: casePath, baseUrl }),
-                    onEntry: async (url, importer) => {
+                    onEntry: async (url = '', importer) => {
                         let content = ''
                         if (!isUrl(url)) {
                             content = await (await fs.readFile(url)).toString()

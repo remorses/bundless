@@ -33,5 +33,5 @@ function normalizePath(filePath: string) {
 }
 
 export function isUrl(str: string) {
-    return str.startsWith('http://') || str.startsWith('https://')
+    return str && str.startsWith('http://') || str.startsWith('https://')
 }

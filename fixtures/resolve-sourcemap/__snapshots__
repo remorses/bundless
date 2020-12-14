@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/resolve-sourcemap: content-type headers 1`] = `
+Object {
+  "http://localhost:9000/folder/main.js": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/resolve-sourcemap: mirror 1`] = `
+Array [
+  "folder/main.js",
+  "index.html",
+]
+`;
+
+exports[`snapshots fixtures/resolve-sourcemap: traverse result 1`] = `Array []`;

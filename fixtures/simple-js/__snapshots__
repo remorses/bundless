@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/simple-js: content-type headers 1`] = `
+Object {
+  "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/simple-js: mirror 1`] = `
+Array [
+  "index.html",
+  "main.js",
+]
+`;
+
+exports[`snapshots fixtures/simple-js: traverse result 1`] = `Array []`;

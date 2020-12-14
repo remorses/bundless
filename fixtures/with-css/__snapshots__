@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/with-css: content-type headers 1`] = `
+Object {
+  "http://localhost:9000/file.css": "application/javascript; charset=utf-8",
+  "http://localhost:9000/main.tsx": "application/octet-stream",
+}
+`;
+
+exports[`snapshots fixtures/with-css: mirror 1`] = `
+Array [
+  "file.css",
+  "index.html",
+  "main.tsx",
+]
+`;
+
+exports[`snapshots fixtures/with-css: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "./file.css",
+    "importer": "http://localhost:9000/main.tsx",
+    "resolvedImportPath": "http://localhost:9000/file.css",
+  },
+]
+`;

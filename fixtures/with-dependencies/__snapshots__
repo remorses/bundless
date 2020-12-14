@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/with-dependencies: content-type headers 1`] = `
+Object {
+  "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/with-dependencies: mirror 1`] = `
+Array [
+  "index.html",
+  "main.js",
+]
+`;
+
+exports[`snapshots fixtures/with-dependencies: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "slash",
+    "importer": "http://localhost:9000/main.js",
+    "resolvedImportPath": "../es-module-traversal/node_modules/slash/index.js",
+  },
+]
+`;
