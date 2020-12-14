@@ -1,15 +1,20 @@
+import chalk from 'chalk'
 import chokidar, { FSWatcher } from 'chokidar'
-import WebSocket from 'ws'
 import deepmerge from 'deepmerge'
 import { Server } from 'http'
 import Koa, { DefaultContext, DefaultState } from 'koa'
 import { listen } from 'listhen'
-import { HMRPayload } from './client/types'
-
 import path from 'path'
 import slash from 'slash'
+import WebSocket from 'ws'
+import { HMRPayload } from './client/types'
 import { Config } from './config'
-import { DEFAULT_PORT, HMR_SERVER_NAME, JS_EXTENSIONS, WEB_MODULES_PATH } from './constants'
+import {
+    DEFAULT_PORT,
+    HMR_SERVER_NAME,
+    JS_EXTENSIONS,
+    WEB_MODULES_PATH,
+} from './constants'
 import { Graph } from './graph'
 import * as middlewares from './middleware'
 import { createPluginsExecutor, PluginsExecutor } from './plugin'
@@ -17,15 +22,14 @@ import {
     CssPlugin,
     EsbuildTransformPlugin,
     NodeResolvePlugin,
+    ResolveSourcemapPlugin,
     RewritePlugin,
     SourcemapPlugin,
-    ResolveSourcemapPlugin
 } from './plugins'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { genSourceMapString } from './sourcemaps'
 import { isNodeModule, requestToFile } from './utils'
-import chalk from 'chalk'
 
 const debug = require('debug')('espack')
 export interface ServerPluginContext {
@@ -42,17 +46,17 @@ export interface ServerPluginContext {
 
 export type ServerMiddleware = (ctx: ServerPluginContext) => void
 
-export async function serve(config) {
+export async function serve(config: Config) {
     const app = createApp(config)
-    const { server } = await listen(app.callback(), {
+    const { server, close } = await listen(app.callback(), {
         port: config.port || DEFAULT_PORT,
         showURL: true,
+        // open: true,
     })
     app.context.server = server
     const port = server.address()?.['port']
-    console.log({ port })
     app.context.port = port
-    return server
+    return { ...server, close }
 }
 
 export function createApp(config: Config) {
@@ -72,7 +76,9 @@ export function createApp(config: Config) {
     const pluginExecutor = createPluginsExecutor({
         plugins: [
             NodeResolvePlugin({
-                resolveOptions: { extensions: [...JS_EXTENSIONS, '.js.map','.css'] },
+                resolveOptions: {
+                    extensions: [...JS_EXTENSIONS, '.js.map', '.css'],
+                },
                 async onResolved(resolvedPath) {
                     if (!isNodeModule(resolvedPath)) {
                         return
@@ -116,7 +122,7 @@ export function createApp(config: Config) {
         },
         // port is exposed on the context for hmr client connection
         // in case the files are served under a different port
-        port: config.port || 3000,
+        port: Number(config.port || 3000),
     }
 
     const pluginsMiddleware: ServerMiddleware = ({ app }) => {

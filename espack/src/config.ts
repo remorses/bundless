@@ -1,6 +1,6 @@
 export interface Config {
     root?: string
-    port?: number
+    port?: number | string
     cors?: boolean
     hmr?: HmrConfig | boolean
     jsx?:

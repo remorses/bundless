@@ -10,7 +10,8 @@
     "workspaces": {
         "packages": [
             "espack",
-            "examples/*"
+            "fixtures/*",
+            "tests"
         ]
     },
     "devDependencies": {

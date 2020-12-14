@@ -1,0 +1,13 @@
+{
+    "name": "tests",
+    "private": true,
+    "version": "0.0.0",
+    "dependencies": {
+        "espack": "*",
+        "es-module-traversal": "^0.0.46",
+        "glob": "^7.1.6",
+        "node-fetch": "2.6.1",
+        "slash": "3.0.0",
+        "jest-specific-snapshot": "^4.0.0"
+    }
+}

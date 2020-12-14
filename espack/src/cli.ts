@@ -15,8 +15,8 @@ const serveCommand: CommandModule = {
         })
         return argv
     },
-    handler: async (argv) => {
-        const config = deepMerge({}, { port: argv.port }) // TODO resolve and load config
+    handler: async (argv: any) => {
+        const config = deepMerge({}, { port: argv.port  }) // TODO resolve and load config
         return serve(config)
     },
 }
