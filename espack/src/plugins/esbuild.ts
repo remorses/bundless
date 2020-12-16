@@ -16,13 +16,16 @@ const debug = require('debug')('esbuild')
 export function EsbuildTransformPlugin({} = {}) {
     return {
         name: 'esbuild',
-        setup: ({ onTransform, config }: PluginHooks) => {
+        setup: ({ onTransform, onClose, config }: PluginHooks) => {
             onTransform({ filter: /\.(tsx?|jsx)$/ }, async (args) => {
                 return transform({
                     src: args.contents,
                     filePath: args.path,
                     jsxOption: config.jsx,
                 })
+            })
+            onClose({}, () => {
+                return stopService()
             })
         },
     }

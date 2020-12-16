@@ -1,8 +1,8 @@
 import chalk from 'chalk'
-const prefix = chalk.gray('[espack]')
+const prefix = chalk.dim('[espack] ')
 
 export const logger = {
     log(...x) {
-        process.stderr.write(prefix, ...x, '\n')
+        process.stderr.write(prefix + x.join(' ') + '\n')
     },
 }

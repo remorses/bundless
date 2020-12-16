@@ -1,4 +1,5 @@
 import * as esbuild from 'esbuild'
+import { promises } from 'fs-extra'
 import { Config } from './config'
 import { Graph } from './graph'
 import { logger } from './logger'
@@ -33,6 +34,7 @@ export interface PluginHooks {
             args: OnTransformArgs,
         ) => Maybe<OnTransformResult | Promise<Maybe<OnTransformResult>>>,
     ): void
+    onClose(options: {}, callback: () => void | Promise<void>): void
 }
 
 export interface OnTransformArgs {
@@ -53,13 +55,14 @@ export interface PluginsExecutor {
     load(args: esbuild.OnLoadArgs): Promise<Maybe<esbuild.OnLoadResult>>
     transform(args: OnTransformArgs): Promise<Maybe<OnTransformResult>>
     resolve(args: esbuild.OnResolveArgs): Promise<Maybe<esbuild.OnResolveArgs>>
+    close({}): Promise<void>
 }
 
 export function createPluginsExecutor({
     plugins,
     config,
     graph,
-    root
+    root,
 }: {
     plugins: Plugin[]
     config: Config
@@ -69,6 +72,7 @@ export function createPluginsExecutor({
     const transforms: any[] = []
     const resolvers: any[] = []
     const loaders: any[] = []
+    const closers: any[] = []
     for (let plugin of plugins) {
         const { name, setup } = plugin
         setup({
@@ -84,6 +88,9 @@ export function createPluginsExecutor({
             onTransform: (options, callback) => {
                 transforms.push({ options, callback, name })
             },
+            onClose: (options, callback) => {
+                closers.push({ options, callback, name })
+            },
         })
     }
     async function load(arg) {
@@ -92,7 +99,10 @@ export function createPluginsExecutor({
             const { filter } = options
             if (filter && filter.test(arg.path)) {
                 logger.log(
-                    `loading '${osAgnosticPath(arg.path, root)}' with '${name}'`,
+                    `loading '${osAgnosticPath(
+                        arg.path,
+                        root,
+                    )}' with '${name}'`,
                 )
                 result = await callback(arg)
                 break
@@ -128,10 +138,19 @@ export function createPluginsExecutor({
         }
         return result
     }
+    async function close(arg) {
+        let result
+        for (let { callback, options, name } of closers) {
+            logger.log(`cleaning resources for '${name}'`)
+            await callback(arg)
+        }
+        return result
+    }
 
     return {
         load,
         resolve,
         transform,
+        close,
     }
 }

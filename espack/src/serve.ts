@@ -16,6 +16,7 @@ import {
     WEB_MODULES_PATH,
 } from './constants'
 import { Graph } from './graph'
+import { logger } from './logger'
 import * as middlewares from './middleware'
 import { createPluginsExecutor, PluginsExecutor } from './plugin'
 import {
@@ -57,7 +58,13 @@ export async function serve(config: Config) {
     app.context.server = server
     const port = server.address()?.['port']
     app.context.port = port
-    return { ...server, close }
+    return {
+        ...server,
+        close: () => {
+            app.emit('close')
+            return close()
+        },
+    }
 }
 
 export function createApp(config: Config) {
@@ -100,9 +107,11 @@ export function createApp(config: Config) {
                     })
                     const webBundle = bundleMap[relativePath]
                     if (!webBundle) {
-                        throw new Error(`Bundle for '${relativePath}' was not generated`)
+                        throw new Error(
+                            `Bundle for '${relativePath}' was not generated`,
+                        )
                     }
-                    return webBundle 
+                    return webBundle
                     // lock server, start optimization, unlock, send refresh message
                 },
             }),
@@ -115,6 +124,11 @@ export function createApp(config: Config) {
         ],
         config,
         graph,
+    })
+
+    app.once('close', () => {
+        logger.log('closing')
+        pluginExecutor.close({})
     })
 
     const context: ServerPluginContext = {
@@ -167,6 +181,10 @@ export function createApp(config: Config) {
     const hmrMiddleware: ServerMiddleware = ({ app }) => {
         // attach server context to koa context
         const wss = new WebSocket.Server({ noServer: true })
+        app.once('close', () => {
+            logger.log('closing wss')
+            wss.close()
+        })
         let done = false
         app.use((_, next) => {
             if (done) {
