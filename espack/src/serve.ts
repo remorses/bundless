@@ -104,6 +104,8 @@ export function createApp(config: Config) {
                         entryPoints, // TODO get root from graph
                         dest: path.resolve(root, WEB_MODULES_PATH),
                         root: root,
+                    }).catch((e) => {
+                        throw new Error(`Cannot prebundle: ${e}`)
                     })
                     const webBundle = bundleMap[relativePath]
                     if (!webBundle) {

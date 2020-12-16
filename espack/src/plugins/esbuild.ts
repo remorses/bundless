@@ -37,10 +37,11 @@ const JsxPresets: Record<
 > = {
     vue: { jsxFactory: 'jsx', jsxFragment: 'Fragment' },
     preact: { jsxFactory: 'h', jsxFragment: 'Fragment' },
-    react: {}, // use esbuild default
+    react: {},
+    // react: { jsxFactory: 'React.createElement',  }, // use esbuild default
 }
 
-export function resolveJsxOptions(options: Config['jsx'] = 'vue') {
+export function resolveJsxOptions(options: Config['jsx'] = 'react') {
     if (typeof options === 'string') {
         if (!(options in JsxPresets)) {
             console.error(`unknown jsx preset: '${options}'.`)
