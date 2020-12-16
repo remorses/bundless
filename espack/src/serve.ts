@@ -182,7 +182,7 @@ export function createApp(config: Config) {
 
             wss.on('error', (e: Error & { code: string }) => {
                 if (e.code !== 'EADDRINUSE') {
-                    console.error(chalk.red(`[vite] WebSocket server error:`))
+                    console.error(chalk.red(`WebSocket server error:`))
                     console.error(e)
                 }
             })

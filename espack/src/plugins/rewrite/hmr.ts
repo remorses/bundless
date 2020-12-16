@@ -84,7 +84,7 @@
 //                 const { generateCodeFrame } = resolveCompiler(root)
 //                 console.warn(
 //                     chalk.yellow(
-//                         `[vite] HMR syntax error in ${importer}: import.meta.hot.accept() ` +
+//                         `HMR syntax error in ${importer}: import.meta.hot.accept() ` +
 //                             `should be wrapped in \`if (import.meta.hot) {}\` conditional ` +
 //                             `blocks so that they can be tree-shaken in production.`,
 //                     ),
@@ -103,7 +103,7 @@
 //                 if (!isDevBlock) {
 //                     console.error(
 //                         chalk.yellow(
-//                             `[vite] HMR syntax error in ${importer}: import.meta.hot.${method}() ` +
+//                             `HMR syntax error in ${importer}: import.meta.hot.${method}() ` +
 //                                 `cannot be conditional except for \`if (import.meta.hot)\` check ` +
 //                                 `because the server relies on static analysis to construct the HMR graph.`,
 //                         ),
@@ -115,7 +115,7 @@
 //                     if (method !== 'acceptDeps') {
 //                         console.error(
 //                             chalk.yellow(
-//                                 `[vite] HMR syntax error in ${importer}: hot.accept() only accepts ` +
+//                                 `HMR syntax error in ${importer}: hot.accept() only accepts ` +
 //                                     `a single callback. Use hot.acceptDeps() to handle dep updates.`,
 //                             ),
 //                         )
@@ -125,7 +125,7 @@
 //                         if (e && e.type !== 'StringLiteral') {
 //                             console.error(
 //                                 chalk.yellow(
-//                                     `[vite] HMR syntax error in ${importer}: hot.accept() deps ` +
+//                                     `HMR syntax error in ${importer}: hot.accept() deps ` +
 //                                         `list can only contain string literals.`,
 //                                 ),
 //                             )
@@ -137,7 +137,7 @@
 //                     if (method !== 'acceptDeps') {
 //                         console.error(
 //                             chalk.yellow(
-//                                 `[vite] HMR syntax error in ${importer}: hot.accept() only accepts ` +
+//                                 `HMR syntax error in ${importer}: hot.accept() only accepts ` +
 //                                     `a single callback. Use hot.acceptDeps() to handle dep updates.`,
 //                             ),
 //                         )
@@ -151,7 +151,7 @@
 //                     if (method !== 'accept') {
 //                         console.error(
 //                             chalk.yellow(
-//                                 `[vite] HMR syntax error in ${importer}: hot.acceptDeps() ` +
+//                                 `HMR syntax error in ${importer}: hot.acceptDeps() ` +
 //                                     `expects a dependency or an array of dependencies. ` +
 //                                     `Use hot.accept() for handling self updates.`,
 //                             ),
@@ -164,7 +164,7 @@
 //                 } else {
 //                     console.error(
 //                         chalk.yellow(
-//                             `[vite] HMR syntax error in ${importer}: ` +
+//                             `HMR syntax error in ${importer}: ` +
 //                                 `import.meta.hot.accept() expects a dep string, an array of ` +
 //                                 `deps, or a callback.`,
 //                         ),

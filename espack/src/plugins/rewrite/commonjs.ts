@@ -28,7 +28,7 @@ function getAnalysis(root: string): OptimizeAnalysisResult | null {
         analysis = null
     }
     if (analysis && !isPlainObject(analysis.isCommonjs)) {
-        throw new Error(`[vite] invalid ${COMMONJS_ANALYSIS_PATH}`)
+        throw new Error(`invalid ${COMMONJS_ANALYSIS_PATH}`)
     }
     analysisCache.set(root, analysis)
     return analysis

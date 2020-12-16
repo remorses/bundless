@@ -20,7 +20,7 @@ export const serveStaticMiddleware: ServerMiddleware = ({ root, app }) => {
         if (ctx.path.startsWith('/public/') && isStaticAsset(ctx.path)) {
             console.error(
                 chalk.yellow(
-                    `[vite] files in the public directory are served at the root path.\n` +
+                    `files in the public directory are served at the root path.\n` +
                         `  ${chalk.blue(
                             ctx.path,
                         )} should be changed to ${chalk.blue(

@@ -67,7 +67,7 @@ export async function rewriteImports({
         } catch (e) {
             console.error(
                 chalk.yellow(
-                    `[vite] failed to parse ${chalk.cyan(
+                    `failed to parse ${chalk.cyan(
                         importer,
                     )} for import rewrite.\nIf you are using ` +
                         `JSX, make sure to named the file with the .jsx extension.`,
@@ -174,7 +174,7 @@ export async function rewriteImports({
                 } else if (id !== 'import.meta' && !hasViteIgnore) {
                     console.warn(
                         chalk.yellow(
-                            `[vite] ignored dynamic import(${id}) in ${importer}.`,
+                            `ignored dynamic import(${id}) in ${importer}.`,
                         ),
                     )
                 }
@@ -219,9 +219,9 @@ export async function rewriteImports({
 
         return source
     } catch (e) {
-        console.error(
-            `[vite] Error: module imports rewrite failed for ${importer}.\n`,
-            e,
+        throw new Error(
+            `Error: module imports rewrite failed for ${importer}.\n` +
+                e,
         )
         debug(source)
         return source

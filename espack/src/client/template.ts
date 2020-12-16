@@ -28,7 +28,7 @@ Object.keys(defines).forEach((key) => {
 
 import { HMRPayload, UpdatePayload, MultiUpdatePayload } from './types'
 
-console.log('[vite] connecting...')
+console.log('[hmr] connecting...')
 
 declare var __VUE_HMR_RUNTIME__: any
 
@@ -63,7 +63,7 @@ async function handleMessage(payload: HMRPayload) {
   const { path, changeSrcPath, timestamp } = payload as UpdatePayload
   switch (payload.type) {
     case 'connected':
-      console.log(`[vite] connected.`)
+      console.log(`[hmr] connected.`)
       // proxy(nginx, docker) hmr ws maybe caused timeout, so send ping package let ws keep alive.
       setInterval(() => socket.send('ping'), __HMR_TIMEOUT__)
       break
@@ -73,7 +73,7 @@ async function handleMessage(payload: HMRPayload) {
           .catch((err) => warnFailedFetch(err, path))
           .then((m) => () => {
             __VUE_HMR_RUNTIME__.reload(path, m.default)
-            console.log(`[vite] ${path} reloaded.`)
+            console.log(`[hmr] ${path} reloaded.`)
           })
       )
       break
@@ -81,7 +81,7 @@ async function handleMessage(payload: HMRPayload) {
       const templatePath = `${path}?type=template`
       import(`${templatePath}&t=${timestamp}`).then((m) => {
         __VUE_HMR_RUNTIME__.rerender(path, m.render)
-        console.log(`[vite] ${path} template updated.`)
+        console.log(`[hmr] ${path} template updated.`)
       })
       break
     case 'style-update':
@@ -97,7 +97,7 @@ async function handleMessage(payload: HMRPayload) {
       // imported CSS
       const importQuery = path.includes('?') ? '&import' : '?import'
       await import(`${path}${importQuery}&t=${timestamp}`)
-      console.log(`[vite] ${path} updated.`)
+      console.log(`[hmr] ${path} updated.`)
       break
     case 'style-remove':
       removeStyle(payload.id)
@@ -151,7 +151,7 @@ async function queueUpdate(p: Promise<(() => void) | undefined>) {
 
 // ping server
 socket.addEventListener('close', () => {
-  console.log(`[vite] server connection lost. polling for restart...`)
+  console.log(`[hmr] server connection lost. polling for restart...`)
   setInterval(() => {
     fetch('/')
       .then(() => {

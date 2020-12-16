@@ -40,7 +40,7 @@ const JsxPresets: Record<
 export function resolveJsxOptions(options: Config['jsx'] = 'vue') {
     if (typeof options === 'string') {
         if (!(options in JsxPresets)) {
-            console.error(`[vite] unknown jsx preset: '${options}'.`)
+            console.error(`unknown jsx preset: '${options}'.`)
         }
         return JsxPresets[options] || {}
     } else if (options) {
@@ -94,7 +94,7 @@ export const transform = async ({
         const result = await service.transform(src, options)
         if (result.warnings.length) {
             console.error(
-                `[vite] warnings while transforming ${filePath} with esbuild:`,
+                `warnings while transforming ${filePath} with esbuild:`,
             )
             result.warnings.forEach((m) => printMessage(m, src))
         }
@@ -120,7 +120,7 @@ export const transform = async ({
     } catch (e) {
         console.error(
             chalk.red(
-                `[vite] error while transforming ${filePath} with esbuild:`,
+                `error while transforming ${filePath} with esbuild:`,
             ),
         )
         if (e.errors) {

@@ -36,7 +36,7 @@ export function SourcemapPlugin({} = {}) {
                                 if (err.code === 'ENOENT') {
                                     console.error(
                                         chalk.red(
-                                            `[vite] Sourcemap "${file}" points to non-existent source: "${originalPath}"`,
+                                            `Sourcemap "${file}" points to non-existent source: "${originalPath}"`,
                                         ),
                                     )
                                     return source
