@@ -86,7 +86,7 @@ export async function traverseWithEsbuild({
                                 return
                             },
                             onUnresolved: (e) => {
-                                console.error(e)
+                                // console.error(e)
                                 return {
                                     external: true,
                                 }

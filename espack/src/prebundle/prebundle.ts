@@ -4,17 +4,23 @@ import path from 'path'
 import slash from 'slash'
 import { RawSourceMap } from 'source-map'
 import { COMMONJS_ANALYSIS_PATH } from '../constants'
+import { logger } from '../logger'
 import { PluginHooks } from '../plugin'
 import { isNodeModule, readFile } from '../utils'
 import { bundleWithEsBuild } from './esbuild'
 import { printStats } from './stats'
+import { osAgnosticPath } from './support'
 import { traverseWithEsbuild } from './traverse'
 
 const debug = require('debug')('esbuild')
 
 export async function prebundle({ entryPoints, root, dest }) {
     const dependenciesPaths = await getDependenciesPaths({ entryPoints, root })
-
+    logger.log(
+        `prebundling [${dependenciesPaths
+            .map((x) => osAgnosticPath(x, root))
+            .join(', ')}]`,
+    )
     await fs.remove(dest)
     const { bundleMap, analysis, stats } = await bundleWithEsBuild({
         dest,

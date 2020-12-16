@@ -31,7 +31,7 @@ import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { osAgnosticPath } from './prebundle/support'
 import { genSourceMapString } from './sourcemaps'
-import { isNodeModule, requestToFile } from './utils'
+import { isCSSRequest, isNodeModule, requestToFile } from './utils'
 
 const debug = require('debug')('espack')
 export interface ServerPluginContext {
@@ -86,7 +86,7 @@ export function createApp(config: Config) {
         plugins: [
             NodeResolvePlugin({
                 resolveOptions: {
-                    extensions: [...JS_EXTENSIONS, '.js.map', '.css'],
+                    extensions: [...JS_EXTENSIONS],
                 },
                 async onResolved(resolvedPath) {
                     if (!isNodeModule(resolvedPath)) {
@@ -138,7 +138,7 @@ export function createApp(config: Config) {
         config,
         pluginExecutor,
         sendHmrMessage: () => {
-            throw new Error(`hmr ws client has not started yet`)
+            throw new Error(`hmr ws server has not started yet`)
         },
         // port is exposed on the context for hmr client connection
         // in case the files are served under a different port
@@ -153,6 +153,18 @@ export function createApp(config: Config) {
             if (ctx.path == '/') {
                 return next()
             }
+            const req = ctx.req
+            if (
+                // esm imports accept */* in most browsers
+                !(
+                    req.headers['accept'] === '*/*' ||
+                    req.headers['sec-fetch-dest'] === 'script' ||
+                    ctx.path.endsWith('.map') // TODO handle css here? css imported from js should have content type header '*/*'
+                )
+            ) {
+                return next()
+            }
+
             const filePath = requestToFile(root, ctx.path)
             const loaded = await pluginExecutor.load({
                 path: filePath,
