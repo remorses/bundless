@@ -127,7 +127,7 @@ export function createApp(config: Config) {
     })
 
     app.once('close', () => {
-        logger.log('closing')
+        logger.debug('closing')
         pluginExecutor.close({})
     })
 
@@ -182,8 +182,7 @@ export function createApp(config: Config) {
         // attach server context to koa context
         const wss = new WebSocket.Server({ noServer: true })
         app.once('close', () => {
-            logger.log('closing wss')
-            wss.close()
+            wss.close(() => logger.debug('closing wss'))
         })
         let done = false
         app.use((_, next) => {

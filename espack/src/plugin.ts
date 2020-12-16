@@ -98,7 +98,7 @@ export function createPluginsExecutor({
         for (let { callback, options, name } of loaders) {
             const { filter } = options
             if (filter && filter.test(arg.path)) {
-                logger.log(
+                logger.debug(
                     `loading '${osAgnosticPath(
                         arg.path,
                         root,
@@ -115,7 +115,7 @@ export function createPluginsExecutor({
         for (let { callback, options, name } of transforms) {
             const { filter } = options
             if (filter && filter.test(arg.path)) {
-                logger.log(`transforming '${arg.path}' with '${name}'`)
+                logger.debug(`transforming '${arg.path}' with '${name}'`)
                 const newResult = await callback(arg)
                 if (newResult?.contents) {
                     arg.contents = newResult.contents
@@ -131,7 +131,7 @@ export function createPluginsExecutor({
         for (let { callback, options, name } of resolvers) {
             const { filter } = options
             if (filter && filter.test(arg.path)) {
-                logger.log(`resolving '${arg.path}' with '${name}'`)
+                logger.debug(`resolving '${arg.path}' with '${name}'`)
                 result = await callback(arg)
                 // break
             }
@@ -141,7 +141,7 @@ export function createPluginsExecutor({
     async function close(arg) {
         let result
         for (let { callback, options, name } of closers) {
-            logger.log(`cleaning resources for '${name}'`)
+            logger.debug(`cleaning resources for '${name}'`)
             await callback(arg)
         }
         return result
