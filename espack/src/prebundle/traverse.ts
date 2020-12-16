@@ -12,6 +12,7 @@ import { removeColonsFromMeta } from './support'
 import fromEntries from 'fromentries'
 import { stripColon, unique } from './support'
 import { flatten } from '../utils'
+import { logger } from '../logger'
 
 type Args = {
     entryPoints: string[]
@@ -56,11 +57,11 @@ export async function traverseWithEsbuild({
                         global: 'window',
                         // ...generateEnvReplacements(env),
                     },
-                    inject: [
-                        // require.resolve(
-                        //     '@esbuild-plugins/node-globals-polyfill/process.js',
-                        // ),
-                    ],
+                    // inject: [
+                    //     // require.resolve(
+                    //     //     '@esbuild-plugins/node-globals-polyfill/process.js',
+                    //     // ),
+                    // ],
                     // tsconfig: ,
                     loader: {
                         '.js': 'jsx',
@@ -69,7 +70,9 @@ export async function traverseWithEsbuild({
                         ExternalButInMetafile(),
                         // NodeModulesPolyfillPlugin({ fs: true, crypto: true }), // TODO enable if in browser?
                         NodeResolvePlugin({
-                            external: function external(resolved) {
+                            // namespace: null,
+                            onResolved: function external(resolved) {
+                                // console.log({resolved})
                                 if (
                                     stopTraversing &&
                                     stopTraversing(resolved)
@@ -79,16 +82,16 @@ export async function traverseWithEsbuild({
                                         path: resolved,
                                     }
                                 }
-                                return false
+                                return
                             },
-                            onUnresolved: (x) => {
-                                logger.log(`cannot resolve '${x}'`)     
+                            onUnresolved: (e) => {
+                                console.error(e)
                                 return {
                                     external: true,
                                 }
                             },
                             resolveOptions: {
-                                preserveSymlinks: isRunningWithYarnPnp || false,
+                                // preserveSymlinks: isRunningWithYarnPnp || false,
                                 extensions: [...JS_EXTENSIONS],
                             },
                         }),
@@ -136,22 +139,32 @@ function ExternalButInMetafile(): Plugin {
         name: externalNamespace,
         setup(build) {
             const externalModule = 'externalModuleXXX'
-            build.onResolve({ filter: new RegExp(externalModule) }, (args) => {
-                if (args.path !== externalModule) {
-                    return
-                }
-                return {
-                    external: true,
-                }
-            })
+            build.onResolve(
+                {
+                    filter: new RegExp(externalModule),
+                    namespace: externalNamespace,
+                },
+                (args) => {
+                    if (args.path !== externalModule) {
+                        return
+                    }
+                    return {
+                        external: true,
+                    }
+                },
+            )
             build.onLoad(
                 {
                     filter: /.*/,
-                    namespace: 'external-but-keep-in-metafile',
+                    namespace: externalNamespace,
                 },
                 (args) => {
                     const contents = `export * from '${externalModule}'`
-                    return { contents, loader: 'js' }
+                    return {
+                        contents,
+                        loader: 'js',
+                        // resolveDir: path.dirname(args.path),
+                    }
                 },
             )
         },

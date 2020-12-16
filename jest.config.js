@@ -4,6 +4,7 @@
 const config = {
     transform: { '.(js|jsx|ts|tsx)': '@sucrase/jest-plugin' },
     testPathIgnorePatterns: ['/dist/', '/esm/', '/node_modules/'],
+    testEnvironment: 'node',
     bail: 1,
 }
 
