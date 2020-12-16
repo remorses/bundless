@@ -95,7 +95,7 @@ describe('snapshots', () => {
                     },
                 })
                 for (let url in contentTypes) {
-                    if (jsTypeRegex.test(url)) {
+                    if (!url.endsWith('.html')) {
                         expect(contentTypes[url]).toContain('application/javascript')
                     }
                 }
