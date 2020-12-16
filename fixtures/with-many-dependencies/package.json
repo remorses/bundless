@@ -1,0 +1,10 @@
+{
+    "name": "example-with-many-dependencies",
+    "version": "0.0.0",
+    "private": true,
+    "dependencies": {
+        "react": "16.13.1",
+        "slash": "^3.0.0",
+        "react-dom": "^17.0.1"
+    }
+}

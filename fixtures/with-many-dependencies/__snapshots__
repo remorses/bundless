@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/with-dependencies: content-type headers 1`] = `
+Object {
+  "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/index.js": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/with-dependencies: mirror 1`] = `
+Array [
+  "index.html",
+  "main.js",
+  "web_modules/index.js",
+]
+`;
+
+exports[`snapshots fixtures/with-dependencies: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "/web_modules/index.js",
+    "importer": "http://localhost:9000/main.js",
+    "resolvedImportPath": "http://localhost:9000/web_modules/index.js",
+  },
+]
+`;
+
+exports[`snapshots fixtures/with-many-dependencies: content-type headers 1`] = `
+Object {
+  "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/chunk.NBBEL644.js": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/chunk.NLNFNP3B.js": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/react-dom/index.js": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/react/index.js": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/slash/index.js": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/with-many-dependencies: mirror 1`] = `
+Array [
+  "index.html",
+  "main.js",
+  "web_modules/chunk.NBBEL644.js",
+  "web_modules/chunk.NLNFNP3B.js",
+  "web_modules/index.js",
+  "web_modules/react-dom/index.js",
+  "web_modules/react/index.js",
+  "web_modules/slash/index.js",
+]
+`;
+
+exports[`snapshots fixtures/with-many-dependencies: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "/web_modules/slash/index.js",
+    "importer": "http://localhost:9000/main.js",
+    "resolvedImportPath": "http://localhost:9000/web_modules/slash/index.js",
+  },
+  Object {
+    "importPath": "/web_modules/react/index.js",
+    "importer": "http://localhost:9000/main.js",
+    "resolvedImportPath": "http://localhost:9000/web_modules/react/index.js",
+  },
+  Object {
+    "importPath": "/web_modules/react-dom/index.js",
+    "importer": "http://localhost:9000/main.js",
+    "resolvedImportPath": "http://localhost:9000/web_modules/react-dom/index.js",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NLNFNP3B.js",
+    "importer": "http://localhost:9000/web_modules/slash/index.js",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NLNFNP3B.js",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NBBEL644.js",
+    "importer": "http://localhost:9000/web_modules/react/index.js",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NBBEL644.js",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NLNFNP3B.js",
+    "importer": "http://localhost:9000/web_modules/react/index.js",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NLNFNP3B.js",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NBBEL644.js",
+    "importer": "http://localhost:9000/web_modules/react-dom/index.js",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NBBEL644.js",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NLNFNP3B.js",
+    "importer": "http://localhost:9000/web_modules/react-dom/index.js",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NLNFNP3B.js",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NLNFNP3B.js",
+    "importer": "http://localhost:9000/web_modules/chunk.NBBEL644.js",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NLNFNP3B.js",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NLNFNP3B.js",
+    "importer": "http://localhost:9000/web_modules/chunk.NBBEL644.js",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NLNFNP3B.js",
+  },
+]
+`;

@@ -40,6 +40,7 @@ export async function bundleWithEsBuild({
         splitting: true, // needed to dedupe modules
         external: externalPackages,
         minifyIdentifiers: Boolean(minify),
+
         minifySyntax: Boolean(minify),
         minifyWhitespace: Boolean(minify),
         mainFields: ['browser:module', 'module', 'browser', 'main'].filter(
@@ -78,9 +79,10 @@ export async function bundleWithEsBuild({
     const bundleMap = metafileToBundleMap({
         entryPoints,
         meta,
+        esbuildCwd: process.cwd(),
         root,
     })
-    const analysis = metafileToAnalysis({ meta, entryPoints, root })
+    const analysis = metafileToAnalysis({ meta, root })
 
     const stats = metafileToStats({ meta, destLoc })
 
@@ -105,9 +107,10 @@ export type BundleMap = Partial<Record<string, string>>
 function metafileToBundleMap(_options: {
     entryPoints: string[]
     root: string
+    esbuildCwd: string
     meta: Metadata
 }): BundleMap {
-    const { entryPoints, meta, root } = _options
+    const { entryPoints, meta, root, esbuildCwd } = _options
     const inputFiles = new Set(entryPoints.map((x) => path.resolve(root, x)))
 
     const maps: Array<[string, string]> = Object.keys(meta.outputs)
@@ -117,7 +120,9 @@ function metafileToBundleMap(_options: {
                 return
             }
             const inputs = Object.keys(meta.outputs[output].inputs)
-            const input = inputs.find((x) => inputFiles.has(path.resolve(root, x)))
+            const input = inputs
+                .map((x) => path.resolve(esbuildCwd, x))
+                .find((x) => inputFiles.has(x))
             if (!input) {
                 return
             }
@@ -132,9 +137,8 @@ function metafileToBundleMap(_options: {
 }
 
 function metafileToAnalysis(_options: {
-    meta: Metadata,
-    root: string,
-    entryPoints: string[]
+    meta: Metadata
+    root: string
 }): OptimizeAnalysisResult {
     const { meta, root } = _options
     const analysis: OptimizeAnalysisResult = {

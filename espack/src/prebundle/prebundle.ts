@@ -42,7 +42,7 @@ export async function getDependenciesPaths({ entryPoints, root }) {
     const traversalResult = await traverseWithEsbuild({
         entryPoints,
         stopTraversing: isNodeModule,
-        cwd: root,
+        cwd: process.cwd(),
     })
     let resolvedFiles = traversalResult
         .map((x) => {

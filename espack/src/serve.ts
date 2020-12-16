@@ -108,7 +108,11 @@ export function createApp(config: Config) {
                     const webBundle = bundleMap[relativePath]
                     if (!webBundle) {
                         throw new Error(
-                            `Bundle for '${relativePath}' was not generated`,
+                            `Bundle for '${relativePath}' was not generated in prebundling phase\n${JSON.stringify(
+                                bundleMap,
+                                null,
+                                4,
+                            )}`,
                         )
                     }
                     return webBundle
@@ -157,9 +161,11 @@ export function createApp(config: Config) {
             if (
                 // esm imports accept */* in most browsers
                 !(
-                    req.headers['accept'] === '*/*' ||
-                    req.headers['sec-fetch-dest'] === 'script' ||
-                    ctx.path.endsWith('.map') // TODO handle css here? css imported from js should have content type header '*/*'
+                    (
+                        req.headers['accept'] === '*/*' ||
+                        req.headers['sec-fetch-dest'] === 'script' ||
+                        ctx.path.endsWith('.map')
+                    ) // TODO handle css here? css imported from js should have content type header '*/*'
                 )
             ) {
                 return next()

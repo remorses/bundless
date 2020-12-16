@@ -15,7 +15,7 @@ import { flatten } from '../utils'
 import { logger } from '../logger'
 
 type Args = {
-    cwd: string,
+    cwd: string
     entryPoints: string[]
     esbuildOptions?: Partial<BuildOptions>
     // resolver?: (cwd: string, id: string) => string
@@ -71,7 +71,6 @@ export async function traverseWithEsbuild({
                         ExternalButInMetafile(),
                         // NodeModulesPolyfillPlugin({ fs: true, crypto: true }), // TODO enable if in browser?
                         NodeResolvePlugin({
-                            // namespace: null,
                             onResolved: function external(resolved) {
                                 // console.log({resolved})
                                 if (
@@ -115,7 +114,7 @@ export async function traverseWithEsbuild({
             await (await fsp.readFile(metafile)).toString(),
         )
         meta = removeColonsFromMeta(meta)
-        // console.log(await (await fsp.readFile(metafile)).toString())
+        // console.log(JSON.stringify(meta, null, 4))
 
         const res = flatten(
             entryPoints.map((entry) => {
@@ -181,7 +180,6 @@ export function metaToTraversalResult({
     esbuildCwd: string
     entry: string
 }): TraversalResultType[] {
-
     if (!path.isAbsolute(esbuildCwd)) {
         throw new Error('esbuildCwd must be an absolute path')
     }
@@ -193,7 +191,8 @@ export function metaToTraversalResult({
     let result: TraversalResultType[] = []
     const inputs = fromEntries(
         Object.keys(meta.inputs).map((k) => {
-            return [k, meta.inputs[k]]
+            const abs = path.resolve(esbuildCwd, k)
+            return [abs, meta.inputs[k]]
         }),
     )
     while (toProcess.length) {
@@ -204,11 +203,12 @@ export function metaToTraversalResult({
                 }
                 alreadyProcessed.add(newEntry)
                 // newEntry = path.posix.normalize(newEntry) // TODO does esbuild always use posix?
-                const input = inputs[newEntry] || inputs[path.resolve(esbuildCwd, newEntry)]
-                if (!input) {
+                const absPath = path.resolve(esbuildCwd, newEntry)
+                const input = inputs[absPath]
+                if (input == null) {
                     throw new Error(
-                        `entry ${newEntry} is not present in esbuild metafile inputs ${JSON.stringify(
-                            Object.keys(inputs),
+                        `entry '${absPath}' is not present in esbuild metafile inputs ${JSON.stringify(
+                            inputs,
                             null,
                             2,
                         )}`,
