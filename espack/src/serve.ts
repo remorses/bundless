@@ -199,15 +199,15 @@ export function createApp(config: Config) {
     const hmrMiddleware: ServerMiddleware = ({ app }) => {
         // attach server context to koa context
         const wss = new WebSocket.Server({ noServer: true })
-        app.once('close', () => {
-            wss.close(() => logger.debug('closing wss'))
-        })
+
         let done = false
         app.use((_, next) => {
             if (done) {
                 return next()
             }
-
+            app.once('close', () => {
+                wss.close(() => logger.debug('closing wss'))
+            })
             app.context.server.on('upgrade', (req, socket, head) => {
                 if (req.headers['sec-websocket-protocol'] === HMR_SERVER_NAME) {
                     wss.handleUpgrade(req, socket, head, (ws) => {
