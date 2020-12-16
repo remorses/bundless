@@ -30,14 +30,14 @@ export class Lock extends EventEmitter {
     }
 }
 
-export function osAgnosticPath(absPath?: string | undefined) {
+export function osAgnosticPath(absPath: string | undefined, root: string) {
     if (!absPath) {
         return ''
     }
     if (!path.isAbsolute(absPath)) {
-        absPath = path.resolve(absPath)
+        absPath = path.resolve(root, absPath)
     }
-    return slash(path.relative(process.cwd(), absPath))
+    return slash(path.relative(root, absPath))
 }
 
 export function unique<T>(array: T[], key = (x: T): any => x): T[] {

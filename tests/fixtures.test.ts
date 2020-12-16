@@ -15,10 +15,6 @@ import { isUrl, osAgnosticResult } from './utils'
 
 require('jest-specific-snapshot')
 import * as failFast from 'jasmine-fail-fast'
-/**
- * Fail after the first test in a single test suite fails. This is NOT the same as jest's
- * --bail option, which works across test suites
- */
 const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
 
@@ -50,9 +46,8 @@ describe('snapshots', () => {
     const baseUrl = `http://localhost:${PORT}`
     for (let casePath of cases) {
         const snapshotFile = path.resolve(casePath, '__snapshots__')
-
         it(`${slash(casePath)}`, async () => {
-            const root = casePath
+            const root = path.resolve(casePath)
             const server = await serve({ port: PORT, root })
             try {
                 const downloadFilesToDir = path.join(casePath, 'mirror')

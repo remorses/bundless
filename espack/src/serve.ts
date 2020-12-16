@@ -28,6 +28,7 @@ import {
 } from './plugins'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
+import { osAgnosticPath } from './prebundle/support'
 import { genSourceMapString } from './sourcemaps'
 import { isNodeModule, requestToFile } from './utils'
 
@@ -74,6 +75,7 @@ export function createApp(config: Config) {
     const graph = new Graph()
     let bundleMap: BundleMap | undefined
     const pluginExecutor = createPluginsExecutor({
+        root,
         plugins: [
             NodeResolvePlugin({
                 resolveOptions: {
@@ -96,7 +98,11 @@ export function createApp(config: Config) {
                         dest: path.resolve(root, WEB_MODULES_PATH),
                         root: root,
                     })
-                    return bundleMap[relativePath]
+                    const webBundle = bundleMap[relativePath]
+                    if (!webBundle) {
+                        throw new Error(`Bundle for '${relativePath}' was not generated`)
+                    }
+                    return webBundle 
                     // lock server, start optimization, unlock, send refresh message
                 },
             }),

@@ -59,10 +59,12 @@ export function createPluginsExecutor({
     plugins,
     config,
     graph,
+    root
 }: {
     plugins: Plugin[]
     config: Config
     graph: Graph
+    root: string
 }): PluginsExecutor {
     const transforms: any[] = []
     const resolvers: any[] = []
@@ -90,7 +92,7 @@ export function createPluginsExecutor({
             const { filter } = options
             if (filter && filter.test(arg.path)) {
                 logger.log(
-                    `loading '${osAgnosticPath(arg.path)}' with '${name}'`,
+                    `loading '${osAgnosticPath(arg.path, root)}' with '${name}'`,
                 )
                 result = await callback(arg)
                 break

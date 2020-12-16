@@ -15,6 +15,7 @@ import { flatten } from '../utils'
 import { logger } from '../logger'
 
 type Args = {
+    cwd: string,
     entryPoints: string[]
     esbuildOptions?: Partial<BuildOptions>
     // resolver?: (cwd: string, id: string) => string
@@ -28,6 +29,7 @@ export type TraversalResultType = {
 
 export async function traverseWithEsbuild({
     entryPoints,
+    cwd: esbuildCwd,
     esbuildOptions = { plugins: [] },
     stopTraversing,
 }: Args): Promise<TraversalResultType[]> {
@@ -35,12 +37,11 @@ export async function traverseWithEsbuild({
         await fsp.mkdtemp(path.join(os.tmpdir(), 'dest')),
     )
 
-    entryPoints = entryPoints.map((x) => path.resolve(x))
+    entryPoints = entryPoints.map((x) => path.resolve(esbuildCwd, x))
 
     try {
         const metafile = path.join(destLoc, 'meta.json')
 
-        const esbuildCwd = process.cwd()
         await build(
             deepmerge(
                 {
@@ -174,12 +175,13 @@ function ExternalButInMetafile(): Plugin {
 export function metaToTraversalResult({
     meta,
     entry,
-    esbuildCwd = process.cwd(),
+    esbuildCwd,
 }: {
     meta: Metadata
     esbuildCwd: string
     entry: string
 }): TraversalResultType[] {
+
     if (!path.isAbsolute(esbuildCwd)) {
         throw new Error('esbuildCwd must be an absolute path')
     }
@@ -202,7 +204,7 @@ export function metaToTraversalResult({
                 }
                 alreadyProcessed.add(newEntry)
                 // newEntry = path.posix.normalize(newEntry) // TODO does esbuild always use posix?
-                const input = inputs[newEntry] || inputs[path.resolve(newEntry)]
+                const input = inputs[newEntry] || inputs[path.resolve(esbuildCwd, newEntry)]
                 if (!input) {
                     throw new Error(
                         `entry ${newEntry} is not present in esbuild metafile inputs ${JSON.stringify(

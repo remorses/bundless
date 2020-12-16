@@ -18,6 +18,7 @@ import {
 
 export async function bundleWithEsBuild({
     entryPoints,
+    root,
     dest: destLoc,
     ...options
 }) {
@@ -77,8 +78,9 @@ export async function bundleWithEsBuild({
     const bundleMap = metafileToBundleMap({
         entryPoints,
         meta,
+        root,
     })
-    const analysis = metafileToAnalysis({ meta, entryPoints })
+    const analysis = metafileToAnalysis({ meta, entryPoints, root })
 
     const stats = metafileToStats({ meta, destLoc })
 
@@ -102,10 +104,11 @@ export type BundleMap = Partial<Record<string, string>>
 
 function metafileToBundleMap(_options: {
     entryPoints: string[]
+    root: string
     meta: Metadata
 }): BundleMap {
-    const { entryPoints, meta } = _options
-    const inputFiles = new Set(entryPoints.map((x) => path.resolve(x)))
+    const { entryPoints, meta, root } = _options
+    const inputFiles = new Set(entryPoints.map((x) => path.resolve(root, x)))
 
     const maps: Array<[string, string]> = Object.keys(meta.outputs)
         .map((output): [string, string] | undefined => {
@@ -114,12 +117,12 @@ function metafileToBundleMap(_options: {
                 return
             }
             const inputs = Object.keys(meta.outputs[output].inputs)
-            const input = inputs.find((x) => inputFiles.has(path.resolve(x)))
+            const input = inputs.find((x) => inputFiles.has(path.resolve(root, x)))
             if (!input) {
                 return
             }
             // const specifier = inputFilesToSpecifiers[input]
-            return [osAgnosticPath(input), osAgnosticPath(output)]
+            return [osAgnosticPath(input, root), osAgnosticPath(output, root)]
         })
         .filter(Boolean) as any
 
@@ -129,10 +132,11 @@ function metafileToBundleMap(_options: {
 }
 
 function metafileToAnalysis(_options: {
-    meta: Metadata
+    meta: Metadata,
+    root: string,
     entryPoints: string[]
 }): OptimizeAnalysisResult {
-    const { meta, entryPoints } = _options
+    const { meta, root } = _options
     const analysis: OptimizeAnalysisResult = {
         isCommonjs: fromEntries(
             Object.keys(meta.outputs)
@@ -151,7 +155,7 @@ function metafileToAnalysis(_options: {
                         return
                     }
                     // what if imported path ahs not yet been converted by prebundler? then prebundler should lock server, it's impossible
-                    return [osAgnosticPath(output), isCommonjs]
+                    return [osAgnosticPath(output, root), isCommonjs]
                 })
                 .filter(Boolean) as any,
         ),

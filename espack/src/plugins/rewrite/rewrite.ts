@@ -129,7 +129,7 @@ export async function rewriteImports({
                         if (
                             isOptimizedCjs(
                                 root,
-                                osAgnosticPath(resolveResult?.path),
+                                osAgnosticPath(resolveResult?.path, root),
                             )
                         ) {
                             if (dynamicIndex === -1) {

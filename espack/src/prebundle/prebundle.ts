@@ -18,6 +18,7 @@ export async function prebundle({ entryPoints, root, dest }) {
     await fs.remove(dest)
     const { bundleMap, analysis, stats } = await bundleWithEsBuild({
         dest,
+        root,
         entryPoints: dependenciesPaths.map((x) => path.resolve(root, x)),
     })
 
@@ -35,6 +36,7 @@ export async function getDependenciesPaths({ entryPoints, root }) {
     const traversalResult = await traverseWithEsbuild({
         entryPoints,
         stopTraversing: isNodeModule,
+        cwd: root,
     })
     let resolvedFiles = traversalResult
         .map((x) => {
