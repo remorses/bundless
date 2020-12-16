@@ -4,6 +4,7 @@
 
 import { traverseEsModules, urlResolver } from 'es-module-traversal'
 import { serve } from 'espack'
+import { jsTypeRegex } from 'espack/dist/utils'
 import fs from 'fs-extra'
 import glob from 'glob'
 import fetch from 'node-fetch'
@@ -93,6 +94,11 @@ describe('snapshots', () => {
                         await fs.writeFile(filePath, content)
                     },
                 })
+                for (let url in contentTypes) {
+                    if (jsTypeRegex.test(url)) {
+                        expect(contentTypes[url]).toContain('application/javascript')
+                    }
+                }
                 expect(contentTypes).toMatchSpecificSnapshot(
                     snapshotFile,
                     'content-type headers',
