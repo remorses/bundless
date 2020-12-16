@@ -30,7 +30,7 @@ export async function prebundle({ entryPoints, root, dest }) {
     return bundleMap
 }
 
-async function getDependenciesPaths({ entryPoints, root }) {
+export async function getDependenciesPaths({ entryPoints, root }) {
     // serve react refresh runtime
     const traversalResult = await traverseWithEsbuild({
         entryPoints,

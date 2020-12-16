@@ -13,6 +13,13 @@ import { URL } from 'url'
 import { isUrl, osAgnosticResult } from './utils'
 
 require('jest-specific-snapshot')
+import * as failFast from 'jasmine-fail-fast'
+/**
+ * Fail after the first test in a single test suite fails. This is NOT the same as jest's
+ * --bail option, which works across test suites
+ */
+const jasmineEnv = (jasmine as any).getEnv()
+jasmineEnv.addReporter(failFast.init())
 
 declare global {
     namespace jest {
@@ -54,6 +61,9 @@ describe('snapshots', () => {
                     resolver: urlResolver({ root: casePath, baseUrl }),
                     onEntry: async (url = '', importer) => {
                         let content = ''
+                        if (!url) {
+                            return
+                        }
                         if (!isUrl(url)) {
                             content = await (await fs.readFile(url)).toString()
                         } else {

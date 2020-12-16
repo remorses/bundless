@@ -1,25 +1,23 @@
-import path from 'path'
 import chalk from 'chalk'
 import {
-    startService,
-    Service,
-    TransformOptions,
-    Message,
     Loader,
+    Message,
+    Service,
+    startService,
+    TransformOptions,
 } from 'esbuild'
+import path from 'path'
 import { Config } from '../config'
-import { cleanUrl, generateCodeFrame } from '../utils'
 import { OnTransformResult, PluginHooks } from '../plugin'
+import { generateCodeFrame } from '../utils'
 
 const debug = require('debug')('esbuild')
-
-export const tjsxRE = /\.(tsx?|jsx)$/
 
 export function EsbuildTransformPlugin({} = {}) {
     return {
         name: 'esbuild',
         setup: ({ onTransform, config }: PluginHooks) => {
-            onTransform({ filter: tjsxRE }, async (args) => {
+            onTransform({ filter: /\.(tsx?|jsx)$/ }, async (args) => {
                 return transform({
                     src: args.contents,
                     filePath: args.path,

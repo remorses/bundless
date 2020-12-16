@@ -81,7 +81,8 @@ export async function traverseWithEsbuild({
                                 }
                                 return false
                             },
-                            onUnresolved: () => {
+                            onUnresolved: (x) => {
+                                logger.log(`cannot resolve '${x}'`)     
                                 return {
                                     external: true,
                                 }

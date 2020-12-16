@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/with-tsx: content-type headers 1`] = `
+Object {
+  "http://localhost:9000/main.tsx": "application/javascript; charset=utf-8",
+  "http://localhost:9000/text.ts": "application/javascript; charset=utf-8",
+  "http://localhost:9000/utils.ts": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/with-tsx: mirror 1`] = `
+Array [
+  "index.html",
+  "main.tsx",
+  "text.ts",
+  "utils.ts",
+]
+`;
+
+exports[`snapshots fixtures/with-tsx: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "/text.ts",
+    "importer": "http://localhost:9000/main.tsx",
+    "resolvedImportPath": "http://localhost:9000/text.ts",
+  },
+  Object {
+    "importPath": "/utils.ts",
+    "importer": "http://localhost:9000/text.ts",
+    "resolvedImportPath": "http://localhost:9000/utils.ts",
+  },
+]
+`;

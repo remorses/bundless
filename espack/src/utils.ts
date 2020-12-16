@@ -1,9 +1,12 @@
+import { parse as _parse } from '@babel/parser'
+import { Statement } from '@babel/types'
+import escapeStringRegexp from 'escape-string-regexp'
+import fs from 'fs'
 import path from 'path'
 import qs, { ParsedQs } from 'qs'
 import slash from 'slash'
-import fs from 'fs'
 import { Readable } from 'stream'
-import { forOwn, isPlainObject } from 'lodash'
+import { JS_EXTENSIONS } from './constants'
 
 const imageRE = /\.(png|jpe?g|gif|svg|ico|webp)(\?.*)?$/
 const mediaRE = /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/
@@ -159,7 +162,7 @@ export async function readFile(p: string) {
 }
 
 export function flatten<T>(arr: T[][]): T[] {
-    return arr.reduce(function(flat, toFlatten) {
+    return arr.reduce(function (flat, toFlatten) {
         return flat.concat(
             Array.isArray(toFlatten) ? flatten(toFlatten as any) : toFlatten,
         )
@@ -169,9 +172,6 @@ export function flatten<T>(arr: T[][]): T[] {
 export function isNodeModule(p: string) {
     return p.includes('node_modules')
 }
-
-import { parse as _parse } from '@babel/parser'
-import { file, Statement } from '@babel/types'
 
 export function parse(source: string): Statement[] {
     return _parse(source, {
@@ -188,3 +188,8 @@ export function parse(source: string): Statement[] {
         ],
     }).program.body
 }
+
+export const jsTypeRegex = new RegExp(
+    '(' + [...JS_EXTENSIONS].map(escapeStringRegexp).join('|') + ')$',
+)
+

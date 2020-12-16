@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/serve-outside-root: content-type headers 1`] = `
+Object {
+  "http://localhost:9000/.../outsider.js": "application/javascript; charset=utf-8",
+  "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/serve-outside-root: mirror 1`] = `
+Array [
+  "index.html",
+  "main.js",
+]
+`;
+
+exports[`snapshots fixtures/serve-outside-root: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "/.../outsider.js",
+    "importer": "http://localhost:9000/main.js",
+    "resolvedImportPath": "http://localhost:9000/.../outsider.js",
+  },
+]
+`;

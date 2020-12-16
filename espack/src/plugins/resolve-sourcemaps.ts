@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { RawSourceMap } from 'source-map'
 import { PluginHooks } from '../plugin'
-import { fileToRequest, readFile } from '../utils'
+import { fileToRequest, jsTypeRegex, readFile } from '../utils'
 
 const sourcemapRegex = /\/\/#\ssourceMappingURL=([\w\d-_\.]+)\n*$/ // TODO do not match data:, support for spaces in file paths and non word characters
 
@@ -11,7 +11,7 @@ export function ResolveSourcemapPlugin({} = {}) {
     return {
         name: 'resolve-sourcemaps',
         setup: ({ onTransform, resolve, config }: PluginHooks) => {
-            onTransform({ filter: /.*$/ }, async (args) => {
+            onTransform({ filter: jsTypeRegex }, async (args) => {
                 let contents = args.contents
                 const match = contents.match(sourcemapRegex)
                 // console.log({ match, path: args.path })

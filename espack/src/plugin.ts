@@ -1,6 +1,7 @@
 import * as esbuild from 'esbuild'
 import { Config } from './config'
 import { Graph } from './graph'
+import { logger } from './logger'
 import { osAgnosticPath } from './prebundle/support'
 
 export interface Plugin {
@@ -88,9 +89,11 @@ export function createPluginsExecutor({
         for (let { callback, options, name } of loaders) {
             const { filter } = options
             if (filter && filter.test(arg.path)) {
-                console.log(`loading '${osAgnosticPath(arg.path)}' with '${name}'`)
+                logger.log(
+                    `loading '${osAgnosticPath(arg.path)}' with '${name}'`,
+                )
                 result = await callback(arg)
-                // break
+                break
             }
         }
         return result
@@ -100,10 +103,11 @@ export function createPluginsExecutor({
         for (let { callback, options, name } of transforms) {
             const { filter } = options
             if (filter && filter.test(arg.path)) {
-                console.log(`transforming '${arg.path}' with '${name}'`)
-                result = await callback(arg)
-                if (result?.contents) {
-                    arg.contents = result.contents
+                logger.log(`transforming '${arg.path}' with '${name}'`)
+                const newResult = await callback(arg)
+                if (newResult?.contents) {
+                    arg.contents = newResult.contents
+                    result = newResult
                 }
                 // break
             }
@@ -115,7 +119,7 @@ export function createPluginsExecutor({
         for (let { callback, options, name } of resolvers) {
             const { filter } = options
             if (filter && filter.test(arg.path)) {
-                console.log(`resolving '${arg.path}' with '${name}'`)
+                logger.log(`resolving '${arg.path}' with '${name}'`)
                 result = await callback(arg)
                 // break
             }

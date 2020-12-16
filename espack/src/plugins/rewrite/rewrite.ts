@@ -12,6 +12,7 @@ import {
     cleanUrl,
     fileToRequest,
     isExternalUrl,
+    jsTypeRegex,
     parseWithQuery,
 } from '../../utils'
 import { isOptimizedCjs, transformCjsImport } from './commonjs'
@@ -24,7 +25,7 @@ export function RewritePlugin({} = {}) {
     return {
         name: 'rewrite',
         setup: ({ onTransform, resolve, graph, config }: PluginHooks) => {
-            onTransform({ filter: /.*/ }, async (args) => {
+            onTransform({ filter: jsTypeRegex }, async (args) => {
                 // console.log(graph.toString())
                 // TODO skip non js files
                 const contents = await rewriteImports({

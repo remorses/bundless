@@ -11,7 +11,7 @@ export function SourcemapPlugin({} = {}) {
     return {
         name: 'sourcemaps',
         setup: ({ onLoad }: PluginHooks) => {
-            onLoad({ filter: /\.(map)$/ }, async (args) => {
+            onLoad({ filter: /\.map$/ }, async (args) => {
                 const file = args.path
                 const content = await readFile(file) // TODO convert to onTransform or this loadFile won't work
                 const map: RawSourceMap = JSON.parse(content)

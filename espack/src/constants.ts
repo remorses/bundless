@@ -16,7 +16,6 @@ export const JS_EXTENSIONS = new Set([
     '.js',
     '.jsx',
     '.cjs',
-    '.map',
     // '.vue',
     // '.scss',
     // '.css',
