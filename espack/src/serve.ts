@@ -26,6 +26,7 @@ import {
     ResolveSourcemapPlugin,
     RewritePlugin,
     SourcemapPlugin,
+    HmrClientPlugin
 } from './plugins'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
@@ -58,6 +59,7 @@ export async function serve(config: Config) {
     app.context.server = server
     const port = server.address()?.['port']
     app.context.port = port
+    config.port = port
     return {
         ...server,
         close: () => {
@@ -84,6 +86,7 @@ export function createApp(config: Config) {
     const pluginExecutor = createPluginsExecutor({
         root,
         plugins: [
+            HmrClientPlugin({ getPort: () => app.context.port }),
             NodeResolvePlugin({
                 resolveOptions: {
                     extensions: [...JS_EXTENSIONS],
@@ -127,6 +130,7 @@ export function createApp(config: Config) {
             ResolveSourcemapPlugin(),
             SourcemapPlugin(),
             CssPlugin(),
+            
         ],
         config,
         graph,
@@ -247,7 +251,6 @@ export function createApp(config: Config) {
 
     const serverMiddleware = [
         hmrMiddleware,
-        middlewares.clientMiddleware,
         middlewares.pluginAssetsMiddleware,
         pluginsMiddleware,
         middlewares.serveStaticMiddleware,

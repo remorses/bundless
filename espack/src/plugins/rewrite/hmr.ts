@@ -8,7 +8,6 @@
 // import { InternalResolver } from '../resolver'
 // import { resolveCompiler } from '../utils'
 // import { parse } from '../utils/babelParse'
-// import { clientPublicPath } from './serverPluginClient'
 // import { resolveImport } from './serverPluginModuleRewrite'
 
 // export const debugHmr = require('debug')('vite:hmr')
