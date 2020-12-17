@@ -19,7 +19,7 @@
 Still in progress
 
 -   HMR
--   hmr plugins for react refresh
+-   hmr plugin for react refresh
 -   build command to bundle with esbuild
 -   create-app templates
 -   aliases support
@@ -34,6 +34,14 @@ Later:
 -   multi entry
 -   SSR
 
+Plugins to implement
+
+-   plugin-react-refresh, react hmr support
+-   plugin-babel, use babel config to transpile stuff
+-   tsconfig paths support
+-   
+
+<!--
 todos:
 
 -   loading file imported from js is different than loading paths to serve directly
@@ -45,4 +53,4 @@ todos:
 -   how can i run onTransforms in esbuild? onTransform calls are applied to onLoad results, this means that i will need to load all files (sad)
 -   when should i resolve paths? do it in module rewrite phase, also add the prefixing /
 -   how to interact with html? don't do it (for now, maybe later i can create an onEmit handler that can output new files and add these in html links)
--   what if a file does not exist but is virtual, how can loaders handle it? it should be already be handled by middleware, this way loaders won't load it
+-   what if a file does not exist but is virtual, how can loaders handle it? it should be already be handled by middleware, this way loaders won't load it -->

@@ -33,7 +33,12 @@ import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { osAgnosticPath } from './prebundle/support'
 import { genSourceMapString } from './sourcemaps'
-import { isCSSRequest, isNodeModule, importPathToFile, dotdotEncoding } from './utils'
+import {
+    isCSSRequest,
+    isNodeModule,
+    importPathToFile,
+    dotdotEncoding,
+} from './utils'
 
 const debug = require('debug')('espack')
 export interface ServerPluginContext {
@@ -194,14 +199,19 @@ export function createApp(config: Config) {
             }
 
             if (ctx.path.startsWith('.')) {
-                throw new Error(`All import paths should have been rewritten to absolute paths (start with /)\n`
-                +` make sure import paths for '${ctx.path}' are statically analyzable`)
+                throw new Error(
+                    `All import paths should have been rewritten to absolute paths (start with /)\n` +
+                        ` make sure import paths for '${ctx.path}' are statically analyzable`,
+                )
             }
 
             const filePath = importPathToFile(root, ctx.path)
-            
+
             // watch files outside root
-            if (ctx.path.startsWith('/' + dotdotEncoding)) {
+            if (
+                ctx.path.startsWith('/' + dotdotEncoding) &&
+                !filePath.includes('node_modules')
+            ) {
                 watcher.add(filePath)
             }
 

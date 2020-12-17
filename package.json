@@ -11,7 +11,8 @@
         "packages": [
             "espack",
             "fixtures/*",
-            "tests"
+            "tests",
+            "plugins"
         ]
     },
     "devDependencies": {
