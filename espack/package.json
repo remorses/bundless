@@ -57,6 +57,7 @@
         "lru-cache": "^6.0.0",
         "magic-string": "^0.25.7",
         "merge-source-map": "^1.1.0",
+        "mime-types": "^2.1.27",
         "qs": "^6.9.4",
         "slash": "^3.0.0",
         "source-map-support": "^0.5.19",
