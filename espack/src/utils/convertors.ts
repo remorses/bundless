@@ -1,5 +1,5 @@
-import path from "path"
-import { cleanUrl } from "./utils"
+import path from 'path'
+import { cleanUrl } from './utils'
 
 const dotdot = '...'
 

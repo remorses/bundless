@@ -37,7 +37,13 @@ export async function traverseWithEsbuild({
         await fsp.mkdtemp(path.join(os.tmpdir(), 'dest')),
     )
 
-    entryPoints = entryPoints.map((x) => path.resolve(esbuildCwd, x))
+    for (let entry of entryPoints) {
+        if (!path.isAbsolute(entry)) {
+            throw new Error(
+                `All entryPoints of traverseWithEsbuild must be absolute: ${entry}`,
+            )
+        }
+    }
 
     try {
         const metafile = path.join(destLoc, 'meta.json')
@@ -85,10 +91,13 @@ export async function traverseWithEsbuild({
                                 return
                             },
                             onUnresolved: (e) => {
-                                // console.error(e)
-                                return {
-                                    external: true,
-                                }
+                                console.error(
+                                    'Cannot resolve during traversal',
+                                    e,
+                                )
+                                // return {
+                                //     external: true,
+                                // }
                             },
                             resolveOptions: {
                                 // preserveSymlinks: isRunningWithYarnPnp || false,

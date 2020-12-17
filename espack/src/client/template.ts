@@ -11,356 +11,280 @@ declare const __DEFINES__: Record<string, any>
 ;(window as any).process.env = (window as any).process.env || {}
 ;(window as any).process.env.NODE_ENV = __MODE__
 
-
 const defines = __DEFINES__
 Object.keys(defines).forEach((key) => {
-  const segs = key.split('.')
-  let target = window as any
-  for (let i = 0; i < segs.length; i++) {
-    const seg = segs[i]
-    if (i === segs.length - 1) {
-      target[seg] = defines[key]
-    } else {
-      target = target[seg] || (target[seg] = {})
+    const segs = key.split('.')
+    let target = window as any
+    for (let i = 0; i < segs.length; i++) {
+        const seg = segs[i]
+        if (i === segs.length - 1) {
+            target[seg] = defines[key]
+        } else {
+            target = target[seg] || (target[seg] = {})
+        }
     }
-  }
 })
 
-import { HMRPayload, UpdatePayload, MultiUpdatePayload } from './types'
-
-console.log('[hmr] connecting...')
-
-declare var __VUE_HMR_RUNTIME__: any
+import { HMRPayload, UpdatePayload } from './types'
 
 // use server configuration, then fallback to inference
 const socketProtocol =
-  __HMR_PROTOCOL__ || (location.protocol === 'https:' ? 'wss' : 'ws')
+    __HMR_PROTOCOL__ || (location.protocol === 'https:' ? 'wss' : 'ws')
 const socketHost = `${__HMR_HOSTNAME__ || location.hostname}:${__HMR_PORT__}`
-const socket = new WebSocket(`${socketProtocol}://${socketHost}`, 'hmr')
+const socketURL = `${socketProtocol}://${socketHost}`
 
-function warnFailedFetch(err: Error, path: string | string[]) {
-  if (!err.message.match('fetch')) {
-    console.error(err)
-  }
-  console.error(
-    `[hmr] Failed to reload ${path}. ` +
-      `This could be due to syntax errors or importing non-existent ` +
-      `modules. (see errors above)`
-  )
+const isWindowDefined = typeof window !== 'undefined'
+
+function log(...args) {
+    console.log('[ESM-HMR]', ...args)
 }
 
-// Listen for messages
-socket.addEventListener('message', async ({ data }) => {
-  const payload = JSON.parse(data) as HMRPayload | MultiUpdatePayload
-  if (payload.type === 'multi') {
-    payload.updates.forEach(handleMessage)
-  } else {
-    handleMessage(payload)
-  }
-})
-
-async function handleMessage(payload: HMRPayload) {
-  const { path, changeSrcPath, timestamp } = payload as UpdatePayload
-  switch (payload.type) {
-    case 'connected':
-      console.log(`[hmr] connected.`)
-      // proxy(nginx, docker) hmr ws maybe caused timeout, so send ping package let ws keep alive.
-      setInterval(() => socket.send('ping'), __HMR_TIMEOUT__)
-      break
-    case 'vue-reload':
-      queueUpdate(
-        import(`${path}?t=${timestamp}`)
-          .catch((err) => warnFailedFetch(err, path))
-          .then((m) => () => {
-            __VUE_HMR_RUNTIME__.reload(path, m.default)
-            console.log(`[hmr] ${path} reloaded.`)
-          })
-      )
-      break
-    case 'vue-rerender':
-      const templatePath = `${path}?type=template`
-      import(`${templatePath}&t=${timestamp}`).then((m) => {
-        __VUE_HMR_RUNTIME__.rerender(path, m.render)
-        console.log(`[hmr] ${path} template updated.`)
-      })
-      break
-    case 'style-update':
-      // check if this is referenced in html via <link>
-      const el = document.querySelector(`link[href*='${path}']`)
-      if (el) {
-        el.setAttribute(
-          'href',
-          `${path}${path.includes('?') ? '&' : '?'}t=${timestamp}`
-        )
-        break
-      }
-      // imported CSS
-      const importQuery = path.includes('?') ? '&import' : '?import'
-      await import(`${path}${importQuery}&t=${timestamp}`)
-      console.log(`[hmr] ${path} updated.`)
-      break
-    case 'style-remove':
-      removeStyle(payload.id)
-      break
-    case 'js-update':
-      queueUpdate(updateModule(path, changeSrcPath, timestamp))
-      break
-    case 'custom':
-      const cbs = customUpdateMap.get(payload.id)
-      if (cbs) {
-        cbs.forEach((cb) => cb(payload.customData))
-      }
-      break
-    case 'full-reload':
-      if (path.endsWith('.html')) {
-        // if html file is edited, only reload the page if the browser is
-        // currently on that page.
-        const pagePath = location.pathname
-        if (
-          pagePath === path ||
-          (pagePath.endsWith('/') && pagePath + 'index.html' === path)
-        ) {
-          location.reload()
-        }
+function reload() {
+    if (!isWindowDefined) {
         return
-      } else {
-        location.reload()
-      }
-  }
+    }
+    location.reload(true)
 }
 
-let pending = false
-let queued: Promise<(() => void) | undefined>[] = []
-
-/**
- * buffer multiple hot updates triggered by the same src change
- * so that they are invoked in the same order they were sent.
- * (otherwise the order may be inconsistent because of the http request round trip)
- */
-async function queueUpdate(p: Promise<(() => void) | undefined>) {
-  queued.push(p)
-  if (!pending) {
-    pending = true
-    await Promise.resolve()
-    pending = false
-    const loading = [...queued]
-    queued = []
-    ;(await Promise.all(loading)).forEach((fn) => fn && fn())
-  }
+/** Clear all error overlays from the page */
+function clearErrorOverlay() {
+    if (!isWindowDefined) {
+        return
+    }
+    document.querySelectorAll('hmr-error-overlay').forEach((el) => el.remove())
+}
+/** Create an error overlay (if custom element exists on the page). */
+function createNewErrorOverlay(data) {
+    return // TODO error overlay
+    if (!isWindowDefined) {
+        return
+    }
+    const HmrErrorOverlay = customElements.get('hmr-error-overlay')
+    if (HmrErrorOverlay) {
+        const overlay = new HmrErrorOverlay(data)
+        clearErrorOverlay()
+        document.body.appendChild(overlay)
+    }
 }
 
-// ping server
-socket.addEventListener('close', () => {
-  console.log(`[hmr] server connection lost. polling for restart...`)
-  setInterval(() => {
-    fetch('/')
-      .then(() => {
-        location.reload()
-      })
-      .catch((e) => {
-        /* ignore */
-      })
-  }, 1000)
+let SOCKET_MESSAGE_QUEUE: HMRPayload[] = []
+function _sendSocketMessage(msg) {
+    socket.send(JSON.stringify(msg))
+}
+function sendSocketMessage(msg: HMRPayload) {
+    if (socket.readyState !== socket.OPEN) {
+        SOCKET_MESSAGE_QUEUE.push(msg)
+    } else {
+        _sendSocketMessage(msg)
+    }
+}
+
+const socket = new WebSocket(socketURL, 'esm-hmr')
+socket.addEventListener('open', () => {
+    SOCKET_MESSAGE_QUEUE.forEach(_sendSocketMessage)
+    SOCKET_MESSAGE_QUEUE = []
 })
 
-// https://wicg.github.io/construct-stylesheets
-const supportsConstructedSheet = (() => {
-  try {
-    new CSSStyleSheet()
-    return true
-  } catch (e) {}
-  return false
-})()
-
-const sheetsMap = new Map()
-
-export function updateStyle(id: string, content: string) {
-  let style = sheetsMap.get(id)
-  if (supportsConstructedSheet && !content.includes('@import')) {
-    if (style && !(style instanceof CSSStyleSheet)) {
-      removeStyle(id)
-      style = undefined
+const REGISTERED_MODULES = {}
+class HotModuleState {
+    data = {}
+    isLocked = false
+    isDeclined = false
+    isAccepted = false
+    acceptCallbacks: { deps: string[]; callback: Function }[] = []
+    disposeCallbacks: Function[] = []
+    path = ''
+    constructor(path) {
+        this.path = path
     }
-
-    if (!style) {
-      style = new CSSStyleSheet()
-      style.replaceSync(content)
-      // @ts-ignore
-      document.adoptedStyleSheets = [...document.adoptedStyleSheets, style]
-    } else {
-      style.replaceSync(content)
+    lock() {
+        this.isLocked = true
     }
-  } else {
-    if (style && !(style instanceof HTMLStyleElement)) {
-      removeStyle(id)
-      style = undefined
+    dispose(callback) {
+        this.disposeCallbacks.push(callback)
     }
-
-    if (!style) {
-      style = document.createElement('style')
-      style.setAttribute('type', 'text/css')
-      style.innerHTML = content
-      document.head.appendChild(style)
-    } else {
-      style.innerHTML = content
-    }
-  }
-  sheetsMap.set(id, style)
-}
-
-function removeStyle(id: string) {
-  let style = sheetsMap.get(id)
-  if (style) {
-    if (style instanceof CSSStyleSheet) {
-      // @ts-ignore
-      const index = document.adoptedStyleSheets.indexOf(style)
-      // @ts-ignore
-      document.adoptedStyleSheets = document.adoptedStyleSheets.filter(
-        (s: CSSStyleSheet) => s !== style
-      )
-    } else {
-      document.head.removeChild(style)
-    }
-    sheetsMap.delete(id)
-  }
-}
-
-async function updateModule(
-  id: string,
-  changedPath: string,
-  timestamp: number
-) {
-  const mod = hotModulesMap.get(id)
-  if (!mod) {
-    // In a code-spliting project,
-    // it is common that the hot-updating module is not loaded yet.
-    // https://github.com/vitejs/vite/issues/721
-    return
-  }
-
-  const moduleMap = new Map()
-  const isSelfUpdate = id === changedPath
-
-  // make sure we only import each dep once
-  const modulesToUpdate = new Set<string>()
-  if (isSelfUpdate) {
-    // self update - only update self
-    modulesToUpdate.add(id)
-  } else {
-    // dep update
-    for (const { deps } of mod.callbacks) {
-      if (Array.isArray(deps)) {
-        deps.forEach((dep) => modulesToUpdate.add(dep))
-      } else {
-        modulesToUpdate.add(deps)
-      }
-    }
-  }
-
-  // determine the qualified callbacks before we re-import the modules
-  const callbacks = mod.callbacks.filter(({ deps }) => {
-    return Array.isArray(deps)
-      ? deps.some((dep) => modulesToUpdate.has(dep))
-      : modulesToUpdate.has(deps)
-  })
-
-  await Promise.all(
-    Array.from(modulesToUpdate).map(async (dep) => {
-      const disposer = disposeMap.get(dep)
-      if (disposer) await disposer(dataMap.get(dep))
-      try {
-        const newMod = await import(
-          dep + (dep.includes('?') ? '&' : '?') + `t=${timestamp}`
-        )
-        moduleMap.set(dep, newMod)
-      } catch (e) {
-        warnFailedFetch(e, dep)
-      }
-    })
-  )
-
-  return () => {
-    for (const { deps, fn } of callbacks) {
-      if (Array.isArray(deps)) {
-        fn(deps.map((dep) => moduleMap.get(dep)))
-      } else {
-        fn(moduleMap.get(deps))
-      }
-    }
-
-    console.log(`[vite]: js module hot updated: `, id)
-  }
-}
-
-interface HotModule {
-  id: string
-  callbacks: HotCallback[]
-}
-
-interface HotCallback {
-  deps: string | string[]
-  fn: (modules: object | object[]) => void
-}
-
-const hotModulesMap = new Map<string, HotModule>()
-const disposeMap = new Map<string, (data: any) => void | Promise<void>>()
-const dataMap = new Map<string, any>()
-const customUpdateMap = new Map<string, ((customData: any) => void)[]>()
-
-export const createHotContext = (id: string) => {
-  if (!dataMap.has(id)) {
-    dataMap.set(id, {})
-  }
-
-  // when a file is hot updated, a new context is created
-  // clear its stale callbacks
-  const mod = hotModulesMap.get(id)
-  if (mod) {
-    mod.callbacks = []
-  }
-
-  const hot = {
-    get data() {
-      return dataMap.get(id)
-    },
-
-    accept(callback: HotCallback['fn'] = () => {}) {
-      hot.acceptDeps(id, callback)
-    },
-
-    acceptDeps(
-      deps: HotCallback['deps'],
-      callback: HotCallback['fn'] = () => {}
-    ) {
-      const mod: HotModule = hotModulesMap.get(id) || {
-        id,
-        callbacks: []
-      }
-      mod.callbacks.push({
-        deps: deps as HotCallback['deps'],
-        fn: callback
-      })
-      hotModulesMap.set(id, mod)
-    },
-
-    dispose(cb: (data: any) => void) {
-      disposeMap.set(id, cb)
-    },
-
-    // noop, used for static analysis only
-    decline() {},
-
     invalidate() {
-      location.reload()
-    },
-
-    // custom events
-    on(event: string, cb: () => void) {
-      const existing = customUpdateMap.get(event) || []
-      existing.push(cb)
-      customUpdateMap.set(event, existing)
+        reload()
     }
-  }
-
-  return hot
+    decline() {
+        this.isDeclined = true
+    }
+    accept(_deps, callback: Function | true = true) {
+        if (this.isLocked) {
+            return
+        }
+        if (!this.isAccepted) {
+            sendSocketMessage({ path: this.path, type: 'hotAccept' })
+            this.isAccepted = true
+        }
+        if (!Array.isArray(_deps)) {
+            callback = _deps || callback
+            _deps = []
+        }
+        if (callback === true) {
+            callback = () => {}
+        }
+        const deps = _deps.map((dep) => {
+            const ext = dep.split('.').pop()
+            if (!ext) {
+                dep += '.js'
+            } else if (ext !== 'js') {
+                dep += '.proxy.js'
+            }
+            return new URL(dep, `${window.location.origin}${this.path}`)
+                .pathname
+        })
+        this.acceptCallbacks.push({
+            deps,
+            callback,
+        })
+    }
 }
+export function createHotContext(fullUrl) {
+    const id = new URL(fullUrl).pathname
+    const existing = REGISTERED_MODULES[id]
+    if (existing) {
+        existing.lock()
+        runModuleDispose(id)
+        return existing
+    }
+    const state = new HotModuleState(id)
+    REGISTERED_MODULES[id] = state
+    return state
+}
+
+/** Called when any CSS file is loaded. */
+// async function runCssStyleAccept({ url: id }) {
+//     const nonce = Date.now()
+//     const oldLinkEl =
+//         document.head.querySelector(`link[data-hmr="${id}"]`) ||
+//         document.head.querySelector(`link[href="${id}"]`)
+//     if (!oldLinkEl) {
+//         return true
+//     }
+//     const linkEl = oldLinkEl.cloneNode(false)
+//     linkEl.dataset.hmr = id
+//     linkEl.type = 'text/css'
+//     linkEl.rel = 'stylesheet'
+//     linkEl.href = id + '?t=' + nonce
+//     linkEl.addEventListener(
+//         'load',
+//         // Once loaded, remove the old link element (with some delay, to avoid FOUC)
+//         () => setTimeout(() => document.head.removeChild(oldLinkEl), 30),
+//         false,
+//     )
+//     oldLinkEl.parentNode.insertBefore(linkEl, oldLinkEl)
+//     return true
+// }
+
+/** Called when a new module is loaded, to pass the updated module to the "active" module */
+async function runJsModuleAccept({ path }) {
+    const state = REGISTERED_MODULES[path]
+    if (!state) {
+        return false
+    }
+    if (state.isDeclined) {
+        return false
+    }
+    const acceptCallbacks = state.acceptCallbacks
+    const updateID = Date.now()
+    for (const { deps, callback: acceptCallback } of acceptCallbacks) {
+        const [module, ...depModules] = await Promise.all([
+            import(path + `?t=${updateID}`),
+            ...deps.map((d) => import(d + `?t=${updateID}`)),
+        ])
+        acceptCallback({ module, deps: depModules })
+    }
+    return true
+}
+
+/** Called when a new module is loaded, to run cleanup on the old module (if needed) */
+async function runModuleDispose(id) {
+    const state = REGISTERED_MODULES[id]
+    if (!state) {
+        return false
+    }
+    if (state.isDeclined) {
+        return false
+    }
+    const disposeCallbacks = state.disposeCallbacks
+    state.disposeCallbacks = []
+    state.data = {}
+    disposeCallbacks.map((callback) => callback())
+    return true
+}
+
+socket.addEventListener('message', ({ data: _data }) => {
+    if (!_data) {
+        return
+    }
+    const data: HMRPayload = JSON.parse(_data)
+    if (data.type === 'connected') {
+        setInterval(() => socket.send('ping'), __HMR_TIMEOUT__)
+        return
+    }
+    if (data.type === 'reload') {
+        log('message: reload')
+        reload()
+        return
+    }
+    if (data.type === 'error') {
+        console.error(
+            `[ESM-HMR] ${data.fileLoc ? data.fileLoc + '\n' : ''}`,
+            data.title + '\n' + data.errorMessage,
+        )
+        createNewErrorOverlay(data)
+        return
+    }
+    if (data.type === 'update') {
+        log('message: update', data)
+        runJsModuleAccept(data)
+            .then((ok) => {
+                if (ok) {
+                    clearErrorOverlay()
+                } else {
+                    reload()
+                }
+            })
+            .catch((err) => {
+                console.error('[ESM-HMR] Hot Update Error', err)
+                // A failed import gives a TypeError, but invalid ESM imports/exports give a SyntaxError.
+                // Failed build results already get reported via a better WebSocket update.
+                // We only want to report invalid code like a bad import that doesn't exist.
+                if (err instanceof SyntaxError) {
+                    createNewErrorOverlay({
+                        title: 'Hot Update Error',
+                        fileLoc: data.path,
+                        errorMessage: err.message,
+                        errorStackTrace: err.stack,
+                    })
+                }
+            })
+        return
+    }
+    log('message: unknown', data)
+})
+log('listening for file changes...')
+
+/** Runtime error reporting: If a runtime error occurs, show it in an overlay. */
+// isWindowDefined &&
+//     window.addEventListener('error', function(event) {
+//         // Generate an "error location" string
+//         let fileLoc
+//         if (event.filename) {
+//             fileLoc = event.filename
+//             if (event.lineno !== undefined) {
+//                 fileLoc += ` [:${event.lineno}`
+//                 if (event.colno !== undefined) {
+//                     fileLoc += `:${event.colno}`
+//                 }
+//                 fileLoc += `]`
+//             }
+//         }
+//         createNewErrorOverlay({
+//             title: 'Unhandled Runtime Error',
+//             fileLoc,
+//             errorMessage: event.message,
+//             errorStackTrace: event.error ? event.error.stack : undefined,
+//         })
+//     })

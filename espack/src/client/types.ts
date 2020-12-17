@@ -1,46 +1,38 @@
 export type HMRPayload =
-  | ConnectedPayload
-  | UpdatePayload
-  | FullReloadPayload
-  | StyleRemovePayload
-  | SWBustCachePayload
-  | CustomPayload
-  | MultiUpdatePayload
+    | ConnectedPayload
+    | UpdatePayload
+    | FullReloadPayload
+    | ErrorPayload
+    | HotAcceptPayload
+    | ConnectPayload
 
 interface ConnectedPayload {
-  type: 'connected'
+    type: 'connected'
 }
 
 export interface UpdatePayload {
-  type: 'js-update' | 'vue-reload' | 'vue-rerender' | 'style-update'
-  path: string
-  changeSrcPath: string
-  timestamp: number
-}
-
-interface StyleRemovePayload {
-  type: 'style-remove'
-  path: string
-  id: string
+    type: 'update'
+    path: string
+    changeSrcPath: string
+    timestamp: number
 }
 
 interface FullReloadPayload {
-  type: 'full-reload'
-  path: string
+    type: 'reload'
+    path: string
 }
 
-interface SWBustCachePayload {
-  type: 'sw-bust-cache'
-  path: string
+interface HotAcceptPayload {
+    type: 'hotAccept'
+    path: string
 }
 
-interface CustomPayload {
-  type: 'custom'
-  id: string
-  customData: any
+interface ErrorPayload {
+    type: 'error'
+    title?: string
+    errorMessage?: string
+    fileLoc?: string
 }
-
-export interface MultiUpdatePayload {
-  type: 'multi'
-  updates: UpdatePayload[]
+interface ConnectPayload {
+    type: 'connected'
 }

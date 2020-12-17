@@ -26,7 +26,7 @@ import {
     ResolveSourcemapPlugin,
     RewritePlugin,
     SourcemapPlugin,
-    HmrClientPlugin
+    HmrClientPlugin,
 } from './plugins'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
@@ -81,7 +81,7 @@ export function createApp(config: Config) {
         //   ...chokidarWatchOptions
     })
 
-    const graph = new Graph()
+    const graph = new Graph({ root })
     let bundleMap: BundleMap | undefined
     const pluginExecutor = createPluginsExecutor({
         root,
@@ -102,7 +102,9 @@ export function createApp(config: Config) {
                         return bundleMap[relativePath]
                     }
                     // node module path not bundled, rerun bundling
-                    const entryPoints = [...Object.keys(graph.nodes)]
+                    const entryPoints = [...Object.keys(graph.nodes)].map((x) =>
+                        path.resolve(root, x),
+                    )
                     bundleMap = await prebundle({
                         entryPoints, // TODO get root from graph
                         dest: path.resolve(root, WEB_MODULES_PATH),
@@ -130,7 +132,6 @@ export function createApp(config: Config) {
             ResolveSourcemapPlugin(),
             SourcemapPlugin(),
             CssPlugin(),
-            
         ],
         config,
         graph,
@@ -148,6 +149,7 @@ export function createApp(config: Config) {
         config,
         pluginExecutor,
         sendHmrMessage: () => {
+            // assigned in the hmr middleware
             throw new Error(`hmr ws server has not started yet`)
         },
         // port is exposed on the context for hmr client connection
@@ -203,9 +205,7 @@ export function createApp(config: Config) {
         })
     }
     const hmrMiddleware: ServerMiddleware = ({ app }) => {
-        // attach server context to koa context
         const wss = new WebSocket.Server({ noServer: true })
-
         let done = false
         app.use((_, next) => {
             if (done) {
@@ -213,6 +213,9 @@ export function createApp(config: Config) {
             }
             app.once('close', () => {
                 wss.close(() => logger.debug('closing wss'))
+                wss.clients.forEach((client) => {
+                    client.close()
+                })
             })
             app.context.server.on('upgrade', (req, socket, head) => {
                 if (req.headers['sec-websocket-protocol'] === HMR_SERVER_NAME) {
@@ -225,6 +228,16 @@ export function createApp(config: Config) {
             wss.on('connection', (socket) => {
                 debug('ws client connected')
                 socket.send(JSON.stringify({ type: 'connected' }))
+                wss.on('message', (data) => {
+                    const message: HMRPayload = JSON.parse(data.toString())
+                    if (message.type === 'hotAccept') {
+                        const entry = graph.ensureEntry(
+                            importPathToFile(root, message.path),
+                        )
+                        entry.hasHmrAccept = true
+                        entry.isHmrEnabled = true
+                    }
+                })
             })
 
             wss.on('error', (e: Error & { code: string }) => {
@@ -235,8 +248,8 @@ export function createApp(config: Config) {
             })
 
             context.sendHmrMessage = (payload: HMRPayload) => {
-                const stringified = JSON.stringify(payload, null, 2)
-                debug(`update: ${stringified}`)
+                const stringified = JSON.stringify(payload, null, 4)
+                logger.log(`hmr: ${stringified}`)
 
                 wss.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
@@ -249,10 +262,10 @@ export function createApp(config: Config) {
         })
     }
 
-    // app.use((_, next) => {
-    //     console.log(graph.toString())
-    //     return next()
-    // })
+    app.use((_, next) => {
+        console.log(graph.toString())
+        return next()
+    })
 
     const serverMiddleware = [
         hmrMiddleware,

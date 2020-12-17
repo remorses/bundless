@@ -1,40 +1,49 @@
 // importee and importers must be relative paths from root, they can be converted to requests just prepending /
 
 import path from 'path'
+import { osAgnosticPath } from './prebundle/support'
+import { fileToImportPath } from './utils'
 
 export interface Node {
     importers(): Set<string> // traverses the graph and finds nodes that have this in importees
     importees: Set<string>
-    hmr: {
-        accepts?: boolean
-        declines?: boolean
-    }
+    dirtyImportersCount: number // modules that have imported this and have been updated
+    isHmrEnabled?: boolean
+    hasHmrAccept?: boolean
 }
 
 export class Graph {
-    nodes: { [path: string]: Node } = {}
-    constructor() {
+    // keys are always os agnostic paths and not public paths
+    nodes: { [osAgnosticPath: string]: Node } = {}
+    root = ''
+    constructor({ root }: { root: string }) {
         this.nodes = {}
+        this.root = root
     }
-    ensureEntry(key: string): Node {
-        if (this.nodes[key]) {
-            return this.nodes[key]
+    ensureEntry(path: string, newNode?: Partial<Node>): Node {
+        path = osAgnosticPath(path, this.root)
+        if (this.nodes[path]) {
+            return this.nodes[path]
         }
 
-        this.nodes[key] = {
-            hmr: {},
+        this.nodes[path] = {
+            dirtyImportersCount: 0,
+            hasHmrAccept: false,
+            isHmrEnabled: false,
             importees: new Set(),
+            ...newNode,
             importers: () => {
+                const importPath = fileToImportPath(this.root, path)
                 return new Set(
                     Object.entries(this.nodes)
                         .filter(([_, v]) => {
-                            return v.importees?.has(key)
+                            return v.importees?.has(importPath)
                         })
                         .map(([k, _]) => k),
                 )
             },
         }
-        return this.nodes[key]
+        return this.nodes[path]
     }
     toString() {
         const content = Object.keys(this.nodes)

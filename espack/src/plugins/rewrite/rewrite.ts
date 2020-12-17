@@ -6,6 +6,7 @@ import path from 'path'
 import qs from 'qs'
 import { CLIENT_PUBLIC_PATH } from '../../constants'
 import { Graph } from '../../graph'
+import { logger } from '../../logger'
 import { PluginHooks, PluginsExecutor } from '../../plugin'
 import { osAgnosticPath } from '../../prebundle/support'
 import {
@@ -30,7 +31,7 @@ export function RewritePlugin({} = {}) {
                 // TODO skip non js files
                 const contents = await rewriteImports({
                     graph,
-                    importer: args.path,
+                    importerFilePath: args.path,
                     root: config.root!,
                     resolve,
                     source: args.contents,
@@ -45,13 +46,13 @@ export function RewritePlugin({} = {}) {
 
 export async function rewriteImports({
     source,
-    importer,
+    importerFilePath,
     graph,
     resolve,
     root,
 }: {
     source: string
-    importer: string
+    importerFilePath: string
     resolve: PluginsExecutor['resolve']
     root: string
     graph: Graph
@@ -68,22 +69,22 @@ export async function rewriteImports({
             console.error(
                 chalk.yellow(
                     `failed to parse ${chalk.cyan(
-                        importer,
+                        importerFilePath,
                     )} for import rewrite.\nIf you are using ` +
                         `JSX, make sure to named the file with the .jsx extension.`,
                 ),
             )
         }
 
-        const hasHMR = source.includes('import.meta.hot')
+        const isHmrEnabled = source.includes('import.meta.hot')
         const hasEnv = source.includes('import.meta.env')
 
-        if (imports.length || hasHMR || hasEnv) {
-            debug(`${importer}: rewriting`)
+        if (imports.length || isHmrEnabled || hasEnv) {
+            logger.log(`${importerFilePath}: rewriting`)
             const s = new MagicString(source)
             let hasReplaced = false
 
-            const currentImportees = graph.ensureEntry(importer).importees
+            const currentNode = graph.ensureEntry(importerFilePath, { isHmrEnabled })
 
             for (let i = 0; i < imports.length; i++) {
                 const {
@@ -113,16 +114,27 @@ export async function rewriteImports({
                         continue
                     }
 
+                    const absImporter = path.resolve(importerFilePath)
                     const resolveResult = await resolve({
-                        importer,
+                        importer: absImporter,
                         namespace: '',
-                        resolveDir: path.dirname(importer),
+                        resolveDir: path.dirname(absImporter),
                         path: id,
                     })
-                    const resolved = fileToImportPath(
+
+                    let resolved = fileToImportPath(
                         root,
                         resolveResult?.path || '',
-                    ) // TODO add ?import ...
+                    )
+
+                    const importeeNode =
+                        graph.nodes[osAgnosticPath(resolveResult?.path, root)]
+
+                    // refetch modules that are dirty
+                    if (importeeNode?.dirtyImportersCount > 0) {
+                        resolved += `?t=${Date.now()}`
+                        importeeNode.dirtyImportersCount--
+                    }
 
                     if (resolved !== id) {
                         debug(`    "${id}" --> "${resolved}"`)
@@ -162,19 +174,18 @@ export async function rewriteImports({
                     }
 
                     // save the import chain for hmr analysis
-                    const importee = cleanUrl(resolved)
+                    const cleanImportee = cleanUrl(resolved)
                     if (
-                        importee !== importer &&
                         // no need to track hmr client or module dependencies
-                        importee !== CLIENT_PUBLIC_PATH
+                        cleanImportee !== CLIENT_PUBLIC_PATH
                     ) {
-                        currentImportees.add(importee)
-                        debug(`        ${importer} imports ${importee}`)
+                        currentNode.importees.add(cleanImportee)
+                        logger.log(`${importerFilePath} imports ${cleanImportee}`)
                     }
                 } else if (id !== 'import.meta' && !hasViteIgnore) {
-                    console.warn(
+                    logger.log(
                         chalk.yellow(
-                            `ignored dynamic import(${id}) in ${importer}.`,
+                            `ignored dynamic import(${id}) in ${importerFilePath}.`,
                         ),
                     )
                 }
@@ -214,14 +225,13 @@ export async function rewriteImports({
 
             return hasReplaced ? s.toString() : source
         } else {
-            debug(`${importer}: no imports found.`)
+            debug(`${importerFilePath}: no imports found.`)
         }
 
         return source
     } catch (e) {
         throw new Error(
-            `Error: module imports rewrite failed for ${importer}.\n` +
-                e,
+            `Error: module imports rewrite failed for ${importerFilePath}.\n` + e,
         )
         debug(source)
         return source
