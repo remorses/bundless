@@ -6,7 +6,7 @@ import path from 'path'
 import qs, { ParsedQs } from 'qs'
 import slash from 'slash'
 import { Readable } from 'stream'
-import { JS_EXTENSIONS } from './constants'
+import { JS_EXTENSIONS } from '../constants'
 
 const imageRE = /\.(png|jpe?g|gif|svg|ico|webp)(\?.*)?$/
 const mediaRE = /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/
@@ -45,25 +45,6 @@ export const isExternalUrl = (url: string) => externalRE.test(url)
  */
 export const isImportRequest = (ctx): boolean => {
     return ctx.query.import != null
-}
-
-const dotdot = '...'
-
-export function requestToFile(root: string, request: string) {
-    request = decodeURIComponent(request)
-    request = cleanUrl(request)
-    request = request.startsWith('/') ? request.slice(1) : request
-    request = path.resolve(root, request)
-    request = request.replace(dotdot, '..')
-    return request
-}
-
-export function fileToRequest(root: string, filePath: string) {
-    filePath = path.resolve(filePath)
-    filePath = path.relative(root, filePath)
-    filePath = filePath.replace('..', dotdot)
-    filePath = '/' + filePath
-    return filePath
 }
 
 const range: number = 2

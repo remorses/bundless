@@ -3,7 +3,7 @@ import mime from 'mime-types'
 import path from 'path'
 import chalk from 'chalk'
 import { ServerMiddleware } from '../serve'
-import { isStaticAsset, readFile, requestToFile } from '../utils'
+import { isStaticAsset, readFile, importPathToFile } from '../utils'
 
 const send = require('koa-send')
 const debug = require('debug')('vite:history')
@@ -35,7 +35,7 @@ export const serveStaticMiddleware: ServerMiddleware = ({ root, app }) => {
         const expectsHtml =
             ctx.headers.accept && ctx.headers.accept.includes('text/html')
         if (!expectsHtml) {
-            const filePath = requestToFile(root, ctx.path)
+            const filePath = importPathToFile(root, ctx.path)
             if (
                 filePath !== ctx.path &&
                 fs.existsSync(filePath) &&

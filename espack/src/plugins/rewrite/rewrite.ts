@@ -10,7 +10,7 @@ import { PluginHooks, PluginsExecutor } from '../../plugin'
 import { osAgnosticPath } from '../../prebundle/support'
 import {
     cleanUrl,
-    fileToRequest,
+    fileToImportPath,
     isExternalUrl,
     jsTypeRegex,
     parseWithQuery,
@@ -119,7 +119,7 @@ export async function rewriteImports({
                         resolveDir: path.dirname(importer),
                         path: id,
                     })
-                    const resolved = fileToRequest(
+                    const resolved = fileToImportPath(
                         root,
                         resolveResult?.path || '',
                     ) // TODO add ?import ...

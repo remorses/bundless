@@ -32,7 +32,7 @@ import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { osAgnosticPath } from './prebundle/support'
 import { genSourceMapString } from './sourcemaps'
-import { isCSSRequest, isNodeModule, requestToFile } from './utils'
+import { isCSSRequest, isNodeModule, importPathToFile } from './utils'
 
 const debug = require('debug')('espack')
 export interface ServerPluginContext {
@@ -177,7 +177,7 @@ export function createApp(config: Config) {
                 return next()
             }
 
-            const filePath = requestToFile(root, ctx.path)
+            const filePath = importPathToFile(root, ctx.path)
             const loaded = await pluginExecutor.load({
                 path: filePath,
                 namespace: '',
