@@ -16,6 +16,7 @@ import {
     WEB_MODULES_PATH,
 } from './constants'
 import { Graph } from './graph'
+import { onFileChange } from './hmr'
 import { logger } from './logger'
 import * as middlewares from './middleware'
 import { createPluginsExecutor, PluginsExecutor } from './plugin'
@@ -74,12 +75,6 @@ export function createApp(config: Config) {
     const { root = process.cwd() } = config
 
     const app = new Koa<DefaultState, DefaultContext>()
-
-    const watcher = chokidar.watch(root, {
-        ignored: ['**/node_modules/**', '**/.git/**'],
-        ignoreInitial: true,
-        //   ...chokidarWatchOptions
-    })
 
     const graph = new Graph({ root })
     let bundleMap: BundleMap | undefined
@@ -142,6 +137,25 @@ export function createApp(config: Config) {
         pluginExecutor.close({})
     })
 
+    const watcher = chokidar.watch(root, {
+        // cwd: root,
+        // disableGlobbing: true,
+        ignored: ['**/node_modules/**', '**/.git/**'],
+        ignoreInitial: true,
+        //   ...chokidarWatchOptions
+    })
+
+    // TODO watch workspace files, symlinked files are not included by default!
+    // TODO changing anything inside root that is not ignored and that is not in graph will cause reload
+    watcher.on('change', (filePath) => {
+        onFileChange({
+            graph,
+            filePath,
+            root,
+            sendHmrMessage: context.sendHmrMessage,
+        })
+    })
+
     const context: ServerPluginContext = {
         root,
         app,
@@ -150,7 +164,7 @@ export function createApp(config: Config) {
         pluginExecutor,
         sendHmrMessage: () => {
             // assigned in the hmr middleware
-            throw new Error(`hmr ws server has not started yet`)
+            logger.log(`hmr ws server has not started yet`)
         },
         // port is exposed on the context for hmr client connection
         // in case the files are served under a different port
