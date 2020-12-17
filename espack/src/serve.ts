@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import chokidar, { FSWatcher } from 'chokidar'
+import chokidar, { FSWatcher, watch } from 'chokidar'
 import deepmerge from 'deepmerge'
 import { Server } from 'http'
 import Koa, { DefaultContext, DefaultState } from 'koa'
@@ -33,7 +33,7 @@ import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { osAgnosticPath } from './prebundle/support'
 import { genSourceMapString } from './sourcemaps'
-import { isCSSRequest, isNodeModule, importPathToFile } from './utils'
+import { isCSSRequest, isNodeModule, importPathToFile, dotdotEncoding } from './utils'
 
 const debug = require('debug')('espack')
 export interface ServerPluginContext {
@@ -193,7 +193,18 @@ export function createApp(config: Config) {
                 return next()
             }
 
+            if (ctx.path.startsWith('.')) {
+                throw new Error(`All import paths should have been rewritten to absolute paths (start with /)\n`
+                +` make sure import paths for '${ctx.path}' are statically analyzable`)
+            }
+
             const filePath = importPathToFile(root, ctx.path)
+            
+            // watch files outside root
+            if (ctx.path.startsWith('/' + dotdotEncoding)) {
+                watcher.add(filePath)
+            }
+
             const loaded = await pluginExecutor.load({
                 path: filePath,
                 namespace: '',

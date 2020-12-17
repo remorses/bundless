@@ -1,2 +1,2 @@
 export * from './utils'
-export { fileToImportPath, importPathToFile } from './convertors'
+export { dotdotEncoding, fileToImportPath, importPathToFile } from './convertors'
