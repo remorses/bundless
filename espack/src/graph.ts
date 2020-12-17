@@ -4,9 +4,15 @@ import path from 'path'
 import { osAgnosticPath } from './prebundle/support'
 import { fileToImportPath } from './utils'
 
+
+// examples are ./main.js and ../folder/main.js
+type OsAgnosticPath = string
+
+// examples are /path/file.js or /.../file.js
+type ImportPath = string
 export interface Node {
-    importers(): Set<string> // traverses the graph and finds nodes that have this in importees
-    importees: Set<string>
+    importers(): Set<OsAgnosticPath> // returns osAgnosticPaths
+    importees: Set<ImportPath>
     dirtyImportersCount: number // modules that have imported this and have been updated
     isHmrEnabled?: boolean
     hasHmrAccept?: boolean

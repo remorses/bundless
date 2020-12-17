@@ -13,13 +13,12 @@ interface ConnectedPayload {
 export interface UpdatePayload {
     type: 'update'
     path: string
-    changeSrcPath: string
-    timestamp: number
+    // changeSrcPath: string
+    // timestamp: number
 }
 
 interface FullReloadPayload {
     type: 'reload'
-    path: string
 }
 
 interface HotAcceptPayload {
