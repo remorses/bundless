@@ -18,6 +18,11 @@ Array [
 exports[`snapshots fixtures/with-commonjs-transform: traverse result 1`] = `
 Array [
   Object {
+    "importPath": "/main.js",
+    "importer": "http://localhost:9000/index.html",
+    "resolvedImportPath": "http://localhost:9000/main.js",
+  },
+  Object {
     "importPath": "/web_modules/index.js",
     "importer": "http://localhost:9000/main.js",
     "resolvedImportPath": "http://localhost:9000/web_modules/index.js",

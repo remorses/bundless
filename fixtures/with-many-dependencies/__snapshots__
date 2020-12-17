@@ -1,30 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`snapshots fixtures/with-dependencies: content-type headers 1`] = `
-Object {
-  "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
-  "http://localhost:9000/web_modules/index.js": "application/javascript; charset=utf-8",
-}
-`;
-
-exports[`snapshots fixtures/with-dependencies: mirror 1`] = `
-Array [
-  "index.html",
-  "main.js",
-  "web_modules/index.js",
-]
-`;
-
-exports[`snapshots fixtures/with-dependencies: traverse result 1`] = `
-Array [
-  Object {
-    "importPath": "/web_modules/index.js",
-    "importer": "http://localhost:9000/main.js",
-    "resolvedImportPath": "http://localhost:9000/web_modules/index.js",
-  },
-]
-`;
-
 exports[`snapshots fixtures/with-many-dependencies: content-type headers 1`] = `
 Object {
   "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
@@ -51,6 +26,11 @@ Array [
 
 exports[`snapshots fixtures/with-many-dependencies: traverse result 1`] = `
 Array [
+  Object {
+    "importPath": "/main.js",
+    "importer": "http://localhost:9000/index.html",
+    "resolvedImportPath": "http://localhost:9000/main.js",
+  },
   Object {
     "importPath": "/web_modules/slash/index.js",
     "importer": "http://localhost:9000/main.js",

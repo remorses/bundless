@@ -18,6 +18,11 @@ Array [
 exports[`snapshots fixtures/with-css: traverse result 1`] = `
 Array [
   Object {
+    "importPath": "/main.tsx",
+    "importer": "http://localhost:9000/index.html",
+    "resolvedImportPath": "http://localhost:9000/main.tsx",
+  },
+  Object {
     "importPath": "/file.css",
     "importer": "http://localhost:9000/main.tsx",
     "resolvedImportPath": "http://localhost:9000/file.css",

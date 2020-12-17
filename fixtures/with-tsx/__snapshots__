@@ -20,6 +20,11 @@ Array [
 exports[`snapshots fixtures/with-tsx: traverse result 1`] = `
 Array [
   Object {
+    "importPath": "/main.tsx",
+    "importer": "http://localhost:9000/index.html",
+    "resolvedImportPath": "http://localhost:9000/main.tsx",
+  },
+  Object {
     "importPath": "/text.ts",
     "importer": "http://localhost:9000/main.tsx",
     "resolvedImportPath": "http://localhost:9000/text.ts",

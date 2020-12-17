@@ -13,4 +13,12 @@ Array [
 ]
 `;
 
-exports[`snapshots fixtures/resolve-sourcemap: traverse result 1`] = `Array []`;
+exports[`snapshots fixtures/resolve-sourcemap: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "/folder/main.js",
+    "importer": "http://localhost:9000/index.html",
+    "resolvedImportPath": "http://localhost:9000/folder/main.js",
+  },
+]
+`;

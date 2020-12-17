@@ -1,4 +1,5 @@
 import fs from 'fs'
+import mime from 'mime-types'
 import path from 'path'
 import chalk from 'chalk'
 import { ServerMiddleware } from '../serve'
@@ -40,7 +41,11 @@ export const serveStaticMiddleware: ServerMiddleware = ({ root, app }) => {
                 fs.existsSync(filePath) &&
                 fs.statSync(filePath).isFile()
             ) {
-                await readFile(filePath)
+                ctx.body = await readFile(filePath)
+                ctx.type =
+                    mime.lookup(path.extname(filePath)) ||
+                    'application/octet-stream'
+                ctx.status = 200
             }
         }
 

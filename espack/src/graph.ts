@@ -43,7 +43,7 @@ export class Graph {
                 return `  '${path.relative(process.cwd(), k)}' -> [${[
                     ...node.importees,
                 ]
-                    .map((x) => `'${x}`)
+                    .map((x) => `'${x}'`)
                     .join(', ')}]`
             })
             .join('\n')

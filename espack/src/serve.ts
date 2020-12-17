@@ -249,6 +249,11 @@ export function createApp(config: Config) {
         })
     }
 
+    // app.use((_, next) => {
+    //     console.log(graph.toString())
+    //     return next()
+    // })
+
     const serverMiddleware = [
         hmrMiddleware,
         middlewares.pluginAssetsMiddleware,

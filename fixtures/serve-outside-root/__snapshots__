@@ -17,6 +17,11 @@ Array [
 exports[`snapshots fixtures/serve-outside-root: traverse result 1`] = `
 Array [
   Object {
+    "importPath": "/main.js",
+    "importer": "http://localhost:9000/index.html",
+    "resolvedImportPath": "http://localhost:9000/main.js",
+  },
+  Object {
     "importPath": "/.../outsider.js",
     "importer": "http://localhost:9000/main.js",
     "resolvedImportPath": "http://localhost:9000/.../outsider.js",
