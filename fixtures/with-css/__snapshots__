@@ -2,6 +2,7 @@
 
 exports[`snapshots fixtures/with-css: content-type headers 1`] = `
 Object {
+  "http://localhost:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://localhost:9000/file.css?namespace=file": "application/javascript; charset=utf-8",
   "http://localhost:9000/main.tsx": "application/javascript; charset=utf-8",
 }
@@ -9,6 +10,7 @@ Object {
 
 exports[`snapshots fixtures/with-css: mirror 1`] = `
 Array [
+  "_hmr_client.js",
   "file.css",
   "main.tsx",
 ]
@@ -25,6 +27,11 @@ Array [
     "importPath": "/file.css?namespace=file",
     "importer": "http://localhost:9000/main.tsx",
     "resolvedImportPath": "http://localhost:9000/file.css?namespace=file",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://localhost:9000/file.css?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/_hmr_client.js?namespace=hmr-client",
   },
 ]
 `;
