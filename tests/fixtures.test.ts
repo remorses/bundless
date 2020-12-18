@@ -40,13 +40,12 @@ describe('snapshots', () => {
 
     const PORT = '9000'
     const baseUrl = `http://localhost:${PORT}`
-    
+
     for (let [i, casePath] of cases.entries()) {
         const snapshotFile = path.resolve(casePath, '__snapshots__')
         test(`${slash(casePath)}`, async () => {
-            let root = casePath
+            let root = path.resolve(casePath)
             const server = await serve({ port: PORT, root })
-            root = path.resolve(casePath) 
             try {
                 const downloadFilesToDir = path.join(casePath, '__mirror__')
                 await fs.remove(downloadFilesToDir)
@@ -110,7 +109,7 @@ describe('snapshots', () => {
                 })
                 expect(allFiles).toMatchSpecificSnapshot(snapshotFile, 'mirror')
             } finally {
-                server && await server.close()
+                server && (await server.close())
             }
         })
     }

@@ -6,6 +6,7 @@ import slash from 'slash'
 import { ImportDeclaration } from '@babel/types'
 import { parse } from '../../utils'
 import { makeLegalIdentifier } from '@rollup/pluginutils'
+import { osAgnosticPath } from '../../prebundle/support'
 
 const analysisCache = new Map<string, OptimizeAnalysisResult | null>()
 
@@ -38,7 +39,7 @@ export function isOptimizedCjs(root: string, filename: string) {
     // console.log(`isOptimizedCjs ${filename}`)
     const analysis = getAnalysis(root)
     if (!analysis) return false
-    return !!analysis.isCommonjs[slash(path.relative(root, filename))]
+    return !!analysis.isCommonjs[osAgnosticPath(filename, root)]
 }
 
 type ImportNameSpecifier = { importedName: string; localName: string }

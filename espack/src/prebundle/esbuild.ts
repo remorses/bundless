@@ -131,7 +131,10 @@ function metafileToBundleMap(_options: {
                 return
             }
             // const specifier = inputFilesToSpecifiers[input]
-            return [osAgnosticPath(input, root), osAgnosticPath(output, root)]
+            return [
+                osAgnosticPath(input, root),
+                osAgnosticPath(path.resolve(esbuildCwd, output), root),
+            ]
         })
         .filter(Boolean) as any
 

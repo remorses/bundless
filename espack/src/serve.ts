@@ -97,7 +97,8 @@ export function createApp(config: Config) {
                         path.relative(root, resolvedPath),
                     )
                     if (bundleMap && bundleMap[relativePath]) {
-                        return bundleMap[relativePath]
+                        const webBundle = bundleMap[relativePath]
+                        return path.resolve(root, webBundle!)
                     }
                     // node module path not bundled, rerun bundling
                     const entryPoints = [...Object.keys(graph.nodes)].map((x) =>
@@ -120,7 +121,7 @@ export function createApp(config: Config) {
                             )}`,
                         )
                     }
-                    return webBundle
+                    return path.resolve(root, webBundle)
                     // lock server, start optimization, unlock, send refresh message
                 },
             }),
@@ -301,10 +302,10 @@ export function createApp(config: Config) {
         })
     }
 
-    app.use((_, next) => {
-        console.log(graph.toString())
-        return next()
-    })
+    // app.use((_, next) => {
+    //     console.log(graph.toString())
+    //     return next()
+    // })
 
     const serverMiddleware = [
         hmrMiddleware,

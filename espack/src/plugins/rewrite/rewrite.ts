@@ -129,6 +129,10 @@ export async function rewriteImports({
                     path: id,
                 })
 
+                if (!resolveResult) {
+                    throw new Error(`Cannot resolve '${id}' from '${importerFilePath}'`)
+                }
+
                 // TODO handle virtual files here
                 let resolvedImportPath = fileToImportPath(
                     root,
@@ -169,10 +173,11 @@ export async function rewriteImports({
 
                 if (resolvedImportPath !== id) {
                     debug(`    "${id}" --> "${resolvedImportPath}"`)
+                    console.log({root})
                     if (
                         isOptimizedCjs(
                             root,
-                            osAgnosticPath(resolveResult?.path, root),
+                            resolveResult?.path || '',
                         )
                     ) {
                         if (dynamicIndex === -1) {
