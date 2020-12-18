@@ -1,4 +1,4 @@
-import path from '/.../../path?namespace=node-builtins&resolved=path'
+import path from '/path?resolved=path&namespace=node-builtins'
 
 console.log({ path })
 

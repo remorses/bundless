@@ -130,36 +130,39 @@ export async function rewriteImports({
                 })
 
                 if (!resolveResult) {
-                    throw new Error(`Cannot resolve '${id}' from '${importerFilePath}'`)
+                    throw new Error(
+                        `Cannot resolve '${id}' from '${importerFilePath}'`,
+                    )
                 }
 
-                // TODO handle virtual files here
-                let resolvedImportPath = fileToImportPath(
-                    root,
-                    resolveResult?.path || '',
-                )
+                let resolvedImportPath = ''
+
+                // TODO here i handle non absolute paths, this means bare imports for node builtins, virtual files, ...
+                if (
+                    !path.isAbsolute(resolveResult?.path) ||
+                    (resolveResult.namespace &&
+                        resolveResult.namespace !== 'file')
+                ) {
+                    const query = resolvedImportPath.includes('?')
+                        ? `&resolved=${resolveResult.path}`
+                        : `?resolved=${resolveResult.path}`
+                    resolvedImportPath = '/' + resolveResult.path + query // TODO i am adding a slash / in front of virtual files, is that ok?
+                } else {
+                    resolvedImportPath = fileToImportPath(
+                        root,
+                        resolveResult?.path || '',
+                    )
+                }
 
                 const newNamespace = encodeURIComponent(
-                    resolveResult?.namespace || namespace, // TODO in esbuild do loaded files inherit namespace?
+                    resolveResult.namespace || namespace, // TODO in esbuild do loaded files inherit namespace?
                 )
                 resolvedImportPath += resolvedImportPath.includes('?')
                     ? `&namespace=${newNamespace}`
                     : `?namespace=${newNamespace}`
 
-                // TODO here i handle non absolute paths, this means bare imports for node builtins, virtual files, ...
-                if (
-                    resolveResult &&
-                    (!path.isAbsolute(resolveResult?.path) ||
-                        (resolveResult.namespace &&
-                            resolveResult.namespace !== 'file'))
-                ) {
-                    resolvedImportPath += resolvedImportPath.includes('?')
-                        ? `&resolved=${resolveResult.path}`
-                        : `?resolved=${resolveResult.path}`
-                }
-
                 const importeeNode =
-                    graph.nodes[osAgnosticPath(resolveResult?.path, root)]
+                    graph.nodes[osAgnosticPath(resolveResult.path, root)]
 
                 // TODO add ?import to paths to non js extensions, to handle them in plugins correctly, or maybe add ?namespace=file to let it load by plugins?
 
@@ -173,13 +176,7 @@ export async function rewriteImports({
 
                 if (resolvedImportPath !== id) {
                     debug(`    "${id}" --> "${resolvedImportPath}"`)
-                    console.log({root})
-                    if (
-                        isOptimizedCjs(
-                            root,
-                            resolveResult?.path || '',
-                        )
-                    ) {
+                    if (isOptimizedCjs(root, resolveResult.path || '')) {
                         if (dynamicIndex === -1) {
                             const exp = source.substring(expStart, expEnd)
                             const replacement = transformCjsImport(
