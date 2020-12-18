@@ -33,8 +33,8 @@ export async function traverseWithEsbuild({
     esbuildOptions = { plugins: [] },
     stopTraversing,
 }: Args): Promise<TraversalResultType[]> {
-    const destLoc = path.resolve(
-        await fsp.mkdtemp(path.join(os.tmpdir(), 'dest')),
+    const destLoc = await fsp.realpath(
+        path.resolve(await fsp.mkdtemp(path.join(os.tmpdir(), 'dest'))),
     )
 
     for (let entry of entryPoints) {

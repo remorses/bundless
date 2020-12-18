@@ -119,11 +119,11 @@ export async function rewriteImports({
                     continue
                 }
 
-                const absImporter = path.resolve(importerFilePath)
+                
                 const resolveResult = await resolve({
-                    importer: absImporter,
+                    importer: importerFilePath,
                     namespace: '',
-                    resolveDir: path.dirname(absImporter),
+                    resolveDir: path.dirname(importerFilePath),
                     path: id,
                 })
 
