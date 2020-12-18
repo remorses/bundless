@@ -82,48 +82,48 @@ export function createApp(config: Config) {
     const app = new Koa<DefaultState, DefaultContext>()
 
     const graph = new Graph({ root })
-    let bundleMap: BundleMap | undefined
+    let bundleMap: BundleMap | undefined // TODO persist the prebundle map on disk, validate that its web_modules exist when loading it from disk
+    async function onResolved(resolvedPath) {
+        if (!isNodeModule(resolvedPath)) {
+            return
+        }
+        const relativePath = slash(path.relative(root, resolvedPath))
+        if (bundleMap && bundleMap[relativePath]) {
+            const webBundle = bundleMap[relativePath]
+            return path.resolve(root, webBundle!)
+        }
+        // node module path not bundled, rerun bundling
+        const entryPoints = [...Object.keys(graph.nodes)].map((x) =>
+            path.resolve(root, x),
+        )
+        bundleMap = await prebundle({
+            entryPoints,
+            dest: path.resolve(root, WEB_MODULES_PATH),
+            root,
+        }).catch((e) => {
+            throw new Error(`Cannot prebundle: ${e}`)
+        })
+        const webBundle = bundleMap[relativePath]
+        if (!webBundle) {
+            throw new Error(
+                `Bundle for '${relativePath}' was not generated in prebundling phase\n${JSON.stringify(
+                    bundleMap,
+                    null,
+                    4,
+                )}`,
+            )
+        }
+        return path.resolve(root, webBundle)
+        // lock server, start optimization, unlock, send refresh message
+    }
+
     const pluginExecutor = createPluginsExecutor({
         root,
         plugins: [
             HmrClientPlugin({ getPort: () => app.context.port }),
             NodeResolvePlugin({
                 extensions: [...JS_EXTENSIONS],
-                async onResolved(resolvedPath) {
-                    if (!isNodeModule(resolvedPath)) {
-                        return
-                    }
-                    const relativePath = slash(
-                        path.relative(root, resolvedPath),
-                    )
-                    if (bundleMap && bundleMap[relativePath]) {
-                        const webBundle = bundleMap[relativePath]
-                        return path.resolve(root, webBundle!)
-                    }
-                    // node module path not bundled, rerun bundling
-                    const entryPoints = [...Object.keys(graph.nodes)].map((x) =>
-                        path.resolve(root, x),
-                    )
-                    bundleMap = await prebundle({
-                        entryPoints,
-                        dest: path.resolve(root, WEB_MODULES_PATH),
-                        root,
-                    }).catch((e) => {
-                        throw new Error(`Cannot prebundle: ${e}`)
-                    })
-                    const webBundle = bundleMap[relativePath]
-                    if (!webBundle) {
-                        throw new Error(
-                            `Bundle for '${relativePath}' was not generated in prebundling phase\n${JSON.stringify(
-                                bundleMap,
-                                null,
-                                4,
-                            )}`,
-                        )
-                    }
-                    return path.resolve(root, webBundle)
-                    // lock server, start optimization, unlock, send refresh message
-                },
+                onResolved,
             }),
             // NodeModulesPolyfillPlugin(),
             NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
