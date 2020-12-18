@@ -1,0 +1,34 @@
+{
+    "name": "espack-plugin-react-refresh",
+    "version": "0.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "repository": "https://github.com/remorses/espack.git",
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc -w",
+        "cli": "node bin.js"
+    },
+    "files": [
+        "dist",
+        "src"
+    ],
+    "bin": "cli.js",
+    "keywords": [],
+    "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/types": "^7.12.7",
+        "@types/node": "^14.14.13",
+        "espack": "*"
+    },
+    "dependencies": {
+        "@babel/core": "^7.9.6",
+        "@babel/plugin-syntax-import-meta": "^7.10.4",
+        "react-refresh": "^0.8.2"
+    },
+    "peerDependencies": {
+        "espack": "*"
+    }
+}
