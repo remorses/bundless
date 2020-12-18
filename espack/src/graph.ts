@@ -75,7 +75,7 @@ export class Graph {
             .join('\n')
         const legend =
             `\nLegend:\n` +
-            `${'[ ]'} has no HMR\n` +
+            // `${'[ ]'} has no HMR\n` +
             `${chalk.redBright('[ ]')} accepts HMR\n` +
             `${chalk.yellow('[ ]')} HMR enabled\n\n`
         return legend + `ImportGraph {\n${content}\n}\n`
