@@ -30,16 +30,27 @@ Still in progress
 
 Later:
 
--   Vue support
 -   multi entry
 -   SSR
+-   Vue support
 
 Plugins to implement
 
 -   plugin-react-refresh, react hmr support
 -   plugin-babel, use babel config to transpile stuff
 -   tsconfig paths support
--   
+-   nextjs like routing
+-   vue
+-   svelte
+-   prefresh
+
+TODOs:
+
+-   // TODO esbuild only supports returning js code in onLoad plugins, how to apply transform on other assets like html? i could pass none loader on these files? instead of using only load i could use onEmit to get contents, this way i can get any type of asset and understand content type from extension
+-   // TODO how to apply onTransform to onLoad when building? esbuild does not support onTransform, i need to convert onTransform to onLoad calls, i can do this converting the plugin executor to a monolith plugin that runs onTransform after onLoad, or run all the onTransform after every onLoad maintaining plugins separate but wrapped in closures
+-   // TODO how do i get content type from plugins?, i can use extension from onEmit results
+-   // TODO how to decide on what files apply plugins? i can try resolve the file, if no resolver is able to handle the extension, the file is considered asset, in case it can be resolved but shouldn't be converted to js (like css in `<link>`)? i can check if the content type is */* to see if file was imported from js
+-   // TODO esbuild build plugins will use onEmit to emit non js css, on dev it should instead return css, how to split these 2 logics?
 
 <!--
 todos:

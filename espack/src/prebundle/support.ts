@@ -7,8 +7,6 @@ import slash from 'slash'
 export function isUrl(req: string) {
     return req.startsWith('http://') || req.startsWith('https://')
 }
-
-// TODO import OptimizeAnalysisResult from vite
 export interface OptimizeAnalysisResult {
     isCommonjs: { [name: string]: true }
 }

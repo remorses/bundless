@@ -104,8 +104,11 @@ export function createPluginsExecutor({
                         root,
                     )}' with '${name}'`,
                 )
-                result = await callback(arg)
-                break
+                const newResult = await callback(arg)
+                if (newResult) {
+                    result = newResult
+                    break
+                }
             }
         }
         return result
@@ -132,7 +135,19 @@ export function createPluginsExecutor({
             const { filter } = options
             if (filter && filter.test(arg.path)) {
                 logger.debug(`resolving '${arg.path}' with '${name}'`)
-                result = await callback(arg)
+                const newResult = await callback(arg)
+                if (newResult) {
+                    logger.debug(
+                        `resolved '${
+                            arg.path
+                        }' with '${name}' as '${osAgnosticPath(
+                            newResult.path,
+                            root,
+                        )}'`,
+                    )
+                    result = newResult
+                    break
+                }
                 // break
             }
         }

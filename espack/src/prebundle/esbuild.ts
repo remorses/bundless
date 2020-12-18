@@ -9,6 +9,7 @@ import fs from 'fs'
 import path from 'path'
 import toUnixPath from 'slash'
 import tmpfile from 'tmpfile'
+import { JS_EXTENSIONS } from '../constants'
 import { DependencyStatsOutput } from './stats'
 import {
     OptimizeAnalysisResult,
@@ -46,7 +47,6 @@ export async function bundleWithEsBuild({
         mainFields: ['browser:module', 'module', 'browser', 'main'].filter(
             Boolean,
         ),
-        // sourcemap: 'inline', // TODO sourcemaps panics and gives a lot of CPU load
         define: {
             'process.env.NODE_ENV': JSON.stringify('dev'),
             global: 'window',
@@ -55,7 +55,10 @@ export async function bundleWithEsBuild({
         inject: [
             require.resolve('@esbuild-plugins/node-globals-polyfill/process'),
         ],
-        plugins: [NodeResolvePlugin({}), NodeModulesPolyfillPlugin()],
+        plugins: [
+            NodeResolvePlugin({ extensions: [...JS_EXTENSIONS] }),
+            NodeModulesPolyfillPlugin(),
+        ],
         tsconfig: tsconfigTempFile,
         bundle: true,
         format: 'esm',

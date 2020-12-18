@@ -94,6 +94,7 @@ export const serveStaticMiddleware: ServerMiddleware = ({ root, app }) => {
             await send(ctx, `index.html`, { root })
         } catch (e) {
             ctx.url = '/index.html'
+            ctx.path = '/index.html'
             ctx.status = 404
             return next()
         }

@@ -1,3 +1,4 @@
+import { NodeResolvePlugin } from '@esbuild-plugins/all'
 import { dataToEsm } from '@rollup/pluginutils'
 import hash_sum from 'hash-sum'
 import { CLIENT_PUBLIC_PATH } from '../constants'
@@ -25,7 +26,11 @@ export function codegenCss(
 export function CssPlugin({} = {}) {
     return {
         name: 'css',
-        setup: ({ onTransform }: PluginHooks) => {
+        setup: ({ onLoad, onResolve, onTransform }: PluginHooks) => {
+            NodeResolvePlugin({ name: 'css', extensions: ['.css'] }).setup({
+                onLoad,
+                onResolve,
+            })
             // TODO add a simple onLoad function creator to simply add support for reading from non js extension?
             onTransform({ filter: /\.css$/ }, async (args) => {
                 const css = args.contents

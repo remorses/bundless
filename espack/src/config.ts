@@ -1,8 +1,11 @@
+import { Plugin } from './plugin'
+
 export interface Config {
     root?: string
     port?: number | string
     cors?: boolean
     hmr?: HmrConfig | boolean
+    plugins?: Plugin[]
     jsx?:
         | 'vue'
         | 'preact'
@@ -12,9 +15,6 @@ export interface Config {
               fragment?: string
           }
 }
-
-
-
 
 export interface HmrConfig {
     protocol?: string
@@ -28,4 +28,4 @@ export interface HmrConfig {
      * @default 30000ms
      */
     timeout?: number
-  }
+}

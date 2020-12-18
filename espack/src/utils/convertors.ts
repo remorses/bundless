@@ -3,7 +3,6 @@ import { cleanUrl } from './utils'
 
 export const dotdotEncoding = '...'
 
-// TODO encode non js paths to proxy.js paths? this way i can know when a css file comes from an import?
 
 export function importPathToFile(root: string, request: string) {
     request = decodeURIComponent(request)

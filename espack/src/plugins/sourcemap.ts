@@ -1,3 +1,4 @@
+import { NodeResolvePlugin } from '@esbuild-plugins/all'
 import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
@@ -7,13 +8,22 @@ import { readFile } from '../utils'
 
 const debug = require('debug')('esbuild')
 
+// only dev plugin
 export function SourcemapPlugin({} = {}) {
     return {
         name: 'sourcemaps',
-        setup: ({ onLoad }: PluginHooks) => {
+        setup: ({ onLoad, onResolve }: PluginHooks) => {
+            // resolve .map files
+            NodeResolvePlugin({
+                name: 'sourcemaps',
+                extensions: ['.map'],
+            }).setup({
+                onResolve,
+                onLoad() {},
+            })
             onLoad({ filter: /\.map$/ }, async (args) => {
                 const file = args.path
-                const content = await readFile(file) // TODO convert to onTransform or this loadFile won't work
+                const content = await readFile(file)
                 const map: RawSourceMap = JSON.parse(content)
                 if (!map.sources) {
                     return
@@ -49,7 +59,7 @@ export function SourcemapPlugin({} = {}) {
                 )
                 map.sourcesContent = sourcesContent
                 const contents = JSON.stringify(map)
-                return { contents }
+                return { contents, loader: 'json' }
             })
         },
     }

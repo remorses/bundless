@@ -12,7 +12,7 @@
             "espack",
             "fixtures/*",
             "tests",
-            "plugins"
+            "plugins/*"
         ]
     },
     "devDependencies": {
@@ -26,7 +26,7 @@
         "ultra-runner": "^3.6.0"
     },
     "private": true,
-    "repository": "https://github.com/remorses/esbuild-plugins.git",
+    "repository": "https://github.com/remorses/espack.git",
     "author": "remorses <beats.by.morse@gmail.com>",
     "license": "MIT"
 }

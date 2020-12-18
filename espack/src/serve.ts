@@ -77,6 +77,7 @@ export async function serve(config: Config) {
 
 export function createApp(config: Config) {
     config = deepmerge({ root: process.cwd() }, config)
+
     const { root = process.cwd() } = config
 
     const app = new Koa<DefaultState, DefaultContext>()
@@ -88,9 +89,7 @@ export function createApp(config: Config) {
         plugins: [
             HmrClientPlugin({ getPort: () => app.context.port }),
             NodeResolvePlugin({
-                resolveOptions: {
-                    extensions: [...JS_EXTENSIONS],
-                },
+                extensions: [...JS_EXTENSIONS],
                 async onResolved(resolvedPath) {
                     if (!isNodeModule(resolvedPath)) {
                         return
@@ -106,7 +105,7 @@ export function createApp(config: Config) {
                         path.resolve(root, x),
                     )
                     bundleMap = await prebundle({
-                        entryPoints, // TODO get root from graph
+                        entryPoints,
                         dest: path.resolve(root, WEB_MODULES_PATH),
                         root: root,
                     }).catch((e) => {
@@ -132,6 +131,7 @@ export function createApp(config: Config) {
             ResolveSourcemapPlugin(),
             SourcemapPlugin(),
             CssPlugin(),
+            ...(config.plugins || []),
         ],
         config,
         graph,
@@ -150,8 +150,7 @@ export function createApp(config: Config) {
         //   ...chokidarWatchOptions
     })
 
-    // TODO watch workspace files, symlinked files are not included by default!
-    // TODO changing anything inside root that is not ignored and that is not in graph will cause reload
+    // changing anything inside root that is not ignored and that is not in graph will cause reload
     watcher.on('change', (filePath) => {
         onFileChange({
             graph,
@@ -180,7 +179,8 @@ export function createApp(config: Config) {
         // attach server context to koa context
         app.use(async (ctx, next) => {
             Object.assign(ctx, context)
-            // TODO skip non js code
+            // TODO skip assets, css and other assets loaded from <link> should not get processed, how? put the assets resolver first?
+            // TODO now i am skipping non js code from running inside onTransform, onLoad and onResolve, but is should be able to run onTransform on html for example
             if (ctx.path == '/') {
                 return next()
             }
@@ -192,7 +192,7 @@ export function createApp(config: Config) {
                         req.headers['accept'] === '*/*' ||
                         req.headers['sec-fetch-dest'] === 'script' ||
                         ctx.path.endsWith('.map')
-                    ) // TODO handle css here? css imported from js should have content type header '*/*'
+                    ) // css imported from js should have content type header '*/*'
                 )
             ) {
                 return next()
@@ -205,6 +205,8 @@ export function createApp(config: Config) {
                 )
             }
 
+            // TODO how to handle virtual files? virtual files will be resolved to a path here, i want them to remain as is
+            // i can rely on the namespace in query to load them correctly inside onLoad, in resolvers i can keep in mind that these paths will be prefixed by the root, /path/to/root/::virtual-file
             const filePath = importPathToFile(root, ctx.path)
 
             // watch files outside root
@@ -236,7 +238,7 @@ export function createApp(config: Config) {
                 : ''
 
             ctx.body = transformed.contents + sourcemap
-            ctx.type = 'js' // TODO get content type from loader
+            ctx.type = 'js' // TODO how to set right content type? an html transform could return html, should esbuild support custom content types? should i extend esbuild result types?
         })
     }
     const hmrMiddleware: ServerMiddleware = ({ app }) => {

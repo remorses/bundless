@@ -28,7 +28,7 @@ export function RewritePlugin({} = {}) {
         setup: ({ onTransform, resolve, graph, config }: PluginHooks) => {
             onTransform({ filter: jsTypeRegex }, async (args) => {
                 // console.log(graph.toString())
-                // TODO skip non js files
+
                 const contents = await rewriteImports({
                     graph,
                     importerFilePath: args.path,
@@ -79,159 +79,157 @@ export async function rewriteImports({
         const isHmrEnabled = source.includes('import.meta.hot')
         const hasEnv = source.includes('import.meta.env')
 
-        if (imports.length || isHmrEnabled || hasEnv) {
-            logger.log(`${importerFilePath}: rewriting`)
-            const s = new MagicString(source)
-            let hasReplaced = false
+        if (!imports.length && !isHmrEnabled && !hasEnv) {
+            logger.log(`no imports found for ${importerFilePath}`)
+            return source
+        }
+        // logger.log(`${importerFilePath}: rewriting`)
+        const s = new MagicString(source)
+        let hasReplaced = false
 
-            const currentNode = graph.ensureEntry(importerFilePath, { isHmrEnabled })
+        const currentNode = graph.ensureEntry(importerFilePath, {
+            isHmrEnabled,
+        })
 
-            for (let i = 0; i < imports.length; i++) {
-                const {
-                    s: start,
-                    e: end,
-                    d: dynamicIndex,
-                    ss: expStart,
-                    se: expEnd,
-                } = imports[i]
-                let id = source.substring(start, end)
-                const hasViteIgnore = /\/\*\s*@vite-ignore\s*\*\//.test(id)
-                let hasLiteralDynamicId = false
-                if (dynamicIndex >= 0) {
-                    // #998 remove comment
-                    id = id.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '')
-                    const literalIdMatch = id.match(
-                        /^\s*(?:'([^']+)'|"([^"]+)")\s*$/,
-                    )
-                    if (literalIdMatch) {
-                        hasLiteralDynamicId = true
-                        id = literalIdMatch[1] || literalIdMatch[2]
-                    }
+        for (let i = 0; i < imports.length; i++) {
+            const {
+                s: start,
+                e: end,
+                d: dynamicIndex,
+                ss: expStart,
+                se: expEnd,
+            } = imports[i]
+            let id = source.substring(start, end)
+            const hasViteIgnore = /\/\*\s*@vite-ignore\s*\*\//.test(id)
+            let hasLiteralDynamicId = false
+            if (dynamicIndex >= 0) {
+                // #998 remove comment
+                id = id.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '')
+                const literalIdMatch = id.match(
+                    /^\s*(?:'([^']+)'|"([^"]+)")\s*$/,
+                )
+                if (literalIdMatch) {
+                    hasLiteralDynamicId = true
+                    id = literalIdMatch[1] || literalIdMatch[2]
                 }
-                if (dynamicIndex === -1 || hasLiteralDynamicId) {
-                    // do not rewrite external imports
-                    if (isExternalUrl(id)) {
-                        continue
-                    }
+            }
+            if (dynamicIndex === -1 || hasLiteralDynamicId) {
+                // do not rewrite external imports
+                if (isExternalUrl(id)) {
+                    continue
+                }
 
-                    const absImporter = path.resolve(importerFilePath)
-                    const resolveResult = await resolve({
-                        importer: absImporter,
-                        namespace: '',
-                        resolveDir: path.dirname(absImporter),
-                        path: id,
-                    })
+                const absImporter = path.resolve(importerFilePath)
+                const resolveResult = await resolve({
+                    importer: absImporter,
+                    namespace: '',
+                    resolveDir: path.dirname(absImporter),
+                    path: id,
+                })
 
-                    let resolved = fileToImportPath(
-                        root,
-                        resolveResult?.path || '',
-                    )
+                let resolved = fileToImportPath(root, resolveResult?.path || '')
 
-                    const importeeNode =
-                        graph.nodes[osAgnosticPath(resolveResult?.path, root)]
+                const importeeNode =
+                    graph.nodes[osAgnosticPath(resolveResult?.path, root)]
 
-                    // refetch modules that are dirty
-                    if (importeeNode?.dirtyImportersCount > 0) {
-                        resolved += `?t=${Date.now()}`
-                        importeeNode.dirtyImportersCount--
-                    }
+                // TODO add ?import to paths to non js extensions, to handle them in plugins correctly, or maybe add ?namespace=file to let it load by plugins?
 
-                    if (resolved !== id) {
-                        debug(`    "${id}" --> "${resolved}"`)
-                        if (
-                            isOptimizedCjs(
-                                root,
-                                osAgnosticPath(resolveResult?.path, root),
+                // refetch modules that are dirty
+                if (importeeNode?.dirtyImportersCount > 0) {
+                    resolved += `?t=${Date.now()}`
+                    importeeNode.dirtyImportersCount--
+                }
+
+                if (resolved !== id) {
+                    debug(`    "${id}" --> "${resolved}"`)
+                    if (
+                        isOptimizedCjs(
+                            root,
+                            osAgnosticPath(resolveResult?.path, root),
+                        )
+                    ) {
+                        if (dynamicIndex === -1) {
+                            const exp = source.substring(expStart, expEnd)
+                            const replacement = transformCjsImport(
+                                exp,
+                                id,
+                                resolved,
+                                i,
                             )
-                        ) {
-                            if (dynamicIndex === -1) {
-                                const exp = source.substring(expStart, expEnd)
-                                const replacement = transformCjsImport(
-                                    exp,
-                                    id,
-                                    resolved,
-                                    i,
-                                )
-                                s.overwrite(expStart, expEnd, replacement)
-                            } else if (hasLiteralDynamicId) {
-                                // rewrite `import('package')`
-                                s.overwrite(
-                                    dynamicIndex,
-                                    end + 1,
-                                    `import('${resolved}').then(m=>m.default)`,
-                                )
-                            }
-                        } else {
+                            s.overwrite(expStart, expEnd, replacement)
+                        } else if (hasLiteralDynamicId) {
+                            // rewrite `import('package')`
                             s.overwrite(
-                                start,
-                                end,
-                                hasLiteralDynamicId
-                                    ? `'${resolved}'`
-                                    : resolved,
+                                dynamicIndex,
+                                end + 1,
+                                `import('${resolved}').then(m=>m.default)`,
                             )
                         }
-                        hasReplaced = true
+                    } else {
+                        s.overwrite(
+                            start,
+                            end,
+                            hasLiteralDynamicId ? `'${resolved}'` : resolved,
+                        )
                     }
-
-                    // save the import chain for hmr analysis
-                    const cleanImportee = cleanUrl(resolved)
-                    if (
-                        // no need to track hmr client or module dependencies
-                        cleanImportee !== CLIENT_PUBLIC_PATH
-                    ) {
-                        currentNode.importees.add(cleanImportee)
-                        logger.log(`${importerFilePath} imports ${cleanImportee}`)
-                    }
-                } else if (id !== 'import.meta' && !hasViteIgnore) {
-                    logger.log(
-                        chalk.yellow(
-                            `ignored dynamic import(${id}) in ${importerFilePath}.`,
-                        ),
-                    )
+                    hasReplaced = true
                 }
+
+                // save the import chain for hmr analysis
+                const cleanImportee = cleanUrl(resolved)
+                if (
+                    // no need to track hmr client or module dependencies
+                    cleanImportee !== CLIENT_PUBLIC_PATH
+                ) {
+                    currentNode.importees.add(cleanImportee)
+                    logger.log(`${importerFilePath} imports ${cleanImportee}`)
+                }
+            } else if (id !== 'import.meta' && !hasViteIgnore) {
+                logger.log(
+                    chalk.yellow(
+                        `ignored dynamic import(${id}) in ${importerFilePath}.`,
+                    ),
+                )
             }
-
-            // if (hasHMR) {
-            //     debugHmr(`rewriting ${importer} for HMR.`)
-            //     rewriteFileWithHMR(root, source, importer, resolver, s)
-            //     hasReplaced = true
-            // }
-
-            // if (hasEnv) {
-            //     debug(`    injecting import.meta.env for ${importer}`)
-            //     s.prepend(
-            //         `import __VITE_ENV__ from "${envPublicPath}"; ` +
-            //             `import.meta.env = __VITE_ENV__; `,
-            //     )
-            //     hasReplaced = true
-            // }
-
-            // since the importees may have changed due to edits,
-            // check if we need to remove this importer from certain importees
-            // if (prevImportees) {
-            //     prevImportees.forEach((importee) => {
-            //         if (!currentImportees.has(importee)) {
-            //             const importers = importerMap.get(importee)
-            //             if (importers) {
-            //                 importers.delete(importer)
-            //             }
-            //         }
-            //     })
-            // }
-
-            if (!hasReplaced) {
-                debug(`    nothing needs rewriting.`)
-            }
-
-            return hasReplaced ? s.toString() : source
-        } else {
-            debug(`${importerFilePath}: no imports found.`)
         }
 
-        return source
+        // if (hasHMR) {
+        //     debugHmr(`rewriting ${importer} for HMR.`)
+        //     rewriteFileWithHMR(root, source, importer, resolver, s)
+        //     hasReplaced = true
+        // }
+
+        // if (hasEnv) {
+        //     debug(`    injecting import.meta.env for ${importer}`)
+        //     s.prepend(
+        //         `import __VITE_ENV__ from "${envPublicPath}"; ` +
+        //             `import.meta.env = __VITE_ENV__; `,
+        //     )
+        //     hasReplaced = true
+        // }
+
+        // since the importees may have changed due to edits,
+        // check if we need to remove this importer from certain importees
+        // if (prevImportees) {
+        //     prevImportees.forEach((importee) => {
+        //         if (!currentImportees.has(importee)) {
+        //             const importers = importerMap.get(importee)
+        //             if (importers) {
+        //                 importers.delete(importer)
+        //             }
+        //         }
+        //     })
+        // }
+
+        if (!hasReplaced) {
+            debug(`    nothing needs rewriting.`)
+        }
+
+        return hasReplaced ? s.toString() : source
     } catch (e) {
         throw new Error(
-            `Error: module imports rewrite failed for ${importerFilePath}.\n` + e,
+            `Error: module imports rewrite failed for ${importerFilePath}.\n` +
+                e,
         )
         debug(source)
         return source
