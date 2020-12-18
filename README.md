@@ -49,11 +49,13 @@ Plugins to implement
 -   // TODO esbuild only supports returning js code in onLoad plugins, how to apply transform on other assets like html? i could pass none loader on these files? instead of using only load i could use onEmit to get contents, this way i can get any type of asset and understand content type from extension
 -   // TODO how to apply onTransform to onLoad when building? esbuild does not support onTransform, i need to convert onTransform to onLoad calls, i can do this converting the plugin executor to a monolith plugin that runs onTransform after onLoad, or run all the onTransform after every onLoad maintaining plugins separate but wrapped in closures
 -   // TODO how do i get content type from plugins?, i can use extension from onEmit results
--   // TODO how to decide on what files apply plugins? i can try resolve the file, if no resolver is able to handle the extension, the file is considered asset, in case it can be resolved but shouldn't be converted to js (like css in `<link>`)? i can check if the content type is */* to see if file was imported from js
+-   // TODO what files should be loaded by plugins? all imported files for sure + html files (to inject scripts, ...), this way html linked resources (like scripts) are also loaded by plugins (however static assets won't be loaded by plugins, like link tags)
 -   // TODO esbuild build plugins will use onEmit to emit non js css, on dev it should instead return css, how to split these 2 logics?
 -   // TODO include namespaces in imports, this way i can trigger the onLoad for virtual files (like the hmr client...), use the namespace query to recognize files imported from js
+-   // TODO make plugin to transform html, extracts js to load, 
 <!--
 todos:
+
 
 -   loading file imported from js is different than loading paths to serve directly
 -   resolve package only resolves js extensions, can i use it for everything? add a way to add resolvable extensions

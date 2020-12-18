@@ -91,7 +91,7 @@ export const transform = async ({
         sourcemap: true,
         // ensure source file name contains full query
         sourcefile: filePath,
-        target: 'es2020',
+        target: 'es2018',
         ...resolveJsxOptions(jsxOption),
     }
     try {
