@@ -51,7 +51,7 @@ TODOs:
 -   // TODO how do i get content type from plugins?, i can use extension from onEmit results
 -   // TODO how to decide on what files apply plugins? i can try resolve the file, if no resolver is able to handle the extension, the file is considered asset, in case it can be resolved but shouldn't be converted to js (like css in `<link>`)? i can check if the content type is */* to see if file was imported from js
 -   // TODO esbuild build plugins will use onEmit to emit non js css, on dev it should instead return css, how to split these 2 logics?
-
+-   // TODO include namespaces in imports, this way i can trigger the onLoad for virtual files (like the hmr client...), use the namespace query to recognize files imported from js
 <!--
 todos:
 

@@ -1,3 +1,4 @@
+import { O_TRUNC } from 'constants'
 import * as esbuild from 'esbuild'
 import { promises } from 'fs-extra'
 import { Config } from './config'
@@ -10,31 +11,34 @@ export interface Plugin {
     setup: (build: PluginHooks) => void
 }
 
+type OnResolveCallback = (
+    args: esbuild.OnResolveArgs,
+) => Maybe<esbuild.OnResolveResult | Promise<Maybe<esbuild.OnResolveResult>>>
+
+type OnLoadCallback = (
+    args: esbuild.OnLoadArgs,
+) => Maybe<esbuild.OnLoadResult | Promise<Maybe<esbuild.OnLoadResult>>>
+
+type OnTransformCallback = (
+    args: OnTransformArgs,
+) => Maybe<OnTransformResult | Promise<Maybe<OnTransformResult>>>
+
+type OnCloseCallback = () => void | Promise<void>
+
 export interface PluginHooks {
     resolve: PluginsExecutor['resolve']
     config: Config
     graph: Graph
     onResolve(
         options: esbuild.OnResolveOptions,
-        callback: (
-            args: esbuild.OnResolveArgs,
-        ) => Maybe<
-            esbuild.OnResolveResult | Promise<Maybe<esbuild.OnResolveResult>>
-        >,
+        callback: OnResolveCallback,
     ): void
-    onLoad(
-        options: esbuild.OnLoadOptions,
-        callback: (
-            args: esbuild.OnLoadArgs,
-        ) => Maybe<esbuild.OnLoadResult | Promise<Maybe<esbuild.OnLoadResult>>>,
-    ): void
+    onLoad(options: esbuild.OnLoadOptions, callback: OnLoadCallback): void
     onTransform(
         options: esbuild.OnLoadOptions,
-        callback: (
-            args: OnTransformArgs,
-        ) => Maybe<OnTransformResult | Promise<Maybe<OnTransformResult>>>,
+        callback: OnTransformCallback,
     ): void
-    onClose(options: {}, callback: () => void | Promise<void>): void
+    onClose(options: any, callback: OnCloseCallback): void
 }
 
 export interface OnTransformArgs {
@@ -69,10 +73,16 @@ export function createPluginsExecutor({
     graph: Graph
     root: string
 }): PluginsExecutor {
-    const transforms: any[] = []
-    const resolvers: any[] = []
-    const loaders: any[] = []
-    const closers: any[] = []
+    type PluginObject<CB> = {
+        name: string
+        options: { filter: RegExp; namespace?: string }
+        callback: CB
+    }
+
+    const transforms: PluginObject<OnTransformCallback>[] = []
+    const resolvers: PluginObject<OnResolveCallback>[] = []
+    const loaders: PluginObject<OnLoadCallback>[] = []
+    const closers: PluginObject<OnCloseCallback>[] = []
     for (let plugin of plugins) {
         const { name, setup } = plugin
         setup({
@@ -93,11 +103,29 @@ export function createPluginsExecutor({
             },
         })
     }
+
+    function matches(
+        options: { filter: RegExp; namespace?: string },
+        arg: { path?: string; namespace?: string },
+    ) {
+        if (!arg.path) {
+            return false
+        }
+        if (options.filter && !options.filter.test(arg.path)) {
+            return false
+        }
+        const optsNamespace = options.namespace || 'file'
+        const argNamespace = arg.namespace || 'file'
+        if (argNamespace !== optsNamespace) {
+            return false
+        }
+        return true
+    }
+
     async function load(arg) {
         let result
         for (let { callback, options, name } of loaders) {
-            const { filter } = options
-            if (filter && filter.test(arg.path)) {
+            if (matches(options, arg)) {
                 logger.debug(
                     `loading '${osAgnosticPath(
                         arg.path,
@@ -111,13 +139,14 @@ export function createPluginsExecutor({
                 }
             }
         }
-        return result
+        if (result) {
+            return { ...result, namespace: result.namespace || 'file' }
+        }
     }
     async function transform(arg) {
         let result
         for (let { callback, options, name } of transforms) {
-            const { filter } = options
-            if (filter && filter.test(arg.path)) {
+            if (matches(options, arg)) {
                 logger.debug(`transforming '${arg.path}' with '${name}'`)
                 const newResult = await callback(arg)
                 if (newResult?.contents) {
@@ -132,8 +161,7 @@ export function createPluginsExecutor({
     async function resolve(arg) {
         let result
         for (let { callback, options, name } of resolvers) {
-            const { filter } = options
-            if (filter && filter.test(arg.path)) {
+            if (matches(options, arg)) {
                 logger.debug(`resolving '${arg.path}' with '${name}'`)
                 const newResult = await callback(arg)
                 if (newResult) {
@@ -151,13 +179,15 @@ export function createPluginsExecutor({
                 // break
             }
         }
-        return result
+        if (result) {
+            return { ...result, namespace: result.namespace || 'file' }
+        }
     }
-    async function close(arg) {
+    async function close() {
         let result
         for (let { callback, options, name } of closers) {
             logger.debug(`cleaning resources for '${name}'`)
-            await callback(arg)
+            await callback()
         }
         return result
     }
