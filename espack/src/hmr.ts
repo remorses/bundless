@@ -14,6 +14,7 @@ export async function onFileChange({
     filePath: string
     sendHmrMessage: (x: HMRPayload) => any
 }) {
+    console.log(graph.toString())
     const relativePath = osAgnosticPath(filePath, root)
     const importPath = fileToImportPath(root, filePath)
 

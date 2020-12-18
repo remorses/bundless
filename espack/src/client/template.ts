@@ -220,7 +220,10 @@ socket.addEventListener('message', ({ data: _data }) => {
     }
     const data: HMRPayload = JSON.parse(_data)
     if (data.type === 'connected') {
-        setInterval(() => socket.send('ping'), __HMR_TIMEOUT__)
+        setInterval(
+            () => socket.send(JSON.stringify({ type: 'ping' })),
+            __HMR_TIMEOUT__,
+        )
         return
     }
     if (data.type === 'reload') {

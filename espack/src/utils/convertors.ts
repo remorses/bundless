@@ -14,7 +14,7 @@ export function importPathToFile(root: string, request: string) {
 }
 
 export function fileToImportPath(root: string, filePath: string) {
-    filePath = path.resolve(filePath)
+    filePath = path.resolve(root, filePath)
     filePath = path.relative(root, filePath)
     filePath = filePath.replace('..', dotdotEncoding)
     filePath = '/' + filePath

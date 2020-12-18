@@ -199,7 +199,7 @@ socket.addEventListener('message', ({ data: _data }) => {
     }
     const data = JSON.parse(_data);
     if (data.type === 'connected') {
-        setInterval(() => socket.send('ping'), 30000);
+        setInterval(() => socket.send(JSON.stringify({ type: 'ping' })), 30000);
         return;
     }
     if (data.type === 'reload') {

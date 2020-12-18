@@ -1,9 +1,9 @@
 // importee and importers must be relative paths from root, they can be converted to requests just prepending /
 
 import path from 'path'
+import chalk from 'chalk'
 import { osAgnosticPath } from './prebundle/support'
 import { fileToImportPath } from './utils'
-
 
 // examples are ./main.js and ../folder/main.js
 type OsAgnosticPath = string
@@ -55,13 +55,28 @@ export class Graph {
         const content = Object.keys(this.nodes)
             .map((k) => {
                 const node = this.nodes[k]
-                return `  '${path.relative(process.cwd(), k)}' -> [${[
-                    ...node.importees,
-                ]
-                    .map((x) => `'${x}'`)
-                    .join(', ')}]`
+                let key = path.relative(process.cwd(), k)
+                if (node.isHmrEnabled) {
+                    key = chalk.yellow(chalk.underline(key))
+                }
+                if (node.hasHmrAccept) {
+                    key = chalk.redBright(chalk.underline(key))
+                }
+                return `    ${key} -> ${JSON.stringify(
+                    [...node.importees],
+                    null,
+                    4,
+                )
+                    .split('\n')
+                    .map((x) => '    ' + x)
+                    .join('\n')
+                    .trim()}`
             })
             .join('\n')
-        return `Graph {\n${content}\n}\n`
+        const legend =
+            `\nLegend:\n` +
+            `${chalk.redBright('[ ]')} accepts HMR\n` +
+            `${chalk.yellow('[ ]')} HMR enabled\n\n`
+        return legend + `ImportGraph {\n${content}\n}\n`
     }
 }

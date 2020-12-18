@@ -86,9 +86,11 @@ export async function rewriteImports({
             logger.log(`no imports found for ${importerFilePath}`)
             return source
         }
-        // logger.log(`${importerFilePath}: rewriting`)
-        const s = new MagicString(source)
-        let hasReplaced = false
+        if (isHmrEnabled) {
+            source += `import * as  __HMR__ from '${CLIENT_PUBLIC_PATH}';\nimport.meta.hot = __HMR__.createHotContext(import.meta.url);\n`
+        }
+
+        const magicString = new MagicString(source)
 
         const currentNode = graph.ensureEntry(importerFilePath, {
             isHmrEnabled,
@@ -137,7 +139,7 @@ export async function rewriteImports({
 
                 let resolvedImportPath = ''
 
-                // handle bare imports like node builtins, virtual files, ... 
+                // handle bare imports like node builtins, virtual files, ...
                 if (
                     !path.isAbsolute(resolveResult?.path) ||
                     (resolveResult.namespace &&
@@ -182,17 +184,17 @@ export async function rewriteImports({
                                 resolvedImportPath,
                                 i,
                             )
-                            s.overwrite(expStart, expEnd, replacement)
+                            magicString.overwrite(expStart, expEnd, replacement)
                         } else if (hasLiteralDynamicId) {
                             // rewrite `import('package')`
-                            s.overwrite(
+                            magicString.overwrite(
                                 dynamicIndex,
                                 end + 1,
                                 `import('${resolvedImportPath}').then(m=>m.default)`,
                             )
                         }
                     } else {
-                        s.overwrite(
+                        magicString.overwrite(
                             start,
                             end,
                             hasLiteralDynamicId
@@ -200,7 +202,6 @@ export async function rewriteImports({
                                 : resolvedImportPath,
                         )
                     }
-                    hasReplaced = true
                 }
 
                 // save the import chain for hmr analysis
@@ -249,16 +250,12 @@ export async function rewriteImports({
         //     })
         // }
 
-        if (!hasReplaced) {
-            debug(`    nothing needs rewriting.`)
-        }
-
-        return hasReplaced ? s.toString() : source
+        return magicString.toString()
     } catch (e) {
-        throw new Error(
+        e.message =
             `Error: module imports rewrite failed for ${importerFilePath}.\n` +
-                e,
-        )
+            e
+        throw e
         debug(source)
         return source
     }

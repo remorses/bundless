@@ -35,3 +35,6 @@ interface ErrorPayload {
 interface ConnectPayload {
     type: 'connected'
 }
+interface PingPayload {
+    type: 'ping'
+}

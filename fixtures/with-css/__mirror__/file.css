@@ -1,4 +1,18 @@
-import { updateStyle } from "/_hmr_client.js?namespace=hmr-client"
-const css = "body {\n    background: lightcoral;\n}"
-updateStyle("134f667f", css)
+
+import * as  __HMR__ from '/_hmr_client.js?namespace=hmr-client';
+import.meta.hot = __HMR__.createHotContext(import.meta.url);
+
+const css = "body {\n    background: lightcoral;\n}\n\npre {\n    background: white;\n}\n\n";
+if (typeof document !== 'undefined') {
+  import.meta.hot.accept();
+  import.meta.hot.dispose(() => {
+    document.head.removeChild(styleEl);
+  });
+
+  const styleEl = document.createElement("style");
+  const codeEl = document.createTextNode(css);
+  styleEl.type = 'text/css';
+  styleEl.appendChild(codeEl);
+  document.head.appendChild(styleEl);
+}
 export default css

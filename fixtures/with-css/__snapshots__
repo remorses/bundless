@@ -4,7 +4,7 @@ exports[`snapshots fixtures/with-css: content-type headers 1`] = `
 Object {
   "http://localhost:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://localhost:9000/file.css?namespace=file": "application/javascript; charset=utf-8",
-  "http://localhost:9000/main.tsx": "application/javascript; charset=utf-8",
+  "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -12,21 +12,26 @@ exports[`snapshots fixtures/with-css: mirror 1`] = `
 Array [
   "_hmr_client.js",
   "file.css",
-  "main.tsx",
+  "main.js",
 ]
 `;
 
 exports[`snapshots fixtures/with-css: traverse result 1`] = `
 Array [
   Object {
-    "importPath": "/main.tsx",
+    "importPath": "/main.js",
     "importer": "http://localhost:9000/index.html",
-    "resolvedImportPath": "http://localhost:9000/main.tsx",
+    "resolvedImportPath": "http://localhost:9000/main.js",
   },
   Object {
     "importPath": "/file.css?namespace=file",
-    "importer": "http://localhost:9000/main.tsx",
+    "importer": "http://localhost:9000/main.js",
     "resolvedImportPath": "http://localhost:9000/file.css?namespace=file",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://localhost:9000/main.js",
+    "resolvedImportPath": "http://localhost:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",

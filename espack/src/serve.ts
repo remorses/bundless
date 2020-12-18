@@ -61,7 +61,7 @@ export async function serve(config: Config) {
     const { server, close } = await listen(app.callback(), {
         port: config.port || DEFAULT_PORT,
         showURL: true,
-        // open: true,
+        open: true,
     })
     app.context.server = server
     const port = server.address()?.['port']
@@ -77,7 +77,10 @@ export async function serve(config: Config) {
 }
 
 export function createApp(config: Config) {
-    const { root = process.cwd() } = config
+    if (!config.root) {
+        config.root = process.cwd()
+    }
+    const { root } = config
 
     const app = new Koa<DefaultState, DefaultContext>()
 
@@ -125,7 +128,6 @@ export function createApp(config: Config) {
                 extensions: [...JS_EXTENSIONS],
                 onResolved,
             }),
-            // NodeModulesPolyfillPlugin(),
             NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
             EsbuildTransformPlugin(),
             RewritePlugin(),
@@ -268,9 +270,8 @@ export function createApp(config: Config) {
             })
 
             wss.on('connection', (socket) => {
-                debug('ws client connected')
                 socket.send(JSON.stringify({ type: 'connected' }))
-                wss.on('message', (data) => {
+                socket.on('message', (data) => {
                     const message: HMRPayload = JSON.parse(data.toString())
                     if (message.type === 'hotAccept') {
                         const entry = graph.ensureEntry(
