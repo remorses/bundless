@@ -1,4 +1,5 @@
-import { useState } from '/web_modules/index.js?namespace=file'
+import $viteCjsImport0_react from "/web_modules/index.js?namespace=file";
+const useState = $viteCjsImport0_react["useState"];
 
 console.log('useState', String(useState))
 

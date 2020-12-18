@@ -1,4 +1,5 @@
-import slash from '/web_modules/index.js?namespace=file'
+import $viteCjsImport0_slash from "/web_modules/index.js?namespace=file";
+const slash = $viteCjsImport0_slash;
 
 console.log('Hello world!')
 

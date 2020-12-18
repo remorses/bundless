@@ -78,14 +78,15 @@ export async function bundleWithEsBuild({
     )
 
     meta = removeColonsFromMeta(meta)
-
+    const esbuildCwd = process.cwd()
     const bundleMap = metafileToBundleMap({
         entryPoints,
         meta,
-        esbuildCwd: process.cwd(),
+        esbuildCwd,
         root,
     })
-    const analysis = metafileToAnalysis({ meta, root })
+
+    const analysis = metafileToAnalysis({ meta, root, esbuildCwd })
 
     const stats = metafileToStats({ meta, destLoc })
 
@@ -142,8 +143,9 @@ function metafileToBundleMap(_options: {
 function metafileToAnalysis(_options: {
     meta: Metadata
     root: string
+    esbuildCwd: string
 }): OptimizeAnalysisResult {
-    const { meta, root } = _options
+    const { meta, root, esbuildCwd } = _options
     const analysis: OptimizeAnalysisResult = {
         isCommonjs: fromEntries(
             Object.keys(meta.outputs)
@@ -162,7 +164,10 @@ function metafileToAnalysis(_options: {
                         return
                     }
                     // what if imported path ahs not yet been converted by prebundler? then prebundler should lock server, it's impossible
-                    return [osAgnosticPath(output, root), isCommonjs]
+                    return [
+                        osAgnosticPath(path.resolve(esbuildCwd, output), root),
+                        isCommonjs,
+                    ]
                 })
                 .filter(Boolean) as any,
         ),
