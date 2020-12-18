@@ -62,6 +62,54 @@ export interface PluginsExecutor {
     close({}): Promise<void>
 }
 
+// adds onTransform support to esbuild
+export function wrapPluginForEsbuild(_args: {
+    plugin: Plugin
+    config: Config
+    graph: Graph
+    pluginsExecutor: PluginsExecutor
+}): esbuild.Plugin {
+    const { plugin, config, graph, pluginsExecutor } = _args
+    return {
+        name: plugin.name,
+        setup({ onLoad, onResolve }) {
+            plugin.setup({
+                onResolve,
+                // the plugin transform is already inside pluginsExecutor
+                onTransform() {},
+                onClose() {},
+                graph,
+                config,
+                resolve: pluginsExecutor.resolve,
+                // wrap onLoad to execute other plugins transforms
+                onLoad(options, callback) {
+                    onLoad(options, async (args) => {
+                        const result = await callback(args)
+                        if (!result) {
+                            return
+                        }
+                        // run all transforms from other plugins
+                        const transformed = await pluginsExecutor.transform({
+                            path: args.path,
+                            contents: String(result?.contents),
+                            loader: result.loader,
+                        })
+                        if (transformed) {
+                            return {
+                                ...result,
+                                contents: transformed.contents,
+                                loader: transformed.loader || result.loader,
+                                resolveDir: result.resolveDir,
+                            }
+                        }
+                        return result
+                    })
+                },
+            })
+        },
+    }
+}
+
 export function createPluginsExecutor({
     plugins,
     config,

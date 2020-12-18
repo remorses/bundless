@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { escapeRegExp } from 'lodash'
 import { CLIENT_PUBLIC_PATH } from '../constants'
 import { PluginHooks } from '../plugin'
 import { ServerMiddleware } from '../serve'
@@ -9,7 +10,7 @@ export function HmrClientPlugin({ getPort }) {
     return {
         name: 'hmr-client',
         setup: ({ onLoad, config }: PluginHooks) => {
-            onLoad({ filter: new RegExp(CLIENT_PUBLIC_PATH) }, async (args) => {
+            onLoad({ filter: new RegExp(CLIENT_PUBLIC_PATH + '$') }, async (args) => {
                 const clientCode = fs
                     .readFileSync(clientFilePath, 'utf-8')
                     .replace(`__MODE__`, JSON.stringify('development'))
