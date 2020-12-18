@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/with-linked-workspace: content-type headers 1`] = `
+Object {
+  "http://localhost:9000/.../with-many-dependencies/main.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/chunk.NBBEL644.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/chunk.NLNFNP3B.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/react-dom/index.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/react/index.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/slash/index.js?namespace=file": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/with-linked-workspace: mirror 1`] = `
+Array [
+  "main.js",
+  "web_modules/chunk.NBBEL644.js",
+  "web_modules/chunk.NLNFNP3B.js",
+  "web_modules/react-dom/index.js",
+  "web_modules/react/index.js",
+  "web_modules/slash/index.js",
+]
+`;
+
+exports[`snapshots fixtures/with-linked-workspace: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "/main.js",
+    "importer": "http://localhost:9000/index.html",
+    "resolvedImportPath": "http://localhost:9000/main.js",
+  },
+  Object {
+    "importPath": "/.../with-many-dependencies/main.js?namespace=file",
+    "importer": "http://localhost:9000/main.js",
+    "resolvedImportPath": "http://localhost:9000/.../with-many-dependencies/main.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/slash/index.js?namespace=file",
+    "importer": "http://localhost:9000/.../with-many-dependencies/main.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/slash/index.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/react/index.js?namespace=file",
+    "importer": "http://localhost:9000/.../with-many-dependencies/main.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/react/index.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/react-dom/index.js?namespace=file",
+    "importer": "http://localhost:9000/.../with-many-dependencies/main.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/react-dom/index.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NLNFNP3B.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/slash/index.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NLNFNP3B.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NBBEL644.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NBBEL644.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NLNFNP3B.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NLNFNP3B.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NBBEL644.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/react-dom/index.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NBBEL644.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NLNFNP3B.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/react-dom/index.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NLNFNP3B.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NLNFNP3B.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/chunk.NBBEL644.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NLNFNP3B.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.NLNFNP3B.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/chunk.NBBEL644.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.NLNFNP3B.js?namespace=file",
+  },
+]
+`;

@@ -1,0 +1,8 @@
+{
+    "name": "with-linked-workspace",
+    "version": "0.0.0",
+    "private": true,
+    "dependencies": {
+        "with-many-dependencies": "*"
+    }
+}

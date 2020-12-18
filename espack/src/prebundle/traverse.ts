@@ -2,7 +2,7 @@ import { NodeResolvePlugin } from '../plugins'
 import deepmerge from 'deepmerge'
 import { build, BuildOptions, Metadata, Plugin } from 'esbuild'
 import { promises as fsp } from 'fs'
-import fsx from 'fs-extra'
+import fsx, { copySync } from 'fs-extra'
 import os from 'os'
 import path from 'path'
 import slash from 'slash'
@@ -137,6 +137,7 @@ export async function traverseWithEsbuild({
                 importer: x.importer,
             }
         })
+        
         return res
     } finally {
         await fsx.remove(destLoc)
