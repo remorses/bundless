@@ -9,7 +9,6 @@ Object {
 
 exports[`snapshots fixtures/with-commonjs-transform: mirror 1`] = `
 Array [
-  "index.html",
   "main.js",
   "web_modules/index.js",
 ]

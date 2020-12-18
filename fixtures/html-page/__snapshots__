@@ -2,10 +2,6 @@
 
 exports[`snapshots fixtures/html-page: content-type headers 1`] = `Object {}`;
 
-exports[`snapshots fixtures/html-page: mirror 1`] = `
-Array [
-  "index.html",
-]
-`;
+exports[`snapshots fixtures/html-page: mirror 1`] = `Array []`;
 
 exports[`snapshots fixtures/html-page: traverse result 1`] = `Array []`;

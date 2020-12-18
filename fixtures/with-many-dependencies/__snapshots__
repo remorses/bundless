@@ -13,11 +13,9 @@ Object {
 
 exports[`snapshots fixtures/with-many-dependencies: mirror 1`] = `
 Array [
-  "index.html",
   "main.js",
   "web_modules/chunk.NBBEL644.js",
   "web_modules/chunk.NLNFNP3B.js",
-  "web_modules/index.js",
   "web_modules/react-dom/index.js",
   "web_modules/react/index.js",
   "web_modules/slash/index.js",

@@ -10,7 +10,6 @@ Object {
 
 exports[`snapshots fixtures/with-typescript: mirror 1`] = `
 Array [
-  "index.html",
   "main.ts",
   "text.ts",
   "utils.ts",

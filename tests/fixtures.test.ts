@@ -46,7 +46,8 @@ describe('snapshots', () => {
             const root = path.resolve(casePath)
             const server = await serve({ port: PORT, root })
             try {
-                const downloadFilesToDir = path.join(casePath, 'mirror')
+                const downloadFilesToDir = path.join(casePath, '__mirror__')
+                await fs.remove(downloadFilesToDir)
                 const contentTypes = {}
                 const res = await traverseEsModules({
                     entryPoints: [new URL('index.html', baseUrl).toString()],

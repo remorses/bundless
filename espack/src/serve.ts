@@ -76,8 +76,6 @@ export async function serve(config: Config) {
 }
 
 export function createApp(config: Config) {
-    config = deepmerge({ root: process.cwd() }, config)
-
     const { root = process.cwd() } = config
 
     const app = new Koa<DefaultState, DefaultContext>()
@@ -107,7 +105,7 @@ export function createApp(config: Config) {
                     bundleMap = await prebundle({
                         entryPoints,
                         dest: path.resolve(root, WEB_MODULES_PATH),
-                        root: root,
+                        root,
                     }).catch((e) => {
                         throw new Error(`Cannot prebundle: ${e}`)
                     })

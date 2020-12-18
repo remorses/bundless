@@ -9,7 +9,6 @@ Object {
 exports[`snapshots fixtures/resolve-sourcemap: mirror 1`] = `
 Array [
   "folder/main.js",
-  "index.html",
 ]
 `;
 

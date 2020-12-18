@@ -10,7 +10,6 @@ Object {
 
 exports[`snapshots fixtures/with-tsx: mirror 1`] = `
 Array [
-  "index.html",
   "main.tsx",
   "text.ts",
   "utils.ts",

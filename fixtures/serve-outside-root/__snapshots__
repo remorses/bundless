@@ -9,7 +9,6 @@ Object {
 
 exports[`snapshots fixtures/serve-outside-root: mirror 1`] = `
 Array [
-  "index.html",
   "main.js",
 ]
 `;

@@ -8,7 +8,6 @@ Object {
 
 exports[`snapshots fixtures/simple-js: mirror 1`] = `
 Array [
-  "index.html",
   "main.js",
 ]
 `;

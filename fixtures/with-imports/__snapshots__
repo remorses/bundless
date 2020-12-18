@@ -9,7 +9,6 @@ Object {
 
 exports[`snapshots fixtures/with-imports: mirror 1`] = `
 Array [
-  "index.html",
   "main.js",
   "text.js",
 ]
