@@ -3,8 +3,8 @@
 exports[`snapshots fixtures/with-tsx: content-type headers 1`] = `
 Object {
   "http://localhost:9000/main.tsx": "application/javascript; charset=utf-8",
-  "http://localhost:9000/text.ts": "application/javascript; charset=utf-8",
-  "http://localhost:9000/utils.ts": "application/javascript; charset=utf-8",
+  "http://localhost:9000/text.ts?namespace=file": "application/javascript; charset=utf-8",
+  "http://localhost:9000/utils.ts?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -25,14 +25,14 @@ Array [
     "resolvedImportPath": "http://localhost:9000/main.tsx",
   },
   Object {
-    "importPath": "/text.ts",
+    "importPath": "/text.ts?namespace=file",
     "importer": "http://localhost:9000/main.tsx",
-    "resolvedImportPath": "http://localhost:9000/text.ts",
+    "resolvedImportPath": "http://localhost:9000/text.ts?namespace=file",
   },
   Object {
-    "importPath": "/utils.ts",
-    "importer": "http://localhost:9000/text.ts",
-    "resolvedImportPath": "http://localhost:9000/utils.ts",
+    "importPath": "/utils.ts?namespace=file",
+    "importer": "http://localhost:9000/text.ts?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/utils.ts?namespace=file",
   },
 ]
 `;

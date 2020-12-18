@@ -129,6 +129,13 @@ export async function rewriteImports({
 
                 let resolved = fileToImportPath(root, resolveResult?.path || '')
 
+                const namespace = encodeURIComponent(
+                    resolveResult?.namespace || 'file',
+                )
+                resolved += resolved.includes('?')
+                    ? `&namespace=${namespace}`
+                    : `?namespace=${namespace}`
+
                 const importeeNode =
                     graph.nodes[osAgnosticPath(resolveResult?.path, root)]
 
@@ -136,7 +143,9 @@ export async function rewriteImports({
 
                 // refetch modules that are dirty
                 if (importeeNode?.dirtyImportersCount > 0) {
-                    resolved += `?t=${Date.now()}`
+                    resolved += resolved.includes('?')
+                        ? `&t=${Date.now()}`
+                        : `?t=${Date.now()}`
                     importeeNode.dirtyImportersCount--
                 }
 

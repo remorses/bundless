@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-css: content-type headers 1`] = `
 Object {
-  "http://localhost:9000/file.css": "application/javascript; charset=utf-8",
+  "http://localhost:9000/file.css?namespace=file": "application/javascript; charset=utf-8",
   "http://localhost:9000/main.tsx": "application/javascript; charset=utf-8",
 }
 `;
@@ -23,9 +23,9 @@ Array [
     "resolvedImportPath": "http://localhost:9000/main.tsx",
   },
   Object {
-    "importPath": "/file.css",
+    "importPath": "/file.css?namespace=file",
     "importer": "http://localhost:9000/main.tsx",
-    "resolvedImportPath": "http://localhost:9000/file.css",
+    "resolvedImportPath": "http://localhost:9000/file.css?namespace=file",
   },
 ]
 `;

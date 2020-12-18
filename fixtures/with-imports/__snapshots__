@@ -3,7 +3,7 @@
 exports[`snapshots fixtures/with-imports: content-type headers 1`] = `
 Object {
   "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
-  "http://localhost:9000/text.js": "application/javascript; charset=utf-8",
+  "http://localhost:9000/text.js?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -23,9 +23,9 @@ Array [
     "resolvedImportPath": "http://localhost:9000/main.js",
   },
   Object {
-    "importPath": "/text.js",
+    "importPath": "/text.js?namespace=file",
     "importer": "http://localhost:9000/main.js",
-    "resolvedImportPath": "http://localhost:9000/text.js",
+    "resolvedImportPath": "http://localhost:9000/text.js?namespace=file",
   },
 ]
 `;
