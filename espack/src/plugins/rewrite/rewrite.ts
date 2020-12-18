@@ -38,7 +38,7 @@ export function RewritePlugin({} = {}) {
                     source: args.contents,
                 })
                 return {
-                    contents, // TODO module rewrite needs sourcemaps?
+                    contents, // TODO does module rewrite needs sourcemaps?
                 }
             })
         },
@@ -137,16 +137,13 @@ export async function rewriteImports({
 
                 let resolvedImportPath = ''
 
-                // TODO here i handle non absolute paths, this means bare imports for node builtins, virtual files, ...
+                // handle bare imports like node builtins, virtual files, ... 
                 if (
                     !path.isAbsolute(resolveResult?.path) ||
                     (resolveResult.namespace &&
                         resolveResult.namespace !== 'file')
                 ) {
-                    const query = resolvedImportPath.includes('?')
-                        ? `&resolved=${resolveResult.path}`
-                        : `?resolved=${resolveResult.path}`
-                    resolvedImportPath = '/' + resolveResult.path + query // TODO i am adding a slash / in front of virtual files, is that ok?
+                    resolvedImportPath = '/' + resolveResult.path
                 } else {
                     resolvedImportPath = fileToImportPath(
                         root,

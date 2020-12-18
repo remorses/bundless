@@ -4,7 +4,7 @@ import path from 'path'
 import { JS_EXTENSIONS } from '../constants'
 import { NodeModulesPolyfillPlugin, NodeResolvePlugin,  } from '../plugins'
 
-// TODO how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
+// how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
 // TODO build for SSR, 
 export async function build({

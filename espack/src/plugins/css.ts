@@ -31,7 +31,6 @@ export function CssPlugin({} = {}) {
                 onLoad,
                 onResolve,
             })
-            // TODO add a simple onLoad function creator to simply add support for reading from non js extension?
             onTransform({ filter: /\.css$/ }, async (args) => {
                 const css = args.contents
                 const id = hash_sum(args.path)

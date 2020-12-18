@@ -206,9 +206,11 @@ export function createApp(config: Config) {
                 )
             }
 
-            // TODO how to handle virtual files? virtual files will be resolved to a path here, i want them to remain as is
-            const resolvedPath = ctx.query.resolved
-                ? ctx.query.resolved
+            const isVirtual =
+                ctx.query.namespace && ctx.query.namespace !== 'file'
+            // do not resolve virtual files like node builtins to an absolute path
+            const resolvedPath = isVirtual
+                ? ctx.path.slice(1) // remove leading /
                 : importPathToFile(root, ctx.path)
 
             // watch files outside root
