@@ -1,4 +1,4 @@
-import { updateStyle } from "/_hmr_client.js"
+import { updateStyle } from "/_hmr_client.js?namespace=hmr-client"
 const css = "body {\n    background: lightcoral;\n}"
 updateStyle("134f667f", css)
 export default css

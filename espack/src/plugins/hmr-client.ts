@@ -6,11 +6,15 @@ import { ServerMiddleware } from '../serve'
 
 export const clientFilePath = require.resolve('../../esm/client/template.js')
 
+
+export const hmrClientNamespace = 'hmr-client'
+
 export function HmrClientPlugin({ getPort }) {
     return {
         name: 'hmr-client',
         setup: ({ onLoad, config }: PluginHooks) => {
-            onLoad({ filter: new RegExp(CLIENT_PUBLIC_PATH + '$') }, async (args) => {
+
+            onLoad({ filter: /.*/, namespace: hmrClientNamespace }, async (args) => {
                 const clientCode = fs
                     .readFileSync(clientFilePath, 'utf-8')
                     .replace(`__MODE__`, JSON.stringify('development'))
