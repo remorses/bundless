@@ -10,5 +10,8 @@
         "jest-specific-snapshot": "^4.0.0",
         "node-fetch": "2.6.1",
         "slash": "3.0.0"
+    },
+    "devDependencies": {
+        "@types/jest": "^26.0.19"
     }
 }

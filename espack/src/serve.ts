@@ -28,6 +28,7 @@ import {
     RewritePlugin,
     SourcemapPlugin,
     HmrClientPlugin,
+    NodeModulesPolyfillPlugin,
 } from './plugins'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
@@ -124,6 +125,7 @@ export function createApp(config: Config) {
                 },
             }),
             // NodeModulesPolyfillPlugin(),
+            NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
             EsbuildTransformPlugin(),
             RewritePlugin(),
             ResolveSourcemapPlugin(),
@@ -204,33 +206,35 @@ export function createApp(config: Config) {
             }
 
             // TODO how to handle virtual files? virtual files will be resolved to a path here, i want them to remain as is
-            // i can rely on the namespace in query to load them correctly inside onLoad, in resolvers i can keep in mind that these paths will be prefixed by the root, /path/to/root/::virtual-file
-            const filePath = importPathToFile(root, ctx.path)
+            const resolvedPath = ctx.query.resolved
+                ? ctx.query.resolved
+                : importPathToFile(root, ctx.path)
 
             // watch files outside root
             if (
                 ctx.path.startsWith('/' + dotdotEncoding) &&
-                !filePath.includes('node_modules')
+                !resolvedPath.includes('node_modules')
             ) {
-                watcher.add(filePath)
+                watcher.add(resolvedPath)
             }
 
+            const namespace = ctx.query.namespace || 'file'
             const loaded = await pluginExecutor.load({
-                path: filePath,
-                namespace: '',
+                path: resolvedPath,
+                namespace,
             })
             if (loaded == null || loaded.contents == null) {
                 return next()
             }
             const transformed = await pluginExecutor.transform({
-                path: filePath,
+                path: resolvedPath,
                 loader: loaded.loader,
+                namespace,
                 contents: String(loaded.contents),
             })
             if (transformed == null) {
                 return next()
             }
-
             const sourcemap = transformed.map
                 ? genSourceMapString(transformed.map)
                 : ''

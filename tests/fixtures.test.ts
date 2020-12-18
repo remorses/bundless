@@ -10,9 +10,9 @@ import { URL } from 'url'
 import { isUrl, osAgnosticResult } from './utils'
 
 require('jest-specific-snapshot')
-import * as failFast from 'jasmine-fail-fast'
-const jasmineEnv = (jasmine as any).getEnv()
-jasmineEnv.addReporter(failFast.init())
+// import * as failFast from 'jasmine-fail-fast'
+// const jasmineEnv = (jasmine as any).getEnv()
+// jasmineEnv.addReporter(failFast.init())
 
 declare global {
     namespace jest {
@@ -40,11 +40,13 @@ describe('snapshots', () => {
 
     const PORT = '9000'
     const baseUrl = `http://localhost:${PORT}`
-    for (let casePath of cases) {
+    
+    for (let [i, casePath] of cases.entries()) {
         const snapshotFile = path.resolve(casePath, '__snapshots__')
-        it(`${slash(casePath)}`, async () => {
-            const root = path.resolve(casePath)
+        test(`${slash(casePath)}`, async () => {
+            let root = casePath
             const server = await serve({ port: PORT, root })
+            root = path.resolve(casePath) 
             try {
                 const downloadFilesToDir = path.join(casePath, '__mirror__')
                 await fs.remove(downloadFilesToDir)
@@ -88,7 +90,9 @@ describe('snapshots', () => {
                 })
                 for (let url in contentTypes) {
                     if (!url.endsWith('.html')) {
-                        expect(contentTypes[url]).toContain('application/javascript')
+                        expect(contentTypes[url]).toContain(
+                            'application/javascript',
+                        )
                     }
                 }
                 expect(contentTypes).toMatchSpecificSnapshot(
@@ -106,7 +110,7 @@ describe('snapshots', () => {
                 })
                 expect(allFiles).toMatchSpecificSnapshot(snapshotFile, 'mirror')
             } finally {
-                await server.close()
+                server && await server.close()
             }
         })
     }

@@ -1,6 +1,8 @@
-import { text } from './text'
+import path from 'path'
 
-console.log('Hello world!!!!!')
+console.log({ path })
+
+const text = path.resolve('something')
 
 const node = document.createElement('pre')
 document.body.appendChild(node.appendChild(document.createTextNode(text)))

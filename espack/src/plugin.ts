@@ -44,6 +44,7 @@ export interface PluginHooks {
 export interface OnTransformArgs {
     path: string
     loader?: esbuild.Loader
+    namespace?: string
     contents: string
 }
 
@@ -191,8 +192,8 @@ export function createPluginsExecutor({
             return { ...result, namespace: result.namespace || 'file' }
         }
     }
-    async function transform(arg) {
-        let result
+    async function transform(arg: OnTransformArgs) {
+        let result: OnTransformResult = { contents: arg.contents }
         for (let { callback, options, name } of transforms) {
             if (matches(options, arg)) {
                 logger.debug(`transforming '${arg.path}' with '${name}'`)

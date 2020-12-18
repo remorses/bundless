@@ -31,6 +31,7 @@ export function RewritePlugin({} = {}) {
 
                 const contents = await rewriteImports({
                     graph,
+                    namespace: args.namespace || 'file',
                     importerFilePath: args.path,
                     root: config.root!,
                     resolve,
@@ -49,9 +50,11 @@ export async function rewriteImports({
     importerFilePath,
     graph,
     resolve,
+    namespace,
     root,
 }: {
     source: string
+    namespace: string
     importerFilePath: string
     resolve: PluginsExecutor['resolve']
     root: string
@@ -119,22 +122,37 @@ export async function rewriteImports({
                     continue
                 }
 
-                
                 const resolveResult = await resolve({
                     importer: importerFilePath,
-                    namespace: '',
+                    namespace,
                     resolveDir: path.dirname(importerFilePath),
                     path: id,
                 })
 
-                let resolved = fileToImportPath(root, resolveResult?.path || '')
-
-                const namespace = encodeURIComponent(
-                    resolveResult?.namespace || 'file',
+                // TODO handle virtual files here
+                let resolvedImportPath = fileToImportPath(
+                    root,
+                    resolveResult?.path || '',
                 )
-                resolved += resolved.includes('?')
-                    ? `&namespace=${namespace}`
-                    : `?namespace=${namespace}`
+
+                const newNamespace = encodeURIComponent(
+                    resolveResult?.namespace || namespace, // TODO in esbuild do loaded files inherit namespace?
+                )
+                resolvedImportPath += resolvedImportPath.includes('?')
+                    ? `&namespace=${newNamespace}`
+                    : `?namespace=${newNamespace}`
+
+                // TODO here i handle non absolute paths, this means bare imports for node builtins, virtual files, ...
+                if (
+                    resolveResult &&
+                    (!path.isAbsolute(resolveResult?.path) ||
+                        (resolveResult.namespace &&
+                            resolveResult.namespace !== 'file'))
+                ) {
+                    resolvedImportPath += resolvedImportPath.includes('?')
+                        ? `&resolved=${resolveResult.path}`
+                        : `?resolved=${resolveResult.path}`
+                }
 
                 const importeeNode =
                     graph.nodes[osAgnosticPath(resolveResult?.path, root)]
@@ -143,14 +161,14 @@ export async function rewriteImports({
 
                 // refetch modules that are dirty
                 if (importeeNode?.dirtyImportersCount > 0) {
-                    resolved += resolved.includes('?')
+                    resolvedImportPath += resolvedImportPath.includes('?')
                         ? `&t=${Date.now()}`
                         : `?t=${Date.now()}`
                     importeeNode.dirtyImportersCount--
                 }
 
-                if (resolved !== id) {
-                    debug(`    "${id}" --> "${resolved}"`)
+                if (resolvedImportPath !== id) {
+                    debug(`    "${id}" --> "${resolvedImportPath}"`)
                     if (
                         isOptimizedCjs(
                             root,
@@ -162,7 +180,7 @@ export async function rewriteImports({
                             const replacement = transformCjsImport(
                                 exp,
                                 id,
-                                resolved,
+                                resolvedImportPath,
                                 i,
                             )
                             s.overwrite(expStart, expEnd, replacement)
@@ -171,21 +189,23 @@ export async function rewriteImports({
                             s.overwrite(
                                 dynamicIndex,
                                 end + 1,
-                                `import('${resolved}').then(m=>m.default)`,
+                                `import('${resolvedImportPath}').then(m=>m.default)`,
                             )
                         }
                     } else {
                         s.overwrite(
                             start,
                             end,
-                            hasLiteralDynamicId ? `'${resolved}'` : resolved,
+                            hasLiteralDynamicId
+                                ? `'${resolvedImportPath}'`
+                                : resolvedImportPath,
                         )
                     }
                     hasReplaced = true
                 }
 
                 // save the import chain for hmr analysis
-                const cleanImportee = cleanUrl(resolved)
+                const cleanImportee = cleanUrl(resolvedImportPath)
                 if (
                     // no need to track hmr client or module dependencies
                     cleanImportee !== CLIENT_PUBLIC_PATH
