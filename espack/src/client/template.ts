@@ -68,11 +68,12 @@ function createNewErrorOverlay(data) {
 }
 
 let SOCKET_MESSAGE_QUEUE: HMRPayload[] = []
+let connected = false
 function _sendSocketMessage(msg) {
     socket.send(JSON.stringify(msg))
 }
 function sendSocketMessage(msg: HMRPayload) {
-    if (socket.readyState !== socket.OPEN) {
+    if (!connected) {
         SOCKET_MESSAGE_QUEUE.push(msg)
     } else {
         _sendSocketMessage(msg)
@@ -80,12 +81,8 @@ function sendSocketMessage(msg: HMRPayload) {
 }
 
 const socket = new WebSocket(socketURL, 'esm-hmr')
-socket.addEventListener('open', () => {
-    SOCKET_MESSAGE_QUEUE.forEach(_sendSocketMessage)
-    SOCKET_MESSAGE_QUEUE = []
-})
 
-const REGISTERED_MODULES = {}
+const REGISTERED_MODULES: { [path: string]: HotModuleState } = {}
 class HotModuleState {
     data = {}
     isLocked = false
@@ -220,6 +217,9 @@ socket.addEventListener('message', ({ data: _data }) => {
     }
     const data: HMRPayload = JSON.parse(_data)
     if (data.type === 'connected') {
+        connected = true
+        SOCKET_MESSAGE_QUEUE.forEach(_sendSocketMessage)
+        SOCKET_MESSAGE_QUEUE = []
         setInterval(
             () => socket.send(JSON.stringify({ type: 'ping' })),
             __HMR_TIMEOUT__,

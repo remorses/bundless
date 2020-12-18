@@ -86,12 +86,14 @@ export async function rewriteImports({
             logger.log(`no imports found for ${importerFilePath}`)
             return source
         }
-        if (isHmrEnabled) {
-            source += `import * as  __HMR__ from '${CLIENT_PUBLIC_PATH}';\nimport.meta.hot = __HMR__.createHotContext(import.meta.url);\n`
-        }
 
         const magicString = new MagicString(source)
 
+        if (isHmrEnabled) {
+            magicString.prepend(
+                `import * as  __HMR__ from '${CLIENT_PUBLIC_PATH}';\nimport.meta.hot = __HMR__.createHotContext(import.meta.url);\n`,
+            )
+        }
         const currentNode = graph.ensureEntry(importerFilePath, {
             isHmrEnabled,
         })

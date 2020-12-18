@@ -29,6 +29,7 @@ export class Graph {
     ensureEntry(path: string, newNode?: Partial<Node>): Node {
         path = osAgnosticPath(path, this.root)
         if (this.nodes[path]) {
+            Object.assign(this.nodes[path], newNode || {})
             return this.nodes[path]
         }
 
@@ -56,11 +57,10 @@ export class Graph {
             .map((k) => {
                 const node = this.nodes[k]
                 let key = path.relative(process.cwd(), k)
-                if (node.isHmrEnabled) {
-                    key = chalk.yellow(chalk.underline(key))
-                }
                 if (node.hasHmrAccept) {
                     key = chalk.redBright(chalk.underline(key))
+                } else if (node.isHmrEnabled) {
+                    key = chalk.yellow(chalk.underline(key))
                 }
                 return `    ${key} -> ${JSON.stringify(
                     [...node.importees],
@@ -75,6 +75,7 @@ export class Graph {
             .join('\n')
         const legend =
             `\nLegend:\n` +
+            `${'[ ]'} has no HMR\n` +
             `${chalk.redBright('[ ]')} accepts HMR\n` +
             `${chalk.yellow('[ ]')} HMR enabled\n\n`
         return legend + `ImportGraph {\n${content}\n}\n`

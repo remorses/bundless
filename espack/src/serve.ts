@@ -274,11 +274,10 @@ export function createApp(config: Config) {
                 socket.on('message', (data) => {
                     const message: HMRPayload = JSON.parse(data.toString())
                     if (message.type === 'hotAccept') {
-                        const entry = graph.ensureEntry(
+                        graph.ensureEntry(
                             importPathToFile(root, message.path),
+                            { hasHmrAccept: true, isHmrEnabled: true },
                         )
-                        entry.hasHmrAccept = true
-                        entry.isHmrEnabled = true
                     }
                 })
             })
