@@ -116,7 +116,6 @@ export function createApp(config: Config) {
             plugins.EsbuildTransformPlugin(),
             plugins.RewritePlugin(),
             plugins.ResolveSourcemapPlugin(),
-            plugins.SourcemapPlugin(),
             plugins.CssPlugin(),
             plugins.JSONPlugin(),
             ...(config.plugins || []),
@@ -242,6 +241,7 @@ export function createApp(config: Config) {
 
     const serverMiddleware = [
         middlewares.hmrMiddleware,
+        middlewares.sourcemapMiddleware,
         middlewares.pluginAssetsMiddleware,
         pluginsMiddleware,
         middlewares.serveStaticMiddleware,

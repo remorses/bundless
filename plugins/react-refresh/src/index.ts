@@ -3,8 +3,8 @@ import fs from 'fs'
 import { Plugin } from 'espack'
 import { transform } from '@babel/core'
 
-const runtimePath = '_react-refresh-runtime_'
 const runtimeNamespace = 'react-refresh-runtime'
+const runtimePath = `_react-refresh-runtime_?namespace=${runtimeNamespace}`
 
 export function ReactRefreshPlugin({} = {}): Plugin {
     return {
@@ -14,17 +14,7 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                 return
             }
 
-            onResolve(
-                { filter: new RegExp(runtimePath) },
-                async (args) => {
-                    return {
-                        namespace: runtimeNamespace,
-                    }
-                },
-            )
-
             // injects stuff in html
-            // TODO use onEmit to change html, onLoad can only return js code
             onTransform({ filter: /\.html$/ }, (args) => {
                 return {
                     contents: transformHtml(args.contents),
@@ -51,7 +41,12 @@ export default exports
                 },
             )
 
-            onTransform({ filter: /.*/ }, async (args) => {
+            onTransform({ filter: /\.(t|j)sx$/ }, async (args) => {
+
+                if (args.path.includes('node_modules')) {
+                    return
+                }
+
                 const result = await transform(args.contents, {
                     plugins: [
                         require('@babel/plugin-syntax-import-meta'),
@@ -120,26 +115,7 @@ export default exports
     }
 }
 
-export const reactRefreshTransform = {
-    test: ({ path, isBuild }) => {
-        if (!/\.(t|j)sx?$/.test(path)) {
-            return false
-        }
-        if (isBuild || process.env.NODE_ENV === 'production') {
-            // do not transform for production builds
-            return false
-        }
-        if (isDependency(path) && !path.endsWith('x')) {
-            // do not transform if this is a dep and is not jsx/tsx
-            return false
-        }
-        return true
-    },
-}
 
-function isDependency(path: string) {
-    return path.startsWith(`/@modules/`) || path.includes('node_modules')
-}
 
 function isRefreshBoundary(ast: BabelAST) {
     // Every export must be a React component.
