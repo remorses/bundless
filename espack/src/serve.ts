@@ -13,6 +13,7 @@ import {
     DEFAULT_PORT,
     HMR_SERVER_NAME,
     JS_EXTENSIONS,
+    MAIN_FIELDS,
     WEB_MODULES_PATH,
 } from './constants'
 import { Graph } from './graph'
@@ -125,6 +126,7 @@ export function createApp(config: Config) {
         plugins: [
             HmrClientPlugin({ getPort: () => app.context.port }),
             NodeResolvePlugin({
+                mainFields: MAIN_FIELDS,
                 extensions: [...JS_EXTENSIONS],
                 onResolved,
             }),

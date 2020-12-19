@@ -1,12 +1,12 @@
 import * as esbuild from 'esbuild'
 import fsx from 'fs-extra'
 import path from 'path'
-import { JS_EXTENSIONS } from '../constants'
-import { NodeModulesPolyfillPlugin, NodeResolvePlugin,  } from '../plugins'
+import { JS_EXTENSIONS, MAIN_FIELDS } from '../constants'
+import { NodeModulesPolyfillPlugin, NodeResolvePlugin } from '../plugins'
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
-// TODO build for SSR, 
+// TODO build for SSR,
 export async function build({
     root,
     entryPoints,
@@ -33,9 +33,7 @@ export async function build({
 
         minifySyntax: Boolean(minify),
         minifyWhitespace: Boolean(minify),
-        mainFields: ['browser:module', 'module', 'browser', 'main'].filter(
-            Boolean,
-        ),
+        mainFields: MAIN_FIELDS,
         define: {
             'process.env.NODE_ENV': JSON.stringify('dev'),
             global: 'window',
@@ -45,7 +43,10 @@ export async function build({
             require.resolve('@esbuild-plugins/node-globals-polyfill/process'),
         ],
         plugins: [
-            NodeResolvePlugin({ extensions: [...JS_EXTENSIONS] }),
+            NodeResolvePlugin({
+                mainFields: MAIN_FIELDS,
+                extensions: [...JS_EXTENSIONS],
+            }),
             NodeModulesPolyfillPlugin(),
             // TODO html plugin
             // TODO css plugin to inject css files back to html (only to entries that are parent in the import graph)
@@ -57,8 +58,6 @@ export async function build({
         minify: Boolean(minify),
         logLevel: 'info',
     })
-
-
 }
 
 function generateEnvReplacements(env: Object): { [key: string]: string } {

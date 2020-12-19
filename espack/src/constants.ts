@@ -10,6 +10,8 @@ try {
     isRunningWithYarnPnp = Boolean(require('pnpapi'))
 } catch {}
 
+export const MAIN_FIELDS = ['browser:module', 'module', 'browser', 'main']
+
 export const JS_EXTENSIONS = new Set([
     '.ts',
     '.tsx',

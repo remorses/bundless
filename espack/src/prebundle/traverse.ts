@@ -6,7 +6,7 @@ import fsx, { copySync } from 'fs-extra'
 import os from 'os'
 import path from 'path'
 import slash from 'slash'
-import { isRunningWithYarnPnp, JS_EXTENSIONS } from '../constants'
+import { isRunningWithYarnPnp, JS_EXTENSIONS, MAIN_FIELDS } from '../constants'
 
 import { removeColonsFromMeta } from './support'
 import fromEntries from 'fromentries'
@@ -57,7 +57,7 @@ export async function traverseWithEsbuild({
                     minifyIdentifiers: false,
                     minifySyntax: false,
                     minifyWhitespace: false,
-                    mainFields: ['module', 'browser', 'main'],
+                    mainFields: MAIN_FIELDS,
                     sourcemap: false,
                     define: {
                         'process.env.NODE_ENV': JSON.stringify('dev'),
@@ -77,6 +77,7 @@ export async function traverseWithEsbuild({
                         ExternalButInMetafile(),
                         // NodeModulesPolyfillPlugin({ fs: true, crypto: true }), // TODO enable node modules polyfill if in browser?
                         NodeResolvePlugin({
+                            mainFields: MAIN_FIELDS,
                             extensions: [...JS_EXTENSIONS],
                             onResolved: function external(resolved) {
                                 // console.log({resolved})
@@ -91,10 +92,9 @@ export async function traverseWithEsbuild({
                                 }
                                 return
                             },
-                            onUnresolved: (e) => {
+                            onNonResolved: (p) => {
                                 console.error(
-                                    'Cannot resolve during traversal',
-                                    e,
+                                    `Cannot resolve '${p}' during traversal`,
                                 )
                                 // return {
                                 //     external: true,
@@ -137,7 +137,7 @@ export async function traverseWithEsbuild({
                 importer: x.importer,
             }
         })
-        
+
         return res
     } finally {
         await fsx.remove(destLoc)

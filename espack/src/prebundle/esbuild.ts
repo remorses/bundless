@@ -9,7 +9,7 @@ import fs from 'fs'
 import path from 'path'
 import toUnixPath from 'slash'
 import tmpfile from 'tmpfile'
-import { JS_EXTENSIONS } from '../constants'
+import { JS_EXTENSIONS, MAIN_FIELDS } from '../constants'
 import { DependencyStatsOutput } from './stats'
 import {
     OptimizeAnalysisResult,
@@ -44,9 +44,7 @@ export async function bundleWithEsBuild({
 
         minifySyntax: Boolean(minify),
         minifyWhitespace: Boolean(minify),
-        mainFields: ['browser:module', 'module', 'browser', 'main'].filter(
-            Boolean,
-        ),
+        mainFields: MAIN_FIELDS,
         define: {
             'process.env.NODE_ENV': JSON.stringify('dev'),
             global: 'window',
@@ -56,7 +54,10 @@ export async function bundleWithEsBuild({
             require.resolve('@esbuild-plugins/node-globals-polyfill/process'),
         ],
         plugins: [
-            NodeResolvePlugin({ extensions: [...JS_EXTENSIONS] }),
+            NodeResolvePlugin({
+                mainFields: MAIN_FIELDS,
+                extensions: [...JS_EXTENSIONS],
+            }),
             NodeModulesPolyfillPlugin(),
         ],
         tsconfig: tsconfigTempFile,
