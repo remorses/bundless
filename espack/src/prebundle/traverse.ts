@@ -73,6 +73,7 @@ export async function traverseWithEsbuild({
                     loader: {
                         '.js': 'jsx',
                     },
+                    
                     plugins: [
                         ExternalButInMetafile(),
                         // NodeModulesPolyfillPlugin({ fs: true, crypto: true }), // TODO enable node modules polyfill if in browser?

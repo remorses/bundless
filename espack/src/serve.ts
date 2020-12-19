@@ -23,7 +23,6 @@ import { BundleMap } from './prebundle/esbuild'
 import { genSourceMapString } from './sourcemaps'
 import { dotdotEncoding, importPathToFile, isNodeModule } from './utils'
 
-const debug = require('debug')('espack')
 export interface ServerPluginContext {
     root: string
     app: Koa
@@ -44,7 +43,7 @@ export async function serve(config: Config) {
     const { server, close } = await listen(app.callback(), {
         port: config.port || DEFAULT_PORT,
         showURL: true,
-        open: true,
+        open: config.openBrowser,
     })
     app.context.server = server
     const port = server.address()?.['port']

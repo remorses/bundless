@@ -20,6 +20,9 @@ export const hmrMiddleware: ServerMiddleware = (context) => {
                 client.close()
             })
         })
+        if (!app.context.server) {
+            throw new Error(`Cannot find server in context`)
+        }
         app.context.server.on('upgrade', (req, socket, head) => {
             if (req.headers['sec-websocket-protocol'] === HMR_SERVER_NAME) {
                 wss.handleUpgrade(req, socket, head, (ws) => {

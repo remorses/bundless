@@ -1,0 +1,31 @@
+{
+    "name": "hmr-test-app",
+    "version": "0.0.0",
+    "description": "",
+    "repository": "https://github.com/remorses/.git",
+    "scripts": {},
+    "files": [
+        "dist",
+        "src",
+        "esm"
+    ],
+    "keywords": [],
+    "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "@snowpack/plugin-react-refresh": "^2.3.9",
+        "es-module-traversal": "^0.0.46",
+        "jest-specific-snapshot": "^4.0.0",
+        "snowpack": "^2.18.4",
+        "vite": "^1.0.0-rc.13",
+        "vite-plugin-react": "^4.0.1",
+        "execa": "^5.0.0",
+        "espack": "*",
+        "ws": "^7.4.1"
+    },
+    "dependencies": {
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1"
+    },
+    "peerDependencies": {}
+}

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`hmr src/file.css espack 1`] = `Array []`;
+
+exports[`hmr src/file.json espack 1`] = `Array []`;
+
+exports[`hmr src/file.jsx espack 1`] = `Array []`;
+
+exports[`hmr src/file.module.css espack 1`] = `Array []`;
+
+exports[`hmr src/file2.js espack 1`] = `Array []`;
+
+exports[`hmr src/imported-many-times.js espack 1`] = `Array []`;
+
+exports[`hmr src/main.jsx espack 1`] = `Array []`;

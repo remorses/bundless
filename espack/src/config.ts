@@ -5,6 +5,7 @@ export interface Config {
     port?: number | string
     cors?: boolean
     hmr?: HmrConfig | boolean
+    openBrowser?: boolean
     plugins?: Plugin[]
     jsx?:
         | 'vue'
