@@ -51,11 +51,12 @@ function createNewErrorOverlay(data) {
     }
 }
 let SOCKET_MESSAGE_QUEUE = [];
+let connected = false;
 function _sendSocketMessage(msg) {
     socket.send(JSON.stringify(msg));
 }
 function sendSocketMessage(msg) {
-    if (socket.readyState !== socket.OPEN) {
+    if (!connected) {
         SOCKET_MESSAGE_QUEUE.push(msg);
     }
     else {
@@ -63,10 +64,6 @@ function sendSocketMessage(msg) {
     }
 }
 const socket = new WebSocket(socketURL, 'esm-hmr');
-socket.addEventListener('open', () => {
-    SOCKET_MESSAGE_QUEUE.forEach(_sendSocketMessage);
-    SOCKET_MESSAGE_QUEUE = [];
-});
 const REGISTERED_MODULES = {};
 class HotModuleState {
     constructor(path) {
@@ -199,6 +196,9 @@ socket.addEventListener('message', ({ data: _data }) => {
     }
     const data = JSON.parse(_data);
     if (data.type === 'connected') {
+        connected = true;
+        SOCKET_MESSAGE_QUEUE.forEach(_sendSocketMessage);
+        SOCKET_MESSAGE_QUEUE = [];
         setInterval(() => socket.send(JSON.stringify({ type: 'ping' })), 30000);
         return;
     }

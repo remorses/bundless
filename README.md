@@ -12,7 +12,7 @@
 ## Features:
 
 -   can consume commonjs packages
--   prebundles dependencies in bundles
+-   prebundles dependencies
 -   supports importing jsx, typescript, css out of the box
 -   support for monorepos and complex node_modules structures
 
@@ -24,7 +24,6 @@ Still in progress
 -   create-app templates
 -   aliases support
 -   css modules
--   css preprocessors
 -   auto detect aliases from tsconfig.json
 -   extract css to chunks and add them in html
 
@@ -33,6 +32,7 @@ Later:
 -   multi entry
 -   SSR
 -   Vue support
+-   css processors
 
 Plugins to implement
 

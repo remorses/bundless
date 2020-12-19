@@ -6,6 +6,7 @@
     "dependencies": {
         "react": "16.13.1",
         "slash": "^3.0.0",
+        "preact": "10.5.7",
         "react-dom": "^17.0.1"
     }
 }

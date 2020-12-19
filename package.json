@@ -8,6 +8,10 @@
         "release": "yarn build && changeset publish"
     },
     "workspaces": {
+        "nohoist": [
+            "examples/with-many-dependencies/preact",
+            "**/preact"
+        ],
         "packages": [
             "espack",
             "fixtures/*",
