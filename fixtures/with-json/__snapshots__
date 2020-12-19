@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/with-json: content-type headers 1`] = `
+Object {
+  "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
+  "http://localhost:9000/text.json?namespace=file": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/with-json: mirror 1`] = `
+Array [
+  "main.js",
+  "text.json",
+]
+`;
+
+exports[`snapshots fixtures/with-json: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "/main.js",
+    "importer": "http://localhost:9000/index.html",
+    "resolvedImportPath": "http://localhost:9000/main.js",
+  },
+  Object {
+    "importPath": "/text.json?namespace=file",
+    "importer": "http://localhost:9000/main.js",
+    "resolvedImportPath": "http://localhost:9000/text.json?namespace=file",
+  },
+]
+`;

@@ -23,3 +23,8 @@ export const JS_EXTENSIONS = new Set([
     // '.scss',
     // '.css',
 ])
+
+export const hmrPreamble = `
+import * as  __HMR__ from '${CLIENT_PUBLIC_PATH}';
+import.meta.hot = __HMR__.createHotContext(import.meta.url);
+`

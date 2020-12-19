@@ -1,17 +1,13 @@
-import chalk from 'chalk'
-import chokidar, { FSWatcher, watch } from 'chokidar'
-import deepmerge from 'deepmerge'
+import chokidar, { FSWatcher } from 'chokidar'
 import { Server } from 'http'
 import Koa, { DefaultContext, DefaultState } from 'koa'
 import { listen } from 'listhen'
 import path from 'path'
 import slash from 'slash'
-import WebSocket from 'ws'
 import { HMRPayload } from './client/types'
 import { Config } from './config'
 import {
     DEFAULT_PORT,
-    HMR_SERVER_NAME,
     JS_EXTENSIONS,
     MAIN_FIELDS,
     WEB_MODULES_PATH,
@@ -21,31 +17,17 @@ import { onFileChange } from './hmr'
 import { logger } from './logger'
 import * as middlewares from './middleware'
 import { createPluginsExecutor, PluginsExecutor } from './plugin'
-import {
-    CssPlugin,
-    EsbuildTransformPlugin,
-    NodeResolvePlugin,
-    ResolveSourcemapPlugin,
-    RewritePlugin,
-    SourcemapPlugin,
-    HmrClientPlugin,
-    NodeModulesPolyfillPlugin,
-} from './plugins'
+import * as plugins from './plugins'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
-import { osAgnosticPath } from './prebundle/support'
 import { genSourceMapString } from './sourcemaps'
-import {
-    isCSSRequest,
-    isNodeModule,
-    importPathToFile,
-    dotdotEncoding,
-} from './utils'
+import { dotdotEncoding, importPathToFile, isNodeModule } from './utils'
 
 const debug = require('debug')('espack')
 export interface ServerPluginContext {
     root: string
     app: Koa
+    graph: Graph
     pluginExecutor: PluginsExecutor
     // server: Server
     watcher: FSWatcher
@@ -124,18 +106,19 @@ export function createApp(config: Config) {
     const pluginExecutor = createPluginsExecutor({
         root,
         plugins: [
-            HmrClientPlugin({ getPort: () => app.context.port }),
-            NodeResolvePlugin({
+            plugins.HmrClientPlugin({ getPort: () => app.context.port }),
+            plugins.NodeResolvePlugin({
                 mainFields: MAIN_FIELDS,
                 extensions: [...JS_EXTENSIONS],
                 onResolved,
             }),
-            NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
-            EsbuildTransformPlugin(),
-            RewritePlugin(),
-            ResolveSourcemapPlugin(),
-            SourcemapPlugin(),
-            CssPlugin(),
+            plugins.NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
+            plugins.EsbuildTransformPlugin(),
+            plugins.RewritePlugin(),
+            plugins.ResolveSourcemapPlugin(),
+            plugins.SourcemapPlugin(),
+            plugins.CssPlugin(),
+            plugins.JSONPlugin(),
             ...(config.plugins || []),
         ],
         config,
@@ -170,6 +153,7 @@ export function createApp(config: Config) {
         app,
         watcher,
         config,
+        graph,
         pluginExecutor,
         sendHmrMessage: () => {
             // assigned in the hmr middleware
@@ -250,61 +234,6 @@ export function createApp(config: Config) {
             ctx.type = 'js' // TODO how to set right content type? an html transform could return html, should esbuild support custom content types? should i extend esbuild result types?
         })
     }
-    const hmrMiddleware: ServerMiddleware = ({ app }) => {
-        const wss = new WebSocket.Server({ noServer: true })
-        let done = false
-        app.use((_, next) => {
-            if (done) {
-                return next()
-            }
-            app.once('close', () => {
-                wss.close(() => logger.debug('closing wss'))
-                wss.clients.forEach((client) => {
-                    client.close()
-                })
-            })
-            app.context.server.on('upgrade', (req, socket, head) => {
-                if (req.headers['sec-websocket-protocol'] === HMR_SERVER_NAME) {
-                    wss.handleUpgrade(req, socket, head, (ws) => {
-                        wss.emit('connection', ws, req)
-                    })
-                }
-            })
-
-            wss.on('connection', (socket) => {
-                socket.send(JSON.stringify({ type: 'connected' }))
-                socket.on('message', (data) => {
-                    const message: HMRPayload = JSON.parse(data.toString())
-                    if (message.type === 'hotAccept') {
-                        graph.ensureEntry(
-                            importPathToFile(root, message.path),
-                            { hasHmrAccept: true, isHmrEnabled: true },
-                        )
-                    }
-                })
-            })
-
-            wss.on('error', (e: Error & { code: string }) => {
-                if (e.code !== 'EADDRINUSE') {
-                    console.error(chalk.red(`WebSocket server error:`))
-                    console.error(e)
-                }
-            })
-
-            context.sendHmrMessage = (payload: HMRPayload) => {
-                const stringified = JSON.stringify(payload, null, 4)
-                logger.log(`hmr: ${stringified}`)
-
-                wss.clients.forEach((client) => {
-                    if (client.readyState === WebSocket.OPEN) {
-                        client.send(stringified)
-                    }
-                })
-            }
-            done = true
-            return next()
-        })
-    }
 
     // app.use((_, next) => {
     //     console.log(graph.toString())
@@ -312,7 +241,7 @@ export function createApp(config: Config) {
     // })
 
     const serverMiddleware = [
-        hmrMiddleware,
+        middlewares.hmrMiddleware,
         middlewares.pluginAssetsMiddleware,
         pluginsMiddleware,
         middlewares.serveStaticMiddleware,

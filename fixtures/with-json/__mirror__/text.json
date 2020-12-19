@@ -1,0 +1,5 @@
+
+const json = {
+    "text": "Hello World!"
+};
+export default json;

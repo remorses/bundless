@@ -27,7 +27,7 @@ if (typeof document !== 'undefined') {
   document.head.appendChild(styleEl);
 }
 `
-        
+
     if (modules) {
         code += dataToEsm(modules, { namedExports: true })
     } else {
@@ -40,8 +40,6 @@ const hmrPreamble = `
 import * as  __HMR__ from '${CLIENT_PUBLIC_PATH}';
 import.meta.hot = __HMR__.createHotContext(import.meta.url);
 `
-
-
 
 export function CssPlugin({} = {}) {
     return {

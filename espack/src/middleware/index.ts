@@ -1,2 +1,3 @@
-export { pluginAssetsMiddleware } from './serverPluginAssets'
-export { serveStaticMiddleware } from './serverPluginServeStatic'
+export { pluginAssetsMiddleware } from './assets'
+export { hmrMiddleware } from './hmr'
+export { serveStaticMiddleware } from './serve-static'
