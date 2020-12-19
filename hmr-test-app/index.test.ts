@@ -13,6 +13,9 @@ import url, { URL } from 'url'
 import WebSocket from 'ws'
 
 require('jest-specific-snapshot')
+import * as failFast from 'jasmine-fail-fast'
+const jasmineEnv = (jasmine as any).getEnv()
+jasmineEnv.addReporter(failFast.init())
 
 const tempDir = path.resolve('temp')
 const fixtureDir = path.resolve('hmr-test-app')

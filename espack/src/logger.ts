@@ -6,6 +6,7 @@ export const logger = {
         process.stderr.write(chalk.dim(prefix) + x.join(' ') + '\n')
     },
     debug(...x) {
+        return
         process.stderr.write(chalk.dim(prefix + x.join(' ') + '\n'))
     },
 }

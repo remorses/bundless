@@ -11,8 +11,6 @@ import { Config } from '../config'
 import { OnTransformResult, PluginHooks } from '../plugin'
 import { generateCodeFrame } from '../utils'
 
-const debug = require('debug')('esbuild')
-
 export function EsbuildTransformPlugin({} = {}) {
     return {
         name: 'esbuild',
@@ -122,24 +120,12 @@ export const transform = async ({
             map: result.map,
         }
     } catch (e) {
-        console.error(
-            chalk.red(
-                `error while transforming ${filePath} with esbuild:`,
-            ),
-        )
         if (e.errors) {
             e.errors.forEach((m: Message) => printMessage(m, src))
         } else {
             console.error(e)
         }
-        debug(`options used: `, options)
-        // if (exitOnFailure) {
-        //     process.exit(1)
-        // }
-        return {
-            contents: '',
-            map: undefined,
-        }
+        throw new Error(`Error while transforming ${filePath} with esbuild: ${e}`)
     }
 }
 

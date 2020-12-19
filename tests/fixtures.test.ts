@@ -8,11 +8,11 @@ import path from 'path'
 import slash from 'slash'
 import { URL } from 'url'
 import { isUrl, osAgnosticResult } from './utils'
+import 'jest-specific-snapshot'
 
-require('jest-specific-snapshot')
-// import * as failFast from 'jasmine-fail-fast'
-// const jasmineEnv = (jasmine as any).getEnv()
-// jasmineEnv.addReporter(failFast.init())
+import * as failFast from 'jasmine-fail-fast'
+const jasmineEnv = (jasmine as any).getEnv()
+jasmineEnv.addReporter(failFast.init())
 
 declare global {
     namespace jest {

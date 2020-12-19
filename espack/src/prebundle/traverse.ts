@@ -1,4 +1,4 @@
-import { NodeResolvePlugin } from '../plugins'
+import { NodeModulesPolyfillPlugin, NodeResolvePlugin } from '../plugins'
 import deepmerge from 'deepmerge'
 import { build, BuildOptions, Metadata, Plugin } from 'esbuild'
 import { promises as fsp } from 'fs'
@@ -73,10 +73,10 @@ export async function traverseWithEsbuild({
                     loader: {
                         '.js': 'jsx',
                     },
-                    
+
                     plugins: [
                         ExternalButInMetafile(),
-                        // NodeModulesPolyfillPlugin({ fs: true, crypto: true }), // TODO enable node modules polyfill if in browser?
+                        NodeModulesPolyfillPlugin(),
                         NodeResolvePlugin({
                             mainFields: MAIN_FIELDS,
                             extensions: [...JS_EXTENSIONS],
@@ -108,7 +108,7 @@ export async function traverseWithEsbuild({
                         }),
                     ].filter(Boolean),
                     bundle: true,
-                    platform: 'node',
+                    platform: 'browser',
                     format: 'esm',
                     write: true,
                     entryPoints,

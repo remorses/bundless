@@ -54,10 +54,18 @@ export const hmrMiddleware: ServerMiddleware = (context) => {
         context.sendHmrMessage = (payload: HMRPayload) => {
             const stringified = JSON.stringify(payload, null, 4)
             logger.log(`hmr: ${stringified}`)
-
+            if (!wss.clients.size) {
+                logger.log(chalk.yellow(`No clients listening for HMR message`))
+            }
             wss.clients.forEach((client) => {
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(stringified)
+                } else {
+                    console.log(
+                        chalk.red(
+                            `Cannot send HMR message, hmr client is not open`,
+                        ),
+                    )
                 }
             })
         }

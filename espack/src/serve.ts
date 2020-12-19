@@ -1,4 +1,5 @@
 import chokidar, { FSWatcher } from 'chokidar'
+import { once } from 'events'
 import { Server } from 'http'
 import Koa, { DefaultContext, DefaultState } from 'koa'
 import { listen } from 'listhen'
@@ -51,9 +52,10 @@ export async function serve(config: Config) {
     config.port = port
     return {
         ...server,
-        close: () => {
+        close: async () => {
             app.emit('close')
-            return close()
+            await once(app, 'closed')
+            return await close()
         },
     }
 }
@@ -123,17 +125,23 @@ export function createApp(config: Config) {
         graph,
     })
 
-    app.once('close', () => {
-        logger.debug('closing')
-        pluginExecutor.close({})
-    })
-
     const watcher = chokidar.watch(root, {
         // cwd: root,
         // disableGlobbing: true,
         ignored: ['**/node_modules/**', '**/.git/**'],
         ignoreInitial: true,
         //   ...chokidarWatchOptions
+    })
+
+    app.once('close', async () => {
+        logger.debug('closing')
+        await Promise.all([watcher.close(), pluginExecutor.close({})])
+        app.emit('closed')
+    })
+
+    app.on('error', (e) => {
+        console.error('XXX')
+        throw e
     })
 
     // changing anything inside root that is not ignored and that is not in graph will cause reload
@@ -155,7 +163,7 @@ export function createApp(config: Config) {
         pluginExecutor,
         sendHmrMessage: () => {
             // assigned in the hmr middleware
-            logger.log(`hmr ws server has not started yet`)
+            throw new Error(`hmr ws server has not started yet`)
         },
         // port is exposed on the context for hmr client connection
         // in case the files are served under a different port
