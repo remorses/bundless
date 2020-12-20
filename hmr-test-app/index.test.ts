@@ -114,7 +114,7 @@ async function start(type) {
         case 'espack': {
             const server = await serve({
                 port: PORT,
-                root: __dirname,
+                root: tempDir,
                 openBrowser: false,
             })
             // await sleep(300)
