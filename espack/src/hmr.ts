@@ -14,7 +14,6 @@ export async function onFileChange({
     filePath: string
     sendHmrMessage: (x: HMRPayload) => any
 }) {
-    console.log(graph.toString())
     const relativePath = osAgnosticPath(filePath, root)
     const importPath = fileToImportPath(root, filePath)
 
@@ -48,7 +47,7 @@ export async function onFileChange({
         for (let importer of importers) {
             // mark module as dirty, importers will refetch this module to see updates
             const node = graph.ensureEntry(importer)
-            node.dirtyImportersCount++ 
+            node.dirtyImportersCount++
         }
         toVisit.push(...importers)
     }

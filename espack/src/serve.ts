@@ -224,6 +224,7 @@ export function createApp(config: Config) {
             root,
             sendHmrMessage: context.sendHmrMessage,
         })
+        console.log(graph.toString())
     })
 
     const context: ServerPluginContext = {

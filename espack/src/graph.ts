@@ -57,11 +57,14 @@ export class Graph {
             .map((k) => {
                 const node = this.nodes[k]
                 let key = path.relative(process.cwd(), k)
+
                 if (node.hasHmrAccept) {
                     key = chalk.redBright(chalk.underline(key))
                 } else if (node.isHmrEnabled) {
                     key = chalk.yellow(chalk.underline(key))
                 }
+
+                key += ' ' + chalk.cyan(node.dirtyImportersCount)
                 return `    ${key} -> ${JSON.stringify(
                     [...node.importees],
                     null,
