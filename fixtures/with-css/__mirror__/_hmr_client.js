@@ -149,12 +149,15 @@ export function createHotContext(fullUrl) {
 //     return true
 // }
 /** Called when a new module is loaded, to pass the updated module to the "active" module */
-async function runJsModuleAccept({ path }) {
+async function runModuleAccept({ path }) {
     const state = REGISTERED_MODULES[path];
     if (!state) {
+        log(`${path} has not been registered, reloading`);
+        log(Object.keys(REGISTERED_MODULES));
         return false;
     }
     if (state.isDeclined) {
+        log(`${path} has declined HMR, reloading`);
         return false;
     }
     const acceptCallbacks = state.acceptCallbacks;
@@ -207,7 +210,7 @@ socket.addEventListener('message', ({ data: _data }) => {
     }
     if (data.type === 'update') {
         log('message: update', data);
-        runJsModuleAccept(data)
+        runModuleAccept(data)
             .then((ok) => {
             if (ok) {
                 clearErrorOverlay();

@@ -6,6 +6,13 @@ import { y } from './imported-many-times'
 ReactDOM.render(
     <>
         <App />
+        <button
+            onClick={() => {
+                import(noop('/src/main.jsx?sdf'))
+            }}
+        >
+            refetch
+        </button>
         {y}
     </>,
     document.getElementById('root'),
@@ -14,3 +21,5 @@ ReactDOM.render(
 if (import.meta.hot) {
     import.meta.hot.accept()
 }
+
+const noop = (x) => x

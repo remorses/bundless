@@ -361,3 +361,16 @@ export function createApp(config: Config) {
 
     return app
 }
+
+function etagCache() {
+    return function conditional() {
+        return async function(ctx, next) {
+            await next()
+
+            if (ctx.fresh) {
+                ctx.status = 304
+                ctx.body = null
+            }
+        }
+    }
+}
