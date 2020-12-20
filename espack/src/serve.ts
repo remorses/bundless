@@ -25,7 +25,12 @@ import * as plugins from './plugins'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { genSourceMapString } from './sourcemaps'
-import { dotdotEncoding, importPathToFile, isNodeModule } from './utils'
+import {
+    dotdotEncoding,
+    importPathToFile,
+    isNodeModule,
+    readBody,
+} from './utils'
 
 export interface ServerPluginContext {
     root: string
@@ -236,22 +241,13 @@ export function createApp(config: Config) {
     const pluginsMiddleware: ServerMiddleware = ({ app }) => {
         // attach server context to koa context
         app.use(async (ctx, next) => {
-            Object.assign(ctx, context)
-            // TODO skip assets, css and other assets loaded from <link> should not get processed, how? put the assets resolver first?
-            // TODO now i am skipping non js code from running inside onTransform, onLoad and onResolve, but is should be able to run onTransform on html for example
-            if (ctx.path == '/') {
-                return next()
-            }
+            // Object.assign(ctx, context)
             const req = ctx.req
             if (
+                ctx.query.namespace == null &&
                 // esm imports accept */* in most browsers
-                !(
-                    (
-                        req.headers['accept'] === '*/*' ||
-                        req.headers['sec-fetch-dest'] === 'script' ||
-                        ctx.path.endsWith('.map')
-                    ) // css imported from js should have content type header '*/*'
-                )
+                req.headers['accept'] !== '*/*' &&
+                req.headers['sec-fetch-dest'] !== 'script'
             ) {
                 return next()
             }
@@ -318,6 +314,30 @@ export function createApp(config: Config) {
     for (const middleware of serverMiddleware) {
         middleware(context)
     }
+
+    // transform html
+    app.use(async (ctx, next) => {
+        const accept = ctx.headers.accept
+        if (!accept.includes('text/html') && ctx.path.endsWith('.html')) {
+            return next()
+        }
+        logger.log('transforming html')
+        let html = await readBody(ctx.body)
+        if (!html) {
+            return next()
+        }
+        const transformedHtml = await pluginExecutor.transform({
+            contents: html,
+            path: importPathToFile(root, ctx.path),
+            namespace: 'file',
+        })
+        if (!transformedHtml) {
+            return next()
+        }
+        ctx.body = transformedHtml.contents
+        ctx.status = 200
+        ctx.type = 'text/html'
+    })
 
     // cors
     if (config.cors) {
