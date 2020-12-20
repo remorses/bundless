@@ -1,10 +1,30 @@
 import { CONFIG_NAME, DEFAULT_PORT } from './constants'
 import findUp from 'find-up'
+import fs from 'fs'
 import { Plugin } from './plugin'
+import path from 'path'
+
+export function getEntries(config: Config): string[] {
+    if (config.entries) {
+        return config.entries.map((x) => path.resolve(config.root!, x))
+    }
+    const index1 = path.resolve(config.root!, 'index.html')
+    if (fs.existsSync(index1)) {
+        return [index1]
+    }
+    const index2 = path.resolve(config.root!, 'public/index.html')
+    if (fs.existsSync(index2)) {
+        return [index2]
+    }
+    throw new Error(
+        `Cannot find entries, neither config.entries, index.html or public/index.html files are present`,
+    )
+}
 
 export interface Config {
     root?: string
     port?: number | string
+    entries?: string[]
     cors?: boolean
     hmr?: HmrConfig | boolean
     openBrowser?: boolean

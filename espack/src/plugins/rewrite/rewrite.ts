@@ -4,7 +4,7 @@ import LRUCache from 'lru-cache'
 import MagicString from 'magic-string'
 import path from 'path'
 import qs from 'qs'
-import { CLIENT_PUBLIC_PATH } from '../../constants'
+import { CLIENT_PUBLIC_PATH, hmrPreamble } from '../../constants'
 import { Graph } from '../../graph'
 import { logger } from '../../logger'
 import { PluginHooks, PluginsExecutor } from '../../plugin'
@@ -60,7 +60,7 @@ export async function rewriteImports({
     root: string
     graph: Graph
 }): Promise<string> {
-    // #806 strip UTF-8 BOM
+    // strip UTF-8 BOM
     if (source.charCodeAt(0) === 0xfeff) {
         source = source.slice(1)
     }
@@ -91,9 +91,7 @@ export async function rewriteImports({
         const magicString = new MagicString(source)
 
         if (isHmrEnabled) {
-            magicString.prepend(
-                `import * as  __HMR__ from '${CLIENT_PUBLIC_PATH}';\nimport.meta.hot = __HMR__.createHotContext(import.meta.url);\n`,
-            )
+            magicString.prepend(hmrPreamble)
         }
         const currentNode = graph.ensureEntry(importerFilePath, {
             isHmrEnabled,

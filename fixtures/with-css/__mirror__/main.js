@@ -1,3 +1,4 @@
+
 import * as  __HMR__ from '/_hmr_client.js?namespace=hmr-client';
 import.meta.hot = __HMR__.createHotContext(import.meta.url);
 import '/file.css?namespace=file'

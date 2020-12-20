@@ -1,4 +1,8 @@
-import { NodeModulesPolyfillPlugin, NodeResolvePlugin } from '../plugins'
+import {
+    HtmlIngestPlugin,
+    NodeModulesPolyfillPlugin,
+    NodeResolvePlugin,
+} from '../plugins'
 import deepmerge from 'deepmerge'
 import { build, BuildOptions, Metadata, Plugin } from 'esbuild'
 import { promises as fsp } from 'fs'
@@ -16,6 +20,7 @@ import { logger } from '../logger'
 
 type Args = {
     cwd: string
+    root: string
     entryPoints: string[]
     esbuildOptions?: Partial<BuildOptions>
     // resolver?: (cwd: string, id: string) => string
@@ -30,6 +35,7 @@ export type TraversalResultType = {
 export async function traverseWithEsbuild({
     entryPoints,
     cwd: esbuildCwd,
+    root,
     esbuildOptions = { plugins: [] },
     stopTraversing,
 }: Args): Promise<TraversalResultType[]> {
@@ -75,6 +81,7 @@ export async function traverseWithEsbuild({
                     },
 
                     plugins: [
+                        HtmlIngestPlugin({ root }),
                         ExternalButInMetafile(),
                         NodeModulesPolyfillPlugin(),
                         NodeResolvePlugin({
@@ -220,7 +227,7 @@ export function metaToTraversalResult({
                 if (input == null) {
                     throw new Error(
                         `entry '${absPath}' is not present in esbuild metafile inputs ${JSON.stringify(
-                            inputs,
+                            Object.keys(inputs),
                             null,
                             2,
                         )}`,

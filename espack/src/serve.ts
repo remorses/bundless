@@ -9,7 +9,7 @@ import path from 'path'
 import slash from 'slash'
 import WebSocket from 'ws'
 import { HMRPayload } from './client/types'
-import { Config, defaultConfig } from './config'
+import { Config, defaultConfig, getEntries } from './config'
 import {
     DEFAULT_PORT,
     HMR_SERVER_NAME,
@@ -92,9 +92,7 @@ export function createApp(config: Config) {
             return path.resolve(root, webBundle!)
         }
         // node module path not bundled, rerun bundling
-        const entryPoints = [...Object.keys(graph.nodes)].map((x) =>
-            path.resolve(root, x),
-        )
+        const entryPoints = getEntries(config)
         bundleMap = await prebundle({
             entryPoints,
             dest: path.resolve(root, WEB_MODULES_PATH),

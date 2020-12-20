@@ -9,4 +9,5 @@ export { UrlResolverPlugin } from './url-resolver'
 export {
     NodeModulesPolyfillPlugin,
     NodeResolvePlugin,
+    HtmlIngestPlugin
 } from '@esbuild-plugins/all'

@@ -41,6 +41,7 @@ export async function getDependenciesPaths({ entryPoints, root }) {
     // serve react refresh runtime
     const traversalResult = await traverseWithEsbuild({
         entryPoints,
+        root,
         stopTraversing: isNodeModule,
         cwd: process.cwd(),
     })

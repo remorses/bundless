@@ -1,4 +1,5 @@
 import {
+    HtmlIngestPlugin,
     NodeModulesPolyfillPlugin,
     NodeResolvePlugin,
 } from '@esbuild-plugins/all'
@@ -53,6 +54,7 @@ export async function bundleWithEsBuild({
             require.resolve('@esbuild-plugins/node-globals-polyfill/process'),
         ],
         plugins: [
+            // HtmlIngestPlugin(),
             NodeModulesPolyfillPlugin(),
             NodeResolvePlugin({
                 mainFields: MAIN_FIELDS,
