@@ -26,13 +26,15 @@ import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { genSourceMapString } from './sourcemaps'
 import {
+    cleanUrl,
     dotdotEncoding,
     importPathToFile,
     isNodeModule,
     readBody,
 } from './utils'
 import deepmerge from 'deepmerge'
-import send from 'koa-send'
+
+import send, { SendOptions } from 'koa-send'
 
 export interface ServerPluginContext {
     root: string
@@ -300,6 +302,7 @@ export function createApp(config: Config) {
                 : ''
 
             ctx.body = transformed.contents + sourcemap
+            ctx.status = 200
             ctx.type = 'js'
         })
     }
@@ -313,34 +316,42 @@ export function createApp(config: Config) {
         middlewares.sourcemapMiddleware,
         middlewares.pluginAssetsMiddleware,
         pluginsMiddleware,
-        middlewares.serveStaticMiddleware,
+        // middlewares.serveStaticMiddleware,
     ]
     for (const middleware of serverMiddleware) {
         middleware(context)
     }
 
+    app.use(staticServe({ root: path.join(root, 'public') }))
+    app.use(staticServe({ root }))
+    app.use(historyFallback({ root }))
+
     // transform html
     app.use(async (ctx, next) => {
-        const accept = ctx.headers.accept
-        if (!accept.includes('text/html') && ctx.path.endsWith('.html')) {
+        // const accept = ctx.headers.accept
+        if (!ctx.response.is('html') || ctx.status >= 400) {
             return next()
         }
-        logger.log('transforming html')
+        const publicPath = !path.extname(ctx.path)
+            ? path.posix.join(ctx.path, 'index.html')
+            : ctx.path
+        logger.log('transforming html ' + publicPath)
         let html = await readBody(ctx.body)
         if (!html) {
             return next()
         }
         const transformedHtml = await pluginExecutor.transform({
             contents: html,
-            path: importPathToFile(root, ctx.path),
+            path: importPathToFile(root, publicPath),
             namespace: 'file',
         })
+        // console.log({ transformedHtml })
         if (!transformedHtml) {
             return next()
         }
         ctx.body = transformedHtml.contents
         ctx.status = 200
-        ctx.type = 'text/html'
+        ctx.type = 'html'
     })
 
     // cors
@@ -353,4 +364,66 @@ export function createApp(config: Config) {
     }
 
     return app
+}
+
+function historyFallback({ root }): Middleware {
+    return async (ctx, next) => {
+        if (ctx.status !== 404) {
+            return next()
+        }
+
+        if (ctx.method !== 'GET') {
+            logger.debug(`not redirecting ${ctx.url} (not GET)`)
+            return next()
+        }
+
+        const accept = ctx.headers && ctx.headers.accept
+        if (typeof accept !== 'string') {
+            logger.debug(`not redirecting ${ctx.url} (no headers.accept)`)
+            return next()
+        }
+
+        if (accept.includes('application/json')) {
+            logger.debug(`not redirecting ${ctx.url} (json)`)
+            return next()
+        }
+
+        if (!accept.includes('text/html')) {
+            logger.debug(`not redirecting ${ctx.url} (not accepting html)`)
+            return next()
+        }
+
+        logger.debug(`redirecting ${ctx.url} to /index.html`)
+        try {
+            await send(ctx, `index.html`, { root }).catch(() => {})
+            await send(ctx, `index.html`, {
+                root: path.join(root, 'public'),
+            }).catch(() => {})
+            return next()
+            // return next()
+        } catch (e) {
+            console.log(e)
+            // ctx.url = '/index.html'
+            // ctx.path = '/index.html'
+            // ctx.status = 404
+            return next()
+        }
+    }
+}
+
+function staticServe(opts: SendOptions) {
+    opts.index = opts.index || 'index.html'
+    return async function serve(ctx, next) {
+        if (ctx.method === 'HEAD' || ctx.method === 'GET') {
+            try {
+                await send(ctx, ctx.path, opts)
+            } catch (err) {
+                if (err.status !== 404) {
+                    throw err
+                }
+            }
+        }
+
+        await next()
+    }
 }

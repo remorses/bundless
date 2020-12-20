@@ -32,7 +32,8 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                     )
                     const runtimeCode = `
 const exports = {}
-${await (await fs.promises.readFile(runtimePath)).toString}
+const process = {env: {NODE_ENV: 'development'}}
+${await (await fs.promises.readFile(runtimePath)).toString()}
 ${debounce.toString()}
 exports.performReactRefresh = debounce(exports.performReactRefresh, 16)
 export default exports
