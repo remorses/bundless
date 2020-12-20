@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`hmr 1 src/main.jsx espack} 1`] = `
+exports[`hmr 1 src/main.jsx espack 1`] = `
 Array [
   Object {
     "type": "reload",
@@ -8,7 +8,7 @@ Array [
 ]
 `;
 
-exports[`hmr 2 src/file.jsx espack} 1`] = `
+exports[`hmr 2 src/file.jsx espack 1`] = `
 Array [
   Object {
     "type": "reload",
@@ -16,7 +16,7 @@ Array [
 ]
 `;
 
-exports[`hmr 3 src/file.css espack} 1`] = `
+exports[`hmr 3 src/file.css espack 1`] = `
 Array [
   Object {
     "path": "/src/file.css",
@@ -25,7 +25,7 @@ Array [
 ]
 `;
 
-exports[`hmr 4 src/file.module.css espack} 1`] = `
+exports[`hmr 4 src/file.module.css espack 1`] = `
 Array [
   Object {
     "path": "/src/file.module.css",
@@ -34,7 +34,7 @@ Array [
 ]
 `;
 
-exports[`hmr 5 src/file.json espack} 1`] = `
+exports[`hmr 5 src/file.json espack 1`] = `
 Array [
   Object {
     "type": "reload",
@@ -42,7 +42,7 @@ Array [
 ]
 `;
 
-exports[`hmr 6 src/file2.js espack} 1`] = `
+exports[`hmr 6 src/file2.js espack 1`] = `
 Array [
   Object {
     "type": "reload",
@@ -50,7 +50,7 @@ Array [
 ]
 `;
 
-exports[`hmr 7 src/imported-many-times.js espack} 1`] = `
+exports[`hmr 7 src/imported-many-times.js espack 1`] = `
 Array [
   Object {
     "type": "reload",

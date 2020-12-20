@@ -189,8 +189,8 @@ describe('hmr', () => {
 
     for (let testTarget of testTargets) {
         for (let [i, testCase] of testCases.entries()) {
-            test(`${i + 1} ${testCase.name ||
-                testCase.path} ${testTarget}}`, async () => {
+            const name = testCase.name || testCase.path
+            test(`${i + 1} ${name} ${testTarget}`, async () => {
                 const { stop, entry, hmrAgent } = await start(testTarget)
                 try {
                     const traversedFiles = await traverseEsModules({
@@ -202,10 +202,7 @@ describe('hmr', () => {
                         }),
                     })
                     // console.log(traversedFiles.map((x) => x.importPath))
-                    const ws = new WebSocket(
-                        `ws://localhost:${PORT}`,
-                        hmrAgent,
-                    )
+                    const ws = new WebSocket(`ws://localhost:${PORT}`, hmrAgent)
                     await once(ws, 'open')
                     // await once(ws, 'message')
                     await Promise.all(
