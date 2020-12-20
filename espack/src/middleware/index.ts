@@ -1,3 +1,4 @@
 export { pluginAssetsMiddleware } from './assets'
 export { sourcemapMiddleware } from './sourcemap'
-export { serveStaticMiddleware } from './serve-static'
+export { historyFallbackMiddleware } from './history-fallback'
+export { staticServeMiddleware } from './static-serve'

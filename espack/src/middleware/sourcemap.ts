@@ -1,6 +1,7 @@
 import { NodeResolvePlugin } from '@esbuild-plugins/all'
 import chalk from 'chalk'
 import fs from 'fs'
+import { Middleware } from 'koa'
 import path from 'path'
 import { RawSourceMap } from 'source-map'
 import { logger } from '../logger'
@@ -9,8 +10,8 @@ import { ServerMiddleware } from '../serve'
 import { importPathToFile, readFile } from '../utils'
 
 // changes sourcemaps to point to right files
-export const sourcemapMiddleware: ServerMiddleware = ({ app, root }) => {
-    app.use(async function sourcemap(ctx, next) {
+export const sourcemapMiddleware = ({ root }): Middleware => {
+    return async function sourcemap(ctx, next) {
         if (!ctx.path.endsWith('.map')) {
             return next()
         }
@@ -55,5 +56,5 @@ export const sourcemapMiddleware: ServerMiddleware = ({ app, root }) => {
         ctx.body = contents
         ctx.status = 200
         ctx.type = 'application/json'
-    })
+    }
 }

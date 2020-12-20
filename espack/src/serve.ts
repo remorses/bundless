@@ -244,9 +244,9 @@ export function createApp(config: Config) {
     }
 
     // only js ends up here
-    const pluginsMiddleware: ServerMiddleware = ({ app }) => {
+    const pluginsMiddleware = (): Middleware => {
         // attach server context to koa context
-        app.use(async (ctx, next) => {
+        return async (ctx, next) => {
             // Object.assign(ctx, context)
             const req = ctx.req
             if (
@@ -304,7 +304,7 @@ export function createApp(config: Config) {
             ctx.body = transformed.contents + sourcemap
             ctx.status = 200
             ctx.type = 'js'
-        })
+        }
     }
 
     // app.use((_, next) => {
@@ -312,19 +312,14 @@ export function createApp(config: Config) {
     //     return next()
     // })
 
-    const serverMiddleware = [
-        middlewares.sourcemapMiddleware,
-        middlewares.pluginAssetsMiddleware,
-        pluginsMiddleware,
-        // middlewares.serveStaticMiddleware,
-    ]
-    for (const middleware of serverMiddleware) {
-        middleware(context)
-    }
-
-    app.use(staticServe({ root: path.join(root, 'public') }))
-    app.use(staticServe({ root }))
-    app.use(historyFallback({ root }))
+    app.use(middlewares.sourcemapMiddleware({ root }))
+    app.use(middlewares.pluginAssetsMiddleware())
+    app.use(pluginsMiddleware())
+    app.use(
+        middlewares.staticServeMiddleware({ root: path.join(root, 'public') }),
+    )
+    app.use(middlewares.staticServeMiddleware({ root }))
+    app.use(middlewares.historyFallbackMiddleware({ root }))
 
     // transform html
     app.use(async (ctx, next) => {
@@ -364,66 +359,4 @@ export function createApp(config: Config) {
     }
 
     return app
-}
-
-function historyFallback({ root }): Middleware {
-    return async (ctx, next) => {
-        if (ctx.status !== 404) {
-            return next()
-        }
-
-        if (ctx.method !== 'GET') {
-            logger.debug(`not redirecting ${ctx.url} (not GET)`)
-            return next()
-        }
-
-        const accept = ctx.headers && ctx.headers.accept
-        if (typeof accept !== 'string') {
-            logger.debug(`not redirecting ${ctx.url} (no headers.accept)`)
-            return next()
-        }
-
-        if (accept.includes('application/json')) {
-            logger.debug(`not redirecting ${ctx.url} (json)`)
-            return next()
-        }
-
-        if (!accept.includes('text/html')) {
-            logger.debug(`not redirecting ${ctx.url} (not accepting html)`)
-            return next()
-        }
-
-        logger.debug(`redirecting ${ctx.url} to /index.html`)
-        try {
-            await send(ctx, `index.html`, { root }).catch(() => {})
-            await send(ctx, `index.html`, {
-                root: path.join(root, 'public'),
-            }).catch(() => {})
-            return next()
-            // return next()
-        } catch (e) {
-            console.log(e)
-            // ctx.url = '/index.html'
-            // ctx.path = '/index.html'
-            // ctx.status = 404
-            return next()
-        }
-    }
-}
-
-function staticServe(opts: SendOptions) {
-    opts.index = opts.index || 'index.html'
-    return async function serve(ctx, next) {
-        if (ctx.method === 'HEAD' || ctx.method === 'GET') {
-            try {
-                await send(ctx, ctx.path, opts)
-            } catch (err) {
-                if (err.status !== 404) {
-                    throw err
-                }
-            }
-        }
-
-        await next()
-    }
 }
