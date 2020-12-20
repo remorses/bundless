@@ -12,7 +12,7 @@ import path from 'path'
 import url, { URL } from 'url'
 import WebSocket from 'ws'
 
-require('jest-specific-snapshot')
+import 'jest-specific-snapshot'
 import * as failFast from 'jasmine-fail-fast'
 const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
@@ -203,7 +203,7 @@ describe('hmr', () => {
                     })
                     // console.log(traversedFiles.map((x) => x.importPath))
                     const ws = new WebSocket(
-                        `http://localhost:${PORT}`,
+                        `ws://localhost:${PORT}`,
                         hmrAgent,
                     )
                     await once(ws, 'open')

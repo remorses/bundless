@@ -41,7 +41,6 @@ export async function bundleWithEsBuild({
         splitting: true, // needed to dedupe modules
         external: externalPackages,
         minifyIdentifiers: Boolean(minify),
-
         minifySyntax: Boolean(minify),
         minifyWhitespace: Boolean(minify),
         mainFields: MAIN_FIELDS,
@@ -54,16 +53,17 @@ export async function bundleWithEsBuild({
             require.resolve('@esbuild-plugins/node-globals-polyfill/process'),
         ],
         plugins: [
+            NodeModulesPolyfillPlugin(),
             NodeResolvePlugin({
                 mainFields: MAIN_FIELDS,
                 extensions: [...JS_EXTENSIONS],
             }),
-            NodeModulesPolyfillPlugin(),
         ],
         tsconfig: tsconfigTempFile,
         bundle: true,
+        platform: 'browser',
         format: 'esm',
-
+        target: 'es2019',
         write: true,
         entryPoints,
         outdir: destLoc,

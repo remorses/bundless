@@ -53,7 +53,7 @@ export async function traverseWithEsbuild({
                 {
                     // splitting: true, // needed to dedupe modules
                     // external: externalPackages,
-
+                    target: 'es2020',
                     minifyIdentifiers: false,
                     minifySyntax: false,
                     minifyWhitespace: false,

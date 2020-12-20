@@ -1,3 +1,5 @@
+import WebSocket from 'ws'
+import chalk from 'chalk'
 import chokidar, { FSWatcher } from 'chokidar'
 import { once } from 'events'
 import { Server } from 'http'
@@ -9,6 +11,7 @@ import { HMRPayload } from './client/types'
 import { Config } from './config'
 import {
     DEFAULT_PORT,
+    HMR_SERVER_NAME,
     JS_EXTENSIONS,
     MAIN_FIELDS,
     WEB_MODULES_PATH,
@@ -47,6 +50,7 @@ export async function serve(config: Config) {
         open: config.openBrowser,
     })
     app.context.server = server
+    app.emit('listening')
     const port = server.address()?.['port']
     app.context.port = port
     config.port = port
@@ -140,8 +144,67 @@ export function createApp(config: Config) {
     })
 
     app.on('error', (e) => {
-        console.error('XXX')
-        throw e
+        logger.log(chalk.red(e))
+    })
+
+    // start HMR ws server
+    app.once('listening', async () => {
+        const wss = new WebSocket.Server({ noServer: true })
+        app.once('close', () => {
+            wss.close(() => logger.debug('closing wss'))
+            wss.clients.forEach((client) => {
+                client.close()
+            })
+        })
+        if (!app.context.server) {
+            throw new Error(`Cannot find server in context`)
+        }
+        app.context.server.on('upgrade', (req, socket, head) => {
+            if (req.headers['sec-websocket-protocol'] === HMR_SERVER_NAME) {
+                wss.handleUpgrade(req, socket, head, (ws) => {
+                    wss.emit('connection', ws, req)
+                })
+            }
+        })
+
+        wss.on('connection', (socket) => {
+            socket.send(JSON.stringify({ type: 'connected' }))
+            socket.on('message', (data) => {
+                const message: HMRPayload = JSON.parse(data.toString())
+                if (message.type === 'hotAccept') {
+                    graph.ensureEntry(importPathToFile(root, message.path), {
+                        hasHmrAccept: true,
+                        isHmrEnabled: true,
+                    })
+                }
+            })
+        })
+
+        wss.on('error', (e: Error & { code: string }) => {
+            if (e.code !== 'EADDRINUSE') {
+                console.error(chalk.red(`WebSocket server error:`))
+                console.error(e)
+            }
+        })
+
+        context.sendHmrMessage = (payload: HMRPayload) => {
+            const stringified = JSON.stringify(payload, null, 4)
+            logger.log(`hmr: ${stringified}`)
+            if (!wss.clients.size) {
+                logger.log(chalk.yellow(`No clients listening for HMR message`))
+            }
+            wss.clients.forEach((client) => {
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(stringified)
+                } else {
+                    console.log(
+                        chalk.red(
+                            `Cannot send HMR message, hmr client is not open`,
+                        ),
+                    )
+                }
+            })
+        }
     })
 
     // changing anything inside root that is not ignored and that is not in graph will cause reload
@@ -247,7 +310,6 @@ export function createApp(config: Config) {
     // })
 
     const serverMiddleware = [
-        middlewares.hmrMiddleware,
         middlewares.sourcemapMiddleware,
         middlewares.pluginAssetsMiddleware,
         pluginsMiddleware,
