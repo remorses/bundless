@@ -119,6 +119,7 @@ export function createApp(config: Config) {
     const pluginExecutor = createPluginsExecutor({
         root,
         plugins: [
+            plugins.UrlResolverPlugin(), // resolves urls with queries
             plugins.HmrClientPlugin({ getPort: () => app.context.port }),
             plugins.NodeResolvePlugin({
                 mainFields: MAIN_FIELDS,
@@ -127,11 +128,11 @@ export function createApp(config: Config) {
             }),
             plugins.NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
             plugins.EsbuildTransformPlugin(),
-            plugins.RewritePlugin(),
-            plugins.ResolveSourcemapPlugin(),
             plugins.CssPlugin(),
             plugins.JSONPlugin(),
             ...(config.plugins || []),
+            plugins.ResolveSourcemapPlugin(),
+            plugins.RewritePlugin(),
         ],
         config,
         graph,
@@ -151,9 +152,9 @@ export function createApp(config: Config) {
         app.emit('closed')
     })
 
-    app.on('error', (e) => {
-        logger.log(chalk.red(e))
-    })
+    // app.on('error', (e) => {
+    //     logger.log(chalk.red(e))
+    // })
 
     // start HMR ws server
     app.once('listening', async () => {

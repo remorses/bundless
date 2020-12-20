@@ -2,9 +2,11 @@ import { O_TRUNC } from 'constants'
 import * as esbuild from 'esbuild'
 import { promises } from 'fs-extra'
 import { Config } from './config'
+import url from 'url'
 import { Graph } from './graph'
 import { logger } from './logger'
 import { osAgnosticPath } from './prebundle/support'
+import qs from 'qs'
 
 export interface Plugin {
     name: string
@@ -59,7 +61,9 @@ type Maybe<x> = x | undefined | null
 export interface PluginsExecutor {
     load(args: esbuild.OnLoadArgs): Promise<Maybe<esbuild.OnLoadResult>>
     transform(args: OnTransformArgs): Promise<Maybe<OnTransformResult>>
-    resolve(args: esbuild.OnResolveArgs): Promise<Maybe<esbuild.OnResolveArgs>>
+    resolve(
+        args: esbuild.OnResolveArgs,
+    ): Promise<Maybe<esbuild.OnResolveResult>>
     close({}): Promise<void>
 }
 
@@ -207,8 +211,13 @@ export function createPluginsExecutor({
         }
         return result
     }
-    async function resolve(arg) {
+    async function resolve(
+        arg: esbuild.OnResolveArgs,
+    ): Promise<Maybe<esbuild.OnResolveResult>> {
         let result
+        // support for resolving paths with queries
+        
+
         for (let { callback, options, name } of resolvers) {
             if (matches(options, arg)) {
                 logger.debug(`resolving '${arg.path}' with '${name}'`)
@@ -247,4 +256,31 @@ export function createPluginsExecutor({
         transform,
         close,
     }
+}
+
+function removeQuery(path?: string): esbuild.OnResolveResult {
+    if (!path) {
+        return {
+            path,
+        }
+    }
+    if (!path.includes('?')) {
+        return {
+            path,
+        }
+    }
+    const parsed = url.parse(path)
+    if (!parsed.pathname) {
+        throw new Error('no pathname in ' + path)
+    }
+    const query = qs.parse(parsed.query || '')
+    logger.log(`Removed query from path ${path}`)
+    const arg = {
+        path: parsed.pathname,
+        ...(query.namespace && {
+            namespace: query.namespace as string,
+        }),
+    }
+    console.log({ arg })
+    return arg
 }

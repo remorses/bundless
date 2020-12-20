@@ -24,6 +24,15 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                 }
             })
 
+            onResolve({filter: new RegExp(runtimePath), }, args => {
+                if (args.path === runtimePath) {
+                    return {
+                        path: runtimePath,
+                        namespace: runtimeNamespace
+                    }
+                }
+            }) 
+
             onLoad(
                 { filter: /.*/, namespace: runtimeNamespace },
                 async (args) => {

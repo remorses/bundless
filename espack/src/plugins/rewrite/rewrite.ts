@@ -256,8 +256,7 @@ export async function rewriteImports({
         return magicString.toString()
     } catch (e) {
         e.message =
-            `Error: module imports rewrite failed for ${importerFilePath}.\n` +
-            e
+            `Error: module imports rewrite failed for ${importerFilePath}\n` + e
         throw e
         debug(source)
         return source
