@@ -1,12 +1,13 @@
-import WebSocket from 'ws'
 import chalk from 'chalk'
 import chokidar, { FSWatcher } from 'chokidar'
+import deepmerge from 'deepmerge'
 import { once } from 'events'
 import { Server } from 'http'
 import Koa, { DefaultContext, DefaultState, Middleware } from 'koa'
 import { listen } from 'listhen'
 import path from 'path'
 import slash from 'slash'
+import WebSocket from 'ws'
 import { HMRPayload } from './client/types'
 import { Config, defaultConfig } from './config'
 import {
@@ -26,15 +27,12 @@ import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { genSourceMapString } from './sourcemaps'
 import {
-    cleanUrl,
     dotdotEncoding,
     importPathToFile,
     isNodeModule,
     readBody,
 } from './utils'
-import deepmerge from 'deepmerge'
-
-import send, { SendOptions } from 'koa-send'
+import etagMiddleware from 'koa-etag'
 
 export interface ServerPluginContext {
     root: string
@@ -304,6 +302,7 @@ export function createApp(config: Config) {
             ctx.body = transformed.contents + sourcemap
             ctx.status = 200
             ctx.type = 'js'
+            return next()
         }
     }
 
@@ -320,6 +319,8 @@ export function createApp(config: Config) {
     )
     app.use(middlewares.staticServeMiddleware({ root }))
     app.use(middlewares.historyFallbackMiddleware({ root }))
+    // app.use(require('koa-conditional-get'))
+    app.use(etagMiddleware())
 
     // transform html
     app.use(async (ctx, next) => {
