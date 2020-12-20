@@ -13,10 +13,11 @@ export function staticServeMiddleware(opts: SendOptions): Middleware {
         }
 
         try {
+            // console.log('try serving ' + ctx.path)
             await send(ctx, ctx.path, opts)
         } catch (err) {
-            if (err.status !== 404) {
-                throw err
+            if (err.status !== 404 && err.code !== 'ENOENT') {
+                throw new Error(`Cannot static serve ${ctx.path}: ${err}`)
             }
         }
 
