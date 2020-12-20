@@ -4,6 +4,7 @@ export const CLIENT_PUBLIC_PATH = `/_hmr_client.js?namespace=${hmrClientNamespac
 export const COMMONJS_ANALYSIS_PATH = 'commonjs.json'
 export const WEB_MODULES_PATH = 'web_modules'
 export const HMR_SERVER_NAME = 'esm-hmr'
+export const CONFIG_NAME = 'espack.config.js'
 
 export let isRunningWithYarnPnp: boolean
 try {

@@ -11,9 +11,10 @@ import fs from 'fs-extra'
 import path from 'path'
 import url, { URL } from 'url'
 import WebSocket from 'ws'
-
+import { ReactRefreshPlugin } from 'espack-plugin-react-refresh'
 import 'jest-specific-snapshot'
 import * as failFast from 'jasmine-fail-fast'
+import { Config } from 'espack/dist/config'
 const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
 
@@ -34,6 +35,13 @@ type TestCase = {
 }
 
 process.env.NODE_ENV = 'development' // fix for snowpack that does not start in test env
+
+const config: Config = {
+    port: PORT,
+    root: tempDir,
+    openBrowser: false,
+    plugins: [ReactRefreshPlugin()],
+}
 
 const testCases: TestCase[] = [
     {
@@ -112,11 +120,7 @@ async function start(type) {
     })
     switch (type) {
         case 'espack': {
-            const server = await serve({
-                port: PORT,
-                root: tempDir,
-                openBrowser: false,
-            })
+            const server = await serve(config)
             // await sleep(300)
             return {
                 stop: () => server.close(),

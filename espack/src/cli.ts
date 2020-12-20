@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-require('source-map-support').install();
+require('source-map-support').install()
 import yargs, { CommandModule } from 'yargs'
 import deepMerge from 'deepmerge'
 import { serve } from './serve'
+import { loadConfig } from './config'
 
 const serveCommand: CommandModule = {
     command: ['serve', '*'],
@@ -16,7 +17,8 @@ const serveCommand: CommandModule = {
         return argv
     },
     handler: async (argv: any) => {
-        const config = deepMerge({}, { port: argv.port  }) // TODO resolve and load config
+        const loadedConfig = loadConfig(process.cwd())
+        const config = deepMerge(loadedConfig, { port: argv.port }) // TODO resolve and load config
         return serve(config)
     },
 }

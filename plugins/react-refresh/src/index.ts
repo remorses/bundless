@@ -4,7 +4,9 @@ import { Plugin } from 'espack'
 import { transform } from '@babel/core'
 
 const runtimeNamespace = 'react-refresh-runtime'
-const runtimePath = `_react-refresh-runtime_?namespace=${runtimeNamespace}`
+const runtimePath = `/_react-refresh-runtime_?namespace=${runtimeNamespace}`
+
+export default ReactRefreshPlugin
 
 export function ReactRefreshPlugin({} = {}): Plugin {
     return {
@@ -16,6 +18,7 @@ export function ReactRefreshPlugin({} = {}): Plugin {
 
             // injects stuff in html
             onTransform({ filter: /\.html$/ }, (args) => {
+                console.log('transforming html with react refresh')
                 return {
                     contents: transformHtml(args.contents),
                 }

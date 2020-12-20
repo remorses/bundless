@@ -3,12 +3,12 @@ import chalk from 'chalk'
 import chokidar, { FSWatcher } from 'chokidar'
 import { once } from 'events'
 import { Server } from 'http'
-import Koa, { DefaultContext, DefaultState } from 'koa'
+import Koa, { DefaultContext, DefaultState, Middleware } from 'koa'
 import { listen } from 'listhen'
 import path from 'path'
 import slash from 'slash'
 import { HMRPayload } from './client/types'
-import { Config } from './config'
+import { Config, defaultConfig } from './config'
 import {
     DEFAULT_PORT,
     HMR_SERVER_NAME,
@@ -31,6 +31,8 @@ import {
     isNodeModule,
     readBody,
 } from './utils'
+import deepmerge from 'deepmerge'
+import send from 'koa-send'
 
 export interface ServerPluginContext {
     root: string
@@ -48,6 +50,7 @@ export interface ServerPluginContext {
 export type ServerMiddleware = (ctx: ServerPluginContext) => void
 
 export async function serve(config: Config) {
+    config = deepmerge(defaultConfig, config)
     const app = createApp(config)
     const { server, close } = await listen(app.callback(), {
         port: config.port || DEFAULT_PORT,
@@ -238,6 +241,7 @@ export function createApp(config: Config) {
         port: Number(config.port || 3000),
     }
 
+    // only js ends up here
     const pluginsMiddleware: ServerMiddleware = ({ app }) => {
         // attach server context to koa context
         app.use(async (ctx, next) => {
@@ -296,7 +300,7 @@ export function createApp(config: Config) {
                 : ''
 
             ctx.body = transformed.contents + sourcemap
-            ctx.type = 'js' // TODO how to set right content type? an html transform could return html, should esbuild support custom content types? should i extend esbuild result types?
+            ctx.type = 'js'
         })
     }
 
