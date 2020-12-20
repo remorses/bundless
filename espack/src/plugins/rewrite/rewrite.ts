@@ -64,7 +64,7 @@ export async function rewriteImports({
     if (source.charCodeAt(0) === 0xfeff) {
         source = source.slice(1)
     }
-    graph.ensureEntry(importerFilePath)
+    graph.ensureEntry(importerFilePath, { importees: new Set() })
     try {
         let imports: ImportSpecifier[] = []
         try {
@@ -97,6 +97,7 @@ export async function rewriteImports({
         }
         const currentNode = graph.ensureEntry(importerFilePath, {
             isHmrEnabled,
+            importees: new Set(),
         })
 
         for (let i = 0; i < imports.length; i++) {
@@ -144,7 +145,7 @@ export async function rewriteImports({
 
                 // handle bare imports like node builtins, virtual files, ...
                 if (
-                    !path.isAbsolute(resolveResult?.path) ||
+                    !path.isAbsolute(resolveResult.path || '') ||
                     (resolveResult.namespace &&
                         resolveResult.namespace !== 'file')
                 ) {

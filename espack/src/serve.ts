@@ -102,6 +102,7 @@ export function createApp(config: Config) {
         }).catch((e) => {
             throw new Error(`Cannot prebundle: ${e}`)
         })
+        context.sendHmrMessage({ type: 'reload' })
         const webBundle = bundleMap[relativePath]
         if (!webBundle) {
             throw new Error(

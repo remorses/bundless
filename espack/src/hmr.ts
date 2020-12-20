@@ -3,6 +3,7 @@ import { Graph } from './graph'
 import { osAgnosticPath } from './prebundle/support'
 import { fileToImportPath, importPathToFile } from './utils'
 
+// TODO maybe rewrite should happen before to prune the graph from removed imports? in case old imports remain in the graph what could happen? the hmr algo only depend on the importers, this means that the worst thing could be that a non importer could be updated, but this is impossible because the only changed imports can only be the ones in the updated file, this means that only the current file imports could be invalid, which means that changed files importers will always be valid
 export async function onFileChange({
     graph,
     root,

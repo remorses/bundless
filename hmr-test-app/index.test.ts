@@ -43,6 +43,11 @@ const config: Config = {
     plugins: [ReactRefreshPlugin()],
 }
 
+// TODO test when removing an import
+// TODO test when adding an import
+// TODO test 2 consecutive updates that resets the ?timestamp query and could cause a stale fetch
+// 
+
 const testCases: TestCase[] = [
     {
         path: 'src/main.jsx',
