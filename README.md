@@ -47,7 +47,6 @@ Plugins to implement
 ## todo:
 
 -   esbuild only supports returning js code in onLoad plugins, how to apply transform on other assets like html? i could pass none loader on these files? instead of using only load i could use onEmit to get contents, this way i can get any type of asset and understand content type from extension
--   how to apply onTransform to onLoad when building? esbuild does not support onTransform, i need to convert onTransform to onLoad calls, i can do this converting the plugin executor to a monolith plugin that runs onTransform after onLoad, or run all the onTransform after every onLoad maintaining plugins separate but wrapped in closures
 -   how do i get content type from plugins?, i can use extension from onEmit results
 -   what files should be loaded by plugins? all imported files for sure + html files (to inject scripts, ...), this way html linked resources (like scripts) are also loaded by plugins (however static assets won't be loaded by plugins, like link tags)
 -   // TODO esbuild build plugins will use onEmit to emit non js css, on dev it should instead return css, how to split these 2 logics?
