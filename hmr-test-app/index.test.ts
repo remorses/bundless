@@ -117,6 +117,7 @@ async function start(type) {
                 root: __dirname,
                 openBrowser: false,
             })
+            // await sleep(300)
             return {
                 stop: () => server.close(),
                 entry: '/espack/index.html',
@@ -187,91 +188,76 @@ describe('hmr', () => {
     const root = tempDir
 
     for (let testTarget of testTargets) {
-        let stop
-        let entry
-        let hmrAgent
-
-        for (let testCase of testCases) {
-            test(
-                (testCase.name || testCase.path) + ' ' + testTarget,
-                async () => {
-                    try {
-                        void ({ stop, entry, hmrAgent } = await start(
-                            testTarget,
-                        ))
-                        const traversedFiles = await traverseEsModules({
-                            entryPoints: [new URL(entry, baseUrl).toString()],
-                            onNonResolved: () => {},
-                            resolver: urlResolver({
-                                root,
-                                baseUrl,
-                            }),
-                        })
-                        // console.log(traversedFiles.map((x) => x.importPath))
-                        const ws = new WebSocket(
-                            `http://localhost:${PORT}`,
-                            hmrAgent,
-                        )
-                        await once(ws, 'open')
-                        await Promise.all(
-                            traversedFiles.map(
-                                async ({ resolvedImportPath, importPath }) => {
-                                    const content = await readFromUrlOrPath(
-                                        resolvedImportPath,
-                                        importPath,
-                                    )
-                                    if (
-                                        content.includes(
-                                            'import.meta.hot.accept',
-                                        )
-                                    ) {
-                                        const msg = JSON.stringify(
-                                            {
-                                                // id is for snowpack
-                                                id: url.parse(
-                                                    resolvedImportPath,
-                                                ).pathname,
-                                                // path is for espack
-                                                path: url.parse(
-                                                    resolvedImportPath,
-                                                ).pathname,
-                                                type: 'hotAccept',
-                                            },
-                                            null,
-                                            4,
-                                        )
-                                        // console.log({ msg })
-                                        ws.send(msg)
-                                    }
-                                },
-                            ),
-                        )
-
-                        const messages = await getWsMessages({
-                            ws,
-                            doing: async () => {
-                                await updateFile(
-                                    path.resolve(root, testCase.path),
-                                    testCase.replacer,
+        for (let [i, testCase] of testCases.entries()) {
+            test(`${i + 1} ${testCase.name ||
+                testCase.path} ${testTarget}}`, async () => {
+                const { stop, entry, hmrAgent } = await start(testTarget)
+                try {
+                    const traversedFiles = await traverseEsModules({
+                        entryPoints: [new URL(entry, baseUrl).toString()],
+                        onNonResolved: () => {},
+                        resolver: urlResolver({
+                            root,
+                            baseUrl,
+                        }),
+                    })
+                    // console.log(traversedFiles.map((x) => x.importPath))
+                    const ws = new WebSocket(
+                        `http://localhost:${PORT}`,
+                        hmrAgent,
+                    )
+                    await once(ws, 'open')
+                    // await once(ws, 'message')
+                    await Promise.all(
+                        traversedFiles.map(
+                            async ({ resolvedImportPath, importPath }) => {
+                                const content = await readFromUrlOrPath(
+                                    resolvedImportPath,
+                                    importPath,
                                 )
+                                if (
+                                    content.includes('import.meta.hot.accept')
+                                ) {
+                                    const msg = JSON.stringify(
+                                        {
+                                            // id is for snowpack
+                                            id: url.parse(resolvedImportPath)
+                                                .pathname,
+                                            // path is for espack
+                                            path: url.parse(resolvedImportPath)
+                                                .pathname,
+                                            type: 'hotAccept',
+                                        },
+                                        null,
+                                        4,
+                                    )
+                                    // console.log({ msg })
+                                    ws.send(msg)
+                                }
                             },
-                        })
-                        expect(
-                            messages.map(normalizeHmrMessage),
-                        ).toMatchSpecificSnapshot(
-                            path.resolve(
-                                fixtureDir,
-                                '__snapshots__',
-                                testTarget,
-                            ),
-                            '',
-                        )
-                    } finally {
-                        if (stop) await stop()
-                        await sleep(300)
-                    }
-                },
-            )
+                        ),
+                    )
+
+                    const messages = await getWsMessages({
+                        ws,
+                        doing: async () => {
+                            await updateFile(
+                                path.resolve(root, testCase.path),
+                                testCase.replacer,
+                            )
+                        },
+                    })
+                    expect(
+                        messages.map(normalizeHmrMessage),
+                    ).toMatchSpecificSnapshot(
+                        path.resolve(fixtureDir, '__snapshots__', testTarget),
+                        '',
+                    )
+                } finally {
+                    if (stop) await stop()
+                    await sleep(300)
+                }
+            })
         }
     }
 })
