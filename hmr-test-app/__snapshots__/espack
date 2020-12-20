@@ -3,7 +3,8 @@
 exports[`hmr 1 src/main.jsx espack 1`] = `
 Array [
   Object {
-    "type": "reload",
+    "path": "/src/main.jsx",
+    "type": "update",
   },
 ]
 `;
@@ -11,7 +12,8 @@ Array [
 exports[`hmr 2 src/file.jsx espack 1`] = `
 Array [
   Object {
-    "type": "reload",
+    "path": "/src/file.jsx",
+    "type": "update",
   },
 ]
 `;
@@ -45,7 +47,8 @@ Array [
 exports[`hmr 6 src/file2.js espack 1`] = `
 Array [
   Object {
-    "type": "reload",
+    "path": "/src/file2.js",
+    "type": "update",
   },
 ]
 `;
@@ -53,7 +56,8 @@ Array [
 exports[`hmr 7 src/imported-many-times.js espack 1`] = `
 Array [
   Object {
-    "type": "reload",
+    "path": "/src/imported-many-times.js",
+    "type": "update",
   },
 ]
 `;

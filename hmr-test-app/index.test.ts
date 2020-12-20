@@ -40,6 +40,7 @@ const config: Config = {
     port: PORT,
     root: tempDir,
     openBrowser: false,
+    entries: ['public/espack/index.html'],
     plugins: [ReactRefreshPlugin()],
 }
 
