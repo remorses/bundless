@@ -13,6 +13,8 @@ ReactDOM.render(
         >
             refetch
         </button>
+        <br />
+        <br />
         {y}
     </>,
     document.getElementById('root'),
