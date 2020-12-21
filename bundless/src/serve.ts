@@ -103,6 +103,7 @@ export function createApp(config: Config) {
             e.message = `Cannot prebundle: ${e.message}`
             throw e
         })
+        // TODO store the bundleMap on disk
         context.sendHmrMessage({ type: 'reload' })
         const webBundle = bundleMap[relativePath]
         if (!webBundle) {
@@ -320,10 +321,10 @@ export function createApp(config: Config) {
     app.use(middlewares.sourcemapMiddleware({ root }))
     app.use(middlewares.pluginAssetsMiddleware())
     app.use(pluginsMiddleware())
+    app.use(middlewares.staticServeMiddleware({ root })) // TODO test that serve static works with paths containing $$ and folders with name ending in .zip
     app.use(
         middlewares.staticServeMiddleware({ root: path.join(root, 'public') }),
     )
-    app.use(middlewares.staticServeMiddleware({ root }))
     app.use(middlewares.historyFallbackMiddleware({ root }))
     // app.use(require('koa-conditional-get'))
     app.use(etagMiddleware())

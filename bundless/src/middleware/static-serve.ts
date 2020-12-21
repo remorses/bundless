@@ -4,6 +4,7 @@ import send, { SendOptions } from 'koa-send'
 // like koa static but executes other middlewares after serving, needed to transform html afterwards
 export function staticServeMiddleware(opts: SendOptions): Middleware {
     opts.index = opts.index || 'index.html'
+    opts.hidden = opts.hidden || true
     return async function serve(ctx, next) {
         if (ctx.method !== 'HEAD' && ctx.method !== 'GET') {
             return next()
