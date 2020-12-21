@@ -574,6 +574,14 @@
     debug "^4.3.1"
     rollup-plugin-node-polyfills "^0.2.1"
 
+"@esbuild-plugins/node-globals-polyfill@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-globals-polyfill/-/node-globals-polyfill-0.0.4.tgz#1244f08462b598bfc05589906e0f0d4e6c2edc2a"
+  integrity sha512-6XmGhYFExt5vBEszTny6+PrQ3NWAkDKejyL9orQ0wFNiQTUcnILuhydxY/7xtCPwwDbe1hZ+jBretRg/dX4xmw==
+  dependencies:
+    debug "^4.3.1"
+    rollup-plugin-node-polyfills "^0.2.1"
+
 "@esbuild-plugins/node-modules-polyfill@*":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-modules-polyfill/-/node-modules-polyfill-0.0.1.tgz#bb1c99af35aaa7c6885c0a84bdef3cccef8bebc9"
