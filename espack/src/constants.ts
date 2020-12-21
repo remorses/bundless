@@ -1,3 +1,4 @@
+import { logger } from './logger'
 import { hmrClientNamespace } from './plugins/hmr-client'
 export const DEFAULT_PORT = 3000
 export const CLIENT_PUBLIC_PATH = `/_hmr_client.js?namespace=${hmrClientNamespace}`
@@ -9,6 +10,7 @@ export const CONFIG_NAME = 'espack.config.js'
 export let isRunningWithYarnPnp: boolean
 try {
     isRunningWithYarnPnp = Boolean(require('pnpapi'))
+    logger.log('Using Yarn PnP')
 } catch {}
 
 export const MAIN_FIELDS = ['browser:module', 'module', 'browser', 'main']
