@@ -32,6 +32,7 @@ import {
     isNodeModule,
     readBody,
 } from './utils'
+import fs from 'fs-extra'
 import etagMiddleware from 'koa-etag'
 
 export interface ServerPluginContext {
@@ -51,7 +52,7 @@ export type ServerMiddleware = (ctx: ServerPluginContext) => void
 
 export async function serve(config: Config) {
     config = deepmerge(defaultConfig, config)
-    const app = createApp(config)
+    const app = await createApp(config)
     const { server, close } = await listen(app.callback(), {
         port: config.port || DEFAULT_PORT,
         showURL: true,
@@ -74,7 +75,7 @@ export async function serve(config: Config) {
     }
 }
 
-export function createApp(config: Config) {
+export async function createApp(config: Config) {
     if (!config.root) {
         config.root = process.cwd()
     }
@@ -83,8 +84,15 @@ export function createApp(config: Config) {
     const app = new Koa<DefaultState, DefaultContext>()
 
     const graph = new Graph({ root })
-    let bundleMap: BundleMap | undefined // TODO persist the prebundle map on disk, validate that its web_modules exist when loading it from disk
-    async function onResolved(resolvedPath) {
+    const bundleMapCachePath = path.resolve(
+        root,
+        WEB_MODULES_PATH,
+        'bundleMap.json',
+    )
+    let bundleMap: BundleMap = await fs
+        .readJSON(bundleMapCachePath)
+        .catch(() => ({}))
+    async function onResolved(resolvedPath: string, importer: string) {
         if (!isNodeModule(resolvedPath)) {
             return
         }
@@ -93,6 +101,8 @@ export function createApp(config: Config) {
             const webBundle = bundleMap[relativePath]
             return path.resolve(root, webBundle!)
         }
+        logger.log(`Found still not bundled module, running prebundle phase:`)
+        logger.log(`'${relativePath}' imported by '${importer}'`)
         // node module path not bundled, rerun bundling
         const entryPoints = getEntries(config)
         bundleMap = await prebundle({
@@ -103,6 +113,7 @@ export function createApp(config: Config) {
             e.message = `Cannot prebundle: ${e.message}`
             throw e
         })
+        await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
         // TODO store the bundleMap on disk
         context.sendHmrMessage({ type: 'reload' })
         const webBundle = bundleMap[relativePath]

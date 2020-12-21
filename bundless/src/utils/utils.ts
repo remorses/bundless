@@ -143,7 +143,7 @@ export async function readFile(p: string) {
 }
 
 export function flatten<T>(arr: T[][]): T[] {
-    return arr.reduce(function (flat, toFlatten) {
+    return arr.reduce(function(flat, toFlatten) {
         return flat.concat(
             Array.isArray(toFlatten) ? flatten(toFlatten as any) : toFlatten,
         )
@@ -151,7 +151,7 @@ export function flatten<T>(arr: T[][]): T[] {
 }
 
 export function isNodeModule(p: string) {
-    return p.includes('node_modules')
+    return p.includes('node_modules') && !p.includes('web_modules') // TODO make something more robust to skip detection of node_modules inside web_modules
 }
 
 export function parse(source: string): Statement[] {
@@ -173,4 +173,3 @@ export function parse(source: string): Statement[] {
 export const jsTypeRegex = new RegExp(
     '(' + [...JS_EXTENSIONS].map(escapeStringRegexp).join('|') + ')$',
 )
-

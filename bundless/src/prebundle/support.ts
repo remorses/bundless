@@ -50,6 +50,7 @@ export function unique<T>(array: T[], key = (x: T): any => x): T[] {
     }, {})
 }
 
+// namespace:/path/to/file -> /path/to/file
 export function stripColon(input?: string) {
     if (!input) {
         return ''
@@ -74,15 +75,10 @@ function convertKeys<T>(obj: T, cb: (k: string) => string): T {
     return x
 }
 
-export function fixMetaPath(p: string) {
-    p = stripColon(p) // namespace:/path/to/file -> /path/to/file
-    p = p.replace('$$virtual', 'virtual') // https://github.com/yarnpkg/berry/issues/2259
-    return p
-}
 
 export function runFunctionOnPaths(
     x: Metadata,
-    func: (x: string) => string = fixMetaPath,
+    func: (x: string) => string = stripColon,
 ): Metadata {
     x = convertKeys(x, func)
     for (const input in x.inputs) {

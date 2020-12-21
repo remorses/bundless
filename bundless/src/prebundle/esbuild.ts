@@ -17,10 +17,10 @@ import {
 } from '../constants'
 import { DependencyStatsOutput } from './stats'
 import {
-    fixMetaPath,
     OptimizeAnalysisResult,
     osAgnosticPath,
     runFunctionOnPaths,
+    stripColon,
 } from './support'
 
 export const commonEsbuildOptions: esbuild.BuildOptions = {
@@ -122,7 +122,12 @@ export async function bundleWithEsBuild({
         await (await fs.promises.readFile(metafile)).toString(),
     )
 
-    meta = runFunctionOnPaths(meta)
+    meta = runFunctionOnPaths(meta, (p) => {
+        p = stripColon(p) // namespace:/path/to/file -> /path/to/file
+        p = p.replace('$$virtual', 'virtual') // https://github.com/yarnpkg/berry/issues/2259
+        return p
+    })
+    
     const esbuildCwd = process.cwd()
     const bundleMap = metafileToBundleMap({
         entryPoints,
