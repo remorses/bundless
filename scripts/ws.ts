@@ -1,6 +1,6 @@
 import WebSocket from 'ws'
 import { once } from 'events'
-import { serve } from 'espack'
+import { serve } from '@bundless/cli'
 
 const PORT = 4000
 

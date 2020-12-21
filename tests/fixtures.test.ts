@@ -1,6 +1,6 @@
 import { traverseEsModules, urlResolver } from 'es-module-traversal'
-import { serve } from 'espack'
-import { jsTypeRegex } from 'espack/dist/utils'
+import { serve } from '@bundless/cli'
+import { jsTypeRegex } from '@bundless/cli/dist/utils'
 import fs from 'fs-extra'
 import glob from 'glob'
 import fetch from 'node-fetch'

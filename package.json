@@ -14,7 +14,7 @@
             "**/preact"
         ],
         "packages": [
-            "espack",
+            "bundless",
             "fixtures/*",
             "tests",
             "plugins/*",
@@ -34,7 +34,7 @@
         "ultra-runner": "^3.6.0"
     },
     "private": true,
-    "repository": "https://github.com/remorses/espack.git",
+    "repository": "https://github.com/remorses/bundless.git",
     "author": "remorses <beats.by.morse@gmail.com>",
     "license": "MIT"
 }

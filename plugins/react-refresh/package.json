@@ -1,10 +1,10 @@
 {
-    "name": "espack-plugin-react-refresh",
+    "name": "@bundless/plugin-react-refresh",
     "version": "0.0.0",
     "description": "",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
-    "repository": "https://github.com/remorses/espack.git",
+    "repository": "https://github.com/remorses/bundless.git",
     "scripts": {
         "build": "tsc",
         "watch": "tsc -w",
@@ -21,7 +21,7 @@
     "devDependencies": {
         "@babel/types": "^7.12.7",
         "@types/node": "^14.14.13",
-        "espack": "*"
+        "@bundless/cli": "*"
     },
     "dependencies": {
         "@babel/core": "^7.9.6",
@@ -29,6 +29,6 @@
         "react-refresh": "^0.8.2"
     },
     "peerDependencies": {
-        "espack": "*"
+        "@bundless/cli": "*"
     }
 }

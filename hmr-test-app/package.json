@@ -20,12 +20,12 @@
         "vite": "^1.0.0-rc.13",
         "vite-plugin-react": "^4.0.1",
         "execa": "^5.0.0",
-        "espack": "*",
+        "@bundless/cli": "*",
         "ws": "^7.4.1"
     },
     "dependencies": {
         "react": "^17.0.1",
-        "espack-plugin-react-refresh": "*",
+        "@bundless/plugin-react-refresh": "*",
         "react-dom": "^17.0.1"
     },
     "peerDependencies": {}

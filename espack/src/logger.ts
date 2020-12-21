@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-const prefix = '[espack] '
+const prefix = '[bundless] '
 
 export const logger = {
     log(...x) {

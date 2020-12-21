@@ -1,6 +1,6 @@
 import type { File as BabelAST } from '@babel/types'
 import fs from 'fs'
-import { Plugin } from 'espack'
+import { Plugin } from '@bundless/cli'
 import { transform } from '@babel/core'
 
 const runtimeNamespace = 'react-refresh-runtime'

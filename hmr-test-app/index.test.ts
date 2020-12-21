@@ -5,24 +5,24 @@ import {
 } from 'es-module-traversal'
 import { once } from 'events'
 import { exec, spawn } from 'child_process'
-import { serve } from 'espack'
+import { serve } from '@bundless/cli'
 import execa from 'execa'
 import fs from 'fs-extra'
 import path from 'path'
 import url, { URL } from 'url'
 import WebSocket from 'ws'
-import { ReactRefreshPlugin } from 'espack-plugin-react-refresh'
+import { ReactRefreshPlugin } from '@bundless/plugin-react-refresh'
 import 'jest-specific-snapshot'
 import * as failFast from 'jasmine-fail-fast'
-import { Config } from 'espack/dist/config'
+import { Config } from '@bundless/cli/dist/config'
 const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
 
 const tempDir = path.resolve('temp')
 const fixtureDir = path.resolve('hmr-test-app')
 const testTargets = process.env.HRM_TESTS
-    ? ['snowpack', 'vite', 'espack']
-    : ['espack']
+    ? ['snowpack', 'vite', '@bundless/cli']
+    : ['@bundless/cli']
 
 const PORT = 4000
 
@@ -37,17 +37,16 @@ type TestCase = {
 process.env.NODE_ENV = 'development' // fix for snowpack that does not start in test env
 
 const config: Config = {
+    ...require('./bundless.config'),
+    openBrowser: false,
     port: PORT,
     root: tempDir,
-    openBrowser: false,
-    entries: ['public/espack/index.html'],
-    plugins: [ReactRefreshPlugin()],
 }
 
 // TODO test when removing an import
 // TODO test when adding an import
 // TODO test 2 consecutive updates that resets the ?timestamp query and could cause a stale fetch
-// 
+//
 
 const testCases: TestCase[] = [
     {
@@ -125,12 +124,12 @@ async function start(type) {
         finish = r
     })
     switch (type) {
-        case 'espack': {
+        case '@bundless/cli': {
             const server = await serve(config)
             // await sleep(300)
             return {
                 stop: () => server.close(),
-                entry: '/espack/index.html',
+                entry: '/bundless/index.html',
                 hmrAgent: 'esm-hmr',
             }
         }
@@ -230,7 +229,6 @@ describe('hmr', () => {
                                             // id is for snowpack
                                             id: url.parse(resolvedImportPath)
                                                 .pathname,
-                                            // path is for espack
                                             path: url.parse(resolvedImportPath)
                                                 .pathname,
                                             type: 'hotAccept',
