@@ -9,7 +9,6 @@ import { printStats } from './stats'
 import { osAgnosticPath } from './support'
 import { traverseWithEsbuild } from './traverse'
 
-
 export async function prebundle({ entryPoints, root, dest }) {
     const dependenciesPaths = await getDependenciesPaths({ entryPoints, root })
     logger.log(

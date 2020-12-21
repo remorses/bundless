@@ -100,7 +100,8 @@ export function createApp(config: Config) {
             dest: path.resolve(root, WEB_MODULES_PATH),
             root,
         }).catch((e) => {
-            throw new Error(`Cannot prebundle: ${e}`)
+            e.message = `Cannot prebundle: ${e.message}`
+            throw e
         })
         context.sendHmrMessage({ type: 'reload' })
         const webBundle = bundleMap[relativePath]
@@ -218,15 +219,17 @@ export function createApp(config: Config) {
     })
 
     // changing anything inside root that is not ignored and that is not in graph will cause reload
-    watcher.on('change', (filePath) => {
-        onFileChange({
-            graph,
-            filePath,
-            root,
-            sendHmrMessage: context.sendHmrMessage,
+    if (config.hmr) {
+        watcher.on('change', (filePath) => {
+            onFileChange({
+                graph,
+                filePath,
+                root,
+                sendHmrMessage: context.sendHmrMessage,
+            })
+            console.log(graph.toString())
         })
-        console.log(graph.toString())
-    })
+    }
 
     const context: ServerPluginContext = {
         root,

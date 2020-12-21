@@ -42,6 +42,7 @@ export interface Config {
 export const defaultConfig: Config = {
     port: DEFAULT_PORT,
     jsx: 'react',
+    hmr: true,
     plugins: [],
     openBrowser: true,
 }

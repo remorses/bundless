@@ -212,7 +212,7 @@ export function metaToTraversalResult({
                         )}`,
                     )
                 }
-                const currentImports = input.imports.map((x) => x.path)
+                const currentImports = input.imports ? input.imports.map((x) => x.path) : []
                 // newImports.push(...currentImports)
                 result.push(
                     ...currentImports.map(

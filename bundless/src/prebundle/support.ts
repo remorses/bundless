@@ -80,14 +80,18 @@ export function removeColonsFromMeta(x: Metadata): Metadata {
         const v = x.inputs[input]
         x.inputs[input] = {
             ...v,
-            imports: v.imports.map((x) => ({ path: stripColon(x.path) })),
+            imports: v.imports
+                ? v.imports.map((x) => ({ path: stripColon(x.path) }))
+                : [],
         }
     }
     for (const output in x.outputs) {
         const v = x.outputs[output]
         x.outputs[output] = {
             ...v,
-            imports: v.imports.map((x) => ({ path: stripColon(x.path) })),
+            imports: v.imports
+                ? v.imports.map((x) => ({ path: stripColon(x.path) }))
+                : [],
         }
     }
 

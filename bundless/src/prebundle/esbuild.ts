@@ -197,8 +197,8 @@ function metafileToAnalysis(_options: {
                         throw new Error(`cannot find output info for ${output}`)
                     }
                     const isCommonjs =
-                        info.exports.length === 1 &&
-                        info.exports[0] === 'default'
+                        info.exports?.length === 1 &&
+                        info.exports?.[0] === 'default'
                     if (!isCommonjs) {
                         return
                     }
