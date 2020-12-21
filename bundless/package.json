@@ -17,7 +17,7 @@
         "dist",
         "src",
         "esm",
-        "cli.js"
+        "bin.js"
     ],
     "bin": "cli.js",
     "keywords": [],

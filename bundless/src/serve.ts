@@ -55,6 +55,8 @@ export async function serve(config: Config) {
     const { server, close } = await listen(app.callback(), {
         port: config.port || DEFAULT_PORT,
         showURL: true,
+        clipboard: false,
+        autoClose: true,
         open: config.openBrowser,
     })
     app.context.server = server

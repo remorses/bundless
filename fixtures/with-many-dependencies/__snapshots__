@@ -3,12 +3,12 @@
 exports[`snapshots fixtures/with-many-dependencies: content-type headers 1`] = `
 Object {
   "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
-  "http://localhost:9000/web_modules/chunk.LBKGLVQ4.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/chunk.B46GDZ6F.js?namespace=file": "application/javascript; charset=utf-8",
   "http://localhost:9000/web_modules/chunk.MJBB2LPQ.js?namespace=file": "application/javascript; charset=utf-8",
   "http://localhost:9000/web_modules/chunk.Y7FREAVH.js?namespace=file": "application/javascript; charset=utf-8",
   "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/preact/dist/preact.module.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/node_modules/react-dom/index.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://localhost:9000/web_modules/node_modules/react/index.js?namespace=file": "application/javascript; charset=utf-8",
   "http://localhost:9000/web_modules/node_modules/slash/index.js?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
@@ -16,12 +16,12 @@ Object {
 exports[`snapshots fixtures/with-many-dependencies: mirror 1`] = `
 Array [
   "main.js",
-  "web_modules/chunk.LBKGLVQ4.js",
+  "web_modules/chunk.B46GDZ6F.js",
   "web_modules/chunk.MJBB2LPQ.js",
   "web_modules/chunk.Y7FREAVH.js",
   "web_modules/fixtures/with-many-dependencies/node_modules/preact/dist/preact.module.js",
-  "web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js",
-  "web_modules/fixtures/with-many-dependencies/node_modules/react/index.js",
+  "web_modules/node_modules/react-dom/index.js",
+  "web_modules/node_modules/react/index.js",
   "web_modules/node_modules/slash/index.js",
 ]
 `;
@@ -39,9 +39,9 @@ Array [
     "resolvedImportPath": "http://localhost:9000/web_modules/node_modules/slash/index.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file",
+    "importPath": "/web_modules/node_modules/react/index.js?namespace=file",
     "importer": "http://localhost:9000/main.js",
-    "resolvedImportPath": "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/node_modules/react/index.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/fixtures/with-many-dependencies/node_modules/preact/dist/preact.module.js?namespace=file",
@@ -49,9 +49,9 @@ Array [
     "resolvedImportPath": "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/preact/dist/preact.module.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js?namespace=file",
+    "importPath": "/web_modules/node_modules/react-dom/index.js?namespace=file",
     "importer": "http://localhost:9000/main.js",
-    "resolvedImportPath": "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.Y7FREAVH.js?namespace=file",
@@ -64,18 +64,18 @@ Array [
     "resolvedImportPath": "http://localhost:9000/web_modules/chunk.MJBB2LPQ.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.LBKGLVQ4.js?namespace=file",
-    "importer": "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file",
-    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.LBKGLVQ4.js?namespace=file",
+    "importPath": "/web_modules/chunk.B46GDZ6F.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/node_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.B46GDZ6F.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.Y7FREAVH.js?namespace=file",
-    "importer": "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/node_modules/react/index.js?namespace=file",
     "resolvedImportPath": "http://localhost:9000/web_modules/chunk.Y7FREAVH.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.MJBB2LPQ.js?namespace=file",
-    "importer": "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/node_modules/react/index.js?namespace=file",
     "resolvedImportPath": "http://localhost:9000/web_modules/chunk.MJBB2LPQ.js?namespace=file",
   },
   Object {
@@ -84,38 +84,38 @@ Array [
     "resolvedImportPath": "http://localhost:9000/web_modules/chunk.MJBB2LPQ.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.LBKGLVQ4.js?namespace=file",
-    "importer": "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js?namespace=file",
-    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.LBKGLVQ4.js?namespace=file",
+    "importPath": "/web_modules/chunk.B46GDZ6F.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
+    "resolvedImportPath": "http://localhost:9000/web_modules/chunk.B46GDZ6F.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.Y7FREAVH.js?namespace=file",
-    "importer": "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
     "resolvedImportPath": "http://localhost:9000/web_modules/chunk.Y7FREAVH.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.MJBB2LPQ.js?namespace=file",
-    "importer": "http://localhost:9000/web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
     "resolvedImportPath": "http://localhost:9000/web_modules/chunk.MJBB2LPQ.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.Y7FREAVH.js?namespace=file",
-    "importer": "http://localhost:9000/web_modules/chunk.LBKGLVQ4.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/chunk.B46GDZ6F.js?namespace=file",
     "resolvedImportPath": "http://localhost:9000/web_modules/chunk.Y7FREAVH.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.MJBB2LPQ.js?namespace=file",
-    "importer": "http://localhost:9000/web_modules/chunk.LBKGLVQ4.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/chunk.B46GDZ6F.js?namespace=file",
     "resolvedImportPath": "http://localhost:9000/web_modules/chunk.MJBB2LPQ.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.Y7FREAVH.js?namespace=file",
-    "importer": "http://localhost:9000/web_modules/chunk.LBKGLVQ4.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/chunk.B46GDZ6F.js?namespace=file",
     "resolvedImportPath": "http://localhost:9000/web_modules/chunk.Y7FREAVH.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.MJBB2LPQ.js?namespace=file",
-    "importer": "http://localhost:9000/web_modules/chunk.LBKGLVQ4.js?namespace=file",
+    "importer": "http://localhost:9000/web_modules/chunk.B46GDZ6F.js?namespace=file",
     "resolvedImportPath": "http://localhost:9000/web_modules/chunk.MJBB2LPQ.js?namespace=file",
   },
 ]
