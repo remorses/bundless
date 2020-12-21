@@ -11,6 +11,7 @@
         "watch:esm": "tsc -w -m esnext --outDir esm",
         "watch:cjs": "tsc -w",
         "watch": "run-p watch:esm watch:cjs",
+        "local": "yarn publish --force --registry http://localhost:4873 --access restricted --no-git-tag-version --patch --message 'Local registry publish'",
         "cli": "node bin.js"
     },
     "files": [

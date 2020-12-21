@@ -548,33 +548,35 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@esbuild-plugins/all@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/all/-/all-0.0.1.tgz#a200973229432d7c635ad46525a8a84433f98c68"
-  integrity sha512-E+lbR6GBnwHt5GFO6OuXlnuDP1GHLyYrNkMZY5BuOz3+9EcpYFaGHcJJ/LGW6MN6E5eOwnecJ5V/BzGXW9ajBw==
+"@esbuild-plugins/all@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/all/-/all-0.0.5.tgz#77ea8c779756e2bf8204ca699183e03b2974de9e"
+  integrity sha512-VdL0ytRsPQZhe6rOkgm9fkwHTyu0wo/7ZCON00TiTiRcpTl9Rj9xYk6QebyipWD5Vf01uHBRzpb3zmGNAKlQ7g==
   dependencies:
-    "@esbuild-plugins/esm-externals" "*"
-    "@esbuild-plugins/node-globals-polyfill" "*"
-    "@esbuild-plugins/node-modules-polyfill" "*"
-    "@esbuild-plugins/node-resolve" "*"
+    "@esbuild-plugins/esm-externals" "0.0.2"
+    "@esbuild-plugins/html" "0.0.6"
+    "@esbuild-plugins/node-globals-polyfill" "0.0.4"
+    "@esbuild-plugins/node-modules-polyfill" "0.0.2"
+    "@esbuild-plugins/node-resolve" "0.0.4"
 
-"@esbuild-plugins/esm-externals@*":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/esm-externals/-/esm-externals-0.0.1.tgz#fb97087521611447442935f45ad5993fa137a323"
-  integrity sha512-X/qsLjfwBh3qsu/fCcONTUSYIsFQcEDG+by5ihv5XLsAJWsUdyUJYm1TwRx6OqvcxObc5mPdwrNoaemkhSfsXQ==
+"@esbuild-plugins/esm-externals@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/esm-externals/-/esm-externals-0.0.2.tgz#2d2932beeb7be98f460fe21f339ae2aac609a7d5"
+  integrity sha512-Ms0n+uZDhi2akPG45DzcSsyIgtHvdZ8+OJ6JSzkSY1mh3VHNEOgDvxX5Bfk2NQleswRmjnBLhnPPBC+16FXUEQ==
   dependencies:
     debug "^4.3.1"
     escape-string-regexp "^4.0.0"
 
-"@esbuild-plugins/node-globals-polyfill@*":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-globals-polyfill/-/node-globals-polyfill-0.0.3.tgz#e891228e49ad5700dac5e047a0d418ca52979d06"
-  integrity sha512-jYTr7EuQbsWUiPq6HHwvP8UnyloXzP76zeoOy0WZrwCY/njAfPuAsuhMC8xireQTmO4PDvQvWgSgzbFDu6cyKA==
+"@esbuild-plugins/html@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/html/-/html-0.0.6.tgz#e4b4644e4bee1cbc2aaa69540cc13ce4d6a042ad"
+  integrity sha512-iWQM+yIAdCg4httNwiKcsKUN0teSWtbS0+grOQndhR7sbhsOsGUF8pT8DFZyd33RlJ2BEmMAbR5NX0o58Ujjlg==
   dependencies:
+    "@esbuild-plugins/node-resolve" "0.0.4"
     debug "^4.3.1"
-    rollup-plugin-node-polyfills "^0.2.1"
+    posthtml "^0.15.1"
 
-"@esbuild-plugins/node-globals-polyfill@^0.0.4":
+"@esbuild-plugins/node-globals-polyfill@0.0.4", "@esbuild-plugins/node-globals-polyfill@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-globals-polyfill/-/node-globals-polyfill-0.0.4.tgz#1244f08462b598bfc05589906e0f0d4e6c2edc2a"
   integrity sha512-6XmGhYFExt5vBEszTny6+PrQ3NWAkDKejyL9orQ0wFNiQTUcnILuhydxY/7xtCPwwDbe1hZ+jBretRg/dX4xmw==
@@ -582,24 +584,24 @@
     debug "^4.3.1"
     rollup-plugin-node-polyfills "^0.2.1"
 
-"@esbuild-plugins/node-modules-polyfill@*":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-modules-polyfill/-/node-modules-polyfill-0.0.1.tgz#bb1c99af35aaa7c6885c0a84bdef3cccef8bebc9"
-  integrity sha512-9Odhb1Z3h2Grd0IWHWomud5N4muqbnQ5gvDWyqQulxluSyp/dNBVbZ1C3i97S/2Tot6QQPQqH6Xjls73ZdvhnA==
+"@esbuild-plugins/node-modules-polyfill@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-modules-polyfill/-/node-modules-polyfill-0.0.2.tgz#1a3f956cff4b4833ff1a0f8b955de1250c7f4bf6"
+  integrity sha512-ugSpQk7oIfzc0OmNG9i/B+64NXWK3LFBzM8T1zGJpuTldT1tQPUQDLsO6h6jrhHoqTSzuC72LBEycbrPLLKQvQ==
   dependencies:
-    builtin-modules "^3.1.0"
     debug "^4.3.1"
     escape-string-regexp "^4.0.0"
     resolve "^1.19.0"
-    rollup-plugin-node-polyfills "^0.2.1"
+    rollup-plugin-node-polyfills "0.2.1"
 
-"@esbuild-plugins/node-resolve@*":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-resolve/-/node-resolve-0.0.3.tgz#1066532ae2202786047667646da3baed1a9ad914"
-  integrity sha512-ODig1i8cn7qPUu2NKUV5YpegOzeIlQDnKHP7/0Ey12qcYwMpd/QyziwqnwPgOVcDHuPIY6OZJX6T8YUehvA4yw==
+"@esbuild-plugins/node-resolve@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-resolve/-/node-resolve-0.0.4.tgz#a04addb038eff56d182f79055e278263fe3fce52"
+  integrity sha512-JCPegK6dg4JxzONerMcTeYbacgelWeC2x9FTX1IHT2H3ahvpJ9wQC/Z3KCREGJ3vAP5SK6kLVdinNDoyPwWpag==
   dependencies:
-    builtin-modules "^3.1.0"
+    "@types/resolve" "^1.17.1"
     debug "^4.3.1"
+    escape-string-regexp "^4.0.0"
     resolve "^1.19.0"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
@@ -1289,7 +1291,7 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
   integrity sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
 
-"@types/resolve@1.17.1":
+"@types/resolve@1.17.1", "@types/resolve@^1.17.1":
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/@types/resolve/-/resolve-1.17.1.tgz#3afd6ad8967c77e4376c598a82ddd58f46ec45d6"
   integrity sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==
@@ -2568,6 +2570,15 @@ dom-serializer@0:
     domelementtype "^2.0.1"
     entities "^2.0.0"
 
+dom-serializer@^1.0.1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/dom-serializer/-/dom-serializer-1.2.0.tgz#3433d9136aeb3c627981daa385fc7f32d27c48f1"
+  integrity sha512-n6kZFH/KlCrqs/1GHMOd5i2fd/beQHuehKdWvNNffbGHTr/almdhuVvTVFb3V7fglz+nC50fFusu3lY33h12pA==
+  dependencies:
+    domelementtype "^2.0.1"
+    domhandler "^4.0.0"
+    entities "^2.0.0"
+
 dom-serializer@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/dom-serializer/-/dom-serializer-0.1.1.tgz#1ec4059e284babed36eec2941d4a970a189ce7c0"
@@ -2581,7 +2592,7 @@ domelementtype@1, domelementtype@^1.3.0, domelementtype@^1.3.1:
   resolved "https://registry.yarnpkg.com/domelementtype/-/domelementtype-1.3.1.tgz#d048c44b37b0d10a7f2a3d5fee3f4333d790481f"
   integrity sha512-BSKB+TSpMpFI/HOxCNr1O8aMOTZ8hT3pM3GQ0w/mWRmkhEDSFJkkyzz4XQsBV44BChwGkrDfMyjVD0eA2aFV3w==
 
-domelementtype@^2.0.1:
+domelementtype@^2.0.1, domelementtype@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/domelementtype/-/domelementtype-2.1.0.tgz#a851c080a6d1c3d94344aed151d99f669edf585e"
   integrity sha512-LsTgx/L5VpD+Q8lmsXSHW2WpA+eBlZ9HPf3erD1IoPF00/3JKHZ3BknUVA2QGDNu69ZNmyFmCWBSO45XjYKC5w==
@@ -2600,6 +2611,20 @@ domhandler@^2.3.0:
   dependencies:
     domelementtype "1"
 
+domhandler@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-3.3.0.tgz#6db7ea46e4617eb15cf875df68b2b8524ce0037a"
+  integrity sha512-J1C5rIANUbuYK+FuFL98650rihynUOEzRLxW+90bKZRWB6A1X1Tf82GxR1qAWLyfNPRvjqfip3Q5tdYlmAa9lA==
+  dependencies:
+    domelementtype "^2.0.1"
+
+domhandler@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-4.0.0.tgz#01ea7821de996d85f69029e81fa873c21833098e"
+  integrity sha512-KPTbnGQ1JeEMQyO1iYXoagsI6so/C96HZiFyByU3T6iAzpXn8EGEvct6unm1ZGoed8ByO2oirxgwxBmqKF9haA==
+  dependencies:
+    domelementtype "^2.1.0"
+
 domutils@1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.5.1.tgz#dcd8488a26f563d61079e48c9f7b7e32373682cf"
@@ -2615,6 +2640,15 @@ domutils@^1.5.1:
   dependencies:
     dom-serializer "0"
     domelementtype "1"
+
+domutils@^2.4.2:
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/domutils/-/domutils-2.4.4.tgz#282739c4b150d022d34699797369aad8d19bbbd3"
+  integrity sha512-jBC0vOsECI4OMdD0GC9mGn7NXPLb+Qt6KW1YDQzeQYRUFKmNG8lh7mO5HiELfr+lLQE7loDVI4QcAxV80HS+RA==
+  dependencies:
+    dom-serializer "^1.0.1"
+    domelementtype "^2.0.1"
+    domhandler "^4.0.0"
 
 dotenv-expand@^5.1.0:
   version "5.1.0"
@@ -3444,6 +3478,16 @@ htmlparser2@^3.9.1:
     entities "^1.1.1"
     inherits "^2.0.1"
     readable-stream "^3.1.1"
+
+htmlparser2@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-5.0.1.tgz#7daa6fc3e35d6107ac95a4fc08781f091664f6e7"
+  integrity sha512-vKZZra6CSe9qsJzh0BjBGXo8dvzNsq/oGvsjfRdOrrryfeD9UOBEEQdeoqCRmKZchF5h2zOBMQ6YuQ0uRUmdbQ==
+  dependencies:
+    domelementtype "^2.0.1"
+    domhandler "^3.3.0"
+    domutils "^2.4.2"
+    entities "^2.0.0"
 
 http-assert@^1.3.0:
   version "1.4.1"
@@ -5648,6 +5692,26 @@ postcss@^8.1.8:
     nanoid "^3.1.20"
     source-map "^0.6.1"
 
+posthtml-parser@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/posthtml-parser/-/posthtml-parser-0.6.0.tgz#52488cdb4fa591c3102de73197c471859ee0be63"
+  integrity sha512-5ffwKQNgtVHdhZniWxu+1ryvaZv5l25HPLUV6W5xy5nYVWMXtvjtwRnbSpfbKFvbyl7XI+d4AqkjmonkREqnXA==
+  dependencies:
+    htmlparser2 "^5.0.1"
+
+posthtml-render@^1.2.3:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/posthtml-render/-/posthtml-render-1.4.0.tgz#40114070c45881cacb93347dae3eff53afbcff13"
+  integrity sha512-W1779iVHGfq0Fvh2PROhCe2QhB8mEErgqzo1wpIt36tCgChafP+hbXIhLDOM8ePJrZcFs0vkNEtdibEWVqChqw==
+
+posthtml@^0.15.1:
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/posthtml/-/posthtml-0.15.1.tgz#1848064f48a1cca0e0323752b1d26fed32e180b8"
+  integrity sha512-QSnUnvnnRv+wt7T9igqNG7GPcc+ZsbX93X+9aPldzgiuQfqIXTbnD47FY8pAtq4gjB9QZrDadDuG8jusmOPpYA==
+  dependencies:
+    posthtml-parser "^0.6.0"
+    posthtml-render "^1.2.3"
+
 preact@10.5.7:
   version "10.5.7"
   resolved "https://registry.yarnpkg.com/preact/-/preact-10.5.7.tgz#f1d84725539e18f7ccbea937cf3db5895661dbd3"
@@ -6054,7 +6118,7 @@ rollup-plugin-inject@^3.0.0:
     magic-string "^0.25.3"
     rollup-pluginutils "^2.8.1"
 
-rollup-plugin-node-polyfills@^0.2.1:
+rollup-plugin-node-polyfills@0.2.1, rollup-plugin-node-polyfills@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/rollup-plugin-node-polyfills/-/rollup-plugin-node-polyfills-0.2.1.tgz#53092a2744837164d5b8a28812ba5f3ff61109fd"
   integrity sha512-4kCrKPTJ6sK4/gLL/U5QzVT8cxJcofO0OU74tnB19F40cmuAKSzH5/siithxlofFEjwvw1YAhPmbvGNA6jEroA==

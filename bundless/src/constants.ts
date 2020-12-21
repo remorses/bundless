@@ -1,4 +1,5 @@
 import { logger } from './logger'
+import { Loader } from 'esbuild'
 import { hmrClientNamespace } from './plugins/hmr-client'
 export const DEFAULT_PORT = 3000
 export const CLIENT_PUBLIC_PATH = `/_hmr_client.js?namespace=${hmrClientNamespace}`
@@ -26,6 +27,18 @@ export const JS_EXTENSIONS = new Set([
     // '.scss',
     // '.css',
 ])
+
+export const importableImageExtensions = [
+    '.jpg',
+    '.jpeg',
+    '.png',
+    '.svg',
+    '.gif',
+    '.ico',
+    '.webp',
+    '.jp2',
+    '.avif',
+]
 
 export const hmrPreamble = `
 import * as  __HMR__ from '${CLIENT_PUBLIC_PATH}';

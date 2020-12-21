@@ -10,13 +10,40 @@ import fs from 'fs'
 import path from 'path'
 import toUnixPath from 'slash'
 import tmpfile from 'tmpfile'
-import { JS_EXTENSIONS, MAIN_FIELDS } from '../constants'
+import {
+    importableImageExtensions,
+    JS_EXTENSIONS,
+    MAIN_FIELDS,
+} from '../constants'
 import { DependencyStatsOutput } from './stats'
 import {
     OptimizeAnalysisResult,
     osAgnosticPath,
     removeColonsFromMeta,
 } from './support'
+
+export const commonEsbuildOptions: esbuild.BuildOptions = {
+    target: 'es2020',
+    minify: false,
+    minifyIdentifiers: false,
+    minifySyntax: false,
+    minifyWhitespace: false,
+    mainFields: MAIN_FIELDS,
+    sourcemap: false,
+    bundle: true,
+    platform: 'browser',
+    format: 'esm',
+    write: true,
+    loader: {
+        '.js': 'jsx',
+        ...Object.assign(
+            {},
+            ...importableImageExtensions.map((k) => ({
+                [k]: 'file',
+            })),
+        ),
+    },
+}
 
 export async function bundleWithEsBuild({
     entryPoints,
@@ -39,12 +66,20 @@ export async function bundleWithEsBuild({
 
     // rimraf.sync(destLoc) // do not delete or on flight imports will return 404
     await esbuild.build({
+        ...commonEsbuildOptions,
         splitting: true, // needed to dedupe modules
         external: externalPackages,
+        minify: Boolean(minify),
         minifyIdentifiers: Boolean(minify),
         minifySyntax: Boolean(minify),
         minifyWhitespace: Boolean(minify),
         mainFields: MAIN_FIELDS,
+        tsconfig: tsconfigTempFile,
+        bundle: true,
+        write: true,
+        entryPoints,
+        outdir: destLoc,
+        metafile,
         define: {
             'process.env.NODE_ENV': JSON.stringify('dev'),
             global: 'window',
@@ -61,17 +96,6 @@ export async function bundleWithEsBuild({
                 extensions: [...JS_EXTENSIONS],
             }),
         ],
-        tsconfig: tsconfigTempFile,
-        bundle: true,
-        platform: 'browser',
-        format: 'esm',
-        target: 'es2019',
-        write: true,
-        entryPoints,
-        outdir: destLoc,
-        minify: Boolean(minify),
-        logLevel: 'info',
-        metafile,
     })
 
     await fs.promises.unlink(tsconfigTempFile)

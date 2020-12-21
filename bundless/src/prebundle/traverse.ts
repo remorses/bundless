@@ -10,13 +10,19 @@ import fsx, { copySync } from 'fs-extra'
 import os from 'os'
 import path from 'path'
 import slash from 'slash'
-import { isRunningWithYarnPnp, JS_EXTENSIONS, MAIN_FIELDS } from '../constants'
+import {
+    importableImageExtensions,
+    isRunningWithYarnPnp,
+    JS_EXTENSIONS,
+    MAIN_FIELDS,
+} from '../constants'
 
 import { removeColonsFromMeta } from './support'
 import fromEntries from 'fromentries'
 import { stripColon, unique } from './support'
 import { flatten } from '../utils'
 import { logger } from '../logger'
+import { commonEsbuildOptions } from './esbuild'
 
 type Args = {
     cwd: string
@@ -57,36 +63,27 @@ export async function traverseWithEsbuild({
         await build(
             deepmerge(
                 {
-                    // splitting: true, // needed to dedupe modules
-                    // external: externalPackages,
-                    target: 'es2020',
-                    minifyIdentifiers: false,
-                    minifySyntax: false,
-                    minifyWhitespace: false,
-                    mainFields: MAIN_FIELDS,
-                    sourcemap: false,
+                    ...commonEsbuildOptions,
                     define: {
                         'process.env.NODE_ENV': JSON.stringify('dev'),
                         global: 'window',
                         // ...generateEnvReplacements(env),
                     },
-                    // inject: [
-                    //     // require.resolve(
-                    //     //     '@esbuild-plugins/node-globals-polyfill/process.js',
-                    //     // ),
-                    // ],
-                    // tsconfig: ,
-                    loader: {
-                        '.js': 'jsx',
-                    },
-
+                    entryPoints,
+                    outdir: destLoc,
+                    metafile,
                     plugins: [
                         HtmlIngestPlugin({ root }),
                         ExternalButInMetafile(),
                         NodeModulesPolyfillPlugin(),
                         NodeResolvePlugin({
                             mainFields: MAIN_FIELDS,
-                            extensions: [...JS_EXTENSIONS],
+                            extensions: [
+                                ...JS_EXTENSIONS,
+                                ...importableImageExtensions,
+                                '.json',
+                                '.css',
+                            ],
                             onResolved: function external(resolved) {
                                 // console.log({resolved})
                                 if (
@@ -113,16 +110,7 @@ export async function traverseWithEsbuild({
                                 extensions: [...JS_EXTENSIONS],
                             },
                         }),
-                    ].filter(Boolean),
-                    bundle: true,
-                    platform: 'browser',
-                    format: 'esm',
-                    write: true,
-                    entryPoints,
-                    outdir: destLoc,
-                    minify: false,
-                    logLevel: 'info',
-                    metafile,
+                    ],
                 } as BuildOptions,
                 esbuildOptions,
             ),
