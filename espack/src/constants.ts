@@ -10,7 +10,7 @@ export const CONFIG_NAME = 'espack.config.js'
 export let isRunningWithYarnPnp: boolean
 try {
     isRunningWithYarnPnp = Boolean(require('pnpapi'))
-    logger.log('Using Yarn PnP')
+    logger.debug('Using Yarn PnP')
 } catch {}
 
 export const MAIN_FIELDS = ['browser:module', 'module', 'browser', 'main']
