@@ -17,7 +17,7 @@ import {
     MAIN_FIELDS,
 } from '../constants'
 
-import { removeColonsFromMeta } from './support'
+import { runFunctionOnPaths } from './support'
 import fromEntries from 'fromentries'
 import { stripColon, unique } from './support'
 import { flatten } from '../utils'
@@ -110,7 +110,7 @@ export async function traverseWithEsbuild({
         let meta: Metadata = JSON.parse(
             await (await fsp.readFile(metafile)).toString(),
         )
-        meta = removeColonsFromMeta(meta)
+        meta = runFunctionOnPaths(meta)
         // console.log(JSON.stringify(meta, null, 4))
 
         const res = flatten(

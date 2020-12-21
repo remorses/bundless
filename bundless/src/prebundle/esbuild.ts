@@ -6,7 +6,7 @@ import {
 import * as esbuild from 'esbuild'
 import { Metadata } from 'esbuild'
 import fromEntries from 'fromentries'
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
 import toUnixPath from 'slash'
 import tmpfile from 'tmpfile'
@@ -17,9 +17,10 @@ import {
 } from '../constants'
 import { DependencyStatsOutput } from './stats'
 import {
+    fixMetaPath,
     OptimizeAnalysisResult,
     osAgnosticPath,
-    removeColonsFromMeta,
+    runFunctionOnPaths,
 } from './support'
 
 export const commonEsbuildOptions: esbuild.BuildOptions = {
@@ -74,7 +75,7 @@ export async function bundleWithEsBuild({
     await fs.promises.writeFile(tsconfigTempFile, makeTsConfig({ alias }))
 
     // rimraf.sync(destLoc) // do not delete or on flight imports will return 404
-    await esbuild.build({
+    const buildResult = await esbuild.build({
         ...commonEsbuildOptions,
         splitting: true, // needed to dedupe modules
         external: externalPackages,
@@ -85,11 +86,12 @@ export async function bundleWithEsBuild({
         mainFields: MAIN_FIELDS,
         tsconfig: tsconfigTempFile,
         bundle: true,
-        write: true,
+        write: false,
         entryPoints,
         outdir: destLoc,
         metafile,
-        define: { // TODO add defines from config, add to frontend injecting them to window
+        define: {
+            // TODO add defines from config, add to frontend injecting them to window
             'process.env.NODE_ENV': JSON.stringify('dev'),
             global: 'window',
             ...generateEnvReplacements(env),
@@ -107,13 +109,20 @@ export async function bundleWithEsBuild({
         ],
     })
 
+    // TODO use esbuild write to not load files in memory after https://github.com/yarnpkg/berry/issues/2259 gets fixed
+    for (let outputFile of buildResult.outputFiles || []) {
+        const filePath = outputFile.path.replace('$$virtual', 'virtual')
+        await fs.ensureDir(path.dirname(filePath))
+        await fs.writeFile(filePath, outputFile.contents)
+    }
+
     await fs.promises.unlink(tsconfigTempFile)
 
     let meta = JSON.parse(
         await (await fs.promises.readFile(metafile)).toString(),
     )
 
-    meta = removeColonsFromMeta(meta)
+    meta = runFunctionOnPaths(meta)
     const esbuildCwd = process.cwd()
     const bundleMap = metafileToBundleMap({
         entryPoints,

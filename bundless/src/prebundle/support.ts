@@ -74,14 +74,23 @@ function convertKeys<T>(obj: T, cb: (k: string) => string): T {
     return x
 }
 
-export function removeColonsFromMeta(x: Metadata): Metadata {
-    x = convertKeys(x, stripColon)
+export function fixMetaPath(p: string) {
+    p = stripColon(p) // namespace:/path/to/file -> /path/to/file
+    p = p.replace('$$virtual', 'virtual') // https://github.com/yarnpkg/berry/issues/2259
+    return p
+}
+
+export function runFunctionOnPaths(
+    x: Metadata,
+    func: (x: string) => string = fixMetaPath,
+): Metadata {
+    x = convertKeys(x, func)
     for (const input in x.inputs) {
         const v = x.inputs[input]
         x.inputs[input] = {
             ...v,
             imports: v.imports
-                ? v.imports.map((x) => ({ path: stripColon(x.path) }))
+                ? v.imports.map((x) => ({ path: func(x.path) }))
                 : [],
         }
     }
@@ -90,7 +99,7 @@ export function removeColonsFromMeta(x: Metadata): Metadata {
         x.outputs[output] = {
             ...v,
             imports: v.imports
-                ? v.imports.map((x) => ({ path: stripColon(x.path) }))
+                ? v.imports.map((x) => ({ path: func(x.path) }))
                 : [],
         }
     }
