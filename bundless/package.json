@@ -1,6 +1,6 @@
 {
     "name": "@bundless/cli",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "",
     "main": "dist/index.js",
     "module": "esm/index.js",
@@ -41,7 +41,7 @@
     "dependencies": {
         "@babel/parser": "^7.12.10",
         "@babel/types": "^7.12.10",
-        "@esbuild-plugins/all": "^0.0.4",
+        "@esbuild-plugins/all": "^0.0.5",
         "@esbuild-plugins/node-globals-polyfill": "^0.0.4",
         "@koa/cors": "^3.1.0",
         "@rollup/pluginutils": "^4.1.0",
