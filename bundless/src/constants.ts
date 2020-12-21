@@ -28,7 +28,7 @@ export const JS_EXTENSIONS = new Set([
     // '.css',
 ])
 
-export const importableImageExtensions = [
+export const importableFiles = [
     '.jpg',
     '.jpeg',
     '.png',
@@ -38,6 +38,9 @@ export const importableImageExtensions = [
     '.webp',
     '.jp2',
     '.avif',
+    '.woff',
+    '.woff2',
+    '.ttf',
 ]
 
 export const hmrPreamble = `

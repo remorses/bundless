@@ -11,7 +11,7 @@ import path from 'path'
 import toUnixPath from 'slash'
 import tmpfile from 'tmpfile'
 import {
-    importableImageExtensions,
+    importableFiles as importableImagesExtensions,
     JS_EXTENSIONS,
     MAIN_FIELDS,
 } from '../constants'
@@ -34,16 +34,25 @@ export const commonEsbuildOptions: esbuild.BuildOptions = {
     platform: 'browser',
     format: 'esm',
     write: true,
+    logLevel: 'error',
     loader: {
         '.js': 'jsx',
+        '.cjs': 'js',
         ...Object.assign(
             {},
-            ...importableImageExtensions.map((k) => ({
+            ...importableImagesExtensions.map((k) => ({
                 [k]: 'file',
             })),
         ),
     },
 }
+
+export const resolvableExtensions = [
+    ...JS_EXTENSIONS,
+    ...importableImagesExtensions,
+    '.json',
+    '.css',
+]
 
 export async function bundleWithEsBuild({
     entryPoints,
@@ -80,7 +89,7 @@ export async function bundleWithEsBuild({
         entryPoints,
         outdir: destLoc,
         metafile,
-        define: {
+        define: { // TODO add defines from config, add to frontend injecting them to window
             'process.env.NODE_ENV': JSON.stringify('dev'),
             global: 'window',
             ...generateEnvReplacements(env),
@@ -93,7 +102,7 @@ export async function bundleWithEsBuild({
             NodeModulesPolyfillPlugin(),
             NodeResolvePlugin({
                 mainFields: MAIN_FIELDS,
-                extensions: [...JS_EXTENSIONS],
+                extensions: resolvableExtensions,
             }),
         ],
     })

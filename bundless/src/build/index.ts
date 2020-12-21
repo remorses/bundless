@@ -56,7 +56,6 @@ export async function build({
         write: true,
         outdir,
         minify: Boolean(minify),
-        logLevel: 'info',
     })
 }
 

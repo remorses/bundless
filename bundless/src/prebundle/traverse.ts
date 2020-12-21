@@ -11,7 +11,7 @@ import os from 'os'
 import path from 'path'
 import slash from 'slash'
 import {
-    importableImageExtensions,
+    importableFiles,
     isRunningWithYarnPnp,
     JS_EXTENSIONS,
     MAIN_FIELDS,
@@ -22,7 +22,7 @@ import fromEntries from 'fromentries'
 import { stripColon, unique } from './support'
 import { flatten } from '../utils'
 import { logger } from '../logger'
-import { commonEsbuildOptions } from './esbuild'
+import { commonEsbuildOptions, resolvableExtensions } from './esbuild'
 
 type Args = {
     cwd: string
@@ -78,12 +78,7 @@ export async function traverseWithEsbuild({
                         NodeModulesPolyfillPlugin(),
                         NodeResolvePlugin({
                             mainFields: MAIN_FIELDS,
-                            extensions: [
-                                ...JS_EXTENSIONS,
-                                ...importableImageExtensions,
-                                '.json',
-                                '.css',
-                            ],
+                            extensions: resolvableExtensions,
                             onResolved: function external(resolved) {
                                 // console.log({resolved})
                                 if (
@@ -104,10 +99,6 @@ export async function traverseWithEsbuild({
                                 // return {
                                 //     external: true,
                                 // }
-                            },
-                            resolveOptions: {
-                                // preserveSymlinks: isRunningWithYarnPnp || false,
-                                extensions: [...JS_EXTENSIONS],
                             },
                         }),
                     ],
