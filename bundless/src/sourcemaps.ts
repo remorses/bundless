@@ -1,28 +1,20 @@
 import merge from 'merge-source-map'
-
-export interface SourceMap {
-    version: number | string
-    file: string
-    sources: string[]
-    sourcesContent: string[]
-    names: string[]
-    mappings: string
-}
+import { RawSourceMap } from 'source-map'
 
 export function mergeSourceMap(
-    oldMap: SourceMap | null | undefined,
-    newMap: SourceMap,
-): SourceMap {
+    oldMap: RawSourceMap | null | undefined,
+    newMap: RawSourceMap,
+): RawSourceMap {
     if (!oldMap) {
         return newMap
     }
     // merge-source-map will overwrite original sources if newMap also has
     // sourcesContent
     newMap.sourcesContent = []
-    return merge(oldMap, newMap) as SourceMap
+    return merge(oldMap, newMap) as RawSourceMap
 }
 
-export function genSourceMapString(map: SourceMap | string | undefined) {
+export function genSourceMapString(map: RawSourceMap | string | undefined) {
     if (typeof map !== 'string') {
         map = JSON.stringify(map)
     }
