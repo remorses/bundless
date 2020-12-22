@@ -12,7 +12,7 @@
     "license": "ISC",
     "devDependencies": {
         "@snowpack/plugin-react-refresh": "^2.3.9",
-        "es-module-traversal": "^0.0.46",
+        "es-module-traversal": "^0.0.47",
         "jest-specific-snapshot": "^4.0.0",
         "snowpack": "^2.18.4",
         "vite": "^1.0.0-rc.13",
