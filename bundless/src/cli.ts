@@ -3,7 +3,8 @@ require('source-map-support').install()
 import yargs, { CommandModule } from 'yargs'
 import deepMerge from 'deepmerge'
 import { serve } from './serve'
-import { loadConfig } from './config'
+import { Config, loadConfig } from './config'
+import { CONFIG_NAME } from './constants'
 
 const serveCommand: CommandModule = {
     command: ['serve', '*'],
@@ -14,11 +15,21 @@ const serveCommand: CommandModule = {
             required: false,
             description: 'The port for the dev server',
         })
+        argv.option('config', {
+            alias: 'c',
+            type: 'string',
+            default: CONFIG_NAME,
+            required: false,
+            description: 'The port for the dev server',
+        })
         return argv
     },
     handler: async (argv: any) => {
-        const loadedConfig = loadConfig(process.cwd())
-        const config = deepMerge(loadedConfig, { port: argv.port }) // TODO resolve and load config
+        const loadedConfig = loadConfig(process.cwd(), argv.config)
+        let config: Config = deepMerge(loadedConfig, { port: argv.port }) // TODO resolve and load config
+        if (!config.root) {
+            config = { ...config, root: process.cwd() }
+        }
         return serve(config)
     },
 }

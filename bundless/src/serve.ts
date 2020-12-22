@@ -16,6 +16,7 @@ import {
     importableAssets,
     JS_EXTENSIONS,
     MAIN_FIELDS,
+    showGraph,
     WEB_MODULES_PATH,
 } from './constants'
 import { Graph } from './graph'
@@ -248,7 +249,9 @@ export async function createApp(config: Config) {
                 root,
                 sendHmrMessage: context.sendHmrMessage,
             })
-            console.log(graph.toString())
+            if (showGraph) {
+                logger.log(graph.toString())
+            }
         })
     }
 

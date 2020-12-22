@@ -16,6 +16,8 @@ try {
 
 export const MAIN_FIELDS = ['browser:module', 'module', 'browser', 'main']
 
+export const showGraph = process.env.SHOW_HMR_GRAPH
+
 export const JS_EXTENSIONS = new Set([
     '.ts',
     '.tsx',
