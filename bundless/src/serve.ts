@@ -139,6 +139,7 @@ export async function createApp(config: Config) {
         plugins: [
             plugins.UrlResolverPlugin(), // resolves urls with queries
             plugins.HmrClientPlugin({ getPort: () => app.context.port }),
+            // NodeResolvePlugin must be called first, to not skip prebundling
             plugins.NodeResolvePlugin({
                 mainFields: MAIN_FIELDS,
                 extensions: [...JS_EXTENSIONS],
