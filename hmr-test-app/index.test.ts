@@ -191,7 +191,7 @@ async function start(type) {
 }
 
 describe('hmr', () => {
-    const baseUrl = `http://localhost:${PORT}`
+    const baseUrl = `http://127.0.0.1:${PORT}`
 
     const root = tempDir
 
@@ -210,7 +210,7 @@ describe('hmr', () => {
                         }),
                     })
                     // console.log(traversedFiles.map((x) => x.importPath))
-                    const ws = new WebSocket(`ws://localhost:${PORT}`, hmrAgent)
+                    const ws = new WebSocket(`ws://127.0.0.1:${PORT}`, hmrAgent)
                     await once(ws, 'open')
                     // await once(ws, 'message')
                     await Promise.all(

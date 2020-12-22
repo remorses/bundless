@@ -2,9 +2,9 @@
 
 exports[`snapshots fixtures/with-tsx: content-type headers 1`] = `
 Object {
-  "http://localhost:9000/main.tsx": "application/javascript; charset=utf-8",
-  "http://localhost:9000/text.ts?namespace=file": "application/javascript; charset=utf-8",
-  "http://localhost:9000/utils.ts?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/main.tsx": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/text.ts?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/utils.ts?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -20,18 +20,18 @@ exports[`snapshots fixtures/with-tsx: traverse result 1`] = `
 Array [
   Object {
     "importPath": "/main.tsx",
-    "importer": "http://localhost:9000/index.html",
-    "resolvedImportPath": "http://localhost:9000/main.tsx",
+    "importer": "http://127.0.0.1:9000/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/main.tsx",
   },
   Object {
     "importPath": "/text.ts?namespace=file",
-    "importer": "http://localhost:9000/main.tsx",
-    "resolvedImportPath": "http://localhost:9000/text.ts?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.tsx",
+    "resolvedImportPath": "http://127.0.0.1:9000/text.ts?namespace=file",
   },
   Object {
     "importPath": "/utils.ts?namespace=file",
-    "importer": "http://localhost:9000/text.ts?namespace=file",
-    "resolvedImportPath": "http://localhost:9000/utils.ts?namespace=file",
+    "importer": "http://127.0.0.1:9000/text.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/utils.ts?namespace=file",
   },
 ]
 `;

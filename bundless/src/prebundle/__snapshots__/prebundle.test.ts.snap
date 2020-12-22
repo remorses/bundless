@@ -3,7 +3,7 @@
 exports[`getDependenciesPaths 1`] = `
 Array [
   "../../node_modules/slash/index.js",
-  "node_modules/react/index.js",
+  "../../node_modules/react/index.js",
   "node_modules/preact/dist/preact.module.js",
   "../../node_modules/react-dom/index.js",
 ]

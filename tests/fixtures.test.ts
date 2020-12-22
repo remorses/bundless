@@ -32,7 +32,7 @@ describe('snapshots', () => {
         .map((x) => path.posix.join(casesPath, x))
 
     const PORT = '9000'
-    const baseUrl = `http://localhost:${PORT}`
+    const baseUrl = `http://127.0.0.1:${PORT}`
 
     for (let [i, casePath] of cases.entries()) {
         const snapshotFile = path.resolve(casePath, '__snapshots__')

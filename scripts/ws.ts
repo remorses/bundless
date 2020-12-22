@@ -6,7 +6,7 @@ const PORT = 4000
 
 async function main() {
     await serve({ root: __dirname, port: PORT, openBrowser: true })
-    const ws = new WebSocket(`ws://localhost:${PORT}`, 'esm-hmr')
+    const ws = new WebSocket(`ws://127.0.0.1:${PORT}`, 'esm-hmr')
     await once(ws, 'open')
     ws.addEventListener('message', ({ data }) => {
         const payload = JSON.parse(data)

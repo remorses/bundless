@@ -2,8 +2,8 @@
 
 exports[`snapshots fixtures/with-dependencies: content-type headers 1`] = `
 Object {
-  "http://localhost:9000/main.js": "application/javascript; charset=utf-8",
-  "http://localhost:9000/web_modules/index.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/main.js": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/index.js?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -18,13 +18,13 @@ exports[`snapshots fixtures/with-dependencies: traverse result 1`] = `
 Array [
   Object {
     "importPath": "/main.js",
-    "importer": "http://localhost:9000/index.html",
-    "resolvedImportPath": "http://localhost:9000/main.js",
+    "importer": "http://127.0.0.1:9000/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/main.js",
   },
   Object {
     "importPath": "/web_modules/index.js?namespace=file",
-    "importer": "http://localhost:9000/main.js",
-    "resolvedImportPath": "http://localhost:9000/web_modules/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.js",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/index.js?namespace=file",
   },
 ]
 `;
