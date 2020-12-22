@@ -28,7 +28,7 @@ export const JS_EXTENSIONS = new Set([
     // '.css',
 ])
 
-export const importableFiles = [
+export const importableAssets = [
     '.jpg',
     '.jpeg',
     '.png',

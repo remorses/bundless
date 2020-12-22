@@ -11,7 +11,7 @@ import os from 'os'
 import path from 'path'
 import slash from 'slash'
 import {
-    importableFiles,
+    importableAssets,
     isRunningWithYarnPnp,
     JS_EXTENSIONS,
     MAIN_FIELDS,

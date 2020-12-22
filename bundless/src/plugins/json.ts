@@ -6,7 +6,7 @@ import { readFile } from '../utils'
 export function JSONPlugin({} = {}) {
     return {
         name: 'json',
-        setup: ({ onLoad, onResolve, onTransform }: PluginHooks) => {
+        setup: ({ onLoad, onResolve }: PluginHooks) => {
             NodeResolvePlugin({ name: 'json', extensions: ['.json'] }).setup({
                 onLoad() {},
                 onResolve,

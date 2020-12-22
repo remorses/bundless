@@ -13,6 +13,7 @@ import { Config, defaultConfig, getEntries } from './config'
 import {
     DEFAULT_PORT,
     HMR_SERVER_NAME,
+    importableAssets,
     JS_EXTENSIONS,
     MAIN_FIELDS,
     WEB_MODULES_PATH,
@@ -137,6 +138,7 @@ export async function createApp(config: Config) {
         root,
         plugins: [
             plugins.UrlResolverPlugin(), // resolves urls with queries
+            plugins.AssetsPlugin({ extensions: importableAssets }),
             plugins.HmrClientPlugin({ getPort: () => app.context.port }),
             plugins.NodeResolvePlugin({
                 mainFields: MAIN_FIELDS,

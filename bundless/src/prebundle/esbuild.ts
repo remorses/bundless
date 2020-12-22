@@ -11,7 +11,7 @@ import path from 'path'
 import toUnixPath from 'slash'
 import tmpfile from 'tmpfile'
 import {
-    importableFiles as importableImagesExtensions,
+    importableAssets as importableImagesExtensions,
     JS_EXTENSIONS,
     MAIN_FIELDS,
 } from '../constants'

@@ -5,6 +5,7 @@ export { CssPlugin } from './css'
 export { ResolveSourcemapPlugin } from './resolve-sourcemaps'
 export { HmrClientPlugin } from './hmr-client'
 export { JSONPlugin } from './json'
+export { AssetsPlugin } from './assets'
 export { UrlResolverPlugin } from './url-resolver'
 export {
     NodeModulesPolyfillPlugin,
