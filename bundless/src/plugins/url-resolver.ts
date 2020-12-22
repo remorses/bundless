@@ -23,7 +23,7 @@ export function UrlResolverPlugin({} = {}) {
                     typeof query.namespace === 'string' &&
                     query.namespace !== 'file'
                 ) {
-                    logger.log(`Removed query from path ${arg.path}`)
+                    // logger.log(`Removed query from path ${arg.path}`)
                     return {
                         path: parsed.pathname.slice(1), // TODO write a spec for virtual files in url behaviour
                         namespace: query.namespace,

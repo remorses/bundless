@@ -373,7 +373,7 @@ export async function createApp(config: Config) {
         const publicPath = !path.extname(ctx.path)
             ? path.posix.join(ctx.path, 'index.html')
             : ctx.path
-        logger.log('transforming html ' + publicPath)
+        // logger.log('transforming html ' + publicPath)
         let html = await readBody(ctx.body)
         if (!html) {
             return next()

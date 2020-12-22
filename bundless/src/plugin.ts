@@ -216,7 +216,6 @@ export function createPluginsExecutor({
     ): Promise<Maybe<esbuild.OnResolveResult>> {
         let result
         // support for resolving paths with queries
-        
 
         for (let { callback, options, name } of resolvers) {
             if (matches(options, arg)) {
@@ -256,31 +255,4 @@ export function createPluginsExecutor({
         transform,
         close,
     }
-}
-
-function removeQuery(path?: string): esbuild.OnResolveResult {
-    if (!path) {
-        return {
-            path,
-        }
-    }
-    if (!path.includes('?')) {
-        return {
-            path,
-        }
-    }
-    const parsed = url.parse(path)
-    if (!parsed.pathname) {
-        throw new Error('no pathname in ' + path)
-    }
-    const query = qs.parse(parsed.query || '')
-    logger.log(`Removed query from path ${path}`)
-    const arg = {
-        path: parsed.pathname,
-        ...(query.namespace && {
-            namespace: query.namespace as string,
-        }),
-    }
-    console.log({ arg })
-    return arg
 }
