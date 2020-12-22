@@ -162,10 +162,22 @@ export async function createApp(config: Config) {
         graph,
     })
 
+    let useFsEvents = false
+    try {
+        eval('require')('fsevents')
+        useFsEvents = true
+    } catch (e) {}
+
     const watcher = chokidar.watch(root, {
         // cwd: root,
         // disableGlobbing: true,
-        ignored: ['**/node_modules/**', '**/.git/**'],
+        ignored: [
+            /(^|[/\\])(node_modules|\.git|\.DS_Store|web_modules)([/\\]|$)/,
+            // TODO dont watch output directory
+            // path.resolve(root, out),
+            // path.resolve(root, distDir),
+        ],
+        useFsEvents,
         ignoreInitial: true,
         //   ...chokidarWatchOptions
     })
