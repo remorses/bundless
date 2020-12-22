@@ -96,7 +96,10 @@ export async function createApp(config: Config) {
         if (!isNodeModule(resolvedPath)) {
             return
         }
-        const relativePath = slash(path.relative(root, resolvedPath))
+        const relativePath = slash(path.relative(root, resolvedPath)).replace(
+            '$$virtual',
+            'virtual',
+        )
         if (bundleMap && bundleMap[relativePath]) {
             const webBundle = bundleMap[relativePath]
             return path.resolve(root, webBundle!)

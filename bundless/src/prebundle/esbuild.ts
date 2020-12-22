@@ -15,6 +15,7 @@ import {
     JS_EXTENSIONS,
     MAIN_FIELDS,
 } from '../constants'
+import { logger } from '../logger'
 import { DependencyStatsOutput } from './stats'
 import {
     OptimizeAnalysisResult,
@@ -69,7 +70,6 @@ export async function bundleWithEsBuild({
     } = options
 
     const metafile = path.join(destLoc, './meta.json')
-    // const entryPoints = [...Object.values(installEntrypoints)]
 
     const tsconfigTempFile = tmpfile('.json')
     await fs.promises.writeFile(tsconfigTempFile, makeTsConfig({ alias }))
@@ -105,6 +105,9 @@ export async function bundleWithEsBuild({
             NodeResolvePlugin({
                 mainFields: MAIN_FIELDS,
                 extensions: resolvableExtensions,
+                onNonResolved: (r) => {
+                    logger.log(`Cannot resolve '${r}'`)
+                },
             }),
         ],
     })
@@ -127,10 +130,10 @@ export async function bundleWithEsBuild({
         p = p.replace('$$virtual', 'virtual') // https://github.com/yarnpkg/berry/issues/2259
         return p
     })
-    
+
     const esbuildCwd = process.cwd()
     const bundleMap = metafileToBundleMap({
-        entryPoints,
+        entryPoints: entryPoints.map((p) => p.replace('$$virtual', 'virtual')),
         meta,
         esbuildCwd,
         root,
@@ -158,6 +161,7 @@ function makeTsConfig({ alias }) {
 
 export type BundleMap = Partial<Record<string, string>>
 
+// TODO not working for some packages
 function metafileToBundleMap(_options: {
     entryPoints: string[]
     root: string
@@ -165,7 +169,9 @@ function metafileToBundleMap(_options: {
     meta: Metadata
 }): BundleMap {
     const { entryPoints, meta, root, esbuildCwd } = _options
-    const inputFiles = new Set(entryPoints.map((x) => path.resolve(root, x)))
+    const inputEntrypoints = new Set(
+        entryPoints.map((x) => path.resolve(root, x)),
+    )
 
     const maps: Array<[string, string]> = Object.keys(meta.outputs)
         .map((output): [string, string] | undefined => {
@@ -173,10 +179,10 @@ function metafileToBundleMap(_options: {
             if (path.basename(output).startsWith('chunk.')) {
                 return
             }
-            const inputs = Object.keys(meta.outputs[output].inputs)
-            const input = inputs
-                .map((x) => path.resolve(esbuildCwd, x))
-                .find((x) => inputFiles.has(x))
+            const inputs = Object.keys(meta.outputs[output].inputs).map((x) =>
+                path.resolve(esbuildCwd, x),
+            )
+            const input = inputs.find((x) => inputEntrypoints.has(x))
             if (!input) {
                 return
             }
