@@ -84,7 +84,7 @@ export async function rewriteImports({
         const hasEnv = source.includes('import.meta.env')
 
         if (!imports.length && !isHmrEnabled && !hasEnv) {
-            logger.log(`no imports found for ${importerFilePath}`)
+            // logger.log(`no imports found for ${importerFilePath}`)
             return source
         }
 
@@ -109,7 +109,8 @@ export async function rewriteImports({
             let id = source.substring(start, end)
             const hasViteIgnore = /\/\*\s*@vite-ignore\s*\*\//.test(id)
             let hasLiteralDynamicId = false
-            if (dynamicIndex >= 0) {
+            const isDynamicImport = dynamicIndex >= 0
+            if (isDynamicImport) {
                 // #998 remove comment
                 id = id.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '')
                 const literalIdMatch = id.match(
@@ -134,6 +135,13 @@ export async function rewriteImports({
                 })
 
                 if (!resolveResult) {
+                    // do not fail on unresolved dynamic imports
+                    if (isDynamicImport) {
+                        logger.log(
+                            `Cannot resolve '${id}' from '${importerFilePath}'`,
+                        )
+                        continue
+                    }
                     throw new Error(
                         `Cannot resolve '${id}' from '${importerFilePath}'`,
                     )
@@ -213,7 +221,7 @@ export async function rewriteImports({
                     cleanImportee !== CLIENT_PUBLIC_PATH
                 ) {
                     currentNode.importees.add(cleanImportee)
-                    logger.log(`${importerFilePath} imports ${cleanImportee}`)
+                    // logger.log(`${importerFilePath} imports ${cleanImportee}`)
                 }
             } else if (id !== 'import.meta' && !hasViteIgnore) {
                 logger.log(

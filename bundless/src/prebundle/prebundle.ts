@@ -3,14 +3,14 @@ import path from 'path'
 import slash from 'slash'
 import { COMMONJS_ANALYSIS_PATH } from '../constants'
 import { logger } from '../logger'
-import { isNodeModule } from '../utils'
+import { needsPrebundle } from '../utils'
 import { bundleWithEsBuild } from './esbuild'
 import { printStats } from './stats'
 import { osAgnosticPath } from './support'
 import { traverseWithEsbuild } from './traverse'
 
-export async function prebundle({ entryPoints, root, dest }) {
-    const dependenciesPaths = await getDependenciesPaths({ entryPoints, root })
+export async function prebundle({ entryPoints, filter, root, dest }) {
+    const dependenciesPaths = await getDependenciesPaths({ entryPoints, root, filter })
     logger.log(
         `prebundling [${dependenciesPaths
             .map((x) => osAgnosticPath(x, root))
@@ -32,12 +32,12 @@ export async function prebundle({ entryPoints, root, dest }) {
     return bundleMap
 }
 
-export async function getDependenciesPaths({ entryPoints, root }) {
+export async function getDependenciesPaths({ entryPoints, filter, root }) {
     // serve react refresh runtime
     const traversalResult = await traverseWithEsbuild({
         entryPoints,
         root,
-        stopTraversing: isNodeModule,
+        stopTraversing: filter,
         cwd: process.cwd(),
     })
     let resolvedFiles = traversalResult
@@ -45,7 +45,7 @@ export async function getDependenciesPaths({ entryPoints, root }) {
             return x.resolvedImportPath
         })
         .filter(Boolean)
-        .filter((x) => isNodeModule(x))
+        .filter((x) => filter(x))
         .map((x) => slash(path.relative(root, x)))
     resolvedFiles = Array.from(new Set(resolvedFiles))
     return resolvedFiles

@@ -29,6 +29,8 @@ export interface Config {
     hmr?: HmrConfig | boolean
     openBrowser?: boolean
     plugins?: Plugin[]
+    // TODO replace needsPrebundle with something less generic, like bundle workspaces, do not bundle node_modules, ....
+    needsPrebundle?: (p: string) => boolean
     jsx?:
         | 'vue'
         | 'preact'

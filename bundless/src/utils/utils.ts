@@ -6,6 +6,7 @@ import path from 'path'
 import qs, { ParsedQs } from 'qs'
 import slash from 'slash'
 import { Readable } from 'stream'
+import { Config } from '../config'
 import { JS_EXTENSIONS } from '../constants'
 
 const imageRE = /\.(png|jpe?g|gif|svg|ico|webp)(\?.*)?$/
@@ -150,7 +151,10 @@ export function flatten<T>(arr: T[][]): T[] {
     }, [])
 }
 
-export function isNodeModule(p: string) {
+export function needsPrebundle(config: Config, p: string) {
+    if (config.needsPrebundle && config.needsPrebundle(p)) {
+        return true
+    }
     return p.includes('node_modules') && !p.includes('web_modules') // TODO make something more robust to skip detection of node_modules inside web_modules
 }
 

@@ -30,7 +30,7 @@ import { genSourceMapString } from './sourcemaps'
 import {
     dotdotEncoding,
     importPathToFile,
-    isNodeModule,
+    needsPrebundle,
     readBody,
 } from './utils'
 import fs from 'fs-extra'
@@ -94,7 +94,7 @@ export async function createApp(config: Config) {
         .readJSON(bundleMapCachePath)
         .catch(() => ({}))
     async function onResolved(resolvedPath: string, importer: string) {
-        if (!isNodeModule(resolvedPath)) {
+        if (!needsPrebundle(config, resolvedPath)) {
             return
         }
         const relativePath = slash(path.relative(root, resolvedPath)).replace(
@@ -111,6 +111,7 @@ export async function createApp(config: Config) {
         const entryPoints = getEntries(config)
         bundleMap = await prebundle({
             entryPoints,
+            filter: (p) => needsPrebundle(config, p),
             dest: path.resolve(root, WEB_MODULES_PATH),
             root,
         }).catch((e) => {
@@ -137,6 +138,7 @@ export async function createApp(config: Config) {
     const pluginExecutor = createPluginsExecutor({
         root,
         plugins: [
+            // TODO resolve data: imports, rollup emits imports with data: ...
             plugins.UrlResolverPlugin(), // resolves urls with queries
             plugins.HmrClientPlugin({ getPort: () => app.context.port }),
             // NodeResolvePlugin must be called first, to not skip prebundling

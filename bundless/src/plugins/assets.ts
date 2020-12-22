@@ -4,6 +4,7 @@ import path from 'path'
 import { PluginHooks } from '../plugin'
 import { fileToImportPath } from '../utils'
 
+
 export function AssetsPlugin({ extensions }) {
     const extensionsSet = new Set(extensions)
     return {
