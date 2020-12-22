@@ -138,13 +138,13 @@ export async function createApp(config: Config) {
         root,
         plugins: [
             plugins.UrlResolverPlugin(), // resolves urls with queries
-            plugins.AssetsPlugin({ extensions: importableAssets }),
             plugins.HmrClientPlugin({ getPort: () => app.context.port }),
             plugins.NodeResolvePlugin({
                 mainFields: MAIN_FIELDS,
                 extensions: [...JS_EXTENSIONS],
                 onResolved,
             }),
+            plugins.AssetsPlugin({ extensions: importableAssets }),
             plugins.NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
             plugins.EsbuildTransformPlugin(),
             plugins.CssPlugin(),

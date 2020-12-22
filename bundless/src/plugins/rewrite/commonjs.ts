@@ -24,7 +24,7 @@ function getAnalysis(root: string): OptimizeAnalysisResult | null {
     let analysis: OptimizeAnalysisResult | null
     try {
         const cacheDir = path.resolve(root, WEB_MODULES_PATH)
-        analysis = fs.readJsonSync(path.join(cacheDir!, COMMONJS_ANALYSIS_PATH))
+        analysis = fs.readJsonSync(path.join(cacheDir, COMMONJS_ANALYSIS_PATH))
     } catch (error) {
         analysis = null
     }

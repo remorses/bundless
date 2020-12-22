@@ -10,6 +10,7 @@ export function AssetsPlugin({ extensions }) {
     return {
         name: 'assets',
         setup: ({ onLoad, onResolve, config }: PluginHooks) => {
+            // TODO what if an image is in another module and this resolver bypasses the node resolve plugin that runs the prebundle? maybe i need to throw?
             NodeResolvePlugin({ name: 'assets', extensions }).setup({
                 onLoad() {},
                 onResolve,
