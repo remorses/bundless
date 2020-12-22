@@ -143,6 +143,7 @@ export async function createApp(config: Config) {
             plugins.HmrClientPlugin({ getPort: () => app.context.port }),
             // NodeResolvePlugin must be called first, to not skip prebundling
             plugins.NodeResolvePlugin({
+                name: 'node-resolve',
                 mainFields: MAIN_FIELDS,
                 extensions: [...JS_EXTENSIONS],
                 onResolved,
