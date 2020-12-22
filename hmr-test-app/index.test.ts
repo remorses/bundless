@@ -1,25 +1,24 @@
+import { serve } from '@bundless/cli'
+import { Config } from '@bundless/cli/dist/config'
+import { spawn } from 'child_process'
 import {
     readFromUrlOrPath,
     traverseEsModules,
     urlResolver,
 } from 'es-module-traversal'
 import { once } from 'events'
-import { exec, spawn } from 'child_process'
-import { serve } from '@bundless/cli'
 import execa from 'execa'
 import fs from 'fs-extra'
+import * as failFast from 'jasmine-fail-fast'
+import 'jest-specific-snapshot'
 import path from 'path'
 import url, { URL } from 'url'
 import WebSocket from 'ws'
-import { ReactRefreshPlugin } from '@bundless/plugin-react-refresh'
-import 'jest-specific-snapshot'
-import * as failFast from 'jasmine-fail-fast'
-import { Config } from '@bundless/cli/dist/config'
 const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
 
-const tempDir = path.resolve('temp')
-const fixtureDir = path.resolve('hmr-test-app')
+const tempDir = path.resolve(__dirname, '../temp')
+const fixtureDir = path.resolve(__dirname)
 const testTargets = process.env.HRM_TESTS
     ? ['snowpack', 'vite', '@bundless/cli']
     : ['@bundless/cli']

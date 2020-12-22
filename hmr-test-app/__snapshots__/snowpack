@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`hmr 1 src/main.jsx snowpack 1`] = `
+Array [
+  Object {
+    "bubbled": false,
+    "type": "update",
+    "url": "/_dist_/main.js",
+  },
+]
+`;
+
+exports[`hmr 2 src/file.jsx snowpack 1`] = `
+Array [
+  Object {
+    "bubbled": false,
+    "type": "update",
+    "url": "/_dist_/file.js",
+  },
+]
+`;
+
+exports[`hmr 3 src/file.css snowpack 1`] = `
+Array [
+  Object {
+    "bubbled": false,
+    "type": "update",
+    "url": "/_dist_/file.css",
+  },
+  Object {
+    "bubbled": false,
+    "type": "update",
+    "url": "/_dist_/file.css.proxy.js",
+  },
+]
+`;
+
+exports[`hmr 4 src/file.module.css snowpack 1`] = `
+Array [
+  Object {
+    "bubbled": true,
+    "type": "update",
+    "url": "/_dist_/bridge.js",
+  },
+]
+`;
+
+exports[`hmr 5 src/file.json snowpack 1`] = `
+Array [
+  Object {
+    "bubbled": true,
+    "type": "update",
+    "url": "/_dist_/bridge.js",
+  },
+]
+`;
+
+exports[`hmr 6 src/file2.js snowpack 1`] = `
+Array [
+  Object {
+    "bubbled": true,
+    "type": "update",
+    "url": "/_dist_/file.js",
+  },
+]
+`;
+
+exports[`hmr 7 src/imported-many-times.js snowpack 1`] = `
+Array [
+  Object {
+    "bubbled": true,
+    "type": "update",
+    "url": "/_dist_/main.js",
+  },
+  Object {
+    "bubbled": true,
+    "type": "update",
+    "url": "/_dist_/file.js",
+  },
+]
+`;

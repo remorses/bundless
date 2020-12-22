@@ -3,7 +3,10 @@
     "version": "0.0.0",
     "description": "",
     "repository": "https://github.com/remorses/.git",
-    "scripts": {},
+    "scripts": {
+        "test": "yarn jest --config ../jest.config.js `pwd`",
+        "test:all": "cross-env HRM_TESTS=1 yarn test"
+    },
     "keywords": [],
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
@@ -16,11 +19,11 @@
         "vite-plugin-react": "^4.0.1",
         "execa": "^5.0.0",
         "@bundless/cli": "*",
+        "@bundless/plugin-react-refresh": "*",
         "ws": "^7.4.1"
     },
     "dependencies": {
         "react": "^17.0.1",
-        "@bundless/plugin-react-refresh": "*",
         "react-dom": "^17.0.1"
     },
     "peerDependencies": {}

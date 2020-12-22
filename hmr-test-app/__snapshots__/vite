@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`hmr 1 src/main.jsx vite 1`] = `
+Array [
+  Object {
+    "changeSrcPath": "/src/main.jsx",
+    "path": "/src/main.jsx",
+    "type": "js-update",
+  },
+]
+`;
+
+exports[`hmr 2 src/file.jsx vite 1`] = `
+Array [
+  Object {
+    "changeSrcPath": "/src/file.jsx",
+    "path": "/src/file.jsx",
+    "type": "js-update",
+  },
+]
+`;
+
+exports[`hmr 3 src/file.css vite 1`] = `
+Array [
+  Object {
+    "changeSrcPath": "/src/file.css",
+    "path": "/src/file.css",
+    "type": "style-update",
+  },
+]
+`;
+
+exports[`hmr 4 src/file.module.css vite 1`] = `
+Array [
+  Object {
+    "changeSrcPath": "/src/file.module.css",
+    "path": "/src/bridge.jsx",
+    "type": "js-update",
+  },
+  Object {
+    "changeSrcPath": "/src/file.module.css",
+    "path": "/src/file.module.css",
+    "type": "style-update",
+  },
+]
+`;
+
+exports[`hmr 5 src/file.json vite 1`] = `
+Array [
+  Object {
+    "changeSrcPath": "/src/file.json",
+    "path": "/src/bridge.jsx",
+    "type": "js-update",
+  },
+]
+`;
+
+exports[`hmr 6 src/file2.js vite 1`] = `
+Array [
+  Object {
+    "changeSrcPath": "/src/file2.js",
+    "path": "/src/file.jsx",
+    "type": "js-update",
+  },
+]
+`;
+
+exports[`hmr 7 src/imported-many-times.js vite 1`] = `
+Array [
+  Object {
+    "changeSrcPath": "/src/imported-many-times.js",
+    "path": "/src/main.jsx",
+    "type": "js-update",
+  },
+  Object {
+    "changeSrcPath": "/src/imported-many-times.js",
+    "path": "/src/file.jsx",
+    "type": "js-update",
+  },
+]
+`;
