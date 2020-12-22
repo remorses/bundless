@@ -1,5 +1,4 @@
-
-const json = {
-    "text": "Hello World!"
+export const text = "Hello World!";
+export default {
+	text: text
 };
-export default json;

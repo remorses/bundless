@@ -1,5 +1,5 @@
 import merge from 'merge-source-map'
-import { RawSourceMap } from 'source-map'
+import { RawSourceMap,  } from 'source-map'
 
 export function mergeSourceMap(
     oldMap: RawSourceMap | null | undefined,
