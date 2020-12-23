@@ -167,9 +167,10 @@ export async function rewriteImports({
                 const newNamespace = encodeURIComponent(
                     resolveResult.namespace || namespace, // TODO in esbuild do loaded files inherit namespace?
                 )
-                resolvedImportPath += resolvedImportPath.includes('?')
-                    ? `&namespace=${newNamespace}`
-                    : `?namespace=${newNamespace}`
+                resolvedImportPath += appendQuery(
+                    resolvedImportPath,
+                    `namespace=${newNamespace}`,
+                )
 
                 // TODO maybe do ensure node on importees?
                 const importeeNode =
