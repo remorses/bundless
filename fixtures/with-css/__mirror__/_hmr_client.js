@@ -149,7 +149,8 @@ export function createHotContext(fullUrl) {
 //     return true
 // }
 /** Called when a new module is loaded, to pass the updated module to the "active" module */
-async function runModuleAccept({ path }) {
+// uses the graph lastUsedTimestamp to make the new timestamp to fetch, pass this in the hmr message?
+async function runModuleAccept({ path, updateID }) {
     const state = REGISTERED_MODULES[path];
     if (!state) {
         log(`${path} has not been registered, reloading`);
@@ -161,11 +162,11 @@ async function runModuleAccept({ path }) {
         return false;
     }
     const acceptCallbacks = state.acceptCallbacks;
-    const updateID = Date.now();
     for (const { deps, callback: acceptCallback } of acceptCallbacks) {
         const [module, ...depModules] = await Promise.all([
-            import(path + `?t=${updateID}`),
-            ...deps.map((d) => import(d + `?t=${updateID}`)),
+            // TODO add the namespace query here
+            import(appendQuery(path, `t=${updateID}`)),
+            ...deps.map((d) => import(appendQuery(d, `t=${Date.now()}`))),
         ]);
         acceptCallback({ module, deps: depModules });
     }
@@ -260,4 +261,13 @@ log('listening for file changes...');
 //             errorStackTrace: event.error ? event.error.stack : undefined,
 //         })
 //     })
+function appendQuery(url, query) {
+    if (query.startsWith('?')) {
+        query = query.slice(1);
+    }
+    if (url.includes('?')) {
+        return url + query;
+    }
+    return `${url}?${query}`;
+}
 //template.js.map

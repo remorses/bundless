@@ -43,7 +43,9 @@ Array [
 exports[`hmr 5 src/file.json @bundless/cli 1`] = `
 Array [
   Object {
-    "type": "reload",
+    "path": "/src/bridge.jsx",
+    "type": "update",
+    "updateID": 1,
   },
 ]
 `;
@@ -51,7 +53,7 @@ Array [
 exports[`hmr 6 src/file2.js @bundless/cli 1`] = `
 Array [
   Object {
-    "path": "/src/file2.js",
+    "path": "/src/file.jsx",
     "type": "update",
     "updateID": 1,
   },
@@ -61,7 +63,12 @@ Array [
 exports[`hmr 7 src/imported-many-times.js @bundless/cli 1`] = `
 Array [
   Object {
-    "path": "/src/imported-many-times.js",
+    "path": "/src/main.jsx",
+    "type": "update",
+    "updateID": 1,
+  },
+  Object {
+    "path": "/src/file.jsx",
     "type": "update",
     "updateID": 1,
   },
