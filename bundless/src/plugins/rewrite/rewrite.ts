@@ -112,7 +112,6 @@ export async function rewriteImports({
             let hasLiteralDynamicId = false
             const isDynamicImport = dynamicIndex >= 0
             if (isDynamicImport) {
-                // #998 remove comment
                 id = id.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '')
                 const literalIdMatch = id.match(
                     /^\s*(?:'([^']+)'|"([^"]+)")\s*$/,

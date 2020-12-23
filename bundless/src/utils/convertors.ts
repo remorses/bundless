@@ -3,6 +3,7 @@ import { cleanUrl } from './utils'
 
 export const dotdotEncoding = '...'
 
+// maybe keep track of namespace query here?
 export function importPathToFile(root: string, request: string) {
     request = decodeURIComponent(request)
     request = cleanUrl(request)
