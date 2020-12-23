@@ -20,11 +20,12 @@ export async function onFileChange({
 
     const toVisit: string[] = [initialRelativePath]
     const visited: string[] = []
+    const messages: any[] = []
 
     while (toVisit.length) {
         const relativePath = toVisit.shift()
-        if (!relativePath) {
-            return
+        if (!relativePath || visited.includes(relativePath)) {
+            continue
         }
         const importPath = fileToImportPath(root, relativePath)
         visited.push(relativePath)
@@ -34,11 +35,12 @@ export async function onFileChange({
             logger.log(
                 `node for '${relativePath}' not found in graph, reloading`,
             )
-            return sendHmrMessage({ type: 'reload' })
+            sendHmrMessage({ type: 'reload' })
+            continue
         }
         // trigger an update if the module is able to handle it
         if (node.isHmrEnabled) {
-            sendHmrMessage({
+            messages.push({
                 type: 'update',
                 path: importPath,
                 updateID: ++node.lastUsedTimestamp,
@@ -46,19 +48,21 @@ export async function onFileChange({
         }
         // reached a boundary, stop hmr propagation
         if (node.hasHmrAccept) {
-            return
+            continue
         }
         const importers = node.importers()
         // reached another boundary, reload
         if (!importers.size) {
             logger.log(`reached top boundary '${relativePath}', reloading`)
-            return sendHmrMessage({ type: 'reload' })
+            sendHmrMessage({ type: 'reload' })
+            continue
         }
         for (let importer of importers) {
+            graph.ensureEntry(importer)
             // mark module as dirty, importers will refetch this module to see updates
-            const node = graph.ensureEntry(importer)
             node.dirtyImportersCount++
         }
         toVisit.push(...importers)
     }
+    messages.forEach(sendHmrMessage)
 }

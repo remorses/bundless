@@ -27,9 +27,9 @@ export function RewritePlugin({} = {}) {
     return {
         name: 'rewrite',
         setup: ({ onTransform, resolve, graph, config }: PluginHooks) => {
+            // TODO some modules like json modules are not in graph, maybe register modules in middleware? how to rewrite files that have not the js extension?
             onTransform({ filter: jsTypeRegex }, async (args) => {
                 // console.log(graph.toString())
-
                 const contents = await rewriteImports({
                     graph,
                     namespace: args.namespace || 'file',
@@ -148,13 +148,11 @@ export async function rewriteImports({
                 }
 
                 let resolvedImportPath = ''
-
+                const isVirtual =
+                    resolveResult.namespace &&
+                    resolveResult.namespace !== 'file'
                 // handle bare imports like node builtins, virtual files, ...
-                if (
-                    !path.isAbsolute(resolveResult.path || '') ||
-                    (resolveResult.namespace &&
-                        resolveResult.namespace !== 'file')
-                ) {
+                if (isVirtual || !path.isAbsolute(resolveResult.path || '')) {
                     resolvedImportPath = '/' + resolveResult.path
                 } else {
                     resolvedImportPath = fileToImportPath(
@@ -171,24 +169,27 @@ export async function rewriteImports({
                     `namespace=${newNamespace}`,
                 )
 
-                // TODO maybe do ensure node on importees?
-                const importeeNode =
-                    graph.nodes[osAgnosticPath(resolveResult.path, root)]
+                // TODO maybe also register virtual files, ok onFileChange will never get triggered but maybe there is virtual css file or stuff like that that needs to be updated?
+                if (!isVirtual) {
+                    const importeeNode = graph.ensureEntry(
+                        osAgnosticPath(resolveResult.path, root),
+                    )
 
-                // refetch modules that are dirty
-                if (importeeNode?.dirtyImportersCount > 0) {
-                    const timestamp = ++importeeNode.lastUsedTimestamp
-                    resolvedImportPath = appendQuery(
-                        resolvedImportPath,
-                        `t=${timestamp}`,
-                    )
-                    importeeNode.dirtyImportersCount--
-                } else if (importeeNode?.lastUsedTimestamp) {
-                    // do not use stale modules
-                    resolvedImportPath = appendQuery(
-                        resolvedImportPath,
-                        `t=${importeeNode.lastUsedTimestamp}`,
-                    )
+                    // refetch modules that are dirty
+                    if (importeeNode?.dirtyImportersCount > 0) {
+                        const timestamp = ++importeeNode.lastUsedTimestamp
+                        resolvedImportPath = appendQuery(
+                            resolvedImportPath,
+                            `t=${timestamp}`,
+                        )
+                        importeeNode.dirtyImportersCount--
+                    } else if (importeeNode?.lastUsedTimestamp) {
+                        // do not use stale modules
+                        resolvedImportPath = appendQuery(
+                            resolvedImportPath,
+                            `t=${importeeNode.lastUsedTimestamp}`,
+                        )
+                    }
                 }
 
                 if (resolvedImportPath !== id) {

@@ -1,1 +1,1 @@
-export default ' file2.js '
+export default 'file2.js'

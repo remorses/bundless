@@ -185,6 +185,7 @@ async function runModuleAccept({ path, updateID }) {
 
     for (const { deps, callback: acceptCallback } of acceptCallbacks) {
         const [module, ...depModules] = await Promise.all([
+            // TODO add the namespace query here
             import(appendQuery(path, `t=${updateID}`)),
             ...deps.map((d) => import(appendQuery(d, `t=${Date.now()}`))), // TODO deps must have different update ids, how?
         ])

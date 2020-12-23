@@ -337,6 +337,11 @@ export async function createApp(config: Config) {
             if (transformed == null) {
                 return next()
             }
+
+            // if (!isVirtual) {
+            //     graph.ensureEntry(resolvedPath)
+            // }
+
             const sourcemap = transformed.map
                 ? genSourceMapString(transformed.map)
                 : ''
