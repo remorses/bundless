@@ -38,7 +38,7 @@ export async function getDependenciesPaths({ entryPoints, filter, root }) {
         entryPoints,
         root,
         stopTraversing: filter,
-        cwd: process.cwd(),
+        esbuildCwd: process.cwd(),
     })
     let resolvedFiles = traversalResult
         .map((x) => {
