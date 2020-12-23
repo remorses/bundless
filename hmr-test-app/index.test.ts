@@ -14,21 +14,21 @@ import 'jest-specific-snapshot'
 import path from 'path'
 import url, { URL } from 'url'
 import WebSocket from 'ws'
+
 const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
 
 const tempDir = path.resolve(__dirname, '../temp')
 const fixtureDir = path.resolve(__dirname)
 const testTargets = process.env.HRM_TESTS
-    ? ['snowpack', 'vite', '@bundless/cli']
-    : ['@bundless/cli']
+    ? ['snowpack', 'vite', 'bundless']
+    : ['bundless']
 
 const PORT = 4000
 
 jest.setTimeout(100000)
 
 type TestCase = {
-    name?: string
     path: string
     replacer: (content: string) => string
 }
@@ -44,54 +44,50 @@ const config: Config = {
 
 // TODO test when removing an import
 // TODO test when adding an import
-// TODO test 2 consecutive updates that resets the ?timestamp query and could cause a stale fetch
 //
 
 // TODO test cases are arrays of arrays, this way i can test multiple messages cases, i can fetch between cases and snapshot the changed urls, this way i can test the timestamp queries
 
-const testCases: TestCase[] = [
+const testCases: Array<TestCase | TestCase[]> = [
     {
         path: 'src/main.jsx',
-        replacer: (content) => {
-            return content + '\n\n'
-        },
+        replacer: defaultReplacer,
     },
     {
         path: 'src/file.jsx',
-        replacer: (content) => {
-            return content + '\n\n'
-        },
+        replacer: defaultReplacer,
     },
     {
         path: 'src/file.css',
-        replacer: (content) => {
-            return content + '\n\n'
-        },
+        replacer: defaultReplacer,
     },
     {
         path: 'src/file.module.css',
-        replacer: (content) => {
-            return content + '\n\n'
-        },
+        replacer: defaultReplacer,
     },
     {
         path: 'src/file.json',
-        replacer: (content) => {
-            return content + '\n\n'
-        },
+        replacer: defaultReplacer,
     },
     {
         path: 'src/file2.js',
-        replacer: (content) => {
-            return content + '\n\n'
-        },
+        replacer: defaultReplacer,
     },
     {
         path: 'src/imported-many-times.js',
-        replacer: (content) => {
-            return content + '\n\n'
-        },
+        replacer: defaultReplacer,
     },
+    // test 2 consecutive updates that resets the ?timestamp query and could cause a stale fetch
+    [
+        {
+            path: 'src/file2.js',
+            replacer: defaultReplacer,
+        },
+        {
+            path: 'src/file.jsx', // imports the first file, should use the last used timestamp query to not get the stale module
+            replacer: defaultReplacer,
+        },
+    ],
 ]
 
 beforeAll(async () => {
@@ -125,7 +121,7 @@ async function start(type) {
         finish = r
     })
     switch (type) {
-        case '@bundless/cli': {
+        case 'bundless': {
             const server = await serve(config)
             // await sleep(300)
             return {
@@ -199,68 +195,68 @@ describe('hmr', () => {
 
     for (let testTarget of testTargets) {
         for (let [i, testCase] of testCases.entries()) {
-            const name = testCase.name || testCase.path
+            const name = Array.isArray(testCase)
+                ? testCase.map((x) => x.path).join(', ')
+                : testCase.path
             test(`${i + 1} ${name} ${testTarget}`, async () => {
                 const { stop, entry, hmrAgent } = await start(testTarget)
                 try {
+                    const ws = new WebSocket(`ws://127.0.0.1:${PORT}`, hmrAgent)
+                    await once(ws, 'open')
+                    const cases = Array.isArray(testCase)
+                        ? testCase
+                        : [testCase]
+                    const snapshot = path.resolve(
+                        fixtureDir,
+                        '__snapshots__',
+                        testTarget,
+                    )
+
+                    // creates the module graph
                     const traversedFiles = await traverseEsModules({
                         entryPoints: [new URL(entry, baseUrl).toString()],
                         onNonResolved: () => {},
-                        onEntry: (p, importer, contents) => {},
                         resolver: urlResolver({
                             root,
                             baseUrl,
                         }),
                     })
-                    // console.log(traversedFiles.map((x) => x.importPath))
-                    const ws = new WebSocket(`ws://127.0.0.1:${PORT}`, hmrAgent)
-                    await once(ws, 'open')
+                    // register hot modules in graph
+                    await registerHotModules(traversedFiles, ws)
 
-                    // for bundless and snowpack, you need to mark modules as hot
-                    await Promise.all(
-                        traversedFiles.map(
-                            async ({ resolvedImportPath, importPath }) => {
-                                const content = await readFromUrlOrPath(
-                                    resolvedImportPath,
-                                    importPath,
+                    for (let c of cases) {
+                        const messages = await getWsMessages({
+                            ws,
+                            doing: async () => {
+                                await updateFile(
+                                    path.resolve(root, c.path),
+                                    c.replacer,
                                 )
-                                if (
-                                    content.includes('import.meta.hot.accept')
-                                ) {
-                                    const msg = JSON.stringify(
-                                        {
-                                            // id is for snowpack
-                                            id: url.parse(resolvedImportPath)
-                                                .pathname,
-                                            path: url.parse(resolvedImportPath)
-                                                .pathname,
-                                            type: 'hotAccept',
-                                        },
-                                        null,
-                                        4,
-                                    )
-                                    // console.log({ msg })
-                                    ws.send(msg)
-                                }
                             },
-                        ),
-                    )
+                        })
+                        expect(
+                            messages.map(normalizeHmrMessage),
+                        ).toMatchSpecificSnapshot(snapshot, 'messages')
 
-                    const messages = await getWsMessages({
-                        ws,
-                        doing: async () => {
-                            await updateFile(
-                                path.resolve(root, testCase.path),
-                                testCase.replacer,
-                            )
-                        },
-                    })
-                    expect(
-                        messages.map(normalizeHmrMessage),
-                    ).toMatchSpecificSnapshot(
-                        path.resolve(fixtureDir, '__snapshots__', testTarget),
-                        '',
-                    )
+                        const urls = new Set<string>()
+                        await traverseEsModules({
+                            entryPoints: [new URL(entry, baseUrl).toString()],
+                            onNonResolved: () => {},
+                            onEntry: (p, importer, contents) => {
+                                if (p.includes('t=')) {
+                                    urls.add(p)
+                                }
+                                // snapshot the fetched urls
+                            },
+                            resolver: urlResolver({
+                                root,
+                                baseUrl,
+                            }),
+                        })
+                        expect(urls).toMatchSpecificSnapshot(snapshot, 'urls')
+                    }
+                    ws.close()
+                    await once(ws, 'close')
                 } finally {
                     if (stop) await stop()
                     await sleep(300)
@@ -279,12 +275,13 @@ async function updateFile(compPath, replacer) {
     }
 }
 
-async function getWsMessages({ doing, timeout = 1000, ws }) {
+async function getWsMessages({ doing, timeout = 2000, ws }) {
     await doing()
     const messages = []
     ws.addEventListener('message', ({ data }) => {
         const payload = JSON.parse(data)
         if (payload.type === 'connected') return
+        // for vite
         if (payload.type === 'multi') {
             return messages.push(...payload.updates)
         }
@@ -294,9 +291,36 @@ async function getWsMessages({ doing, timeout = 1000, ws }) {
         waitUntilCountStabilizes(() => messages.length),
         sleep(timeout),
     ])
-    ws.close()
-    await once(ws, 'close')
+
     return messages
+}
+
+async function registerHotModules(traversedFiles, ws) {
+    // for bundless and snowpack, you need to mark modules as hot
+    const messages: string[] = await Promise.all(
+        traversedFiles.map(async ({ resolvedImportPath, importPath }) => {
+            const content = await readFromUrlOrPath(
+                resolvedImportPath,
+                importPath,
+            )
+            if (content.includes('import.meta.hot.accept')) {
+                const msg = JSON.stringify(
+                    {
+                        // id is for snowpack
+                        id: url.parse(resolvedImportPath).pathname,
+                        path: url.parse(resolvedImportPath).pathname,
+                        type: 'hotAccept',
+                    },
+                    null,
+                    4,
+                )
+                // console.log({ msg })
+                return msg
+            }
+            return ''
+        }),
+    )
+    messages.filter(Boolean).forEach((x) => ws.send(x))
 }
 
 const sleep = (n) => new Promise((r) => setTimeout(r, n))
@@ -319,4 +343,8 @@ const normalizeHmrMessage = (message) => {
         (k) => !ignoreKeys.includes(k),
     )
     return Object.assign({}, ...validKeys.map((k) => ({ [k]: message[k] })))
+}
+
+function defaultReplacer(x) {
+    return x + '\n\n'
 }
