@@ -177,3 +177,13 @@ export function parse(source: string): Statement[] {
 export const jsTypeRegex = new RegExp(
     '(' + [...JS_EXTENSIONS].map(escapeStringRegexp).join('|') + ')$',
 )
+
+export function appendQuery(url: string, query: string) {
+    if (query.startsWith('?')) {
+        query = query.slice(1)
+    }
+    if (url.includes('?')) {
+        return url + query
+    }
+    return `${url}?${query}`
+}

@@ -10,6 +10,7 @@ import { logger } from '../../logger'
 import { PluginHooks, PluginsExecutor } from '../../plugin'
 import { osAgnosticPath } from '../../prebundle/support'
 import {
+    appendQuery,
     cleanUrl,
     fileToImportPath,
     isExternalUrl,
@@ -170,21 +171,28 @@ export async function rewriteImports({
                     ? `&namespace=${newNamespace}`
                     : `?namespace=${newNamespace}`
 
+                // TODO maybe do ensure node on importees?
                 const importeeNode =
                     graph.nodes[osAgnosticPath(resolveResult.path, root)]
 
-                // TODO add ?import to paths to non js extensions, to handle them in plugins correctly, or maybe add ?namespace=file to let it load by plugins?
-
                 // refetch modules that are dirty
                 if (importeeNode?.dirtyImportersCount > 0) {
-                    resolvedImportPath += resolvedImportPath.includes('?')
-                        ? `&t=${Date.now()}`
-                        : `?t=${Date.now()}`
+                    const timestamp = Date.now()
+                    resolvedImportPath += appendQuery(
+                        resolvedImportPath,
+                        `t=${timestamp}`,
+                    )
+                    importeeNode.lastUsedTimestamp = timestamp
                     importeeNode.dirtyImportersCount--
+                } else if (importeeNode?.lastUsedTimestamp) {
+                    // do not use stale modules
+                    resolvedImportPath += appendQuery(
+                        resolvedImportPath,
+                        `t=${importeeNode.lastUsedTimestamp}`,
+                    )
                 }
 
                 if (resolvedImportPath !== id) {
-                    debug(`    "${id}" --> "${resolvedImportPath}"`)
                     if (isOptimizedCjs(root, resolveResult.path || '')) {
                         if (dynamicIndex === -1) {
                             const exp = source.substring(expStart, expEnd)

@@ -14,6 +14,7 @@ export interface Node {
     importers(): Set<OsAgnosticPath> // returns osAgnosticPaths
     importees: Set<ImportPath>
     dirtyImportersCount: number // modules that have imported this and have been updated
+    lastUsedTimestamp?: number
     isHmrEnabled?: boolean
     hasHmrAccept?: boolean
 }
