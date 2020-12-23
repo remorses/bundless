@@ -42,12 +42,7 @@ const config: Config = {
     root: tempDir,
 }
 
-// TODO test when removing an import
-// TODO test when adding an import
-//
-
-// TODO test cases are arrays of arrays, this way i can test multiple messages cases, i can fetch between cases and snapshot the changed urls, this way i can test the timestamp queries
-
+// test cases are arrays of arrays, this way i can test multiple messages cases, i can fetch between cases and snapshot the changed urls, this way i can test the timestamp queries
 const testCases: Array<TestCase | TestCase[]> = [
     {
         path: 'src/main.jsx',
@@ -88,6 +83,8 @@ const testCases: Array<TestCase | TestCase[]> = [
             replacer: defaultReplacer,
         },
     ],
+    // TODO test when removing an import
+    // TODO test when adding an import
 ]
 
 beforeAll(async () => {
