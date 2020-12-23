@@ -25,7 +25,7 @@ import { logger } from '../logger'
 import { commonEsbuildOptions, resolvableExtensions } from './esbuild'
 
 type Args = {
-    cwd: string
+    esbuildCwd: string
     root: string
     entryPoints: string[]
     esbuildOptions?: Partial<BuildOptions>
@@ -40,7 +40,7 @@ export type TraversalResultType = {
 
 export async function traverseWithEsbuild({
     entryPoints,
-    cwd: esbuildCwd,
+    esbuildCwd,
     root,
     esbuildOptions = { plugins: [] },
     stopTraversing,
@@ -112,7 +112,6 @@ export async function traverseWithEsbuild({
         )
         meta = runFunctionOnPaths(meta, stripColon)
         // console.log(JSON.stringify(meta, null, 4))
-
         const res = flatten(
             entryPoints.map((entry) => {
                 return metaToTraversalResult({ meta, entry, esbuildCwd })
@@ -206,13 +205,15 @@ export function metaToTraversalResult({
                 if (input == null) {
                     throw new Error(
                         `entry '${absPath}' is not present in esbuild metafile inputs ${JSON.stringify(
-                            Object.keys(inputs),
+                            Object.keys(meta.inputs),
                             null,
                             2,
                         )}`,
                     )
                 }
-                const currentImports = input.imports ? input.imports.map((x) => x.path) : []
+                const currentImports = input.imports
+                    ? input.imports.map((x) => x.path)
+                    : []
                 // newImports.push(...currentImports)
                 result.push(
                     ...currentImports.map(
