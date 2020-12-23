@@ -204,6 +204,7 @@ describe('hmr', () => {
                     const traversedFiles = await traverseEsModules({
                         entryPoints: [new URL(entry, baseUrl).toString()],
                         onNonResolved: () => {},
+                        onEntry: (p, importer, contents) => {},
                         resolver: urlResolver({
                             root,
                             baseUrl,
@@ -212,7 +213,8 @@ describe('hmr', () => {
                     // console.log(traversedFiles.map((x) => x.importPath))
                     const ws = new WebSocket(`ws://127.0.0.1:${PORT}`, hmrAgent)
                     await once(ws, 'open')
-                    // await once(ws, 'message')
+
+                    // for bundless and snowpack, you need to mark modules as hot
                     await Promise.all(
                         traversedFiles.map(
                             async ({ resolvedImportPath, importPath }) => {
