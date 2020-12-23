@@ -240,7 +240,7 @@ describe('hmr', () => {
                             entryPoints: [new URL(entry, baseUrl).toString()],
                             onNonResolved: () => {},
                             onEntry: (p, importer, contents) => {
-                                if (p.includes('t=')) {
+                                if (p.includes('t=') || p.includes('mtime=')) {
                                     urls.add(p)
                                 }
                                 // snapshot the fetched urls

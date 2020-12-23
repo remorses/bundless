@@ -2,11 +2,11 @@
     "name": "root",
     "scripts": {
         "test": "NODE_ENV=test jest",
+        "test:hmr": "cross-env HRM_TESTS=1 yarn jest hmr-test-app",
         "watch": "ultra -r watch",
         "cli": "ultra -r cli",
         "build": "ultra --build -r build",
-        "release": "yarn build && changeset publish",
-        "hmr-tests": "cross-env HRM_TESTS=1 yarn jest hmr-test-app"
+        "release": "yarn build && changeset publish"
     },
     "workspaces": {
         "nohoist": [

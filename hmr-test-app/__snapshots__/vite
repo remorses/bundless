@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`hmr 1 src/main.jsx vite 1`] = `
+exports[`hmr 1 src/main.jsx vite: messages 1`] = `
 Array [
   Object {
     "changeSrcPath": "/src/main.jsx",
@@ -10,7 +10,9 @@ Array [
 ]
 `;
 
-exports[`hmr 2 src/file.jsx vite 1`] = `
+exports[`hmr 1 src/main.jsx vite: urls 1`] = `Set {}`;
+
+exports[`hmr 2 src/file.jsx vite: messages 1`] = `
 Array [
   Object {
     "changeSrcPath": "/src/file.jsx",
@@ -20,7 +22,9 @@ Array [
 ]
 `;
 
-exports[`hmr 3 src/file.css vite 1`] = `
+exports[`hmr 2 src/file.jsx vite: urls 1`] = `Set {}`;
+
+exports[`hmr 3 src/file.css vite: messages 1`] = `
 Array [
   Object {
     "changeSrcPath": "/src/file.css",
@@ -30,7 +34,9 @@ Array [
 ]
 `;
 
-exports[`hmr 4 src/file.module.css vite 1`] = `
+exports[`hmr 3 src/file.css vite: urls 1`] = `Set {}`;
+
+exports[`hmr 4 src/file.module.css vite: messages 1`] = `
 Array [
   Object {
     "changeSrcPath": "/src/file.module.css",
@@ -45,7 +51,9 @@ Array [
 ]
 `;
 
-exports[`hmr 5 src/file.json vite 1`] = `
+exports[`hmr 4 src/file.module.css vite: urls 1`] = `Set {}`;
+
+exports[`hmr 5 src/file.json vite: messages 1`] = `
 Array [
   Object {
     "changeSrcPath": "/src/file.json",
@@ -55,7 +63,9 @@ Array [
 ]
 `;
 
-exports[`hmr 6 src/file2.js vite 1`] = `
+exports[`hmr 5 src/file.json vite: urls 1`] = `Set {}`;
+
+exports[`hmr 6 src/file2.js vite: messages 1`] = `
 Array [
   Object {
     "changeSrcPath": "/src/file2.js",
@@ -65,7 +75,9 @@ Array [
 ]
 `;
 
-exports[`hmr 7 src/imported-many-times.js vite 1`] = `
+exports[`hmr 6 src/file2.js vite: urls 1`] = `Set {}`;
+
+exports[`hmr 7 src/imported-many-times.js vite: messages 1`] = `
 Array [
   Object {
     "changeSrcPath": "/src/imported-many-times.js",
@@ -79,3 +91,29 @@ Array [
   },
 ]
 `;
+
+exports[`hmr 7 src/imported-many-times.js vite: urls 1`] = `Set {}`;
+
+exports[`hmr 8 src/file2.js, src/file.jsx vite: messages 1`] = `
+Array [
+  Object {
+    "changeSrcPath": "/src/file2.js",
+    "path": "/src/file.jsx",
+    "type": "js-update",
+  },
+]
+`;
+
+exports[`hmr 8 src/file2.js, src/file.jsx vite: messages 2`] = `
+Array [
+  Object {
+    "changeSrcPath": "/src/file.jsx",
+    "path": "/src/file.jsx",
+    "type": "js-update",
+  },
+]
+`;
+
+exports[`hmr 8 src/file2.js, src/file.jsx vite: urls 1`] = `Set {}`;
+
+exports[`hmr 8 src/file2.js, src/file.jsx vite: urls 2`] = `Set {}`;

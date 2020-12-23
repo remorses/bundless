@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`hmr 1 src/main.jsx snowpack 1`] = `
+exports[`hmr 1 src/main.jsx snowpack: messages 1`] = `
 Array [
   Object {
     "bubbled": false,
@@ -10,7 +10,9 @@ Array [
 ]
 `;
 
-exports[`hmr 2 src/file.jsx snowpack 1`] = `
+exports[`hmr 1 src/main.jsx snowpack: urls 1`] = `Set {}`;
+
+exports[`hmr 2 src/file.jsx snowpack: messages 1`] = `
 Array [
   Object {
     "bubbled": false,
@@ -20,7 +22,9 @@ Array [
 ]
 `;
 
-exports[`hmr 3 src/file.css snowpack 1`] = `
+exports[`hmr 2 src/file.jsx snowpack: urls 1`] = `Set {}`;
+
+exports[`hmr 3 src/file.css snowpack: messages 1`] = `
 Array [
   Object {
     "bubbled": false,
@@ -35,7 +39,9 @@ Array [
 ]
 `;
 
-exports[`hmr 4 src/file.module.css snowpack 1`] = `
+exports[`hmr 3 src/file.css snowpack: urls 1`] = `Set {}`;
+
+exports[`hmr 4 src/file.module.css snowpack: messages 1`] = `
 Array [
   Object {
     "bubbled": true,
@@ -45,7 +51,9 @@ Array [
 ]
 `;
 
-exports[`hmr 5 src/file.json snowpack 1`] = `
+exports[`hmr 4 src/file.module.css snowpack: urls 1`] = `Set {}`;
+
+exports[`hmr 5 src/file.json snowpack: messages 1`] = `
 Array [
   Object {
     "bubbled": true,
@@ -55,7 +63,9 @@ Array [
 ]
 `;
 
-exports[`hmr 6 src/file2.js snowpack 1`] = `
+exports[`hmr 5 src/file.json snowpack: urls 1`] = `Set {}`;
+
+exports[`hmr 6 src/file2.js snowpack: messages 1`] = `
 Array [
   Object {
     "bubbled": true,
@@ -65,7 +75,9 @@ Array [
 ]
 `;
 
-exports[`hmr 7 src/imported-many-times.js snowpack 1`] = `
+exports[`hmr 6 src/file2.js snowpack: urls 1`] = `Set {}`;
+
+exports[`hmr 7 src/imported-many-times.js snowpack: messages 1`] = `
 Array [
   Object {
     "bubbled": true,
@@ -79,3 +91,29 @@ Array [
   },
 ]
 `;
+
+exports[`hmr 7 src/imported-many-times.js snowpack: urls 1`] = `Set {}`;
+
+exports[`hmr 8 src/file2.js, src/file.jsx snowpack: messages 1`] = `
+Array [
+  Object {
+    "bubbled": true,
+    "type": "update",
+    "url": "/_dist_/file.js",
+  },
+]
+`;
+
+exports[`hmr 8 src/file2.js, src/file.jsx snowpack: messages 2`] = `
+Array [
+  Object {
+    "bubbled": false,
+    "type": "update",
+    "url": "/_dist_/file.js",
+  },
+]
+`;
+
+exports[`hmr 8 src/file2.js, src/file.jsx snowpack: urls 1`] = `Set {}`;
+
+exports[`hmr 8 src/file2.js, src/file.jsx snowpack: urls 2`] = `Set {}`;
