@@ -1,3 +1,1 @@
-export default 10
-
-export const x = 2
+export default ' file2.js '

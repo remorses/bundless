@@ -1,5 +1,6 @@
 import { HMRPayload } from './client/types'
 import { Graph } from './graph'
+import { logger } from './logger'
 import { osAgnosticPath } from './prebundle/support'
 import { fileToImportPath, importPathToFile } from './utils'
 
@@ -15,10 +16,9 @@ export async function onFileChange({
     filePath: string
     sendHmrMessage: (x: HMRPayload) => any
 }) {
-    const relativePath = osAgnosticPath(filePath, root)
-    const importPath = fileToImportPath(root, filePath)
+    const initialRelativePath = osAgnosticPath(filePath, root)
 
-    const toVisit: string[] = [relativePath]
+    const toVisit: string[] = [initialRelativePath]
     const visited: string[] = []
 
     while (toVisit.length) {
@@ -26,10 +26,14 @@ export async function onFileChange({
         if (!relativePath) {
             return
         }
+        const importPath = fileToImportPath(root, relativePath)
         visited.push(relativePath)
         const node = graph.nodes[relativePath]
         // can be a non js file, like index.html
         if (!node) {
+            logger.log(
+                `node for '${relativePath}' not found in graph, reloading`,
+            )
             return sendHmrMessage({ type: 'reload' })
         }
         // trigger an update if the module is able to handle it
@@ -47,6 +51,7 @@ export async function onFileChange({
         const importers = node.importers()
         // reached another boundary, reload
         if (!importers.size) {
+            logger.log(`reached top boundary '${relativePath}', reloading`)
             return sendHmrMessage({ type: 'reload' })
         }
         for (let importer of importers) {
