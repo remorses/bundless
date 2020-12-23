@@ -34,7 +34,11 @@ export async function onFileChange({
         }
         // trigger an update if the module is able to handle it
         if (node.isHmrEnabled) {
-            sendHmrMessage({ type: 'update', path: importPath })
+            sendHmrMessage({
+                type: 'update',
+                path: importPath,
+                updateID: ++node.lastUsedTimestamp,
+            })
         }
         // reached a boundary, stop hmr propagation
         if (node.hasHmrAccept) {

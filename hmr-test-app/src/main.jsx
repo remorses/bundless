@@ -20,8 +20,10 @@ ReactDOM.render(
     document.getElementById('root'),
 )
 
+const noop = (x) => x
+
+
+
 if (import.meta.hot) {
     import.meta.hot.accept()
 }
-
-const noop = (x) => x

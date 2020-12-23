@@ -183,7 +183,7 @@ export function appendQuery(url: string, query: string) {
         query = query.slice(1)
     }
     if (url.includes('?')) {
-        return url + query
+        return `${url}&${query}`
     }
     return `${url}?${query}`
 }

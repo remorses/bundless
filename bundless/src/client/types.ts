@@ -13,6 +13,7 @@ interface ConnectedPayload {
 export interface UpdatePayload {
     type: 'update'
     path: string
+    updateID: number
     // changeSrcPath: string
     // timestamp: number
 }

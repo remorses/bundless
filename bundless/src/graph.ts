@@ -14,7 +14,7 @@ export interface Node {
     importers(): Set<OsAgnosticPath> // returns osAgnosticPaths
     importees: Set<ImportPath>
     dirtyImportersCount: number // modules that have imported this and have been updated
-    lastUsedTimestamp?: number
+    lastUsedTimestamp: number
     isHmrEnabled?: boolean
     hasHmrAccept?: boolean
 }
@@ -36,6 +36,7 @@ export class Graph {
 
         this.nodes[path] = {
             dirtyImportersCount: 0,
+            lastUsedTimestamp: 0,
             hasHmrAccept: false,
             isHmrEnabled: false,
             importees: new Set(),

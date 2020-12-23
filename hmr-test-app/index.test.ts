@@ -47,6 +47,8 @@ const config: Config = {
 // TODO test 2 consecutive updates that resets the ?timestamp query and could cause a stale fetch
 //
 
+// TODO test cases are arrays of arrays, this way i can test multiple messages cases, i can fetch between cases and snapshot the changed urls, this way i can test the timestamp queries
+
 const testCases: TestCase[] = [
     {
         path: 'src/main.jsx',

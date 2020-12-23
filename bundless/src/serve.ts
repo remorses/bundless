@@ -354,7 +354,6 @@ export async function createApp(config: Config) {
     // })
 
     app.use(middlewares.sourcemapMiddleware({ root }))
-    app.use(middlewares.pluginAssetsMiddleware())
     app.use(pluginsMiddleware())
     app.use(middlewares.staticServeMiddleware({ root })) // TODO test that serve static works with paths containing $$ and folders with name ending in .zip
     app.use(

@@ -177,12 +177,11 @@ export async function rewriteImports({
 
                 // refetch modules that are dirty
                 if (importeeNode?.dirtyImportersCount > 0) {
-                    const timestamp = Date.now()
+                    const timestamp = ++importeeNode.lastUsedTimestamp
                     resolvedImportPath = appendQuery(
                         resolvedImportPath,
                         `t=${timestamp}`,
                     )
-                    importeeNode.lastUsedTimestamp = timestamp
                     importeeNode.dirtyImportersCount--
                 } else if (importeeNode?.lastUsedTimestamp) {
                     // do not use stale modules

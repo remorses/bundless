@@ -5,7 +5,7 @@ import { y } from './imported-many-times'
 export const Comp = () => {
     return (
         <div>
-            {y}xxxx{x}
+            {y}xxx{x}
         </div>
     )
 }
