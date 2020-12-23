@@ -167,7 +167,7 @@ export async function rewriteImports({
                 const newNamespace = encodeURIComponent(
                     resolveResult.namespace || namespace, // TODO in esbuild do loaded files inherit namespace?
                 )
-                resolvedImportPath += appendQuery(
+                resolvedImportPath = appendQuery(
                     resolvedImportPath,
                     `namespace=${newNamespace}`,
                 )
@@ -179,7 +179,7 @@ export async function rewriteImports({
                 // refetch modules that are dirty
                 if (importeeNode?.dirtyImportersCount > 0) {
                     const timestamp = Date.now()
-                    resolvedImportPath += appendQuery(
+                    resolvedImportPath = appendQuery(
                         resolvedImportPath,
                         `t=${timestamp}`,
                     )
@@ -187,7 +187,7 @@ export async function rewriteImports({
                     importeeNode.dirtyImportersCount--
                 } else if (importeeNode?.lastUsedTimestamp) {
                     // do not use stale modules
-                    resolvedImportPath += appendQuery(
+                    resolvedImportPath = appendQuery(
                         resolvedImportPath,
                         `t=${importeeNode.lastUsedTimestamp}`,
                     )
