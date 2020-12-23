@@ -3,6 +3,7 @@
 exports[`hmr 1 src/main.jsx bundless: messages 1`] = `
 Array [
   Object {
+    "namespace": "file",
     "path": "/src/main.jsx",
     "type": "update",
     "updateID": 1,
@@ -15,6 +16,7 @@ exports[`hmr 1 src/main.jsx bundless: urls 1`] = `Set {}`;
 exports[`hmr 2 src/file.jsx bundless: messages 1`] = `
 Array [
   Object {
+    "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
     "updateID": 1,
@@ -31,6 +33,7 @@ Set {
 exports[`hmr 3 src/file.css bundless: messages 1`] = `
 Array [
   Object {
+    "namespace": "file",
     "path": "/src/file.css",
     "type": "update",
     "updateID": 1,
@@ -47,6 +50,7 @@ Set {
 exports[`hmr 4 src/file.module.css bundless: messages 1`] = `
 Array [
   Object {
+    "namespace": "file",
     "path": "/src/file.module.css",
     "type": "update",
     "updateID": 1,
@@ -63,6 +67,7 @@ Set {
 exports[`hmr 5 src/file.json bundless: messages 1`] = `
 Array [
   Object {
+    "namespace": "file",
     "path": "/src/bridge.jsx",
     "type": "update",
     "updateID": 1,
@@ -80,6 +85,7 @@ Set {
 exports[`hmr 6 src/file2.js bundless: messages 1`] = `
 Array [
   Object {
+    "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
     "updateID": 1,
@@ -97,11 +103,13 @@ Set {
 exports[`hmr 7 src/imported-many-times.js bundless: messages 1`] = `
 Array [
   Object {
+    "namespace": "file",
     "path": "/src/main.jsx",
     "type": "update",
     "updateID": 1,
   },
   Object {
+    "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
     "updateID": 1,
@@ -120,6 +128,7 @@ Set {
 exports[`hmr 8 src/file2.js, src/file.jsx bundless: messages 1`] = `
 Array [
   Object {
+    "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
     "updateID": 1,
@@ -130,6 +139,7 @@ Array [
 exports[`hmr 8 src/file2.js, src/file.jsx bundless: messages 2`] = `
 Array [
   Object {
+    "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
     "updateID": 2,

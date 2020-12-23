@@ -14,6 +14,7 @@ export interface UpdatePayload {
     type: 'update'
     path: string
     updateID: number
+    namespace: string
     // changeSrcPath: string
     // timestamp: number
 }

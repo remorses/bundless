@@ -20,7 +20,7 @@ export async function onFileChange({
 
     const toVisit: string[] = [initialRelativePath]
     const visited: string[] = []
-    const messages: any[] = []
+    const messages: HMRPayload[] = []
 
     while (toVisit.length) {
         const relativePath = toVisit.shift()
@@ -42,6 +42,7 @@ export async function onFileChange({
         if (node.isHmrEnabled) {
             messages.push({
                 type: 'update',
+                namespace: 'file',
                 path: importPath,
                 updateID: ++node.lastUsedTimestamp,
             })
