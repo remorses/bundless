@@ -5,6 +5,7 @@ Array [
   Object {
     "path": "/src/main.jsx",
     "type": "update",
+    "updateID": 1,
   },
 ]
 `;
@@ -14,6 +15,7 @@ Array [
   Object {
     "path": "/src/file.jsx",
     "type": "update",
+    "updateID": 1,
   },
 ]
 `;
@@ -23,6 +25,7 @@ Array [
   Object {
     "path": "/src/file.css",
     "type": "update",
+    "updateID": 1,
   },
 ]
 `;
@@ -32,6 +35,7 @@ Array [
   Object {
     "path": "/src/file.module.css",
     "type": "update",
+    "updateID": 1,
   },
 ]
 `;
@@ -49,6 +53,7 @@ Array [
   Object {
     "path": "/src/file2.js",
     "type": "update",
+    "updateID": 1,
   },
 ]
 `;
@@ -58,6 +63,7 @@ Array [
   Object {
     "path": "/src/imported-many-times.js",
     "type": "update",
+    "updateID": 1,
   },
 ]
 `;
