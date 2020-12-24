@@ -58,11 +58,6 @@ const buildCommand: CommandModule = {
 
 yargs
     .locale('en')
-    .option('verbose', {
-        alias: 'v',
-        type: 'boolean',
-        default: false,
-    })
     .option('config', {
         alias: 'c',
         type: 'string',
@@ -72,4 +67,5 @@ yargs
     })
     .command(serveCommand)
     .command(buildCommand)
+    .version()
     .help('help', 'h').argv

@@ -1,10 +1,13 @@
 import * as esbuild from 'esbuild'
+import beautify from 'posthtml-beautify'
+
+import fromEntries from 'fromentries'
 import fs from 'fs-extra'
 import path from 'path'
-import { JS_EXTENSIONS, MAIN_FIELDS } from '../constants'
-import * as plugins from '../plugins'
-import glob from 'tiny-glob'
 import posthtml, { Node } from 'posthtml'
+import { BuildConfig } from '../config'
+import { MAIN_FIELDS } from '../constants'
+import * as plugins from '../plugins'
 import {
     commonEsbuildOptions,
     metafileToBundleMap,
@@ -16,10 +19,8 @@ import {
     runFunctionOnPaths,
     stripColon,
 } from '../prebundle/support'
-import { cleanUrl } from '../utils'
 import { metaToTraversalResult } from '../prebundle/traverse'
-import fromEntries from 'fromentries'
-import { BuildConfig } from '../config'
+import { cleanUrl } from '../utils'
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
@@ -34,6 +35,7 @@ export async function build({
     basePath = '/',
 }: BuildConfig & { root: string; entryPoints: string[] }) {
     entryPoints = entryPoints.map((x) => path.resolve(root, x))
+    await fs.remove(outDir)
     await fs.ensureDir(outDir)
     const publicDir = path.resolve(root, 'public')
     const metafile = path.resolve(outDir, 'metafile.json')
@@ -169,47 +171,86 @@ export async function build({
             }
             let outputJs = path.resolve(root, bundleMap[relativePath]!)
             const html = await (await fs.readFile(entry)).toString()
-            const transformer = posthtml([
-                (tree) => {
-                    // remove previous script tags
-                    tree.walk((node) => {
-                        if (
-                            node &&
-                            node.tag === 'script' &&
-                            node.attrs &&
-                            node.attrs['type'] === 'module' &&
-                            node.attrs['src'] &&
-                            !isUrl(node.attrs['src'])
-                        ) {
-                            node.tag = false as any
-                            node.content = []
-                        }
-                        return node
-                    })
-                    // add new output files back to html
-                    tree.match({ tag: 'body' }, (node) => {
-                        const jsSrc = '/' + path.relative(outDir, outputJs)
-                        const cssHrefs =
-                            cssToInject[osAgnosticPath(entry, root)] || []
-                        node.content = [
-                            MyNode({
-                                tag: 'script',
-                                attrs: { type: 'module', src: jsSrc },
-                            }),
-                            ...cssHrefs.map((href) => {
-                                href = '/' + path.relative(outDir, href)
-                                return MyNode({
-                                    tag: 'link',
-                                    attrs: { href },
+            const transformer = posthtml(
+                [
+                    (tree) => {
+                        // remove previous script tags
+                        tree.walk((node) => {
+                            if (
+                                node &&
+                                node.tag === 'script' &&
+                                node.attrs &&
+                                node.attrs['type'] === 'module' &&
+                                node.attrs['src'] &&
+                                !isUrl(node.attrs['src'])
+                            ) {
+                                node.tag = false as any
+                                node.content = []
+                            }
+                            return node
+                        })
+                        // add new output files back to html
+                        tree.match({ tag: 'body' }, (node) => {
+                            const jsSrc = '/' + path.relative(outDir, outputJs)
+                            node.content = [
+                                MyNode({
+                                    tag: 'script',
+                                    attrs: { type: 'module', src: jsSrc },
+                                }),
+
+                                ...(node.content || []),
+                            ]
+                            return node
+                        })
+
+                        // insert head if missing
+                        if (!findHtmlTag(tree, 'head')) {
+                            const html = findHtmlTag(tree, 'html')
+                            if (html) {
+                                tree.match({ tag: 'html' }, (html) => {
+                                    html.content = insertFirst(
+                                        html.content,
+                                        MyNode({ tag: 'head', content: [] }),
+                                    )
+                                    return html
                                 })
-                            }),
-                            // TODO inject emitted css files back to html
-                            ...(node.content || []),
-                        ]
-                        return node
-                    })
-                },
-            ])
+                            } else {
+                                if (Array.isArray(tree)) {
+                                    tree = Object.assign(
+                                        tree,
+                                        insertFirst(
+                                            tree,
+                                            MyNode({
+                                                tag: 'head',
+                                                content: [],
+                                            }),
+                                        ),
+                                    )
+                                }
+                            }
+                        }
+
+                        tree.match({ tag: 'head' }, (node) => {
+                            const cssHrefs =
+                                cssToInject[osAgnosticPath(entry, root)] || []
+                            node.content = [
+                                // TODO maybe include imported fonts as links?
+                                ...cssHrefs.map((href) => {
+                                    href = '/' + path.relative(outDir, href)
+                                    return MyNode({
+                                        tag: 'link',
+                                        attrs: { href },
+                                    })
+                                }),
+                                // TODO inject emitted css files back to html
+                                ...(node.content || []),
+                            ]
+                            return node
+                        })
+                    },
+                    !minify && beautify({ rules: { indent: 4 } }),
+                ].filter(Boolean),
+            )
             const result = await transformer.process(html)
             const outputHtmlPath = path.resolve(
                 path.dirname(outputJs),
@@ -222,6 +263,23 @@ export async function build({
             // if entry is not html, create an html file that imports the js output bundle
         }
     }
+}
+
+function findHtmlTag(tree: Node, tag: string): Node | undefined {
+    let found
+    tree.match({ tag }, (node) => {
+        found = node
+        return node
+    })
+    return found
+}
+
+function insertFirst(items, node) {
+    return [
+        ...items.filter((x) => typeof x === 'string'),
+        node,
+        ...items.filter((x) => typeof x !== 'string'),
+    ]
 }
 
 function generateEnvReplacements(env: Object): { [key: string]: string } {

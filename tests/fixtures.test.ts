@@ -113,15 +113,15 @@ describe('snapshots', () => {
                     'mirror',
                 )
                 // BUILD
-                const outdir = path.resolve(casePath, 'dist')
+                const outDir = path.resolve(casePath, 'dist')
                 await build({
                     root,
-                    outdir,
+                    outDir,
                     entryPoints: entryPoints.map((x) => path.resolve(root, x)),
                 })
                 const allBuildFiles = glob.sync(`**/*`, {
                     ignore: ['__snapshots__'],
-                    cwd: outdir,
+                    cwd: outDir,
                     nodir: true,
                 })
                 expect(allBuildFiles).toMatchSpecificSnapshot(
