@@ -3,8 +3,9 @@ require('source-map-support').install()
 import yargs, { CommandModule } from 'yargs'
 import deepMerge from 'deepmerge'
 import { serve } from './serve'
-import { Config, loadConfig } from './config'
+import { Config, getEntries, loadConfig } from './config'
 import { CONFIG_NAME } from './constants'
+import { build } from './build'
 
 const serveCommand: CommandModule = {
     command: ['serve', '*'],
@@ -15,13 +16,7 @@ const serveCommand: CommandModule = {
             required: false,
             description: 'The port for the dev server',
         })
-        argv.option('config', {
-            alias: 'c',
-            type: 'string',
-            default: CONFIG_NAME,
-            required: false,
-            description: 'The port for the dev server',
-        })
+
         return argv
     },
     handler: async (argv: any) => {
@@ -34,6 +29,32 @@ const serveCommand: CommandModule = {
     },
 }
 
+const buildCommand: CommandModule = {
+    command: ['build'],
+    builder: (argv) => {
+        argv.option('port', {
+            alias: 'p',
+            type: 'number',
+            required: false,
+            description: 'The port for the dev server',
+        })
+
+        return argv
+    },
+    handler: async (argv: any) => {
+        let config = loadConfig(process.cwd(), argv.config)
+        const root = config.root || process.cwd()
+        if (!config.root) {
+            config = { ...config, root }
+        }
+        return build({
+            root,
+            ...config,
+            entryPoints: getEntries(config),
+        })
+    },
+}
+
 yargs
     .locale('en')
     .option('verbose', {
@@ -41,11 +62,13 @@ yargs
         type: 'boolean',
         default: false,
     })
-    .option('filter', {
-        alias: 'f',
+    .option('config', {
+        alias: 'c',
         type: 'string',
-        description: 'Only build experiments inside the specified path',
-        array: true,
+        default: CONFIG_NAME,
+        required: false,
+        description: `The config path to use`,
     })
     .command(serveCommand)
+    .command(buildCommand)
     .help('help', 'h').argv

@@ -1,6 +1,7 @@
 import { CONFIG_NAME, DEFAULT_PORT } from './constants'
 import findUp from 'find-up'
 import fs from 'fs'
+import * as esbuild from 'esbuild'
 import { Plugin } from './plugin'
 import path from 'path'
 
@@ -70,4 +71,12 @@ export interface HmrConfig {
      * @default 30000ms
      */
     timeout?: number
+}
+
+export interface BuildConfig {
+    basePath?: string
+    outDir?: string
+    minify?: boolean
+    env?: Record<string, string>
+    jsTarget?: string
 }

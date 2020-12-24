@@ -19,6 +19,7 @@ import {
 import { cleanUrl } from '../utils'
 import { metaToTraversalResult } from '../prebundle/traverse'
 import fromEntries from 'fromentries'
+import { BuildConfig } from '../config'
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
@@ -27,18 +28,18 @@ export async function build({
     root,
     entryPoints,
     minify = false,
-    outdir = 'out',
+    outDir = 'out',
     env = {},
-    target = 'es2018',
-    base = '/',
-}) {
+    jsTarget = 'es2018',
+    basePath = '/',
+}: BuildConfig & { root: string; entryPoints: string[] }) {
     entryPoints = entryPoints.map((x) => path.resolve(root, x))
-    await fs.ensureDir(outdir)
+    await fs.ensureDir(outDir)
     const publicDir = path.resolve(root, 'public')
-    const metafile = path.resolve(outdir, 'metafile.json')
+    const metafile = path.resolve(outDir, 'metafile.json')
     const esbuildCwd = process.cwd()
     if (fs.existsSync(publicDir)) {
-        await fs.copy(publicDir, outdir)
+        await fs.copy(publicDir, outDir)
     }
     const buildResult = await esbuild.build({
         ...commonEsbuildOptions,
@@ -46,8 +47,8 @@ export async function build({
         entryPoints, // TODO transform html with plugin executor
         bundle: true,
         platform: 'browser',
-        target,
-        publicPath: base,
+        target: jsTarget,
+        publicPath: basePath,
         splitting: true, // needed to dedupe modules
         // external: externalPackages,
         minifyIdentifiers: Boolean(minify),
@@ -85,7 +86,7 @@ export async function build({
         // tsconfig: tsconfigTempFile,
         format: 'esm',
         write: true,
-        outdir,
+        outdir: outDir,
         minify: Boolean(minify),
     })
 
@@ -187,7 +188,7 @@ export async function build({
                     })
                     // add new output files back to html
                     tree.match({ tag: 'body' }, (node) => {
-                        const jsSrc = '/' + path.relative(outdir, outputJs)
+                        const jsSrc = '/' + path.relative(outDir, outputJs)
                         const cssHrefs =
                             cssToInject[osAgnosticPath(entry, root)] || []
                         node.content = [
@@ -196,7 +197,7 @@ export async function build({
                                 attrs: { type: 'module', src: jsSrc },
                             }),
                             ...cssHrefs.map((href) => {
-                                href = '/' + path.relative(outdir, href)
+                                href = '/' + path.relative(outDir, href)
                                 return MyNode({
                                     tag: 'link',
                                     attrs: { href },
