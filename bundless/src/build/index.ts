@@ -17,6 +17,7 @@ import {
     stripColon,
 } from '../prebundle/support'
 import { cleanUrl } from '../utils'
+import { metaToTraversalResult } from '../prebundle/traverse'
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
@@ -108,10 +109,17 @@ export async function build({
         return
     }
 
+    const traversalResult = await metaToTraversalResult({
+        meta,
+        entryPoints,
+        esbuildCwd,
+    })
+
+    // first find all the css files, then for every css file traverse its importers until i find an entry, add the css to the entry dependencies
+
     for (let entry of entryPoints) {
         if (path.extname(entry) === '.html') {
             const relativePath = osAgnosticPath(entry, root)
-
             if (!bundleMap[relativePath]) {
                 throw new Error(
                     `Cannot find output for '${relativePath}' in ${JSON.stringify(

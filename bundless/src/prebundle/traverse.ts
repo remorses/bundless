@@ -112,16 +112,11 @@ export async function traverseWithEsbuild({
         )
         meta = runFunctionOnPaths(meta, stripColon)
         // console.log(JSON.stringify(meta, null, 4))
-        const res = flatten(
-            entryPoints.map((entry) => {
-                return metaToTraversalResult({ meta, entry, esbuildCwd })
-            }),
-        ).map((x) => {
-            return {
-                ...x,
-                resolvedImportPath: x.resolvedImportPath,
-                importer: x.importer,
-            }
+
+        const res = metaToTraversalResult({
+            meta,
+            entryPoints,
+            esbuildCwd,
         })
 
         return res
@@ -170,21 +165,25 @@ function ExternalButInMetafile(): Plugin {
 
 export function metaToTraversalResult({
     meta,
-    entry,
+    entryPoints,
     esbuildCwd,
 }: {
     meta: Metadata
     esbuildCwd: string
-    entry: string
+    entryPoints: string[]
 }): TraversalResultType[] {
     if (!path.isAbsolute(esbuildCwd)) {
         throw new Error('esbuildCwd must be an absolute path')
     }
-    if (!path.isAbsolute(entry)) {
-        throw new Error('entry must be an absolute path')
+    for (let entry of entryPoints) {
+        if (!path.isAbsolute(entry)) {
+            throw new Error('entry must be an absolute path')
+        }
     }
     const alreadyProcessed = new Set<string>()
-    let toProcess = [slash(path.relative(esbuildCwd, entry))]
+    let toProcess = entryPoints.map((entry) =>
+        slash(path.relative(esbuildCwd, entry)),
+    )
     let result: TraversalResultType[] = []
     const inputs = fromEntries(
         Object.keys(meta.inputs).map((k) => {
