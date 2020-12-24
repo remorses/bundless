@@ -162,7 +162,7 @@ function makeTsConfig({ alias }) {
 export type BundleMap = Partial<Record<string, string>>
 
 // TODO not working for some packages
-function metafileToBundleMap(_options: {
+export function metafileToBundleMap(_options: {
     entryPoints: string[]
     root: string
     esbuildCwd: string

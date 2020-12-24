@@ -2,6 +2,7 @@
 
 exports[`snapshots fixtures/with-typescript: build 1`] = `
 Array [
+  "index.html",
   "index.js",
   "metafile.json",
 ]

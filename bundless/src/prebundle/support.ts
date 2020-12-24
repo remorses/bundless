@@ -5,7 +5,11 @@ import path from 'path'
 import slash from 'slash'
 
 export function isUrl(req: string) {
-    return req.startsWith('http://') || req.startsWith('https://')
+    return (
+        req.startsWith('http://') ||
+        req.startsWith('https://') ||
+        req.startsWith('//')
+    )
 }
 export interface OptimizeAnalysisResult {
     isCommonjs: { [name: string]: true }
@@ -74,7 +78,6 @@ function convertKeys<T>(obj: T, cb: (k: string) => string): T {
 
     return x
 }
-
 
 export function runFunctionOnPaths(
     x: Metadata,

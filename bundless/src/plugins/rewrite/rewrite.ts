@@ -65,7 +65,7 @@ export async function rewriteImports({
     if (source.charCodeAt(0) === 0xfeff) {
         source = source.slice(1)
     }
-    graph.ensureEntry(importerFilePath, { importees: new Set() })
+    graph.ensureEntry(importerFilePath)
     try {
         let imports: ImportSpecifier[] = []
         try {

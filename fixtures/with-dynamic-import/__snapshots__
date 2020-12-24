@@ -3,6 +3,7 @@
 exports[`snapshots fixtures/with-dynamic-import: build 1`] = `
 Array [
   "chunk.Z3ZST6WA.js",
+  "index.html",
   "index.js",
   "metafile.json",
   "text.js",
