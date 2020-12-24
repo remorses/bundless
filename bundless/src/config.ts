@@ -7,6 +7,13 @@ import path from 'path'
 
 export function getEntries(config: Config): string[] {
     if (config.entries) {
+        for (let entry of config.entries) {
+            if (!entry.endsWith('.html')) {
+                throw new Error(
+                    `Currently entries can only be html files: ${entry}`,
+                )
+            }
+        }
         return config.entries.map((x) => path.resolve(config.root!, x))
     }
     const index1 = path.resolve(config.root!, 'index.html')

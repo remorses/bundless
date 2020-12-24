@@ -64,7 +64,7 @@ export async function build({
         platform: 'browser',
         target: jsTarget,
         publicPath: basePath,
-        splitting: true, // needed to dedupe modules
+        splitting: true,
         // external: externalPackages,
         minifyIdentifiers: Boolean(minify),
         minifySyntax: Boolean(minify),
@@ -91,6 +91,7 @@ export async function build({
                 extensions: resolvableExtensions,
             }),
             plugins.NodeModulesPolyfillPlugin(),
+            // html ingest should override other html plugins in build, this is because html is transformed to js
             plugins.HtmlIngestPlugin({
                 root,
                 name: 'html-ingest',
