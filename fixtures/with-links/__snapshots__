@@ -4,6 +4,7 @@ exports[`snapshots fixtures/with-links: build 1`] = `
 Array [
   "index.js",
   "manifest.json",
+  "metafile.json",
   "styles1.css",
 ]
 `;

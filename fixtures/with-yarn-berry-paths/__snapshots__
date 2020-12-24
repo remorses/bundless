@@ -3,6 +3,7 @@
 exports[`snapshots fixtures/with-yarn-berry-paths: build 1`] = `
 Array [
   "index.js",
+  "metafile.json",
 ]
 `;
 

@@ -3,6 +3,7 @@
 exports[`snapshots fixtures/with-many-dependencies: build 1`] = `
 Array [
   "index.js",
+  "metafile.json",
 ]
 `;
 

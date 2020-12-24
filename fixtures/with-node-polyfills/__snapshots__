@@ -3,6 +3,7 @@
 exports[`snapshots fixtures/with-node-polyfills: build 1`] = `
 Array [
   "index.js",
+  "metafile.json",
 ]
 `;
 

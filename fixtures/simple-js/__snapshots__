@@ -3,6 +3,7 @@
 exports[`snapshots fixtures/simple-js: build 1`] = `
 Array [
   "index.js",
+  "metafile.json",
 ]
 `;
 

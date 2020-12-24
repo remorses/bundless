@@ -3,6 +3,7 @@
 exports[`snapshots fixtures/with-commonjs-transform: build 1`] = `
 Array [
   "index.js",
+  "metafile.json",
 ]
 `;
 

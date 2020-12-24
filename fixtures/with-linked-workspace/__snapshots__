@@ -3,6 +3,7 @@
 exports[`snapshots fixtures/with-linked-workspace: build 1`] = `
 Array [
   "index.js",
+  "metafile.json",
 ]
 `;
 

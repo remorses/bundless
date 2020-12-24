@@ -23,11 +23,13 @@ export async function build({
 }) {
     await fsx.ensureDir(outdir)
     const publicDir = path.resolve(root, 'public')
+    const metafile = path.resolve(outdir, 'metafile.json')
     if (fsx.existsSync(publicDir)) {
         await fsx.copy(publicDir, outdir)
     }
     await esbuild.build({
         ...commonEsbuildOptions,
+        metafile,
         entryPoints,
         bundle: true,
         platform: 'browser',
