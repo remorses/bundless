@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import url from 'url'
 import chokidar, { FSWatcher } from 'chokidar'
 import deepmerge from 'deepmerge'
 import { once } from 'events'
@@ -33,6 +34,7 @@ import {
     dotdotEncoding,
     importPathToFile,
     needsPrebundle,
+    parseWithQuery,
     readBody,
 } from './utils'
 import fs from 'fs-extra'
@@ -161,9 +163,13 @@ export async function createApp(config: Config) {
             plugins.RewritePlugin(),
             plugins.HtmlTransformPlugin({
                 transforms: [
-                    transformScriptTags((importPath) =>
-                        appendQuery(importPath, `namespace=file`),
-                    ),
+                    transformScriptTags((importPath) => {
+                        const { query } = parseWithQuery(importPath)
+                        if (query?.namespace != null) {
+                            return importPath
+                        }
+                        return appendQuery(importPath, `namespace=file`)
+                    }),
                 ],
             }),
         ],
