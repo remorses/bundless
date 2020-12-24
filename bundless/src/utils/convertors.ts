@@ -8,8 +8,8 @@ export function importPathToFile(root: string, request: string) {
     request = decodeURIComponent(request)
     request = cleanUrl(request)
     request = request.startsWith('/') ? request.slice(1) : request
-    request = path.resolve(root, request)
     request = request.replace(/\.\.\./g, '..')
+    request = path.resolve(root, request)
     return request
 }
 

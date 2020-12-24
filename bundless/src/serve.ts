@@ -188,7 +188,7 @@ export async function createApp(config: Config) {
         // disableGlobbing: true,
         ignored: [
             /(^|[/\\])(node_modules|\.git|\.DS_Store|web_modules)([/\\]|$)/,
-            // TODO dont watch output directory
+
             // path.resolve(root, out),
             // path.resolve(root, distDir),
         ],
