@@ -187,7 +187,14 @@ export async function build({
                 )
             }
             let outputJs = path.resolve(root, bundleMap[relativePath]!)
-            const html = await (await fs.readFile(entry)).toString()
+            let html = await (await fs.readFile(entry)).toString()
+            // transform html can inject scripts, do SSR, ...
+            const htmlResult = await pluginsExecutor.transform({
+                contents: html,
+                path: path.resolve(root, entry),
+                namespace: 'file',
+            })
+            html = htmlResult?.contents || html
             const transformer = posthtml(
                 [
                     (tree) => {
@@ -266,7 +273,7 @@ export async function build({
                     !minify && beautify({ rules: { indent: 2 } }),
                 ].filter(Boolean),
             )
-            // in SSG i should generate the html from react components and inject it here, this can be done with a html onTransform plugin before the pipeline
+
             const result = await transformer.process(html)
             const outputHtmlPath = path.resolve(
                 path.dirname(outputJs),
