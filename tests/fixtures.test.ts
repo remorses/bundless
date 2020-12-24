@@ -115,9 +115,12 @@ describe('snapshots', () => {
                 // BUILD
                 const outDir = path.resolve(casePath, 'dist')
                 await build({
-                    root,
+                    config: {
+                        ...config,
+                        root,
+                        entries: entryPoints.map((x) => path.resolve(root, x)),
+                    },
                     outDir,
-                    entryPoints: entryPoints.map((x) => path.resolve(root, x)),
                 })
                 const allBuildFiles = glob.sync(`**/*`, {
                     ignore: ['__snapshots__'],
