@@ -49,7 +49,7 @@ export const defaultConfig: Config = {
     openBrowser: true,
 }
 
-export function loadConfig(from: string, name): Config {
+export function loadConfig(from: string, name = CONFIG_NAME): Config {
     const configPath = findUp.sync(name, { cwd: from })
     if (configPath) {
         return require(configPath)

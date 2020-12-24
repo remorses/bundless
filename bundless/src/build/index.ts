@@ -57,7 +57,7 @@ export async function build({
                     throw new Error(`Cannot resolve '${p}'`)
                 },
                 onResolved: (p) => {
-                    console.log(p)
+                    // console.log(p)
                 },
                 mainFields: MAIN_FIELDS,
                 extensions: resolvableExtensions,

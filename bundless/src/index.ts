@@ -1,4 +1,4 @@
 export { serve } from './serve'
 export { build } from './build'
-export { Config } from './config'
+export { Config, loadConfig } from './config'
 export { Plugin } from './plugin'

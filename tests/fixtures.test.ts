@@ -1,5 +1,5 @@
 import { traverseEsModules, urlResolver } from 'es-module-traversal'
-import { build, serve } from '@bundless/cli'
+import { build, serve, loadConfig } from '@bundless/cli'
 import { jsTypeRegex } from '@bundless/cli/dist/utils'
 import fs from 'fs-extra'
 import glob from 'glob'
@@ -37,7 +37,9 @@ describe('snapshots', () => {
         const snapshotFile = path.resolve(casePath, '__snapshots__')
         test(`${slash(casePath)}`, async () => {
             let root = path.resolve(casePath)
-            const server = await serve({ port: PORT, root })
+            const config = loadConfig(casePath)
+            const server = await serve({ ...config, port: PORT, root })
+            const entryPoints = config?.entries || ['index.html']
             try {
                 const downloadFilesToDir = path.join(casePath, '__mirror__')
                 await fs.remove(downloadFilesToDir)
@@ -46,7 +48,9 @@ describe('snapshots', () => {
                     onNonResolved: (p) => {
                         // throw new Error(`cannot traverse ${p}`)
                     },
-                    entryPoints: [new URL('index.html', baseUrl).toString()],
+                    entryPoints: entryPoints.map((x) =>
+                        new URL(x, baseUrl).toString(),
+                    ),
                     resolver: urlResolver({ root: casePath, baseUrl }),
                     onEntry: async (url = '', importer) => {
                         let content = ''
@@ -113,7 +117,7 @@ describe('snapshots', () => {
                 await build({
                     root,
                     outdir,
-                    entryPoints: [path.resolve(root, 'index.html')],
+                    entryPoints: entryPoints.map((x) => path.resolve(root, x)),
                 })
                 const allBuildFiles = glob.sync(`**/*`, {
                     ignore: ['__snapshots__'],
