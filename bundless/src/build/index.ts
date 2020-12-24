@@ -34,9 +34,9 @@ export async function build({
     outDir = 'out',
     env = {},
     jsTarget = 'es2018',
-    plugins: userPlugins,
+    plugins: userPlugins = [],
     basePath = '/',
-}: BuildConfig & { root: string; entryPoints: string[]; plugins: Plugin[] }) {
+}: BuildConfig & { root: string; entryPoints: string[]; plugins?: Plugin[] }) {
     entryPoints = entryPoints.map((x) => path.resolve(root, x))
     await fs.remove(outDir)
     await fs.ensureDir(outDir)
