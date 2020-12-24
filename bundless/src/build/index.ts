@@ -5,9 +5,10 @@ import fromEntries from 'fromentries'
 import fs from 'fs-extra'
 import path from 'path'
 import posthtml, { Node } from 'posthtml'
-import { BuildConfig } from '../config'
+import { BuildConfig, Config } from '../config'
 import { MAIN_FIELDS } from '../constants'
 import * as plugins from '../plugins'
+import { createPluginsExecutor, Plugin, wrapPluginForEsbuild } from '../plugin'
 import {
     commonEsbuildOptions,
     metafileToBundleMap,
@@ -21,6 +22,7 @@ import {
 } from '../prebundle/support'
 import { metaToTraversalResult } from '../prebundle/traverse'
 import { cleanUrl } from '../utils'
+import { Graph } from '../graph'
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
@@ -32,8 +34,9 @@ export async function build({
     outDir = 'out',
     env = {},
     jsTarget = 'es2018',
+    plugins: userPlugins,
     basePath = '/',
-}: BuildConfig & { root: string; entryPoints: string[] }) {
+}: BuildConfig & { root: string; entryPoints: string[]; plugins: Plugin[] }) {
     entryPoints = entryPoints.map((x) => path.resolve(root, x))
     await fs.remove(outDir)
     await fs.ensureDir(outDir)
@@ -43,6 +46,16 @@ export async function build({
     if (fs.existsSync(publicDir)) {
         await fs.copy(publicDir, outDir)
     }
+    const config: Config = {
+        root,
+    }
+    const emptyGraph = new Graph({ root })
+    const pluginsExecutor = createPluginsExecutor({
+        plugins: userPlugins,
+        config,
+        graph: emptyGraph,
+        root,
+    })
     const buildResult = await esbuild.build({
         ...commonEsbuildOptions,
         metafile,
@@ -54,7 +67,6 @@ export async function build({
         splitting: true, // needed to dedupe modules
         // external: externalPackages,
         minifyIdentifiers: Boolean(minify),
-
         minifySyntax: Boolean(minify),
         minifyWhitespace: Boolean(minify),
         mainFields: MAIN_FIELDS,
@@ -84,6 +96,14 @@ export async function build({
                 name: 'html-ingest',
                 transformImportPath: cleanUrl,
             }),
+            ...userPlugins.map((plugin) =>
+                wrapPluginForEsbuild({
+                    config,
+                    graph: emptyGraph,
+                    plugin,
+                    pluginsExecutor,
+                }),
+            ),
         ],
         // tsconfig: tsconfigTempFile,
         format: 'esm',
@@ -99,9 +119,6 @@ export async function build({
         p = stripColon(p) // namespace:/path/to/file -> /path/to/file
         return p
     })
-
-    // TODO only inject used css by traversing the metafile graph to find used css chunks
-    // const outputCssFiles = await glob('**.css', { cwd: outdir, absolute: true })
 
     const bundleMap = metafileToBundleMap({
         entryPoints,
@@ -259,6 +276,7 @@ export async function build({
 
             // emit html to dist directory, in dirname same as the output files corresponding to html entries
         } else {
+            // TODO support js entries
             // if entry is not html, create an html file that imports the js output bundle
         }
     }
