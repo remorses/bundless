@@ -17,7 +17,7 @@ import {
     MAIN_FIELDS,
 } from '../constants'
 
-import { runFunctionOnPaths } from './support'
+import { osAgnosticPath, runFunctionOnPaths } from './support'
 import fromEntries from 'fromentries'
 import { stripColon, unique } from './support'
 import { flatten } from '../utils'
@@ -33,18 +33,13 @@ type Args = {
     stopTraversing?: (resolvedPath: string) => boolean
 }
 
-export type TraversalResultType = {
-    resolvedImportPath: string
-    importer: string
-}
-
 export async function traverseWithEsbuild({
     entryPoints,
     esbuildCwd,
     root,
     esbuildOptions = { plugins: [] },
     stopTraversing,
-}: Args): Promise<TraversalResultType[]> {
+}: Args): Promise<string[]> {
     const destLoc = await fsp.realpath(
         path.resolve(await fsp.mkdtemp(path.join(os.tmpdir(), 'dest'))),
     )
@@ -116,10 +111,11 @@ export async function traverseWithEsbuild({
         const res = metaToTraversalResult({
             meta,
             entryPoints,
+            root,
             esbuildCwd,
         })
 
-        return res
+        return Object.keys(res)
     } finally {
         await fsx.remove(destLoc)
     }
@@ -163,15 +159,19 @@ function ExternalButInMetafile(): Plugin {
     }
 }
 
+type TraversalGraph = Record<string, string[]>
+
 export function metaToTraversalResult({
     meta,
     entryPoints,
     esbuildCwd,
+    root,
 }: {
     meta: Metadata
     esbuildCwd: string
+    root: string
     entryPoints: string[]
-}): TraversalResultType[] {
+}): TraversalGraph {
     if (!path.isAbsolute(esbuildCwd)) {
         throw new Error('esbuildCwd must be an absolute path')
     }
@@ -184,7 +184,7 @@ export function metaToTraversalResult({
     let toProcess = entryPoints.map((entry) =>
         slash(path.relative(esbuildCwd, entry)),
     )
-    let result: TraversalResultType[] = []
+    const result: TraversalGraph = {}
     const inputs = fromEntries(
         Object.keys(meta.inputs).map((k) => {
             const abs = path.resolve(esbuildCwd, k)
@@ -214,22 +214,25 @@ export function metaToTraversalResult({
                     ? input.imports.map((x) => x.path)
                     : []
                 // newImports.push(...currentImports)
-                result.push(
-                    ...currentImports.map(
-                        (x): TraversalResultType => {
-                            return {
-                                importer: path.resolve(esbuildCwd, newEntry),
-                                resolvedImportPath: path.resolve(esbuildCwd, x),
-                            }
-                        },
-                    ),
+                const importer = osAgnosticPath(
+                    path.resolve(esbuildCwd, newEntry),
+                    root,
                 )
+                if (!result[importer]) {
+                    result[importer] = []
+                }
+                for (let importee of currentImports) {
+                    importee = path.resolve(esbuildCwd, importee)
+                    importee = osAgnosticPath(importee, root)
+                    result[importer].push(importee)
+                }
+
                 return currentImports
             }),
         ).filter(Boolean)
         toProcess = newImports
     }
-    return unique(result, (x) => x.resolvedImportPath)
+    return result
     // find the right output getting the key of the right output.inputs == input
     // get the imports of the inputs.[entry].imports and attach them the importer
     // do the same with the imports just found

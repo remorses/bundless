@@ -10,7 +10,11 @@ import { osAgnosticPath } from './support'
 import { traverseWithEsbuild } from './traverse'
 
 export async function prebundle({ entryPoints, filter, root, dest }) {
-    const dependenciesPaths = await getDependenciesPaths({ entryPoints, root, filter })
+    const dependenciesPaths = await getDependenciesPaths({
+        entryPoints,
+        root,
+        filter,
+    })
     logger.log(
         `prebundling [${dependenciesPaths
             .map((x) => osAgnosticPath(x, root))
@@ -32,6 +36,7 @@ export async function prebundle({ entryPoints, filter, root, dest }) {
     return bundleMap
 }
 
+// TODO remove this function
 export async function getDependenciesPaths({ entryPoints, filter, root }) {
     // serve react refresh runtime
     const traversalResult = await traverseWithEsbuild({
@@ -42,11 +47,10 @@ export async function getDependenciesPaths({ entryPoints, filter, root }) {
     })
     let resolvedFiles = traversalResult
         .map((x) => {
-            return x.resolvedImportPath
+            return x
         })
         .filter(Boolean)
         .filter((x) => filter(x))
-        .map((x) => slash(path.relative(root, x)))
     resolvedFiles = Array.from(new Set(resolvedFiles))
     return resolvedFiles
 }
