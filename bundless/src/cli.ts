@@ -32,11 +32,11 @@ const serveCommand: CommandModule = {
 const buildCommand: CommandModule = {
     command: ['build'],
     builder: (argv) => {
-        argv.option('port', {
-            alias: 'p',
-            type: 'number',
+        argv.option('outDir', {
+            alias: 'o',
+            type: 'string',
             required: false,
-            description: 'The port for the dev server',
+            description: 'The output directory',
         })
 
         return argv
@@ -49,6 +49,7 @@ const buildCommand: CommandModule = {
         }
         return build({
             root,
+            outDir: argv.outDir,
             ...config,
             entryPoints: getEntries(config),
         })
