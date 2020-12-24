@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-typescript: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/main.ts": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/main.ts?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/text.ts?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/utils.ts?namespace=file": "application/javascript; charset=utf-8",
 }
@@ -19,13 +19,13 @@ Array [
 exports[`snapshots fixtures/with-typescript: traverse result 1`] = `
 Array [
   Object {
-    "importPath": "/main.ts",
+    "importPath": "/main.ts?namespace=file",
     "importer": "http://127.0.0.1:9000/index.html",
-    "resolvedImportPath": "http://127.0.0.1:9000/main.ts",
+    "resolvedImportPath": "http://127.0.0.1:9000/main.ts?namespace=file",
   },
   Object {
     "importPath": "/text.ts?namespace=file",
-    "importer": "http://127.0.0.1:9000/main.ts",
+    "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/text.ts?namespace=file",
   },
   Object {

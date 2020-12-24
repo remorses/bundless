@@ -150,7 +150,7 @@ export function createHotContext(fullUrl) {
 // }
 /** Called when a new module is loaded, to pass the updated module to the "active" module */
 // uses the graph lastUsedTimestamp to make the new timestamp to fetch, pass this in the hmr message?
-async function runModuleAccept({ path, updateID }) {
+async function runModuleAccept({ path, namespace, updateID }) {
     const state = REGISTERED_MODULES[path];
     if (!state) {
         log(`${path} has not been registered, reloading`);
@@ -163,9 +163,10 @@ async function runModuleAccept({ path, updateID }) {
     }
     const acceptCallbacks = state.acceptCallbacks;
     for (const { deps, callback: acceptCallback } of acceptCallbacks) {
+        const encodedNamespace = encodeURIComponent(namespace || 'file');
         const [module, ...depModules] = await Promise.all([
             // TODO add the namespace query here
-            import(appendQuery(path, `t=${updateID}`)),
+            import(appendQuery(path, `namespace=${encodedNamespace}&t=${updateID}`)),
             ...deps.map((d) => import(appendQuery(d, `t=${Date.now()}`))),
         ]);
         acceptCallback({ module, deps: depModules });

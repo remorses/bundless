@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-many-dependencies: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/main.js": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/chunk.MJBB2LPQ.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/chunk.WRIZPAM5.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/chunk.Y7FREAVH.js?namespace=file": "application/javascript; charset=utf-8",
@@ -29,28 +29,28 @@ Array [
 exports[`snapshots fixtures/with-many-dependencies: traverse result 1`] = `
 Array [
   Object {
-    "importPath": "/main.js",
+    "importPath": "/main.js?namespace=file",
     "importer": "http://127.0.0.1:9000/index.html",
-    "resolvedImportPath": "http://127.0.0.1:9000/main.js",
+    "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/node_modules/slash/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/main.js",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/node_modules/slash/index.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/main.js",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/fixtures/with-many-dependencies/node_modules/preact/dist/preact.module.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/main.js",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/preact/dist/preact.module.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/node_modules/react-dom/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/main.js",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
   },
   Object {

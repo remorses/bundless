@@ -29,6 +29,7 @@ import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { genSourceMapString } from './sourcemaps'
 import {
+    appendQuery,
     dotdotEncoding,
     importPathToFile,
     needsPrebundle,
@@ -36,6 +37,7 @@ import {
 } from './utils'
 import fs from 'fs-extra'
 import etagMiddleware from 'koa-etag'
+import { transformScriptTags } from './plugins/html-transform'
 
 export interface ServerPluginContext {
     root: string
@@ -157,6 +159,13 @@ export async function createApp(config: Config) {
             ...(config.plugins || []),
             plugins.ResolveSourcemapPlugin(),
             plugins.RewritePlugin(),
+            plugins.HtmlTransformPlugin({
+                transforms: [
+                    transformScriptTags((importPath) =>
+                        appendQuery(importPath, `namespace=file`),
+                    ),
+                ],
+            }),
         ],
         config,
         graph,
@@ -291,8 +300,6 @@ export async function createApp(config: Config) {
             const req = ctx.req
             if (
                 ctx.query.namespace == null &&
-                // esm imports accept */* in most browsers
-                req.headers['accept'] !== '*/*' &&
                 req.headers['sec-fetch-dest'] !== 'script'
             ) {
                 return next()

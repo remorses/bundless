@@ -7,6 +7,7 @@ export { HmrClientPlugin } from './hmr-client'
 export { JSONPlugin } from './json'
 export { AssetsPlugin } from './assets'
 export { UrlResolverPlugin } from './url-resolver'
+export { HtmlTransformPlugin } from './html-transform'
 export {
     NodeModulesPolyfillPlugin,
     NodeResolvePlugin,

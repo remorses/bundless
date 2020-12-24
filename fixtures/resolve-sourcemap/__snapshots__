@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/resolve-sourcemap: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/folder/main.js": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/folder/main.js?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -15,9 +15,9 @@ Array [
 exports[`snapshots fixtures/resolve-sourcemap: traverse result 1`] = `
 Array [
   Object {
-    "importPath": "/folder/main.js",
+    "importPath": "/folder/main.js?namespace=file",
     "importer": "http://127.0.0.1:9000/index.html",
-    "resolvedImportPath": "http://127.0.0.1:9000/folder/main.js",
+    "resolvedImportPath": "http://127.0.0.1:9000/folder/main.js?namespace=file",
   },
 ]
 `;

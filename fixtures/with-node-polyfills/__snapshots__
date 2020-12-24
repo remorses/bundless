@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-node-polyfills: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/main.js": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/path?namespace=node-builtins": "application/javascript; charset=utf-8",
 }
 `;
@@ -17,13 +17,13 @@ Array [
 exports[`snapshots fixtures/with-node-polyfills: traverse result 1`] = `
 Array [
   Object {
-    "importPath": "/main.js",
+    "importPath": "/main.js?namespace=file",
     "importer": "http://127.0.0.1:9000/index.html",
-    "resolvedImportPath": "http://127.0.0.1:9000/main.js",
+    "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
   },
   Object {
     "importPath": "/path?namespace=node-builtins",
-    "importer": "http://127.0.0.1:9000/main.js",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/path?namespace=node-builtins",
   },
 ]
