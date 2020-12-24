@@ -18,6 +18,7 @@ import {
 } from '../prebundle/support'
 import { cleanUrl } from '../utils'
 import { metaToTraversalResult } from '../prebundle/traverse'
+import fromEntries from 'fromentries'
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
@@ -31,6 +32,7 @@ export async function build({
     target = 'es2018',
     base = '/',
 }) {
+    entryPoints = entryPoints.map((x) => path.resolve(root, x))
     await fs.ensureDir(outdir)
     const publicDir = path.resolve(root, 'public')
     const metafile = path.resolve(outdir, 'metafile.json')
@@ -87,7 +89,7 @@ export async function build({
         minify: Boolean(minify),
     })
 
-    let meta = JSON.parse(
+    let meta: esbuild.Metadata = JSON.parse(
         await (await fs.promises.readFile(metafile)).toString(),
     )
     meta = runFunctionOnPaths(meta, (p) => {
@@ -109,14 +111,48 @@ export async function build({
         return
     }
 
-    const traversalResult = await metaToTraversalResult({
+    const traversalGraph = await metaToTraversalResult({
         meta,
         entryPoints,
         root,
         esbuildCwd,
     })
 
-    // first find all the css files, then for every css file traverse its importers until i find an entry, add the css to the entry dependencies
+    const cssToInject: Record<string, string[]> = fromEntries(
+        entryPoints.map((x) => osAgnosticPath(x, root)).map((k) => [k, []]),
+    )
+
+    // find all the css files, for every entry file traverse its imports and collect all css files, add the css outputs to cssToInject
+    for (let entry of entryPoints.map((x) => osAgnosticPath(x, root))) {
+        traverseGraphDown({
+            entryPoints: [entry],
+            traversalGraph,
+            onNode(imported) {
+                if (cleanUrl(imported).endsWith('.css')) {
+                    const abs = path.resolve(root, imported)
+                    let output = Object.keys(meta.outputs).find((x) => {
+                        if (!x.endsWith('.css')) {
+                            return
+                        }
+                        const info = meta.outputs[x]
+                        const absInputs = new Set(
+                            Object.keys(info.inputs).map((x) =>
+                                path.resolve(esbuildCwd, x),
+                            ),
+                        )
+                        if (absInputs.has(abs)) {
+                            return true
+                        }
+                    })
+                    if (!output) {
+                        throw new Error(`Cannot find output for '${imported}'`)
+                    }
+                    output = path.resolve(esbuildCwd, output)
+                    cssToInject[entry].push(output)
+                }
+            },
+        })
+    }
 
     for (let entry of entryPoints) {
         if (path.extname(entry) === '.html') {
@@ -151,11 +187,20 @@ export async function build({
                     })
                     // add new output files back to html
                     tree.match({ tag: 'body' }, (node) => {
-                        const src = '/' + path.relative(outdir, outputJs)
+                        const jsSrc = '/' + path.relative(outdir, outputJs)
+                        const cssHrefs =
+                            cssToInject[osAgnosticPath(entry, root)] || []
                         node.content = [
                             MyNode({
                                 tag: 'script',
-                                attrs: { type: 'module', src },
+                                attrs: { type: 'module', src: jsSrc },
+                            }),
+                            ...cssHrefs.map((href) => {
+                                href = '/' + path.relative(outdir, href)
+                                return MyNode({
+                                    tag: 'link',
+                                    attrs: { href },
+                                })
                             }),
                             // TODO inject emitted css files back to html
                             ...(node.content || []),
@@ -187,4 +232,33 @@ function generateEnvReplacements(env: Object): { [key: string]: string } {
 
 function MyNode(x: Partial<Node>): Node {
     return x as any
+}
+
+function traverseGraphDown(args: {
+    traversalGraph: Record<string, string[]>
+    entryPoints: string[]
+    onNode
+}) {
+    const { entryPoints, traversalGraph, onNode } = args
+    const toVisit: string[] = entryPoints
+    const visited = new Set<string>()
+    while (toVisit.length) {
+        const entry = toVisit.shift()
+        if (!entry || visited.has(entry)) {
+            break
+        }
+        visited.add(entry)
+        const imports = traversalGraph[entry]
+        if (!imports) {
+            throw new Error(
+                `Node for '${entry}' not found in graph: ${JSON.stringify(
+                    JSON.stringify(Object.keys(traversalGraph), null, 4),
+                )}`,
+            )
+        }
+        if (onNode) {
+            onNode(entry)
+        }
+        toVisit.push(...imports)
+    }
 }

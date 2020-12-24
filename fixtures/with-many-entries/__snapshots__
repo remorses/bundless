@@ -2,6 +2,7 @@
 
 exports[`snapshots fixtures/with-many-entries: build 1`] = `
 Array [
+  "a/index.css",
   "a/index.html",
   "a/index.js",
   "b/index.html",
@@ -12,6 +13,8 @@ Array [
 
 exports[`snapshots fixtures/with-many-entries: content-type headers 1`] = `
 Object {
+  "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/a/main.css?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/a/main.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/b/main.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/b/text.js?namespace=file": "application/javascript; charset=utf-8",
@@ -20,6 +23,8 @@ Object {
 
 exports[`snapshots fixtures/with-many-entries: mirror 1`] = `
 Array [
+  "_hmr_client.js",
+  "a/main.css",
   "a/main.js",
   "b/main.js",
   "b/text.js",
@@ -39,9 +44,19 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/b/main.js?namespace=file",
   },
   Object {
+    "importPath": "/a/main.css?namespace=file",
+    "importer": "http://127.0.0.1:9000/a/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/a/main.css?namespace=file",
+  },
+  Object {
     "importPath": "/b/text.js?namespace=file",
     "importer": "http://127.0.0.1:9000/b/main.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/b/text.js?namespace=file",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/a/main.css?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
 ]
 `;

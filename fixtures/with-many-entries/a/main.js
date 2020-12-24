@@ -1,3 +1,5 @@
+import './main.css'
+
 const text = 'A'
 
 const node = document.createElement('pre')
