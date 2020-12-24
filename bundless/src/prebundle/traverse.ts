@@ -214,6 +214,7 @@ export function metaToTraversalResult({
                     ? input.imports.map((x) => x.path)
                     : []
                 // newImports.push(...currentImports)
+
                 const importer = osAgnosticPath(
                     path.resolve(esbuildCwd, newEntry),
                     root,

@@ -33,6 +33,11 @@ export class Lock extends EventEmitter {
 }
 
 export function osAgnosticPath(absPath: string | undefined, root: string) {
+    if (!root) {
+        throw new Error(
+            `root argument is required, cannot make os agnostic path for ${absPath}`,
+        )
+    }
     if (!absPath) {
         return ''
     }

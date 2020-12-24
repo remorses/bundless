@@ -112,6 +112,7 @@ export async function build({
     const traversalResult = await metaToTraversalResult({
         meta,
         entryPoints,
+        root,
         esbuildCwd,
     })
 
