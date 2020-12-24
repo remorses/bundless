@@ -50,8 +50,31 @@ export async function build({
         await fs.copy(publicDir, outDir)
     }
     const emptyGraph = new Graph({ root })
+
+    const allPlugins = [
+        plugins.UrlResolverPlugin(),
+        plugins.NodeResolvePlugin({
+            name: 'node-resolve',
+            onNonResolved: (p) => {
+                throw new Error(`Cannot resolve '${p}'`)
+            },
+            onResolved: (p) => {
+                // console.log(p)
+            },
+            mainFields: MAIN_FIELDS,
+            extensions: resolvableExtensions,
+        }),
+        plugins.NodeModulesPolyfillPlugin(),
+        // html ingest should override other html plugins in build, this is because html is transformed to js
+        plugins.HtmlIngestPlugin({
+            root,
+            name: 'html-ingest',
+            transformImportPath: cleanUrl,
+        }),
+        ...userPlugins,
+    ]
     const pluginsExecutor = createPluginsExecutor({
-        plugins: userPlugins,
+        plugins: allPlugins,
         config,
         graph: emptyGraph,
         root,
@@ -79,25 +102,7 @@ export async function build({
             // require.resolve('@esbuild-plugins/node-globals-polyfill/process'),
         ],
         plugins: [
-            plugins.NodeResolvePlugin({
-                name: 'node-resolve',
-                onNonResolved: (p) => {
-                    throw new Error(`Cannot resolve '${p}'`)
-                },
-                onResolved: (p) => {
-                    // console.log(p)
-                },
-                mainFields: MAIN_FIELDS,
-                extensions: resolvableExtensions,
-            }),
-            plugins.NodeModulesPolyfillPlugin(),
-            // html ingest should override other html plugins in build, this is because html is transformed to js
-            plugins.HtmlIngestPlugin({
-                root,
-                name: 'html-ingest',
-                transformImportPath: cleanUrl,
-            }),
-            ...userPlugins.map((plugin) =>
+            ...allPlugins.map((plugin) =>
                 wrapPluginForEsbuild({
                     config,
                     graph: emptyGraph,
