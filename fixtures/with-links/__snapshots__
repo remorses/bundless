@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`snapshots fixtures/with-links: build 1`] = `
+Array [
+  "index.js",
+  "manifest.json",
+  "styles1.css",
+]
+`;
+
 exports[`snapshots fixtures/with-links: content-type headers 1`] = `Object {}`;
 
 exports[`snapshots fixtures/with-links: mirror 1`] = `Array []`;

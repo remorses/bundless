@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`snapshots fixtures/simple-js: build 1`] = `
+Array [
+  "index.js",
+]
+`;
+
 exports[`snapshots fixtures/simple-js: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",

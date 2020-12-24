@@ -1,5 +1,5 @@
 import { traverseEsModules, urlResolver } from 'es-module-traversal'
-import { serve } from '@bundless/cli'
+import { build, serve } from '@bundless/cli'
 import { jsTypeRegex } from '@bundless/cli/dist/utils'
 import fs from 'fs-extra'
 import glob from 'glob'
@@ -13,7 +13,6 @@ import 'jest-specific-snapshot'
 import * as failFast from 'jasmine-fail-fast'
 const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
-
 
 it('works', async () => {
     const currentFile = path.resolve(__dirname, __filename)
@@ -98,12 +97,33 @@ describe('snapshots', () => {
                     snapshotFile,
                     'traverse result',
                 )
-                const allFiles = glob.sync(`**/*`, {
+
+                // MIRROR
+                const allMirrorFiles = glob.sync(`**/*`, {
                     ignore: ['__snapshots__'],
                     cwd: downloadFilesToDir,
                     nodir: true,
                 })
-                expect(allFiles).toMatchSpecificSnapshot(snapshotFile, 'mirror')
+                expect(allMirrorFiles).toMatchSpecificSnapshot(
+                    snapshotFile,
+                    'mirror',
+                )
+                // BUILD
+                const outdir = path.resolve(casePath, 'dist')
+                await build({
+                    root,
+                    outdir,
+                    entryPoints: [path.resolve(root, 'index.html')],
+                })
+                const allBuildFiles = glob.sync(`**/*`, {
+                    ignore: ['__snapshots__'],
+                    cwd: outdir,
+                    nodir: true,
+                })
+                expect(allBuildFiles).toMatchSpecificSnapshot(
+                    snapshotFile,
+                    'build',
+                )
             } finally {
                 server && (await server.close())
             }

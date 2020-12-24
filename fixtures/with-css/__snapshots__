@@ -1,5 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`snapshots fixtures/with-css: build 1`] = `
+Array [
+  "index.css",
+  "index.js",
+]
+`;
+
 exports[`snapshots fixtures/with-css: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",

@@ -1,5 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`snapshots fixtures/with-assets-imports: build 1`] = `
+Array [
+  "image.COKLWFLK.png",
+  "index.js",
+]
+`;
+
 exports[`snapshots fixtures/with-assets-imports: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/image.png?namespace=file": "application/javascript; charset=utf-8",
