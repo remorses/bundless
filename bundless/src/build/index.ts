@@ -204,9 +204,8 @@ export async function build({
                         })
 
                         // insert head if missing
-                        if (!findHtmlTag(tree, 'head')) {
-                            const html = findHtmlTag(tree, 'html')
-                            if (html) {
+                        if (!/<head\b/.test(html)) {
+                            if (/<html\b/.test(html)) {
                                 tree.match({ tag: 'html' }, (html) => {
                                     html.content = insertFirst(
                                         html.content,
@@ -242,15 +241,15 @@ export async function build({
                                         attrs: { href },
                                     })
                                 }),
-                                // TODO inject emitted css files back to html
                                 ...(node.content || []),
                             ]
                             return node
                         })
                     },
-                    !minify && beautify({ rules: { indent: 4 } }),
+                    !minify && beautify({ rules: { indent: 2 } }),
                 ].filter(Boolean),
             )
+            // in SSG i should generate the html from react components and inject it here, this can be done with a html onTransform plugin before the pipeline
             const result = await transformer.process(html)
             const outputHtmlPath = path.resolve(
                 path.dirname(outputJs),
@@ -263,15 +262,6 @@ export async function build({
             // if entry is not html, create an html file that imports the js output bundle
         }
     }
-}
-
-function findHtmlTag(tree: Node, tag: string): Node | undefined {
-    let found
-    tree.match({ tag }, (node) => {
-        found = node
-        return node
-    })
-    return found
 }
 
 function insertFirst(items, node) {
