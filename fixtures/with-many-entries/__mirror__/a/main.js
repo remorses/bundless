@@ -1,4 +1,5 @@
 import '/a/main.css?namespace=file'
+import '/common.css?namespace=file'
 
 const text = 'A'
 
