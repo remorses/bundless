@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/with-css-modules: build 1`] = `
+Array [
+  "index.css",
+  "index.html",
+  "index.js",
+  "metafile.json",
+]
+`;
+
+exports[`snapshots fixtures/with-css-modules: content-type headers 1`] = `
+Object {
+  "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.module.css?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/with-css-modules: mirror 1`] = `
+Array [
+  "_hmr_client.js",
+  "file.js",
+  "file.module.css",
+  "main.js",
+]
+`;
+
+exports[`snapshots fixtures/with-css-modules: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "/main.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/file.module.css?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.module.css?namespace=file",
+  },
+  Object {
+    "importPath": "/file.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.js?namespace=file",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/file.module.css?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+]
+`;
