@@ -48,10 +48,9 @@ const buildCommand: CommandModule = {
             config = { ...config, root }
         }
         return build({
-            root,
+            config,
             outDir: argv.outDir,
             ...config,
-            entryPoints: getEntries(config),
         })
     },
 }

@@ -5,7 +5,7 @@ import fromEntries from 'fromentries'
 import fs from 'fs-extra'
 import path from 'path'
 import posthtml, { Node } from 'posthtml'
-import { BuildConfig, Config } from '../config'
+import { BuildConfig, Config, getEntries } from '../config'
 import { MAIN_FIELDS } from '../constants'
 import * as plugins from '../plugins'
 import { createPluginsExecutor, Plugin, wrapPluginForEsbuild } from '../plugin'
@@ -28,16 +28,19 @@ import { Graph } from '../graph'
 // TODO add watch feature for build
 // TODO build for SSR, sets target to node, do not polyfill node stuff
 export async function build({
-    root,
-    entryPoints,
+    // TODO get args from config
+    config,
     minify = false,
     outDir = 'out',
     env = {},
     jsTarget = 'es2018',
-    plugins: userPlugins = [],
     basePath = '/',
-}: BuildConfig & { root: string; entryPoints: string[]; plugins?: Plugin[] }) {
-    entryPoints = entryPoints.map((x) => path.resolve(root, x))
+}: BuildConfig & {
+    config: Config
+}) {
+    const root = config.root!
+    const userPlugins = config.plugins || []
+    const entryPoints = getEntries(config)
     await fs.remove(outDir)
     await fs.ensureDir(outDir)
     const publicDir = path.resolve(root, 'public')
@@ -45,9 +48,6 @@ export async function build({
     const esbuildCwd = process.cwd()
     if (fs.existsSync(publicDir)) {
         await fs.copy(publicDir, outDir)
-    }
-    const config: Config = {
-        root,
     }
     const emptyGraph = new Graph({ root })
     const pluginsExecutor = createPluginsExecutor({
