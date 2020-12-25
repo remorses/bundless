@@ -23,6 +23,7 @@ import {
 import { metaToTraversalResult } from '../prebundle/traverse'
 import { cleanUrl } from '../utils'
 import { Graph } from '../graph'
+import { logger } from '../logger'
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
@@ -38,6 +39,11 @@ export async function build({
 }: BuildConfig & {
     config: Config
 }) {
+    if (!process.env.NODE_ENV) {
+        logger.log(`setting env.NODE_ENV = 'production'`)
+        process.env.NODE_ENV = 'production'
+    }
+
     const root = config.root!
     const userPlugins = config.plugins || []
     const entryPoints = getEntries(config)
@@ -214,6 +220,7 @@ export async function build({
                                 node.attrs['src'] &&
                                 !isUrl(node.attrs['src'])
                             ) {
+                                // TODO maybe leave script tags that are not resolved by plugin executor, maybe they are loaded from some cdn or who knows what, resolver should be able to resolve relative urls
                                 node.tag = false as any
                                 node.content = []
                             }
@@ -268,7 +275,7 @@ export async function build({
                                     href = '/' + path.relative(outDir, href)
                                     return MyNode({
                                         tag: 'link',
-                                        attrs: { href },
+                                        attrs: { href, rel: 'stylesheet' },
                                     })
                                 }),
                                 ...(node.content || []),
