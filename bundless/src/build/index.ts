@@ -21,7 +21,7 @@ import {
     stripColon,
 } from '../prebundle/support'
 import { metaToTraversalResult } from '../prebundle/traverse'
-import { cleanUrl } from '../utils'
+import { cleanUrl, partition } from '../utils'
 import { Graph } from '../graph'
 import { logger } from '../logger'
 
@@ -244,7 +244,7 @@ export async function build({
                         if (!/<head\b/.test(html)) {
                             if (/<html\b/.test(html)) {
                                 tree.match({ tag: 'html' }, (html) => {
-                                    html.content = insertFirst(
+                                    html.content = insertAfterStrings(
                                         html.content,
                                         MyNode({ tag: 'head', content: [] }),
                                     )
@@ -254,7 +254,7 @@ export async function build({
                                 if (Array.isArray(tree)) {
                                     tree = Object.assign(
                                         tree,
-                                        insertFirst(
+                                        insertAfterStrings(
                                             tree,
                                             MyNode({
                                                 tag: 'head',
@@ -302,12 +302,9 @@ export async function build({
     }
 }
 
-function insertFirst(items, node) {
-    return [
-        ...items.filter((x) => typeof x === 'string'),
-        node,
-        ...items.filter((x) => typeof x !== 'string'),
-    ]
+function insertAfterStrings(items, node) {
+    const [strings, nonStrings] = partition(items, (x) => typeof x === 'string')
+    return [...strings, node, ...nonStrings]
 }
 
 function generateEnvReplacements(env: Object): { [key: string]: string } {

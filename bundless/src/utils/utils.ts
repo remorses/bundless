@@ -187,3 +187,14 @@ export function appendQuery(url: string, query: string) {
     }
     return `${url}?${query}`
 }
+
+export function partition<T>(
+    ary: T[],
+    callback: (x: T) => boolean,
+): [T[], T[]] {
+    const initial: [T[], T[]] = [[], []]
+    return ary.reduce((acc, e) => {
+        acc[callback(e) ? 0 : 1].push(e)
+        return acc
+    }, initial)
+}
