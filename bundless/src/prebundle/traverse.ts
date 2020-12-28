@@ -54,6 +54,7 @@ export async function traverseWithEsbuild({
 
     try {
         const metafile = path.join(destLoc, 'meta.json')
+        logger.log(`Running esbuild in cwd '${process.cwd()}'`)
 
         await build(
             deepmerge(
@@ -105,8 +106,8 @@ export async function traverseWithEsbuild({
         let meta: Metadata = JSON.parse(
             await (await fsp.readFile(metafile)).toString(),
         )
+        console.log(JSON.stringify(meta, null, 4))
         meta = runFunctionOnPaths(meta, stripColon)
-        // console.log(JSON.stringify(meta, null, 4))
 
         const res = metaToTraversalResult({
             meta,
@@ -172,6 +173,12 @@ export function metaToTraversalResult({
     root: string
     entryPoints: string[]
 }): TraversalGraph {
+    console.log({
+        esbuildCwd,
+        entryPoints,
+        root,
+        inputs: Object.keys(meta.inputs),
+    })
     if (!path.isAbsolute(esbuildCwd)) {
         throw new Error('esbuildCwd must be an absolute path')
     }
@@ -181,11 +188,11 @@ export function metaToTraversalResult({
         }
     }
     const alreadyProcessed = new Set<string>()
-    let toProcess = entryPoints.map((entry) =>
-        slash(path.relative(esbuildCwd, entry)),
-    )
+    // must be all absolute paths
+    let toProcess = entryPoints
     const result: TraversalGraph = {}
-    const inputs = fromEntries(
+    // abs path -> input info
+    const inputs: Record<string, { imports: { path: string }[] }> = fromEntries(
         Object.keys(meta.inputs).map((k) => {
             const abs = path.resolve(esbuildCwd, k)
             return [abs, meta.inputs[k]]
@@ -193,37 +200,47 @@ export function metaToTraversalResult({
     )
     while (toProcess.length) {
         const newImports = flatten(
-            toProcess.map((newEntry) => {
-                if (alreadyProcessed.has(newEntry)) {
+            toProcess.map((absPath): string[] => {
+                if (alreadyProcessed.has(absPath)) {
                     return []
                 }
-                alreadyProcessed.add(newEntry)
+                alreadyProcessed.add(absPath)
                 // newEntry = path.posix.normalize(newEntry) // TODO does esbuild always use posix?
-                const absPath = path.resolve(esbuildCwd, newEntry)
                 const input = inputs[absPath]
                 if (input == null) {
                     throw new Error(
                         `entry '${absPath}' is not present in esbuild metafile inputs ${JSON.stringify(
-                            Object.keys(meta.inputs),
+                            Object.keys(inputs),
                             null,
                             2,
                         )}`,
                     )
                 }
-                const currentImports = input.imports
-                    ? input.imports.map((x) => x.path)
+                // abs paths
+                const currentImports: string[] = input.imports
+                    ? input.imports
+                          .map((x) => x.path)
+                          .map((x) => {
+                              if (!path.isAbsolute(x)) {
+                                  return path.resolve(esbuildCwd, x)
+                              }
+                              return x
+                          })
+                          .filter((x) => Boolean(x))
                     : []
                 // newImports.push(...currentImports)
 
                 const importer = osAgnosticPath(
-                    path.resolve(esbuildCwd, newEntry),
+                    path.resolve(esbuildCwd, absPath),
                     root,
                 )
                 if (!result[importer]) {
                     result[importer] = []
                 }
                 for (let importee of currentImports) {
-                    importee = path.resolve(esbuildCwd, importee)
+                    if (!importee) {
+                        continue
+                    }
                     importee = osAgnosticPath(importee, root)
                     result[importer].push(importee)
                 }

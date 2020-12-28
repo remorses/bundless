@@ -1,14 +1,14 @@
 import * as esbuild from 'esbuild'
-import beautify from 'posthtml-beautify'
-
 import fromEntries from 'fromentries'
 import fs from 'fs-extra'
 import path from 'path'
 import posthtml, { Node } from 'posthtml'
 import { BuildConfig, Config, getEntries } from '../config'
 import { MAIN_FIELDS } from '../constants'
+import { Graph } from '../graph'
+import { logger } from '../logger'
+import { createPluginsExecutor, wrapPluginForEsbuild } from '../plugin'
 import * as plugins from '../plugins'
-import { createPluginsExecutor, Plugin, wrapPluginForEsbuild } from '../plugin'
 import {
     commonEsbuildOptions,
     metafileToBundleMap,
@@ -22,8 +22,6 @@ import {
 } from '../prebundle/support'
 import { metaToTraversalResult } from '../prebundle/traverse'
 import { cleanUrl, partition } from '../utils'
-import { Graph } from '../graph'
-import { logger } from '../logger'
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
@@ -283,7 +281,7 @@ export async function build({
                             return node
                         })
                     },
-                    !minify && beautify({ rules: { indent: 2 } }),
+                    // !minify && beautify({ rules: { indent: 2 } }),
                 ].filter(Boolean),
             )
 

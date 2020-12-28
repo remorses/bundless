@@ -28,6 +28,7 @@ problems
 
 -   onTransform should not be applied to the index.html during build, it should be done in the server part or the initial index.html after build will already contain the populated html
 -   ssr in prod must be done wrapping the build and ssrBuild functions, changing the html in the server part, in dev instead it does a normal onTransform on the html
+-   add an ssrRequire to the plugin context to require files from the user root and let plugins compile them, this require will plugin into the nodejs require system and compile modules with pluginsExecutor and passing isSSr true to plugins, plugins should compile to require instead of modules
 
 as an alternative to buildForSSR i can make a script to pass to node --require that compile scripts using pluginExecutor .transform()
 
