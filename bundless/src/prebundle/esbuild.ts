@@ -47,6 +47,27 @@ export const commonEsbuildOptions: esbuild.BuildOptions = {
             })),
         ),
     },
+    define: generateDefineObject({}),
+}
+
+export function generateDefineObject({ env = {}, define = {} }) {
+    return {
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'dev'),
+        ...generateEnvReplacements(env),
+        'process.env': '{}',
+        global: 'window',
+        'process.version': '""',
+        'process.argv': '[]',
+        process: '{}',
+        ...define,
+    }
+}
+
+function generateEnvReplacements(env: Object): { [key: string]: string } {
+    return Object.keys(env).reduce((acc, key) => {
+        acc[`process.env.${key}`] = JSON.stringify(env[key])
+        return acc
+    }, {})
 }
 
 export const resolvableExtensions = [
@@ -90,15 +111,7 @@ export async function bundleWithEsBuild({
         entryPoints,
         outdir: destLoc,
         metafile,
-        define: {
-            // TODO add defines from config, add to frontend injecting them to window
-            'process.env.NODE_ENV': JSON.stringify('dev'),
-            global: 'window',
-            ...generateEnvReplacements(env),
-        },
-        inject: [
-            require.resolve('@esbuild-plugins/node-globals-polyfill/process'),
-        ],
+        define: generateDefineObject({ env }),
         plugins: [
             // HtmlIngestPlugin(),
             NodeModulesPolyfillPlugin(),
@@ -272,11 +285,4 @@ function metafileToStats(_options: {
             ...stats.filter((x) => !x.isCommon).map(makeStatObject),
         ),
     }
-}
-
-function generateEnvReplacements(env: Object): { [key: string]: string } {
-    return Object.keys(env).reduce((acc, key) => {
-        acc[`process.env.${key}`] = JSON.stringify(env[key])
-        return acc
-    }, {})
 }

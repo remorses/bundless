@@ -22,7 +22,11 @@ import fromEntries from 'fromentries'
 import { stripColon, unique } from './support'
 import { flatten } from '../utils'
 import { logger } from '../logger'
-import { commonEsbuildOptions, resolvableExtensions } from './esbuild'
+import {
+    commonEsbuildOptions,
+    generateDefineObject,
+    resolvableExtensions,
+} from './esbuild'
 
 type Args = {
     esbuildCwd: string
@@ -60,11 +64,7 @@ export async function traverseWithEsbuild({
             deepmerge(
                 {
                     ...commonEsbuildOptions,
-                    define: {
-                        'process.env.NODE_ENV': JSON.stringify('dev'),
-                        global: 'window',
-                        // ...generateEnvReplacements(env),
-                    },
+                    define: generateDefineObject({}),
                     entryPoints,
                     outdir: destLoc,
                     metafile,

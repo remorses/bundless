@@ -11,6 +11,7 @@ import { createPluginsExecutor, wrapPluginForEsbuild } from '../plugin'
 import * as plugins from '../plugins'
 import {
     commonEsbuildOptions,
+    generateDefineObject,
     metafileToBundleMap,
     resolvableExtensions,
 } from '../prebundle/esbuild'
@@ -97,14 +98,7 @@ export async function build({
         minifySyntax: Boolean(minify),
         minifyWhitespace: Boolean(minify),
         mainFields: MAIN_FIELDS,
-        define: {
-            'process.env.NODE_ENV': JSON.stringify('dev'),
-            global: 'window',
-            ...generateEnvReplacements(env),
-        },
-        inject: [
-            // require.resolve('@esbuild-plugins/node-globals-polyfill/process'),
-        ],
+        define: generateDefineObject({ env }),
         plugins: [
             ...allPlugins.map((plugin) =>
                 wrapPluginForEsbuild({
