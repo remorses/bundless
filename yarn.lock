@@ -548,14 +548,14 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@esbuild-plugins/all@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/all/-/all-0.0.7.tgz#e6d8e8f4b3ee2c0b703eb915cf5784566cf4843f"
-  integrity sha512-ybH1rkAnIKoGxWBKPbi37Tllr/301xT8VkDYsaJ3tWfFQ+L3xHDN942CtHP73Wt5FlZhFfNzGzvoUPFn+Knyww==
+"@esbuild-plugins/all@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/all/-/all-0.0.8.tgz#580569f23cbdd64461f9117a363160114877775c"
+  integrity sha512-HamcEDAIa5wVUGfy9OXJK5hYx3f+v5H06VOmwrwMvkb7UtbuJiJ6Im60XB2rBUIJHRSkR1E6HALbxeizRa68bg==
   dependencies:
     "@esbuild-plugins/esm-externals" "0.0.2"
-    "@esbuild-plugins/html" "0.0.8"
-    "@esbuild-plugins/node-globals-polyfill" "0.0.4"
+    "@esbuild-plugins/html" "0.0.9"
+    "@esbuild-plugins/node-globals-polyfill" "0.0.5"
     "@esbuild-plugins/node-modules-polyfill" "0.0.2"
     "@esbuild-plugins/node-resolve" "0.0.6"
 
@@ -567,16 +567,24 @@
     debug "^4.3.1"
     escape-string-regexp "^4.0.0"
 
-"@esbuild-plugins/html@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/html/-/html-0.0.8.tgz#f2f1067a7f912e393ab5f0625a385f26e05603ab"
-  integrity sha512-q7yhNptomON72R6DZMagY5NjgVvxvX64kCdK+bItEWp4CnRDlkC8i2y9BnLF/6YKa61dURM/CcXiR2spCNMGTw==
+"@esbuild-plugins/html@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/html/-/html-0.0.9.tgz#0a0819ecf2d3449b3646822e13f5865b13b88e0d"
+  integrity sha512-lV99YyeZ4jtd6UXfSZCHRw23sWrlyFfxR2YNA2TQNCu/Q/lFk5yFRuPTw1q/xvn7BVa8ZYSIUFoTTvkLg6b++Q==
   dependencies:
     "@esbuild-plugins/node-resolve" "0.0.6"
     debug "^4.3.1"
     posthtml "^0.15.1"
 
-"@esbuild-plugins/node-globals-polyfill@0.0.4", "@esbuild-plugins/node-globals-polyfill@^0.0.4":
+"@esbuild-plugins/node-globals-polyfill@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-globals-polyfill/-/node-globals-polyfill-0.0.5.tgz#3a9ab355befd394af77c5a4966d4706b9bedf415"
+  integrity sha512-Xz66k/M8ZtkHghnuuGYrJt4E/68O0d/acYX5rU0PzDB1znLwZkm9m5dho27il63C2MIit1uNCpdBn2VfTw9/uQ==
+  dependencies:
+    debug "^4.3.1"
+    rollup-plugin-node-polyfills "^0.2.1"
+
+"@esbuild-plugins/node-globals-polyfill@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-globals-polyfill/-/node-globals-polyfill-0.0.4.tgz#1244f08462b598bfc05589906e0f0d4e6c2edc2a"
   integrity sha512-6XmGhYFExt5vBEszTny6+PrQ3NWAkDKejyL9orQ0wFNiQTUcnILuhydxY/7xtCPwwDbe1hZ+jBretRg/dX4xmw==
@@ -2782,10 +2790,10 @@ esbuild@^0.8.12, esbuild@^0.8.7:
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.8.24.tgz#18645e102254682909017cec648f84d4834f15b3"
   integrity sha512-bqgEa2VemAN+YM52SM1626+/pdLp+p9NyqISB06ixcvauKIJk6akia3UTTsGAgn0oHEdReZ97gL+LYX+UjgwKA==
 
-esbuild@^0.8.26:
-  version "0.8.26"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.8.26.tgz#a85491617ebd2bd35ca4bf479239487eb6819d71"
-  integrity sha512-u3MMHOOumdWoAKF+073GHPpzvVB2cM+y9VD4ZwYs1FAQ6atRPISya35dbrbOu/mM68mQ42P+nwPzQVBTfQhkvQ==
+esbuild@^0.8.27:
+  version "0.8.27"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.8.27.tgz#8f7aa7d65229856c6ad11961b01b3e302fcb5e84"
+  integrity sha512-cY2i08EHYHNg0o748J+X0yBTcCO7DIZSxLWJ/6OymmML0Y2X6qkINfZcoiq5GE6EcLIfwyaZpI60JY6iBJWj5w==
 
 escalade@^3.1.1:
   version "3.1.1"

@@ -76,7 +76,6 @@ export async function traverseWithEsbuild({
                             mainFields: MAIN_FIELDS,
                             extensions: resolvableExtensions,
                             onResolved: function external(resolved) {
-                                // console.log({resolved})
                                 if (
                                     stopTraversing &&
                                     stopTraversing(resolved)
@@ -102,7 +101,6 @@ export async function traverseWithEsbuild({
                 esbuildOptions,
             ),
         )
-
         let meta: Metadata = JSON.parse(
             await (await fsp.readFile(metafile)).toString(),
         )
@@ -173,12 +171,6 @@ export function metaToTraversalResult({
     root: string
     entryPoints: string[]
 }): TraversalGraph {
-    console.log({
-        esbuildCwd,
-        entryPoints,
-        root,
-        inputs: Object.keys(meta.inputs),
-    })
     if (!path.isAbsolute(esbuildCwd)) {
         throw new Error('esbuildCwd must be an absolute path')
     }

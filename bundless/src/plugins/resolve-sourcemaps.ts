@@ -14,7 +14,7 @@ export function ResolveSourcemapPlugin({} = {}) {
             onTransform({ filter: jsTypeRegex }, async (args) => {
                 let contents = args.contents
                 const match = contents.match(sourcemapRegex)
-                // console.log({ match, path: args.path })
+                
                 if (!match) {
                     return
                 }

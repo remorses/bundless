@@ -400,7 +400,7 @@ export async function createApp(config: Config) {
             path: importPathToFile(root, publicPath),
             namespace: 'file',
         })
-        // console.log({ transformedHtml })
+        
         if (!transformedHtml) {
             return next()
         }

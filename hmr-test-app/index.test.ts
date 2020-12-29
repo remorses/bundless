@@ -311,7 +311,7 @@ async function registerHotModules(traversedFiles, ws) {
                     null,
                     4,
                 )
-                // console.log({ msg })
+                
                 return msg
             }
             return ''
