@@ -51,6 +51,7 @@ export const commonEsbuildOptions: esbuild.BuildOptions = {
 }
 
 export function generateDefineObject({ env = {}, define = {} }) {
+    const noop = 'String'
     return {
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'dev'),
         ...generateEnvReplacements(env),
@@ -59,6 +60,14 @@ export function generateDefineObject({ env = {}, define = {} }) {
         'process.version': '""',
         'process.argv': '[]',
         process: '{}',
+        module: '{}',
+        Buffer: noop,
+        'process.cwd': noop,
+        'process.chdir': noop,
+        clearImmediate: noop,
+        setImmediate: noop,
+        __filename: '""',
+        __dirname: '""',
         ...define,
     }
 }
