@@ -7,8 +7,7 @@ import { ImportDeclaration } from '@babel/types'
 import { parse } from '../../utils'
 import { makeLegalIdentifier } from '@rollup/pluginutils'
 import { osAgnosticPath } from '../../prebundle/support'
-
-const analysisCache = new Map<string, OptimizeAnalysisResult | null>()
+import memoize from 'micro-memoize'
 
 export interface OptimizeAnalysisResult {
     isCommonjs: { [name: string]: true }
@@ -20,8 +19,9 @@ export interface OptimizeAnalysisResult {
  * (maybe because user set optimizeDeps.auto to false)
  */
 // TODO what id prebundling happens after first rewrite, i should rerun rewrite if previous commonjs was invalid?
-function getAnalysis(root: string): OptimizeAnalysisResult | null {
-    if (analysisCache.has(root)) return analysisCache.get(root)!
+export const getAnalysis = memoize(function getAnalysis(
+    root: string,
+): OptimizeAnalysisResult | null {
     let analysis: OptimizeAnalysisResult | null
     try {
         const cacheDir = path.resolve(root, WEB_MODULES_PATH)
@@ -32,9 +32,8 @@ function getAnalysis(root: string): OptimizeAnalysisResult | null {
     if (analysis && !isPlainObject(analysis.isCommonjs)) {
         throw new Error(`invalid ${COMMONJS_ANALYSIS_PATH}`)
     }
-    analysisCache.set(root, analysis)
     return analysis
-}
+})
 
 export function isOptimizedCjs(root: string, filename: string) {
     // console.log(`isOptimizedCjs ${filename}`)

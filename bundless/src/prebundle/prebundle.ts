@@ -3,6 +3,7 @@ import path from 'path'
 import slash from 'slash'
 import { COMMONJS_ANALYSIS_PATH } from '../constants'
 import { logger } from '../logger'
+import { getAnalysis } from '../plugins/rewrite/commonjs'
 import { needsPrebundle } from '../utils'
 import { bundleWithEsBuild } from './esbuild'
 import { printStats } from './stats'
@@ -24,6 +25,8 @@ export async function prebundle({ entryPoints, filter, root, dest }) {
             .map((x) => osAgnosticPath(x, root))
             .join(', ')}]`,
     )
+    getAnalysis.cache.keys = []
+    getAnalysis.cache.values = []
     await fs.remove(dest)
     const { bundleMap, analysis, stats } = await bundleWithEsBuild({
         dest,

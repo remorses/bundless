@@ -40,6 +40,7 @@ import {
 import fs from 'fs-extra'
 import etagMiddleware from 'koa-etag'
 import { transformScriptTags } from './plugins/html-transform'
+import { getAnalysis } from './plugins/rewrite/commonjs'
 
 export interface ServerPluginContext {
     root: string
@@ -114,6 +115,7 @@ export async function createApp(config: Config) {
         logger.log(`'${relativePath}' imported by '${importer}'`)
         // node module path not bundled, rerun bundling
         const entryPoints = getEntries(config)
+        
         bundleMap = await prebundle({
             entryPoints,
             filter: (p) => needsPrebundle(config, p),
@@ -400,7 +402,7 @@ export async function createApp(config: Config) {
             path: importPathToFile(root, publicPath),
             namespace: 'file',
         })
-        
+
         if (!transformedHtml) {
             return next()
         }

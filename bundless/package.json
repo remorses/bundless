@@ -65,6 +65,7 @@
         "lru-cache": "^6.0.0",
         "magic-string": "^0.25.7",
         "merge-source-map": "^1.1.0",
+        "micro-memoize": "^4.0.9",
         "mime-types": "^2.1.27",
         "posthtml": "^0.15.1",
         "qs": "^6.9.4",
