@@ -19,6 +19,7 @@ export interface OptimizeAnalysisResult {
  * If we can't find analysis result, return null
  * (maybe because user set optimizeDeps.auto to false)
  */
+// TODO what id prebundling happens after first rewrite, i should rerun rewrite if previous commonjs was invalid?
 function getAnalysis(root: string): OptimizeAnalysisResult | null {
     if (analysisCache.has(root)) return analysisCache.get(root)!
     let analysis: OptimizeAnalysisResult | null

@@ -115,6 +115,7 @@ export async function bundleWithEsBuild({
         minifyWhitespace: Boolean(minify),
         mainFields: MAIN_FIELDS,
         tsconfig: tsconfigTempFile,
+        sourcemap: true,
         bundle: true,
         write: false,
         entryPoints,
