@@ -1,0 +1,9 @@
+{
+    "name": "with-sourcemaps",
+    "version": "0.0.0",
+    "main": "main.js",
+    "private": true,
+    "dependencies": {
+        "react": "16.13.1"
+    }
+}

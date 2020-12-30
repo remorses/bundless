@@ -15,7 +15,7 @@ export const sourcemapMiddleware = ({ root }): Middleware => {
         if (!ctx.path.endsWith('.map')) {
             return next()
         }
-        logger.log(`handling sourcemap request for '${ctx.path}'`)
+        logger.log(`Handling sourcemap request for '${ctx.path}'`)
         const filename = importPathToFile(root, ctx.path)
         const content = await readFile(filename)
         const map: RawSourceMap = JSON.parse(content)

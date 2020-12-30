@@ -17,7 +17,7 @@ export async function prebundle({ entryPoints, filter, root, dest }) {
         esbuildCwd: process.cwd(),
     })
 
-    const dependenciesPaths = Object.keys(traversalResult)
+    const dependenciesPaths = traversalResult.filter(filter)
 
     logger.log(
         `prebundling [${dependenciesPaths

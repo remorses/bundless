@@ -2,6 +2,7 @@ import chalk from 'chalk'
 import { ImportSpecifier, parse as parseImports } from 'es-module-lexer'
 import LRUCache from 'lru-cache'
 import MagicString from 'magic-string'
+import { SourceMap } from 'module'
 import path from 'path'
 import qs from 'qs'
 import { CLIENT_PUBLIC_PATH, hmrPreamble } from '../../constants'
@@ -29,8 +30,7 @@ export function RewritePlugin({} = {}) {
         setup: ({ onTransform, resolve, graph, config }: PluginHooks) => {
             // TODO some modules like json modules are not in graph, maybe register modules in middleware? how to rewrite files that have not the js extension?
             onTransform({ filter: jsTypeRegex }, async (args) => {
-                
-                const contents = await rewriteImports({
+                const { contents, map } = await rewriteImports({
                     graph,
                     namespace: args.namespace || 'file',
                     importerFilePath: args.path,
@@ -40,6 +40,7 @@ export function RewritePlugin({} = {}) {
                 })
                 return {
                     contents, // TODO does module rewrite needs sourcemaps?
+                    map,
                 }
             })
         },
@@ -60,7 +61,7 @@ export async function rewriteImports({
     resolve: PluginsExecutor['resolve']
     root: string
     graph: Graph
-}): Promise<string> {
+}): Promise<{ contents: string; map?: any }> {
     // strip UTF-8 BOM
     if (source.charCodeAt(0) === 0xfeff) {
         source = source.slice(1)
@@ -86,7 +87,7 @@ export async function rewriteImports({
 
         if (!imports.length && !isHmrEnabled && !hasEnv) {
             // logger.log(`no imports found for ${importerFilePath}`)
-            return source
+            return { contents: source }
         }
 
         const magicString = new MagicString(source)
@@ -268,13 +269,14 @@ export async function rewriteImports({
         //     })
         // }
 
-        return magicString.toString()
+        return {
+            contents: magicString.toString(),
+            map: undefined // do i really need sourcemaps? code is readable enough
+        }
     } catch (e) {
         e.message =
             `Error: module imports rewrite failed for ${importerFilePath}\n` + e
         throw e
-        debug(source)
-        return source
     }
 }
 
