@@ -104,7 +104,7 @@ export async function traverseWithEsbuild({
         let meta: Metadata = JSON.parse(
             await (await fsp.readFile(metafile)).toString(),
         )
-        console.log(JSON.stringify(meta, null, 4))
+        // console.log(JSON.stringify(meta, null, 4))
         meta = runFunctionOnPaths(meta, stripColon)
 
         const res = metaToTraversalResult({
