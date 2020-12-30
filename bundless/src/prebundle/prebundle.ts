@@ -10,11 +10,15 @@ import { osAgnosticPath } from './support'
 import { traverseWithEsbuild } from './traverse'
 
 export async function prebundle({ entryPoints, filter, root, dest }) {
-    const dependenciesPaths = await getDependenciesPaths({
+    const traversalResult = await traverseWithEsbuild({
         entryPoints,
         root,
-        filter,
+        stopTraversing: filter,
+        esbuildCwd: process.cwd(),
     })
+
+    const dependenciesPaths = Object.keys(traversalResult)
+
     logger.log(
         `prebundling [${dependenciesPaths
             .map((x) => osAgnosticPath(x, root))
@@ -29,7 +33,7 @@ export async function prebundle({ entryPoints, filter, root, dest }) {
 
     const analysisFile = path.join(dest, COMMONJS_ANALYSIS_PATH)
     await fs.createFile(analysisFile)
-    
+
     await fs.writeFile(analysisFile, JSON.stringify(analysis, null, 4))
 
     console.info(printStats(stats))
