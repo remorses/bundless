@@ -1,10 +1,9 @@
-import $viteCjsImport0_slash from "/web_modules/node_modules/slash/index.js?namespace=file";
-const slash = $viteCjsImport0_slash;
-import $viteCjsImport1_react from "/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file";
-const React = $viteCjsImport1_react;
+import slash_cjsImport0 from "/web_modules/node_modules/slash/index.js?namespace=file";
+const slash = slash_cjsImport0 && slash_cjsImport0.__esModule ? slash_cjsImport0.default : slash_cjsImport0;
+import React from '/web_modules/node_modules/react/index.js?namespace=file'
 import { useState } from '/web_modules/fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js?namespace=file'
-import $viteCjsImport3_reactDom from "/web_modules/node_modules/react-dom/index.js?namespace=file";
-const ReactDom = $viteCjsImport3_reactDom;
+import reactDom_cjsImport3 from "/web_modules/node_modules/react-dom/index.js?namespace=file";
+const ReactDom = reactDom_cjsImport3 && reactDom_cjsImport3.__esModule ? reactDom_cjsImport3.default : reactDom_cjsImport3;
 
 console.log('Hello world!')
 console.log(slash)

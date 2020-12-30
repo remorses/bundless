@@ -1,5 +1,5 @@
-import $viteCjsImport0_slash from "/web_modules/index.js?namespace=file";
-const slash = $viteCjsImport0_slash;
+import slash_cjsImport0 from "/web_modules/index.js?namespace=file";
+const slash = slash_cjsImport0 && slash_cjsImport0.__esModule ? slash_cjsImport0.default : slash_cjsImport0;
 
 console.log('Hello world!')
 

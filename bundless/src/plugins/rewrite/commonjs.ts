@@ -44,6 +44,7 @@ export function isOptimizedCjs(root: string, filename: string) {
 
 type ImportNameSpecifier = { importedName: string; localName: string }
 
+// todo if module has __esModule and there is only a default import, transform to .default, -> const imported = realImport.__esModule ? realImport.default : realImport
 export function transformCjsImport(
     exp: string,
     id: string,
@@ -82,13 +83,13 @@ function generateCjsImport(
 ): string {
     // If there is multiple import for same id in one file,
     // importIndex will prevent the cjsModuleName to be duplicate
-    const cjsModuleName = makeLegalIdentifier(
-        `$viteCjsImport${importIndex}_${id}`,
-    )
+    const cjsModuleName = makeLegalIdentifier(`${id}_cjsImport${importIndex}`)
     const lines: string[] = [`import ${cjsModuleName} from "${resolvedPath}";`]
     importNames.forEach(({ importedName, localName }) => {
         if (importedName === '*' || importedName === 'default') {
-            lines.push(`const ${localName} = ${cjsModuleName};`)
+            lines.push(
+                `const ${localName} = ${cjsModuleName} && ${cjsModuleName}.__esModule ? ${cjsModuleName}.default : ${cjsModuleName};`,
+            )
         } else {
             lines.push(
                 `const ${localName} = ${cjsModuleName}["${importedName}"];`,

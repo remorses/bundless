@@ -22,7 +22,7 @@ const socketHost = `${null || location.hostname}:${9000}`;
 const socketURL = `${socketProtocol}://${socketHost}`;
 const isWindowDefined = typeof window !== 'undefined';
 function log(...args) {
-    console.log('[ESM-HMR]', ...args);
+    console.info('[ESM-HMR]', ...args);
 }
 function reload() {
     if (!isWindowDefined) {
