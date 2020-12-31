@@ -115,7 +115,7 @@ export async function createApp(config: Config) {
     if (!config.force && isHashDifferent) {
         bundleMap = {}
         await fs.remove(path.resolve(root, WEB_MODULES_PATH))
-        clearCommonjsAnalysisCache()
+        // clearCommonjsAnalysisCache()
     }
 
     const onResolveLock = new Lock()
@@ -123,10 +123,10 @@ export async function createApp(config: Config) {
     async function onResolved(resolvedPath: string, importer: string) {
         try {
             // lock browser requests until not prebundled
-            await onResolveLock.wait()
             if (!needsPrebundle(config, resolvedPath)) {
                 return
             }
+            await onResolveLock.wait()
             const relativePath = slash(
                 path.relative(root, resolvedPath),
             ).replace('$$virtual', 'virtual')

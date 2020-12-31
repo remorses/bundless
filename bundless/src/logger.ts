@@ -1,9 +1,16 @@
 import chalk from 'chalk'
 const prefix = '[bundless] '
 
+function print(x) {
+    process.stderr.write(chalk.dim(prefix) + x + '\n')
+}
+
 export const logger = {
     log(...x) {
-        process.stderr.write(chalk.dim(prefix) + x.join(' ') + '\n')
+        print(x.join(' '))
+    },
+    warn(...x) {
+        print(chalk.yellow(x.join(' ')))
     },
     debug(...x) {
         return

@@ -1,6 +1,7 @@
 import type { File as BabelAST } from '@babel/types'
 import fs from 'fs'
-import { Plugin } from '@bundless/cli'
+
+import { Plugin, logger } from '@bundless/cli'
 import { transform } from '@babel/core'
 
 const runtimeNamespace = 'react-refresh-runtime'
@@ -100,6 +101,11 @@ export default exports
         window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
       }`
 
+      const hmrDisabledMessage = `${args.path} disabled react refresh because it has react components as exports!`
+      if (result.ast && !isRefreshBoundary(result.ast)) {
+          logger.warn(hmrDisabledMessage)
+      }
+
                 const footer = `
       if (import.meta.hot) {
         window.$RefreshReg$ = prevRefreshReg;
@@ -108,7 +114,7 @@ export default exports
         ${
             result.ast && isRefreshBoundary(result.ast)
                 ? `import.meta.hot.accept();`
-                : `console.warn(import.meta.url + ' is not a react refresh boundary because it is exporting non react components!');` // TODO warn when not a boundary, this means that react refresh is not enabled
+                : `console.warn('${hmrDisabledMessage}');`
         }
         if (!window.__bundless_plugin_react_timeout) {
           window.__bundless_plugin_react_timeout = setTimeout(() => {

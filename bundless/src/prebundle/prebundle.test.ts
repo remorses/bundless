@@ -1,3 +1,4 @@
+import memoize from 'micro-memoize'
 import path from 'path'
 import { getDependenciesPaths } from './prebundle'
 import { traverseWithEsbuild } from './traverse'
@@ -11,4 +12,19 @@ test('traverseWithEsbuild', async () => {
         root: path.dirname(entry),
     })
     expect(deps).toMatchSnapshot()
+})
+
+test('memoize', () => {
+    let i = 0
+    const fn = memoize((x) => {
+        return i++
+    })
+    fn(1)
+    fn(1)
+    fn.cache.keys = []
+    fn.cache.values = []
+    fn(1)
+    fn(1)
+    fn(1)
+    expect(i).toBe(2)
 })

@@ -23,7 +23,7 @@ export async function prebundle({ entryPoints, filter, root, dest }) {
             .map((x) => osAgnosticPath(x, root))
             .join(', ')}]`,
     )
-    clearCommonjsAnalysisCache()
+
     await fs.remove(dest)
     const { bundleMap, analysis, stats } = await bundleWithEsBuild({
         dest,
@@ -35,7 +35,7 @@ export async function prebundle({ entryPoints, filter, root, dest }) {
     await fs.createFile(analysisFile)
 
     await fs.writeFile(analysisFile, JSON.stringify(analysis, null, 4))
-
+    clearCommonjsAnalysisCache()
     console.info(printStats(stats))
     return bundleMap
 }

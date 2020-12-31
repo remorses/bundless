@@ -23,3 +23,6 @@ export function App() {
         </React.StrictMode>
     )
 }
+
+
+export const x = 9

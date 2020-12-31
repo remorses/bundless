@@ -13,10 +13,10 @@ Object {
   "http://127.0.0.1:9000/.../with-many-dependencies/main.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/chunk.2VCUNPV2.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/web_modules/chunk.XWJMHEO7.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/chunk.EJ3NH2CA.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/web_modules/node_modules/react/index.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/node_modules/slash/index.js?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
@@ -25,10 +25,10 @@ exports[`snapshots fixtures/with-linked-workspace: mirror 1`] = `
 Array [
   "main.js",
   "web_modules/chunk.2VCUNPV2.js",
-  "web_modules/chunk.XWJMHEO7.js",
+  "web_modules/chunk.EJ3NH2CA.js",
   "web_modules/fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js",
-  "web_modules/node_modules/react-dom/index.js",
-  "web_modules/node_modules/react/index.js",
+  "web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js",
+  "web_modules/fixtures/with-many-dependencies/node_modules/react/index.js",
   "web_modules/node_modules/slash/index.js",
 ]
 `;
@@ -47,22 +47,22 @@ Array [
   },
   Object {
     "importPath": "/web_modules/chunk.2VCUNPV2.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/chunk.XWJMHEO7.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/chunk.EJ3NH2CA.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.2VCUNPV2.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.2VCUNPV2.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.2VCUNPV2.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.2VCUNPV2.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.2VCUNPV2.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.2VCUNPV2.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/chunk.XWJMHEO7.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/chunk.EJ3NH2CA.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.2VCUNPV2.js?namespace=file",
   },
   Object {
@@ -71,14 +71,14 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.2VCUNPV2.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.XWJMHEO7.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.XWJMHEO7.js?namespace=file",
+    "importPath": "/web_modules/chunk.EJ3NH2CA.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.EJ3NH2CA.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.XWJMHEO7.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.XWJMHEO7.js?namespace=file",
+    "importPath": "/web_modules/chunk.EJ3NH2CA.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.EJ3NH2CA.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js?namespace=file",
@@ -86,14 +86,14 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/node_modules/react-dom/index.js?namespace=file",
+    "importPath": "/web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js?namespace=file",
     "importer": "http://127.0.0.1:9000/.../with-many-dependencies/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/react-dom/index.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/node_modules/react/index.js?namespace=file",
+    "importPath": "/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file",
     "importer": "http://127.0.0.1:9000/.../with-many-dependencies/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/node_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/react/index.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/node_modules/slash/index.js?namespace=file",

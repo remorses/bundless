@@ -202,8 +202,8 @@ export function partition<T>(
 }
 
 export class Lock extends EventEmitter {
-    READY_EVENT = 'READY_EVENT'
-    isReady = true
+    private READY_EVENT = 'READY_EVENT'
+    private isReady = true
     constructor() {
         super()
     }

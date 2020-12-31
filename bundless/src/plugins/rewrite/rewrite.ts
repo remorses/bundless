@@ -235,7 +235,7 @@ export async function rewriteImports({
             } else if (id !== 'import.meta' && !hasViteIgnore) {
                 logger.log(
                     chalk.yellow(
-                        `ignored dynamic import(${id}) in ${importerFilePath}.`,
+                        `Cannot rewrite dynamic import(${id}) in ${importerFilePath}.`,
                     ),
                 )
             }
