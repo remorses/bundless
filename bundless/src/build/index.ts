@@ -289,8 +289,17 @@ export async function build({
             )
 
             const result = await transformer.process(html)
+            let outputDirname = path.normalize(
+                path.dirname(path.relative(root, entry)),
+            )
+            // remove `public` from entry path
+            if (outputDirname.startsWith('public/')) {
+                outputDirname = outputDirname.slice('public/'.length)
+            }
+
             const outputHtmlPath = path.resolve(
-                path.dirname(outputJs),
+                outDir,
+                outputDirname,
                 path.basename(entry),
             )
             await fs.writeFile(outputHtmlPath, result.html)

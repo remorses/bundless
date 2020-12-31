@@ -38,14 +38,14 @@ Array [
 exports[`snapshots fixtures/with-many-entries: traverse result 1`] = `
 Array [
   Object {
-    "importPath": "/a/main.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/a/index.html",
-    "resolvedImportPath": "http://127.0.0.1:9000/a/main.js?namespace=file",
-  },
-  Object {
     "importPath": "/b/main.js?namespace=file",
     "importer": "http://127.0.0.1:9000/b/index.html",
     "resolvedImportPath": "http://127.0.0.1:9000/b/main.js?namespace=file",
+  },
+  Object {
+    "importPath": "/a/main.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/a/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/a/main.js?namespace=file",
   },
   Object {
     "importPath": "/a/main.css?namespace=file",
