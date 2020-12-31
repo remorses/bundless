@@ -97,10 +97,15 @@ describe('snapshots', () => {
                     snapshotFile,
                     'content-type headers',
                 )
-                expect(res.map(osAgnosticResult)).toMatchSpecificSnapshot(
-                    snapshotFile,
-                    'traverse result',
-                )
+                expect(
+                    res
+                        .map(osAgnosticResult)
+                        .sort((a, b) =>
+                            a.resolvedImportPath.localeCompare(
+                                b.resolvedImportPath,
+                            ),
+                        ),
+                ).toMatchSpecificSnapshot(snapshotFile, 'traverse result')
 
                 // MIRROR
                 const allMirrorFiles = glob.sync(`**/*`, {

@@ -30,13 +30,13 @@ Array [
 exports[`snapshots fixtures/with-css: traverse result 1`] = `
 Array [
   Object {
-    "importPath": "/main.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/index.html",
-    "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/file.css?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
@@ -50,9 +50,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/file.js?namespace=file",
   },
   Object {
-    "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/file.css?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+    "importPath": "/main.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
   },
 ]
 `;

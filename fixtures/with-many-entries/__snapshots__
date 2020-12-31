@@ -38,36 +38,6 @@ Array [
 exports[`snapshots fixtures/with-many-entries: traverse result 1`] = `
 Array [
   Object {
-    "importPath": "/b/main.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/b/index.html",
-    "resolvedImportPath": "http://127.0.0.1:9000/b/main.js?namespace=file",
-  },
-  Object {
-    "importPath": "/a/main.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/a/index.html",
-    "resolvedImportPath": "http://127.0.0.1:9000/a/main.js?namespace=file",
-  },
-  Object {
-    "importPath": "/a/main.css?namespace=file",
-    "importer": "http://127.0.0.1:9000/a/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/a/main.css?namespace=file",
-  },
-  Object {
-    "importPath": "/common.css?namespace=file",
-    "importer": "http://127.0.0.1:9000/a/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/common.css?namespace=file",
-  },
-  Object {
-    "importPath": "/common.css?namespace=file",
-    "importer": "http://127.0.0.1:9000/b/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/common.css?namespace=file",
-  },
-  Object {
-    "importPath": "/b/text.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/b/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/b/text.js?namespace=file",
-  },
-  Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
     "importer": "http://127.0.0.1:9000/a/main.css?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
@@ -81,6 +51,36 @@ Array [
     "importPath": "/_hmr_client.js?namespace=hmr-client",
     "importer": "http://127.0.0.1:9000/common.css?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/a/main.css?namespace=file",
+    "importer": "http://127.0.0.1:9000/a/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/a/main.css?namespace=file",
+  },
+  Object {
+    "importPath": "/a/main.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/a/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/a/main.js?namespace=file",
+  },
+  Object {
+    "importPath": "/b/main.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/b/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/b/main.js?namespace=file",
+  },
+  Object {
+    "importPath": "/b/text.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/b/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/b/text.js?namespace=file",
+  },
+  Object {
+    "importPath": "/common.css?namespace=file",
+    "importer": "http://127.0.0.1:9000/a/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/common.css?namespace=file",
+  },
+  Object {
+    "importPath": "/common.css?namespace=file",
+    "importer": "http://127.0.0.1:9000/b/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/common.css?namespace=file",
   },
 ]
 `;
