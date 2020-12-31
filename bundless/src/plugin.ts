@@ -7,6 +7,7 @@ import { Graph } from './graph'
 import { logger } from './logger'
 import { osAgnosticPath } from './prebundle/support'
 import qs from 'qs'
+import { mergeSourceMap } from './sourcemaps'
 
 export interface Plugin {
     name: string
@@ -204,9 +205,16 @@ export function createPluginsExecutor({
                 const newResult = await callback(arg)
                 if (newResult?.contents) {
                     arg.contents = newResult.contents
-                    result = newResult
+                    result.contents = newResult.contents
                 }
-                // break
+                // merge with previous source maps
+                if (newResult?.map) {
+                    if (result.map) {
+                        result.map = mergeSourceMap(result.map, newResult.map)
+                    } else {
+                        result.map = newResult.map
+                    }
+                }
             }
         }
         return result

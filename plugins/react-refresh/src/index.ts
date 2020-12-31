@@ -110,7 +110,7 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                 }
 
                 const footer = makeFooter(nonComponentExports.length === 0)
-
+                
                 return {
                     loader: 'js',
                     contents: `${result.code}${footer}`,

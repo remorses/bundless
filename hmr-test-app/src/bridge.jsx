@@ -24,5 +24,6 @@ export function App() {
     )
 }
 
+console.log(new Error('i am here'))
 
 // export const x = 9
