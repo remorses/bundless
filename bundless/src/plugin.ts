@@ -227,7 +227,8 @@ export function createPluginsExecutor({
 
         for (let { callback, options, name } of resolvers) {
             if (matches(options, arg)) {
-                logger.debug(`resolving '${arg.path}' with '${name}'`)
+                logger.debug(`resolving '${arg.path}' with '${name}'`, )
+                // console.log(new Error('here'))
                 const newResult = await callback(arg)
                 if (newResult) {
                     logger.debug(

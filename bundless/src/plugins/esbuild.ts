@@ -9,6 +9,7 @@ import {
 import path from 'path'
 import { Config } from '../config'
 import { OnTransformResult, PluginHooks } from '../plugin'
+import { generateDefineObject } from '../prebundle/esbuild'
 import { generateCodeFrame } from '../utils'
 
 export function EsbuildTransformPlugin({} = {}) {
@@ -84,7 +85,8 @@ export const transform = async ({
 }): Promise<OnTransformResult> => {
     const service = await ensureService()
 
-    const options = {
+    const options: TransformOptions = {
+        define: generateDefineObject({}),
         loader: path.extname(filePath).slice(1) as Loader,
         sourcemap: true,
         // ensure source file name contains full query
@@ -125,7 +127,9 @@ export const transform = async ({
         } else {
             console.error(e)
         }
-        throw new Error(`Error while transforming ${filePath} with esbuild: ${e}`)
+        throw new Error(
+            `Error while transforming ${filePath} with esbuild: ${e}`,
+        )
     }
 }
 

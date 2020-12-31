@@ -25,7 +25,11 @@ import { Graph } from './graph'
 import { onFileChange } from './hmr'
 import { logger } from './logger'
 import * as middlewares from './middleware'
-import { createPluginsExecutor, PluginsExecutor } from './plugin'
+import {
+    createPluginsExecutor,
+    PluginsExecutor,
+    wrapPluginForEsbuild,
+} from './plugin'
 import * as plugins from './plugins'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
@@ -134,9 +138,12 @@ export async function createApp(config: Config) {
                 const webBundle = bundleMap[relativePath]
                 return path.resolve(root, webBundle!)
             }
+
+            // TODO fails with import cycles?
             onResolveLock.lock()
             logger.log(
-                `Found still not bundled module, running prebundle phase:`,
+                `Found still not bundled module, running prebundle phase:` +
+                    JSON.stringify(bundleMap),
             )
             logger.log(`'${relativePath}' imported by '${importer}'`)
             // node module path not bundled, rerun bundling
@@ -146,16 +153,29 @@ export async function createApp(config: Config) {
                 entryPoints,
                 filter: (p) => needsPrebundle(config, p),
                 dest: path.resolve(root, WEB_MODULES_PATH),
+                plugins: (config.plugins || []).map((plugin) =>
+                    wrapPluginForEsbuild({
+                        config,
+                        graph,
+                        plugin,
+                        pluginsExecutor: createPluginsExecutor({
+                            config,
+                            graph,
+                            plugins: [],
+                            root,
+                        }),
+                    }),
+                ),
                 root,
             }).catch((e) => {
-                spinner.fail(String(e))
+                spinner.fail(String(e) + '\n')
                 e.message = `Cannot prebundle: ${e.message}`
                 throw e
             })
             if (isHashDifferent) {
                 await updateHash(hashPath, depHash)
             }
-            spinner.succeed('Finish')
+            spinner.succeed('Finish\n')
             await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
             context.sendHmrMessage({ type: 'reload' })
             const webBundle = bundleMap[relativePath]
@@ -177,7 +197,7 @@ export async function createApp(config: Config) {
         // lock server, start optimization, unlock, send refresh message
     }
 
-    const pluginExecutor = createPluginsExecutor({
+    const pluginsExecutor = createPluginsExecutor({
         root,
         plugins: [
             // TODO resolve data: imports, rollup emits imports with data: ...
@@ -185,7 +205,7 @@ export async function createApp(config: Config) {
             plugins.HmrClientPlugin({ getPort: () => app.context.port }),
             // NodeResolvePlugin must be called first, to not skip prebundling
             plugins.NodeResolvePlugin({
-                name: 'node-resolve',
+                name: 'executor-node-resolve',
                 mainFields: MAIN_FIELDS,
                 extensions: [...JS_EXTENSIONS],
                 onResolved,
@@ -195,8 +215,8 @@ export async function createApp(config: Config) {
             plugins.EsbuildTransformPlugin(),
             plugins.CssPlugin(),
             plugins.JSONPlugin(),
-            ...(config.plugins || []),
             plugins.ResolveSourcemapPlugin(),
+            ...(config.plugins || []), // TODO where should i put plugins? i should let user override onResolve, but i should also run rewrite on user outputs
             plugins.RewritePlugin(),
             plugins.HtmlTransformPlugin({
                 transforms: [
@@ -236,7 +256,7 @@ export async function createApp(config: Config) {
 
     app.once('close', async () => {
         logger.debug('closing')
-        await Promise.all([watcher.close(), pluginExecutor.close({})])
+        await Promise.all([watcher.close(), pluginsExecutor.close({})])
         app.emit('closed')
     })
 
@@ -325,7 +345,7 @@ export async function createApp(config: Config) {
         watcher,
         config,
         graph,
-        pluginExecutor,
+        pluginExecutor: pluginsExecutor,
         sendHmrMessage: () => {
             // assigned in the hmr middleware
             throw new Error(`hmr ws server has not started yet`)
@@ -371,14 +391,14 @@ export async function createApp(config: Config) {
             }
 
             const namespace = ctx.query.namespace || 'file'
-            const loaded = await pluginExecutor.load({
+            const loaded = await pluginsExecutor.load({
                 path: resolvedPath,
                 namespace,
             })
             if (loaded == null || loaded.contents == null) {
                 return next()
             }
-            const transformed = await pluginExecutor.transform({
+            const transformed = await pluginsExecutor.transform({
                 path: resolvedPath,
                 loader: loaded.loader,
                 namespace,
@@ -432,7 +452,7 @@ export async function createApp(config: Config) {
         if (!html) {
             return next()
         }
-        const transformedHtml = await pluginExecutor.transform({
+        const transformedHtml = await pluginsExecutor.transform({
             contents: html,
             path: importPathToFile(root, publicPath),
             namespace: 'file',

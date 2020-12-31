@@ -43,7 +43,7 @@ export function CssPlugin({} = {}) {
     return {
         name: 'css',
         setup: ({ onLoad, onResolve, onTransform }: PluginHooks) => {
-            NodeResolvePlugin({ name: 'css', extensions: ['.css'] }).setup({
+            NodeResolvePlugin({ name: 'css-node-resolve', extensions: ['.css'] }).setup({
                 onLoad,
                 onResolve,
             })

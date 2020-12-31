@@ -36,7 +36,7 @@ export const commonEsbuildOptions: esbuild.BuildOptions = {
     platform: 'browser',
     format: 'esm',
     write: true,
-    logLevel: 'error',
+    logLevel: 'warning',
     loader: {
         '.js': 'jsx',
         '.cjs': 'js',
@@ -56,6 +56,7 @@ export function generateDefineObject({ env = {}, define = {} }) {
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'dev'),
         ...generateEnvReplacements(env),
         'process.env': '{}',
+        'process.browser': 'true',
         global: 'window',
         'process.version': '""',
         'process.argv': '[]',
@@ -89,6 +90,7 @@ export const resolvableExtensions = [
 export async function bundleWithEsBuild({
     entryPoints,
     root,
+    plugins,
     dest: destLoc,
     ...options
 }) {
@@ -124,12 +126,14 @@ export async function bundleWithEsBuild({
         define: generateDefineObject({ env }),
         plugins: [
             // HtmlIngestPlugin(),
+            ...(plugins || []), // TODO esbuild should resolve with all plugins
             NodeModulesPolyfillPlugin(),
             NodeResolvePlugin({
+                name: 'prebundle-node-resolve',
                 mainFields: MAIN_FIELDS,
                 extensions: resolvableExtensions,
                 onNonResolved: (r) => {
-                    logger.log(`Cannot resolve '${r}'`)
+                    logger.warn(`Cannot resolve '${r}'`)
                 },
             }),
         ],

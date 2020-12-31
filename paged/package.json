@@ -1,0 +1,40 @@
+{
+    "name": "@bundless/plugin-react-paged",
+    "version": "0.0.1",
+    "description": "",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "repository": "https://github.com/remorses/bundless.git",
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc -w"
+    },
+    "files": [
+        "dist",
+        "src"
+    ],
+    "bin": "cli.js",
+    "keywords": [],
+    "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/types": "^7.12.7",
+        "@bundless/cli": "*",
+        "@types/node": "^14.14.13"
+    },
+    "dependencies": {
+        "@esbuild-plugins/all": "^0.0.9",
+        "escape-string-regexp": "^4.0.0",
+        "fast-glob": "^3.2.4",
+        "fs-extra": "^9.0.1",
+        "micro-memoize": "^4.0.9",
+        "react-helmet": "^6.1.0",
+        "react-refresh": "^0.8.2",
+        "react-router": "^5.2.0",
+        "react-router-dom": "^5.2.0",
+        "swr": "^0.3.11"
+    },
+    "peerDependencies": {
+        "@bundless/cli": "*"
+    }
+}

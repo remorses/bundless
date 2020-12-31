@@ -7,7 +7,7 @@ export function JSONPlugin({} = {}) {
     return {
         name: 'json',
         setup: ({ onLoad, onResolve }: PluginHooks) => {
-            NodeResolvePlugin({ name: 'json', extensions: ['.json'] }).setup({
+            NodeResolvePlugin({ name: 'json-node-resolve', extensions: ['.json'] }).setup({
                 onLoad() {},
                 onResolve,
             })

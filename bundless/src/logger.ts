@@ -13,7 +13,7 @@ export const logger = {
         print(chalk.yellow(x.join(' ')))
     },
     debug(...x) {
-        return
+        // return
         process.stderr.write(chalk.dim(prefix + x.join(' ') + '\n'))
     },
 }

@@ -161,19 +161,23 @@ export function needsPrebundle(config: Config, p: string) {
 }
 
 export function parse(source: string): Statement[] {
-    return _parse(source, {
-        sourceType: 'module',
-        plugins: [
-            // required for import.meta.hot
-            'importMeta',
-            // by default we enable proposals slated for ES2020.
-            // full list at https://babeljs.io/docs/en/next/babel-parser#plugins
-            // this should be kept in async with @vue/compiler-core's support range
-            'bigInt',
-            'optionalChaining',
-            'nullishCoalescingOperator',
-        ],
-    }).program.body
+    try {
+        return _parse(source, {
+            sourceType: 'module',
+            plugins: [
+                // required for import.meta.hot
+                'importMeta',
+                // by default we enable proposals slated for ES2020.
+                // full list at https://babeljs.io/docs/en/next/babel-parser#plugins
+                // this should be kept in async with @vue/compiler-core's support range
+                'bigInt',
+                'optionalChaining',
+                'nullishCoalescingOperator',
+            ],
+        }).program.body
+    } catch (e) {
+        throw new Error(`Cannot parse with babel`)
+    }
 }
 
 export const jsTypeRegex = new RegExp(

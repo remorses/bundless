@@ -8,10 +8,11 @@ import { printStats } from './stats'
 import { osAgnosticPath } from './support'
 import { traverseWithEsbuild } from './traverse'
 
-export async function prebundle({ entryPoints, filter, root, dest }) {
+export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
     const traversalResult = await traverseWithEsbuild({
         entryPoints,
         root,
+        plugins,
         stopTraversing: filter,
         esbuildCwd: process.cwd(),
     })
@@ -28,6 +29,7 @@ export async function prebundle({ entryPoints, filter, root, dest }) {
     const { bundleMap, analysis, stats } = await bundleWithEsBuild({
         dest,
         root,
+        plugins,
         entryPoints: dependenciesPaths.map((x) => path.resolve(root, x)),
     })
 
@@ -38,25 +40,6 @@ export async function prebundle({ entryPoints, filter, root, dest }) {
     clearCommonjsAnalysisCache()
     console.info(printStats(stats))
     return bundleMap
-}
-
-// TODO remove this function
-export async function getDependenciesPaths({ entryPoints, filter, root }) {
-    // serve react refresh runtime
-    const traversalResult = await traverseWithEsbuild({
-        entryPoints,
-        root,
-        stopTraversing: filter,
-        esbuildCwd: process.cwd(),
-    })
-    let resolvedFiles = traversalResult
-        .map((x) => {
-            return x
-        })
-        .filter(Boolean)
-        .filter((x) => filter(x))
-    resolvedFiles = Array.from(new Set(resolvedFiles))
-    return resolvedFiles
 }
 
 // on start, check if already optimized dependencies, else

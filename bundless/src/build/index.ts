@@ -62,9 +62,9 @@ export async function build({
     const allPlugins = [
         plugins.UrlResolverPlugin(),
         plugins.NodeResolvePlugin({
-            name: 'node-resolve',
+            name: 'build-node-resolve',
             onNonResolved: (p) => {
-                throw new Error(`Cannot resolve '${p}'`)
+                // throw new Error(`Cannot resolve '${p}'`)
             },
             onResolved: (p) => {
                 // console.log(p)

@@ -1,6 +1,5 @@
 import memoize from 'micro-memoize'
 import path from 'path'
-import { getDependenciesPaths } from './prebundle'
 import { traverseWithEsbuild } from './traverse'
 
 test('traverseWithEsbuild', async () => {
@@ -8,6 +7,7 @@ test('traverseWithEsbuild', async () => {
     const deps = await traverseWithEsbuild({
         entryPoints: [entry],
         esbuildCwd: process.cwd(),
+        plugins: [],
         stopTraversing: (x) => x.includes('node_module'),
         root: path.dirname(entry),
     })

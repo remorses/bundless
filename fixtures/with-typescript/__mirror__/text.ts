@@ -1,2 +1,4 @@
 import {allCaps} from "/utils.ts?namespace=file";
 export const text = allCaps("works!");
+
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsiL1VzZXJzL21vcnNlL0RvY3VtZW50cy9HaXRIdWIvZXNwYWNrL2ZpeHR1cmVzL3dpdGgtdHlwZXNjcmlwdC90ZXh0LnRzIl0sCiAgInNvdXJjZXNDb250ZW50IjogWyJpbXBvcnQgeyBhbGxDYXBzIH0gZnJvbSAnLi91dGlscydcbmV4cG9ydCBjb25zdCB0ZXh0ID0gYWxsQ2Fwcygnd29ya3MhJylcbiJdLAogICJtYXBwaW5ncyI6ICJBQUFBO0FBQ08sYUFBTSxPQUFPLFFBQVE7IiwKICAibmFtZXMiOiBbXQp9Cg==

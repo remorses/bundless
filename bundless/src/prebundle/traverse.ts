@@ -32,6 +32,7 @@ type Args = {
     esbuildCwd: string
     root: string
     entryPoints: string[]
+    plugins: Plugin[]
     esbuildOptions?: Partial<BuildOptions>
     // resolver?: (cwd: string, id: string) => string
     stopTraversing?: (resolvedPath: string) => boolean
@@ -41,6 +42,7 @@ export async function traverseWithEsbuild({
     entryPoints,
     esbuildCwd,
     root,
+    plugins,
     esbuildOptions = { plugins: [] },
     stopTraversing,
 }: Args): Promise<string[]> {
@@ -58,7 +60,7 @@ export async function traverseWithEsbuild({
 
     try {
         const metafile = path.join(destLoc, 'meta.json')
-        logger.log(`Running esbuild in cwd '${process.cwd()}'`)
+        // logger.log(`Running esbuild in cwd '${process.cwd()}'`)
 
         await build(
             deepmerge(
@@ -69,10 +71,12 @@ export async function traverseWithEsbuild({
                     outdir: destLoc,
                     metafile,
                     plugins: [
+                        ...(plugins || []),
                         HtmlIngestPlugin({ root }),
                         ExternalButInMetafile(),
                         NodeModulesPolyfillPlugin(),
                         NodeResolvePlugin({
+                            name: 'traverse-node-resolve',
                             mainFields: MAIN_FIELDS,
                             extensions: resolvableExtensions,
                             onResolved: function external(resolved) {

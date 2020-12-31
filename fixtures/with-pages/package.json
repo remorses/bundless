@@ -1,12 +1,11 @@
 {
-    "name": "with-many-dependencies",
+    "name": "with-pages",
     "version": "0.0.0",
     "main": "main.js",
     "private": true,
     "dependencies": {
         "react": "experimental",
-        "slash": "^3.0.0",
-        "preact": "10.5.7",
+        "@bundless/plugin-react-paged": "*",
         "react-dom": "experimental"
     }
 }
