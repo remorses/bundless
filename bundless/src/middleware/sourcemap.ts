@@ -1,12 +1,8 @@
-import { NodeResolvePlugin } from '@esbuild-plugins/all'
 import chalk from 'chalk'
-import fs from 'fs'
 import { Middleware } from 'koa'
 import path from 'path'
 import { RawSourceMap } from 'source-map'
 import { logger } from '../logger'
-import { PluginHooks } from '../plugin'
-import { ServerMiddleware } from '../serve'
 import { importPathToFile, readFile } from '../utils'
 
 // changes sourcemaps to point to right files
@@ -15,11 +11,12 @@ export const sourcemapMiddleware = ({ root }): Middleware => {
         if (!ctx.path.endsWith('.map')) {
             return next()
         }
-        logger.log(`Handling sourcemap request for '${ctx.path}'`)
+        logger.debug(`Handling sourcemap request for '${ctx.path}'`)
         const filename = importPathToFile(root, ctx.path)
         const content = await readFile(filename)
         const map: RawSourceMap = JSON.parse(content)
         if (!map.sources) {
+            logger.log(`No sources found for sourcemap '${ctx.path}'`)
             return
         }
         if (map.sourcesContent && map.sources.every(path.isAbsolute)) {

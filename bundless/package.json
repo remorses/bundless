@@ -67,6 +67,7 @@
         "merge-source-map": "^1.1.0",
         "micro-memoize": "^4.0.9",
         "mime-types": "^2.1.27",
+        "ora": "^5.2.0",
         "posthtml": "^0.15.1",
         "qs": "^6.9.4",
         "slash": "^3.0.0",

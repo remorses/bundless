@@ -10,6 +10,7 @@ import path from 'path'
 import slash from 'slash'
 import WebSocket from 'ws'
 import { HMRPayload } from './client/types'
+import ora, { Ora } from 'ora'
 import { Config, defaultConfig, getEntries } from './config'
 import {
     DEFAULT_PORT,
@@ -103,6 +104,7 @@ export async function createApp(config: Config) {
 
     // lock browser requests until not prebundled
     const onResolveLock = new Lock()
+
     async function onResolved(resolvedPath: string, importer: string) {
         try {
             await onResolveLock.wait()
@@ -123,16 +125,18 @@ export async function createApp(config: Config) {
             logger.log(`'${relativePath}' imported by '${importer}'`)
             // node module path not bundled, rerun bundling
             const entryPoints = getEntries(config)
-
+            const spinner = ora('Prebundling modules').start()
             bundleMap = await prebundle({
                 entryPoints,
                 filter: (p) => needsPrebundle(config, p),
                 dest: path.resolve(root, WEB_MODULES_PATH),
                 root,
             }).catch((e) => {
+                spinner.fail(String(e))
                 e.message = `Cannot prebundle: ${e.message}`
                 throw e
             })
+            spinner.succeed('Finish')
             await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
             // TODO store the bundleMap on disk
             context.sendHmrMessage({ type: 'reload' })
@@ -147,6 +151,8 @@ export async function createApp(config: Config) {
                 )
             }
             return path.resolve(root, webBundle)
+        } catch (e) {
+            throw e
         } finally {
             onResolveLock.ready()
         }

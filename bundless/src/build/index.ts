@@ -308,13 +308,6 @@ function insertAfterStrings(items, node) {
     return [...strings, node, ...nonStrings]
 }
 
-function generateEnvReplacements(env: Object): { [key: string]: string } {
-    return Object.keys(env).reduce((acc, key) => {
-        acc[`process.env.${key}`] = JSON.stringify(env[key])
-        return acc
-    }, {})
-}
-
 function MyNode(x: Partial<Node>): Node {
     return x as any
 }
