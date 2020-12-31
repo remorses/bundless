@@ -1,4 +1,4 @@
-import type { File as BabelAST } from '@babel/types'
+import { File as BabelAST, identifier, Identifier } from '@babel/types'
 import fs from 'fs'
 
 import { Plugin, logger } from '@bundless/cli'
@@ -25,14 +25,14 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                 }
             })
 
-            onResolve({filter: new RegExp(runtimePath), }, args => {
+            onResolve({ filter: new RegExp(runtimePath) }, (args) => {
                 if (args.path === runtimePath) {
                     return {
                         path: runtimePath,
-                        namespace: runtimeNamespace
+                        namespace: runtimeNamespace,
                     }
                 }
-            }) 
+            })
 
             onLoad(
                 { filter: /.*/, namespace: runtimeNamespace },
@@ -56,7 +56,6 @@ export default exports
             )
 
             onTransform({ filter: /\.(t|j)sx$/ }, async (args) => {
-
                 if (args.path.includes('node_modules')) {
                     return
                 }
@@ -101,10 +100,17 @@ export default exports
         window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
       }`
 
-      const hmrDisabledMessage = `${args.path} disabled react refresh because it has react components as exports!`
-      if (result.ast && !isRefreshBoundary(result.ast)) {
-          logger.warn(hmrDisabledMessage)
-      }
+                const nonComponentExports = result.ast
+                    ? getNonComponentExports(result.ast)
+                    : []
+                const hmrDisabledMessage = `${
+                    args.path
+                } disabled react refresh because it has react components as exports! Exported names are ${JSON.stringify(
+                    nonComponentExports,
+                )}`
+                if (nonComponentExports.length) {
+                    logger.warn(hmrDisabledMessage)
+                }
 
                 const footer = `
       if (import.meta.hot) {
@@ -112,7 +118,7 @@ export default exports
         window.$RefreshSig$ = prevRefreshSig;
     
         ${
-            result.ast && isRefreshBoundary(result.ast)
+            result.ast && getNonComponentExports(result.ast)
                 ? `import.meta.hot.accept();`
                 : `console.warn('${hmrDisabledMessage}');`
         }
@@ -134,27 +140,35 @@ export default exports
     }
 }
 
-
 // TODO return the names of non react exports for easier debugging, maybe also return the file and line number
-function isRefreshBoundary(ast: BabelAST) {
+function getNonComponentExports(ast: BabelAST) {
     // Every export must be a React component.
-    return ast.program.body.every((node) => {
-        if (node.type !== 'ExportNamedDeclaration') {
-            return true
-        }
-        const { declaration, specifiers } = node
-        if (declaration && declaration.type === 'VariableDeclaration') {
-            return declaration.declarations.every(
-                ({ id }) =>
-                    id.type === 'Identifier' && isComponentishName(id.name),
-            )
-        }
-        return specifiers.every(
-            ({ exported }) =>
-                exported.type === 'Identifier' &&
-                isComponentishName(exported.name),
-        )
-    })
+    return flatten(
+        ast.program.body.map((node) => {
+            if (node.type !== 'ExportNamedDeclaration') {
+                return []
+            }
+            const { declaration, specifiers } = node
+            if (declaration && declaration.type === 'VariableDeclaration') {
+                return declaration.declarations
+                    .filter(
+                        (x) =>
+                            x.id.type === 'Identifier' &&
+                            !isComponentishName(x.id.name),
+                    )
+                    .map((x) => (x.id.type === 'Identifier' ? x.id?.name : ''))
+            }
+            return specifiers
+                .filter(
+                    ({ exported }) =>
+                        exported.type === 'Identifier' &&
+                        !isComponentishName(exported.name),
+                )
+                .map((x) =>
+                    x.exported.type === 'Identifier' ? x.exported.name : '',
+                )
+        }),
+    )
 }
 
 function isComponentishName(name: string) {
@@ -181,4 +195,12 @@ function transformHtml(contents) {
   window.__bundless_plugin_react_preamble_installed__ = true
   </script>`,
     )
+}
+
+export function flatten<T>(arr: T[][]): T[] {
+    return arr.reduce(function(flat, toFlatten) {
+        return flat.concat(
+            Array.isArray(toFlatten) ? flatten(toFlatten as any) : toFlatten,
+        )
+    }, [])
 }
