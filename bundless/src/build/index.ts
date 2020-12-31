@@ -293,8 +293,8 @@ export async function build({
                 path.dirname(path.relative(root, entry)),
             )
             // remove `public` from entry path
-            if (outputDirname.startsWith('public/')) {
-                outputDirname = outputDirname.slice('public/'.length)
+            if (outputDirname.startsWith('public')) {
+                outputDirname = outputDirname.replace(/public\/?/, '')
             }
 
             const outputHtmlPath = path.resolve(
@@ -302,6 +302,7 @@ export async function build({
                 outputDirname,
                 path.basename(entry),
             )
+            await fs.ensureDir(path.dirname(outputHtmlPath))
             await fs.writeFile(outputHtmlPath, result.html)
 
             // emit html to dist directory, in dirname same as the output files corresponding to html entries
