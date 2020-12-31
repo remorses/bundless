@@ -18,7 +18,6 @@ export interface OptimizeAnalysisResult {
  * If we can't find analysis result, return null
  * (maybe because user set optimizeDeps.auto to false)
  */
-// TODO what id prebundling happens after first rewrite, i should rerun rewrite if previous commonjs was invalid?
 export const getAnalysis = memoize(function getAnalysis(
     root: string,
 ): OptimizeAnalysisResult | null {
@@ -34,6 +33,11 @@ export const getAnalysis = memoize(function getAnalysis(
     }
     return analysis
 })
+
+export function clearCommonjsAnalysisCache() {
+    getAnalysis.cache.keys = []
+    getAnalysis.cache.values = []
+}
 
 export function isOptimizedCjs(root: string, filename: string) {
     // console.log(`isOptimizedCjs ${filename}`)

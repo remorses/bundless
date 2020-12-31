@@ -42,7 +42,12 @@ import {
 import fs from 'fs-extra'
 import etagMiddleware from 'koa-etag'
 import { transformScriptTags } from './plugins/html-transform'
-import { getAnalysis } from './plugins/rewrite/commonjs'
+import {
+    clearCommonjsAnalysisCache,
+    getAnalysis,
+} from './plugins/rewrite/commonjs'
+import findUp from 'find-up'
+import { createHash } from 'crypto'
 
 export interface ServerPluginContext {
     root: string
@@ -98,15 +103,26 @@ export async function createApp(config: Config) {
         WEB_MODULES_PATH,
         'bundleMap.json',
     )
+    const hashPath = path.resolve(root, WEB_MODULES_PATH, 'deps_hash')
+
     let bundleMap: BundleMap = await fs
         .readJSON(bundleMapCachePath)
         .catch(() => ({}))
 
-    // lock browser requests until not prebundled
+    const depHash = await getDepsHash(root)
+    let prevHash = await fs.readFile(hashPath, 'utf-8').catch(() => '')
+    const isHashDifferent = !depHash || !prevHash || prevHash !== depHash
+    if (!config.force && isHashDifferent) {
+        bundleMap = {}
+        await fs.remove(path.resolve(root, WEB_MODULES_PATH))
+        clearCommonjsAnalysisCache()
+    }
+
     const onResolveLock = new Lock()
 
     async function onResolved(resolvedPath: string, importer: string) {
         try {
+            // lock browser requests until not prebundled
             await onResolveLock.wait()
             if (!needsPrebundle(config, resolvedPath)) {
                 return
@@ -136,9 +152,11 @@ export async function createApp(config: Config) {
                 e.message = `Cannot prebundle: ${e.message}`
                 throw e
             })
+            if (isHashDifferent) {
+                await updateHash(hashPath, depHash)
+            }
             spinner.succeed('Finish')
             await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
-            // TODO store the bundleMap on disk
             context.sendHmrMessage({ type: 'reload' })
             const webBundle = bundleMap[relativePath]
             if (!webBundle) {
@@ -451,4 +469,27 @@ function etagCache() {
             }
         }
     }
+}
+
+// hash assumes that import paths can only grow when installed dependencies grow, this is not the case for deep paths like `lodash/path`, in these cases you will need to use `--force`
+async function getDepsHash(root: string) {
+    const lockfileLoc = await findUp(
+        ['package-lock.json', 'yarn.lock', 'pnpm-lock.yaml'],
+        {
+            cwd: root,
+        },
+    )
+    if (!lockfileLoc) {
+        return ''
+    }
+    const content = await (await fs.readFile(lockfileLoc, 'utf-8')).toString()
+    return createHash('sha1')
+        .update(content)
+        .digest('base64')
+        .trim()
+}
+
+async function updateHash(hashPath: string, newHash: string) {
+    await fs.createFile(hashPath)
+    await fs.writeFile(hashPath, newHash.trim())
 }

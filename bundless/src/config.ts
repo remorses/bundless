@@ -31,6 +31,7 @@ export function getEntries(config: Config): string[] {
 
 export interface Config {
     root?: string
+    force?: boolean
     port?: number | string
     entries?: string[]
     cors?: boolean
