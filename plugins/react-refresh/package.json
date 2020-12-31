@@ -1,6 +1,6 @@
 {
     "name": "@bundless/plugin-react-refresh",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -8,7 +8,7 @@
     "scripts": {
         "build": "tsc",
         "watch": "tsc -w",
-        "cli": "node bin.js"
+        "local": "yarn publish --force --registry http://localhost:4873 --access restricted --no-git-tag-version --patch --message 'Local registry publish'"
     },
     "files": [
         "dist",
@@ -20,8 +20,8 @@
     "license": "ISC",
     "devDependencies": {
         "@babel/types": "^7.12.7",
-        "@types/node": "^14.14.13",
-        "@bundless/cli": "*"
+        "@bundless/cli": "*",
+        "@types/node": "^14.14.13"
     },
     "dependencies": {
         "@babel/core": "^7.9.6",

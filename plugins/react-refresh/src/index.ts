@@ -85,9 +85,9 @@ export default exports
       let prevRefreshReg;
       let prevRefreshSig;
     
-      if (!window.__vite_plugin_react_preamble_installed__) {
+      if (!window.__bundless_plugin_react_preamble_installed__) {
         throw new Error(
-          "vite-plugin-react can't detect preamble. Something is wrong. See https://github.com/vitejs/vite-plugin-react/pull/11#discussion_r430879201"
+          "bundless-plugin-react can't detect preamble. Something is wrong.
         );
       }
     
@@ -108,11 +108,11 @@ export default exports
         ${
             result.ast && isRefreshBoundary(result.ast)
                 ? `import.meta.hot.accept();`
-                : `` // TODO warn when not a boundary, this means that react refresh is not enabled
+                : `console.warn(import.meta.url + ' is not a react refresh boundary because it is exporting non react components!')` // TODO warn when not a boundary, this means that react refresh is not enabled
         }
-        if (!window.__vite_plugin_react_timeout) {
-          window.__vite_plugin_react_timeout = setTimeout(() => {
-            window.__vite_plugin_react_timeout = 0;
+        if (!window.__bundless_plugin_react_timeout) {
+          window.__bundless_plugin_react_timeout = setTimeout(() => {
+            window.__bundless_plugin_react_timeout = 0;
             RefreshRuntime.performReactRefresh();
           }, 30);
         }
@@ -129,7 +129,7 @@ export default exports
 }
 
 
-
+// TODO return the names of non react exports for easier debugging, maybe also return the file and line number
 function isRefreshBoundary(ast: BabelAST) {
     // Every export must be a React component.
     return ast.program.body.every((node) => {
@@ -172,7 +172,7 @@ function transformHtml(contents) {
   RefreshRuntime.injectIntoGlobalHook(window)
   window.$RefreshReg$ = () => {}
   window.$RefreshSig$ = () => (type) => type
-  window.__vite_plugin_react_preamble_installed__ = true
+  window.__bundless_plugin_react_preamble_installed__ = true
   </script>`,
     )
 }

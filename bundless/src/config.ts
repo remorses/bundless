@@ -54,7 +54,7 @@ export const defaultConfig: Config = {
     jsx: 'react',
     hmr: true,
     plugins: [],
-    openBrowser: true,
+    openBrowser: false,
 }
 
 export function loadConfig(from: string, name = CONFIG_NAME): Config {
