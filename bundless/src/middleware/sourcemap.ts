@@ -16,11 +16,11 @@ export const sourcemapMiddleware = ({ root }): Middleware => {
         const content = await readFile(filename)
         const map: RawSourceMap = JSON.parse(content)
         if (!map.sources) {
-            logger.log(`No sources found for sourcemap '${ctx.path}'`)
-            return
+            logger.warn(`No sources found for sourcemap '${ctx.path}'`)
+            return next()
         }
         if (map.sourcesContent && map.sources.every(path.isAbsolute)) {
-            return
+            return next()
         }
         const sourcesContent = map.sourcesContent || []
         const sourceRoot = path.resolve(
