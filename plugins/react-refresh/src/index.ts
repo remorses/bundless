@@ -1,6 +1,11 @@
-import { File as BabelAST, identifier, Identifier } from '@babel/types'
+import {
+    File as BabelAST,
+    identifier,
+    Identifier,
+    Statement,
+} from '@babel/types'
 import fs from 'fs'
-
+import { parse as _parse } from '@babel/parser'
 import { Plugin, logger } from '@bundless/cli'
 import { transform } from '@babel/core'
 
@@ -41,13 +46,15 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                         'react-refresh/cjs/react-refresh-runtime.development.js',
                     )
                     const runtimeCode = `
-const exports = {}
-const process = {env: {NODE_ENV: 'development'}}
-${await (await fs.promises.readFile(runtimePath)).toString()}
-${debounce.toString()}
-exports.performReactRefresh = debounce(exports.performReactRefresh, 16)
-export default exports
-`
+                    const exports = {}
+                    const process = {env: {NODE_ENV: 'development'}}
+                    ${await (
+                        await fs.promises.readFile(runtimePath)
+                    ).toString()}
+                    ${debounce.toString()}
+                    exports.performReactRefresh = debounce(exports.performReactRefresh, 16)
+                    export default exports
+                    `
                     return {
                         loader: 'js',
                         contents: runtimeCode,
@@ -64,6 +71,17 @@ export default exports
                     plugins: [
                         require('@babel/plugin-syntax-import-meta'),
                         require('react-refresh/babel'),
+                        {
+                            visitor: {
+                                Program(path) {
+                                    // Insert at the beginning a string "Hello World" --> not valid JS code
+                                    path.unshiftContainer(
+                                        'body',
+                                        makeHeader(args.path),
+                                    )
+                                },
+                            },
+                        },
                     ],
                     ast: true,
                     sourceMaps: true,
@@ -79,27 +97,6 @@ export default exports
                     return
                 }
 
-                const header = `
-      import RefreshRuntime from "${runtimePath}";
-    
-      let prevRefreshReg;
-      let prevRefreshSig;
-    
-      if (!window.__bundless_plugin_react_preamble_installed__) {
-        throw new Error(
-          "bundless-plugin-react can't detect preamble. Something is wrong."
-        );
-      }
-    
-      if (import.meta.hot) {
-        prevRefreshReg = window.$RefreshReg$;
-        prevRefreshSig = window.$RefreshSig$;
-        window.$RefreshReg$ = (type, id) => {
-          RefreshRuntime.register(type, ${JSON.stringify(args.path)} + " " + id)
-        };
-        window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
-      }`
-
                 const nonComponentExports = result.ast
                     ? getNonComponentExports(result.ast)
                     : []
@@ -112,27 +109,11 @@ export default exports
                     logger.warn(hmrDisabledMessage)
                 }
 
-                const footer = `
-      if (import.meta.hot) {
-        window.$RefreshReg$ = prevRefreshReg;
-        window.$RefreshSig$ = prevRefreshSig;
-    
-        ${
-            result.ast && getNonComponentExports(result.ast)
-                ? `import.meta.hot.accept();`
-                : `console.warn('${hmrDisabledMessage}');`
-        }
-        if (!window.__bundless_plugin_react_timeout) {
-          window.__bundless_plugin_react_timeout = setTimeout(() => {
-            window.__bundless_plugin_react_timeout = 0;
-            RefreshRuntime.performReactRefresh();
-          }, 30);
-        }
-      }`
+                const footer = makeFooter(nonComponentExports.length === 0)
 
                 return {
                     loader: 'js',
-                    contents: `${header}${result.code}${footer}`,
+                    contents: `${result.code}${footer}`,
                     map: result.map,
                 }
             })
@@ -203,4 +184,60 @@ export function flatten<T>(arr: T[][]): T[] {
             Array.isArray(toFlatten) ? flatten(toFlatten as any) : toFlatten,
         )
     }, [])
+}
+
+const makeHeader = (path) => {
+    return [
+        ...parse(`const ${THIS_PATH_NAME} = ${JSON.stringify(path)}`),
+        ...header,
+    ]
+}
+
+const THIS_PATH_NAME = '__this_path__'
+
+const header = parse(
+    `
+import RefreshRuntime from "${runtimePath}";
+
+let prevRefreshReg;
+let prevRefreshSig;
+
+if (!window.__bundless_plugin_react_preamble_installed__) {
+  throw new Error(
+    "bundless-plugin-react can't detect preamble. Something is wrong."
+  );
+}
+
+if (import.meta.hot) {
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = (type, id) => {
+    RefreshRuntime.register(type, ${THIS_PATH_NAME} + " " + id)
+  };
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}`,
+)
+
+const makeFooter = (accept) => `
+if (import.meta.hot) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+
+  ${accept ? `import.meta.hot.accept();` : ''}
+  if (!window.__bundless_plugin_react_timeout) {
+    window.__bundless_plugin_react_timeout = setTimeout(() => {
+      window.__bundless_plugin_react_timeout = 0;
+      RefreshRuntime.performReactRefresh();
+    }, 30);
+  }
+}`
+
+export function parse(source: string): Statement[] {
+    return _parse(source, {
+        sourceType: 'module',
+        plugins: [
+            // required for import.meta.hot
+            'importMeta',
+        ],
+    }).program.body
 }

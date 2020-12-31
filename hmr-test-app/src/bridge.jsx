@@ -25,4 +25,4 @@ export function App() {
 }
 
 
-export const x = 9
+// export const x = 9
