@@ -33,6 +33,7 @@ import {
     appendQuery,
     dotdotEncoding,
     importPathToFile,
+    Lock,
     needsPrebundle,
     parseWithQuery,
     readBody,
@@ -99,46 +100,56 @@ export async function createApp(config: Config) {
     let bundleMap: BundleMap = await fs
         .readJSON(bundleMapCachePath)
         .catch(() => ({}))
+
+    // lock browser requests until not prebundled
+    const onResolveLock = new Lock()
     async function onResolved(resolvedPath: string, importer: string) {
-        if (!needsPrebundle(config, resolvedPath)) {
-            return
-        }
-        const relativePath = slash(path.relative(root, resolvedPath)).replace(
-            '$$virtual',
-            'virtual',
-        )
-        if (bundleMap && bundleMap[relativePath]) {
-            const webBundle = bundleMap[relativePath]
-            return path.resolve(root, webBundle!)
-        }
-        logger.log(`Found still not bundled module, running prebundle phase:`)
-        logger.log(`'${relativePath}' imported by '${importer}'`)
-        // node module path not bundled, rerun bundling
-        const entryPoints = getEntries(config)
-        
-        bundleMap = await prebundle({
-            entryPoints,
-            filter: (p) => needsPrebundle(config, p),
-            dest: path.resolve(root, WEB_MODULES_PATH),
-            root,
-        }).catch((e) => {
-            e.message = `Cannot prebundle: ${e.message}`
-            throw e
-        })
-        await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
-        // TODO store the bundleMap on disk
-        context.sendHmrMessage({ type: 'reload' })
-        const webBundle = bundleMap[relativePath]
-        if (!webBundle) {
-            throw new Error(
-                `Bundle for '${relativePath}' was not generated in prebundling phase\n${JSON.stringify(
-                    bundleMap,
-                    null,
-                    4,
-                )}`,
+        try {
+            await onResolveLock.wait()
+            if (!needsPrebundle(config, resolvedPath)) {
+                return
+            }
+            const relativePath = slash(
+                path.relative(root, resolvedPath),
+            ).replace('$$virtual', 'virtual')
+            if (bundleMap && bundleMap[relativePath]) {
+                const webBundle = bundleMap[relativePath]
+                return path.resolve(root, webBundle!)
+            }
+            onResolveLock.lock()
+            logger.log(
+                `Found still not bundled module, running prebundle phase:`,
             )
+            logger.log(`'${relativePath}' imported by '${importer}'`)
+            // node module path not bundled, rerun bundling
+            const entryPoints = getEntries(config)
+
+            bundleMap = await prebundle({
+                entryPoints,
+                filter: (p) => needsPrebundle(config, p),
+                dest: path.resolve(root, WEB_MODULES_PATH),
+                root,
+            }).catch((e) => {
+                e.message = `Cannot prebundle: ${e.message}`
+                throw e
+            })
+            await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
+            // TODO store the bundleMap on disk
+            context.sendHmrMessage({ type: 'reload' })
+            const webBundle = bundleMap[relativePath]
+            if (!webBundle) {
+                throw new Error(
+                    `Bundle for '${relativePath}' was not generated in prebundling phase\n${JSON.stringify(
+                        bundleMap,
+                        null,
+                        4,
+                    )}`,
+                )
+            }
+            return path.resolve(root, webBundle)
+        } finally {
+            onResolveLock.ready()
         }
-        return path.resolve(root, webBundle)
         // lock server, start optimization, unlock, send refresh message
     }
 

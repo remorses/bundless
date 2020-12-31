@@ -1,6 +1,8 @@
 import { parse as _parse } from '@babel/parser'
 import { Statement } from '@babel/types'
 import escapeStringRegexp from 'escape-string-regexp'
+import { EventEmitter, once } from 'events'
+
 import fs from 'fs'
 import path from 'path'
 import qs, { ParsedQs } from 'qs'
@@ -197,4 +199,28 @@ export function partition<T>(
         acc[callback(e) ? 0 : 1].push(e)
         return acc
     }, initial)
+}
+
+export class Lock extends EventEmitter {
+    READY_EVENT = 'READY_EVENT'
+    isReady = true
+    constructor() {
+        super()
+    }
+    ready() {
+        this.emit(this.READY_EVENT)
+        this.isReady = true
+    }
+    lock() {
+        this.isReady = false
+        this.once(this.READY_EVENT, () => {
+            this.isReady = true
+        })
+    }
+    async wait() {
+        if (this.isReady) {
+            return
+        }
+        return once(this, this.READY_EVENT)
+    }
 }

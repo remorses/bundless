@@ -87,7 +87,7 @@ export default exports
     
       if (!window.__bundless_plugin_react_preamble_installed__) {
         throw new Error(
-          "bundless-plugin-react can't detect preamble. Something is wrong.
+          "bundless-plugin-react can't detect preamble. Something is wrong."
         );
       }
     
@@ -98,7 +98,7 @@ export default exports
           RefreshRuntime.register(type, ${JSON.stringify(args.path)} + " " + id)
         };
         window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
-      }`.replace(/[\n]+/gm, '')
+      }`
 
                 const footer = `
       if (import.meta.hot) {
@@ -108,7 +108,7 @@ export default exports
         ${
             result.ast && isRefreshBoundary(result.ast)
                 ? `import.meta.hot.accept();`
-                : `console.warn(import.meta.url + ' is not a react refresh boundary because it is exporting non react components!')` // TODO warn when not a boundary, this means that react refresh is not enabled
+                : `console.warn(import.meta.url + ' is not a react refresh boundary because it is exporting non react components!');` // TODO warn when not a boundary, this means that react refresh is not enabled
         }
         if (!window.__bundless_plugin_react_timeout) {
           window.__bundless_plugin_react_timeout = setTimeout(() => {
