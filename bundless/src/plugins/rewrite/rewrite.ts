@@ -20,8 +20,6 @@ import {
 } from '../../utils'
 import { isOptimizedCjs, transformCjsImport } from './commonjs'
 
-const debug = require('debug')('vite:rewrite')
-
 const rewriteCache = new LRUCache({ max: 1024 })
 
 export function RewritePlugin({} = {}) {
@@ -39,7 +37,7 @@ export function RewritePlugin({} = {}) {
                     source: args.contents,
                 })
                 return {
-                    contents, // TODO does module rewrite needs sourcemaps?
+                    contents, // TODO module rewrite needs not need sourcemaps? How?
                     map,
                 }
             })
@@ -271,7 +269,7 @@ export async function rewriteImports({
 
         return {
             contents: magicString.toString(),
-            map: undefined // do i really need sourcemaps? code is readable enough
+            map: undefined, // do i really need sourcemaps? code is readable enough
         }
     } catch (e) {
         e.message =

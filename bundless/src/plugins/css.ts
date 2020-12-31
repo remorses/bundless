@@ -4,8 +4,6 @@ import hash_sum from 'hash-sum'
 import { CLIENT_PUBLIC_PATH } from '../constants'
 import { PluginHooks } from '../plugin'
 
-export const debug = require('debug')('vite:css')
-
 export function codegenCss(
     css: string,
     modules?: Record<string, string>,
