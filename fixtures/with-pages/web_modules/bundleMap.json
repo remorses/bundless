@@ -1,0 +1,6 @@
+{
+    "../../node_modules/react/index.js": "web_modules/react/index.js",
+    "../../node_modules/react-dom/index.js": "web_modules/react-dom/index.js",
+    "../../node_modules/react-router-dom/esm/react-router-dom.js": "web_modules/react-router-dom/esm/react-router-dom.js",
+    "../../node_modules/swr/esm/index.js": "web_modules/swr/esm/index.js"
+}

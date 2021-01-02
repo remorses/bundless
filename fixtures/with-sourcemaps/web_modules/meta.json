@@ -1,0 +1,60 @@
+{
+  "inputs": {
+    "<define:module>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "<define:process>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "<define:process.argv>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "<define:process.env>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "node_modules/object-assign/index.js": {
+      "bytes": 2108,
+      "imports": []
+    },
+    "node_modules/react/cjs/react.development.js": {
+      "bytes": 74538,
+      "imports": [
+        {
+          "path": "node_modules/object-assign/index.js"
+        }
+      ]
+    },
+    "node_modules/react/index.js": {
+      "bytes": 190,
+      "imports": [
+        {
+          "path": "node_modules/react/cjs/react.development.js"
+        }
+      ]
+    }
+  },
+  "outputs": {
+    "fixtures/with-sourcemaps/web_modules/index.js": {
+      "imports": [],
+      "exports": [
+        "default"
+      ],
+      "inputs": {
+        "node_modules/object-assign/index.js": {
+          "bytesInOutput": 2017
+        },
+        "node_modules/react/cjs/react.development.js": {
+          "bytesInOutput": 62137
+        },
+        "node_modules/react/index.js": {
+          "bytesInOutput": 181
+        }
+      },
+      "bytes": 201792
+    }
+  }
+}

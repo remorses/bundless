@@ -4,6 +4,8 @@ esm
 .DS_Store
 *.tsbuildinfo
 .ultra.cache.json
-web_modules
+**/web_modules/deps_hash
+**/web_modules/**/**.js
+**/web_modules/**/**.js.map
 out
 temp
