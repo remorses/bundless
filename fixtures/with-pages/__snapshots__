@@ -2,8 +2,8 @@
 
 exports[`snapshots fixtures/with-pages: build 1`] = `
 Array [
-  "chunk.U5EX3SYN.js",
-  "chunk.UVACZM5D.js",
+  "chunk.CTYP6TOD.js",
+  "chunk.JX5C3APE.js",
   "index.html",
   "index.js",
   "metafile.json",

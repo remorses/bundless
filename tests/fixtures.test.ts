@@ -38,7 +38,12 @@ describe('snapshots', () => {
         test(`${slash(casePath)}`, async () => {
             let root = path.resolve(casePath)
             const config = loadConfig(casePath)
-            const server = await serve({ ...config, port: PORT, root })
+            const server = await serve({
+                ...config,
+                force: true,
+                port: PORT,
+                root,
+            })
             const entryPoints = config?.entries || ['index.html']
             try {
                 const downloadFilesToDir = path.join(casePath, '__mirror__')

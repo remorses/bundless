@@ -1,7 +1,7 @@
-import {text as text2} from "/text.ts?namespace=file";
+import {text} from "/text.ts?namespace=file";
 console.log("Hello world!");
 var node = document.createElement("h1");
-var textNode = document.createTextNode(text2);
+var textNode = document.createTextNode(text);
 node.appendChild(textNode);
 document.body.appendChild(node);
 
