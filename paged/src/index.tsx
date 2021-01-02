@@ -95,7 +95,8 @@ export function Plugin(): PluginType {
                     )
                 }
                 outputPath = path.resolve(root, outputPath)
-                const { App } = require(outputPath)
+
+                const { App } = tryRequire(outputPath)
                 const url = '/' //  fileToImportPath(args.)
                 const context = { url }
                 const prerenderedHtml = renderToString(
@@ -120,12 +121,12 @@ export function Plugin(): PluginType {
                         ></div>
                     </MahoContext.Provider>,
                 )
-                
+
                 const contents = args.contents.replace(
                     '<body>',
                     `<body>\n${html}`,
                 )
-                
+
                 return {
                     contents,
                 }
@@ -165,6 +166,14 @@ export function Plugin(): PluginType {
     }
 }
 
+function tryRequire(p: string) {
+    try {
+        return require(p)
+    } catch (e) {
+        throw new Error(`Cannot require '${p}': ${e}`)
+    }
+}
+
 const clientEntryContent = `
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -198,6 +207,13 @@ ${routes
             root,
             route.absolute,
         )}"))
+        } else {
+            const res = require("./${path.posix.relative(
+                root,
+                route.absolute,
+            )}")
+            Route_${route.name} = res.default
+            load_${route.name} = res.load
         }
         `
     })
