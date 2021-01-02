@@ -18,6 +18,12 @@ SSG
 -   renderToString needs to require the user files from nodejs, this means i need to call buildForSSR or pass --require first
 -   in the client entry use hydrate
 
+To generate index.html in paged outputs in the build phase i need a way to output these index.html files when building,
+
+-   I can create these as entrypoints when building, adding entrypoints: ['./pages/**/.ts'] but with added html extensions
+-   add an onLoad to load these html files as simple html files that import the routes file (with location={window.location} set in the router)
+-   do SSG in the html file, prerendering the App component
+
 changes
 
 -   add a buildSSR that outputs code for nodejs, does not support html entrypoints

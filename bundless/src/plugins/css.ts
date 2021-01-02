@@ -1,7 +1,7 @@
 import { NodeResolvePlugin } from '@esbuild-plugins/all'
 import { dataToEsm } from '@rollup/pluginutils'
 import hash_sum from 'hash-sum'
-import { CLIENT_PUBLIC_PATH } from '../constants'
+import { CLIENT_PUBLIC_PATH, hmrPreamble } from '../constants'
 import { PluginHooks } from '../plugin'
 
 export function codegenCss(
@@ -34,16 +34,26 @@ if (typeof document !== 'undefined') {
     return code
 }
 
-const hmrPreamble = `
-import * as  __HMR__ from '${CLIENT_PUBLIC_PATH}';
-import.meta.hot = __HMR__.createHotContext(import.meta.url);
-`
+/* 
+TODO code split css
+
+importing a css module file does 2 things
+- import a js file that calls ensureCssLink and exports the class names as js object
+- add the link in the html entry at build time
+
+This way even if you load the app from a different entrypoint and you change location via history API, you get ensureCssLink that adds the link to the html
+
+Global css files instead must be all loaded at once because its classnames are not unique
+*/
 
 export function CssPlugin({} = {}) {
     return {
         name: 'css',
         setup: ({ onLoad, onResolve, onTransform }: PluginHooks) => {
-            NodeResolvePlugin({ name: 'css-node-resolve', extensions: ['.css'] }).setup({
+            NodeResolvePlugin({
+                name: 'css-node-resolve',
+                extensions: ['.css'],
+            }).setup({
                 onLoad,
                 onResolve,
             })
