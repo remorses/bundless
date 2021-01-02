@@ -3,6 +3,13 @@ import escapeStringRegexp from 'escape-string-regexp'
 import memoize from 'micro-memoize'
 import { Plugin, logger } from '@bundless/cli'
 import glob from 'fast-glob'
+import { addHook } from 'pirates'
+import {
+    commonEsbuildOptions,
+    generateDefineObject,
+    metafileToBundleMap,
+    resolvableExtensions,
+} from '@bundless/cli/dist/prebundle/esbuild'
 import {
     matchRoutes,
     createRoutesFromArray,
@@ -10,6 +17,7 @@ import {
 } from 'react-router-dom'
 import path = require('path')
 import { NodeResolvePlugin } from '@esbuild-plugins/all'
+
 
 const CLIENT_ENTRY = '_bundless_paged_entry_.jsx'
 const ROUTES_ENTRY = '_bundless_paged_routes_.jsx'
@@ -19,7 +27,7 @@ const namespace = 'paged-namespace'
 export function Plugin(): Plugin {
     return {
         name: 'paged-plugin',
-        setup({ config, onLoad, onResolve, onTransform }) {
+        setup({ config, onLoad, onResolve, onTransform, pluginsExecutor }) {
             const root = config.root!
             const pagesDir = path.resolve(root, 'pages')
 
@@ -55,7 +63,8 @@ export function Plugin(): Plugin {
                 },
             )
 
-            onTransform({ filter: /\.html/ }, (args) => {
+            onTransform({ filter: /\.html/ }, async (args) => {
+                // TODO build the entry for node using build(), run getStaticProps, run renderToString(<App location=req.location} />), inject html
                 const script = `
                     <script>
                     window.INITIAL_STATE = ${JSON.stringify({

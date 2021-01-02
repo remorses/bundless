@@ -29,7 +29,7 @@ type OnTransformCallback = (
 type OnCloseCallback = () => void | Promise<void>
 
 export interface PluginHooks {
-    resolve: PluginsExecutor['resolve']
+    pluginsExecutor: PluginsExecutor
     config: Config
     graph: Graph
     onResolve(
@@ -86,7 +86,7 @@ export function wrapPluginForEsbuild(_args: {
                 onClose() {},
                 graph,
                 config,
-                resolve: pluginsExecutor.resolve,
+                pluginsExecutor,
                 // wrap onLoad to execute other plugins transforms
                 onLoad(options, callback) {
                     onLoad(options, async (args) => {
@@ -137,26 +137,6 @@ export function createPluginsExecutor({
     const resolvers: PluginObject<OnResolveCallback>[] = []
     const loaders: PluginObject<OnLoadCallback>[] = []
     const closers: PluginObject<OnCloseCallback>[] = []
-    for (let plugin of plugins) {
-        const { name, setup } = plugin
-        setup({
-            resolve,
-            config,
-            graph,
-            onLoad: (options, callback) => {
-                loaders.push({ options, callback, name })
-            },
-            onResolve: (options, callback) => {
-                resolvers.push({ options, callback, name })
-            },
-            onTransform: (options, callback) => {
-                transforms.push({ options, callback, name })
-            },
-            onClose: (options, callback) => {
-                closers.push({ options, callback, name })
-            },
-        })
-    }
 
     function matches(
         options: { filter: RegExp; namespace?: string },
@@ -227,7 +207,7 @@ export function createPluginsExecutor({
 
         for (let { callback, options, name } of resolvers) {
             if (matches(options, arg)) {
-                logger.debug(`resolving '${arg.path}' with '${name}'`, )
+                logger.debug(`resolving '${arg.path}' with '${name}'`)
                 // console.log(new Error('here'))
                 const newResult = await callback(arg)
                 if (newResult) {
@@ -258,10 +238,33 @@ export function createPluginsExecutor({
         return result
     }
 
-    return {
+    const pluginsExecutor = {
         load,
         resolve,
         transform,
         close,
     }
+
+    for (let plugin of plugins) {
+        const { name, setup } = plugin
+        setup({
+            pluginsExecutor,
+            config,
+            graph,
+            onLoad: (options, callback) => {
+                loaders.push({ options, callback, name })
+            },
+            onResolve: (options, callback) => {
+                resolvers.push({ options, callback, name })
+            },
+            onTransform: (options, callback) => {
+                transforms.push({ options, callback, name })
+            },
+            onClose: (options, callback) => {
+                closers.push({ options, callback, name })
+            },
+        })
+    }
+
+    return pluginsExecutor
 }

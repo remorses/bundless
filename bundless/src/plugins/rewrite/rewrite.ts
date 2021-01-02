@@ -25,7 +25,7 @@ const rewriteCache = new LRUCache({ max: 1024 })
 export function RewritePlugin({} = {}) {
     return {
         name: 'rewrite',
-        setup: ({ onTransform, resolve, graph, config }: PluginHooks) => {
+        setup: ({ onTransform, pluginsExecutor, graph, config }: PluginHooks) => {
             // TODO some modules like json modules are not in graph, maybe register modules in middleware? how to rewrite files that have not the js extension?
             onTransform({ filter: jsTypeRegex }, async (args) => {
                 const { contents, map } = await rewriteImports({
@@ -33,7 +33,7 @@ export function RewritePlugin({} = {}) {
                     namespace: args.namespace || 'file',
                     importerFilePath: args.path,
                     root: config.root!,
-                    resolve,
+                    resolve: pluginsExecutor.resolve,
                     source: args.contents,
                 })
                 return {

@@ -10,11 +10,11 @@ const sourcemapRegex = /\/\/#\ssourceMappingURL=([\w\d-_\.]+)\n*$/ // TODO do no
 export function ResolveSourcemapPlugin({} = {}) {
     return {
         name: 'resolve-sourcemaps',
-        setup: ({ onTransform, resolve, config }: PluginHooks) => {
+        setup: ({ onTransform, pluginsExecutor, config }: PluginHooks) => {
             onTransform({ filter: jsTypeRegex }, async (args) => {
                 let contents = args.contents
                 const match = contents.match(sourcemapRegex)
-                
+
                 if (!match) {
                     return
                 }
@@ -25,7 +25,7 @@ export function ResolveSourcemapPlugin({} = {}) {
                 if (!filePath.startsWith('.') && !filePath.startsWith('/')) {
                     filePath = './' + filePath
                 }
-                const resolved = await resolve({
+                const resolved = await pluginsExecutor.resolve({
                     importer: args.path,
                     path: filePath.trim(),
                     namespace: '',
