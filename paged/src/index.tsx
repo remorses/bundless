@@ -1,7 +1,11 @@
 import fs from 'fs'
+import { StaticRouter } from 'react-router-dom'
+import React from 'react'
+import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import escapeStringRegexp from 'escape-string-regexp'
 import memoize from 'micro-memoize'
-import { Plugin, logger } from '@bundless/cli'
+import { Plugin as PluginType, build } from '@bundless/cli'
+import { fileToImportPath } from '@bundless/cli/dist/utils'
 import glob from 'fast-glob'
 import { addHook } from 'pirates'
 import {
@@ -17,14 +21,15 @@ import {
 } from 'react-router-dom'
 import path = require('path')
 import { NodeResolvePlugin } from '@esbuild-plugins/all'
-
+import { osAgnosticPath } from '@bundless/cli/dist/prebundle/support'
+import { MahoContext } from './client'
 
 const CLIENT_ENTRY = '_bundless_paged_entry_.jsx'
 const ROUTES_ENTRY = '_bundless_paged_routes_.jsx'
 
 const namespace = 'paged-namespace'
 
-export function Plugin(): Plugin {
+export function Plugin(): PluginType {
     return {
         name: 'paged-plugin',
         setup({ config, onLoad, onResolve, onTransform, pluginsExecutor }) {
@@ -63,20 +68,64 @@ export function Plugin(): Plugin {
                 },
             )
 
+            // TODO i need the current requested url in transformHtml
             onTransform({ filter: /\.html/ }, async (args) => {
-                // TODO build the entry for node using build(), run getStaticProps, run renderToString(<App location=req.location} />), inject html
-                const script = `
-                    <script>
-                    window.INITIAL_STATE = ${JSON.stringify({
-                        statusCode: 200,
-                        routeData: {},
-                    })}
-                    </script>
-                `
+                // if (config.platform === 'node') {
+                //     return
+                // }
+                // build the entry for node using build(), run getStaticProps, run renderToString(<App location=req.location} />), inject html
+                const ssrOutDir = await path.resolve(root, 'node_dist')
+                const entry = path.resolve(root, ROUTES_ENTRY)
+                const { bundleMap } = await build({
+                    config: {
+                        ...config,
+                        platform: 'node',
+                        entries: [entry],
+                        plugins: [Plugin()], // TODO do not run this in ssr mode to not recurse forever?
+                    },
+                    outDir: ssrOutDir,
+                })
+
+                let outputPath = bundleMap[osAgnosticPath(entry, root)]
+                if (!outputPath) {
+                    throw new Error(
+                        `Could not find ssr output for '${entry}', ${JSON.stringify(
+                            Object.keys(bundleMap),
+                        )}`,
+                    )
+                }
+                outputPath = path.resolve(root, outputPath)
+                const { App } = require(outputPath)
+                const url = '/' //  fileToImportPath(args.)
+                const context = { url }
+                const prerenderedHtml = renderToString(
+                    <App Router={StaticRouter} context={context} />,
+                )
+                console.log({ prerenderedHtml })
+                const html = renderToStaticMarkup(
+                    <MahoContext.Provider value={context}>
+                        <script
+                            dangerouslySetInnerHTML={{
+                                __html: `window.INITIAL_STATE=${JSON.stringify({
+                                    statusCode: 200,
+                                    routeData: {},
+                                })}`,
+                            }}
+                        ></script>
+                        <div
+                            id='_maho'
+                            dangerouslySetInnerHTML={{
+                                __html: prerenderedHtml,
+                            }}
+                        ></div>
+                    </MahoContext.Provider>,
+                )
+                
                 const contents = args.contents.replace(
                     '<body>',
-                    `<body>\n${script}`,
+                    `<body>\n${html}`,
                 )
+                
                 return {
                     contents,
                 }
@@ -220,7 +269,7 @@ export const App = ({ context, Router }) => {
     return <MahoContext.Provider value={context}>
         <ErrorBoundary>
             <Suspense fallback={<div>Loading...</div>}>
-                <Router>
+                <Router location={'/'}>
                     <Routes />
                 </Router>
             </Suspense>

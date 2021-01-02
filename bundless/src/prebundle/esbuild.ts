@@ -10,6 +10,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import toUnixPath from 'slash'
 import tmpfile from 'tmpfile'
+import { Platform } from '../config'
 import {
     importableAssets as importableImagesExtensions,
     JS_EXTENSIONS,
@@ -50,7 +51,16 @@ export const commonEsbuildOptions: esbuild.BuildOptions = {
     define: generateDefineObject({}),
 }
 
-export function generateDefineObject({ env = {}, define = {} }) {
+export function generateDefineObject({
+    env = {},
+    platform = 'browser' as Platform,
+    define = {},
+}) {
+    if (platform === 'node') {
+        return {
+            ...define, // TODO mock browser stuff like fetch?
+        }
+    }
     const noop = 'String'
     return {
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'dev'),
@@ -189,6 +199,9 @@ function makeTsConfig({ alias }) {
 export type BundleMap = Partial<Record<string, string>>
 
 // TODO not working for some packages
+/**
+ * Returns aon object that maps from entry (relative path from root) to output (relative path from root too)
+ */
 export function metafileToBundleMap(_options: {
     entryPoints: string[]
     root: string

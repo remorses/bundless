@@ -40,12 +40,14 @@ export async function build({
     basePath = '/',
 }: BuildConfig & {
     config: Config
-}) {
+}): Promise<{ bundleMap; traversalGraph }> {
     if (!process.env.NODE_ENV) {
         logger.log(`setting env.NODE_ENV = 'production'`)
         process.env.NODE_ENV = 'production'
     }
 
+    const platform = config.platform || 'browser'
+    const isBrowser = platform === 'browser'
     const root = config.root!
     const userPlugins = config.plugins || []
     const entryPoints = getEntries(config)
@@ -59,6 +61,7 @@ export async function build({
     }
     const emptyGraph = new Graph({ root })
 
+    const mainFields = isBrowser ? MAIN_FIELDS : ['main', 'module']
     const allPlugins = [
         plugins.UrlResolverPlugin(),
         plugins.NodeResolvePlugin({
@@ -67,12 +70,26 @@ export async function build({
                 // throw new Error(`Cannot resolve '${p}'`)
             },
             onResolved: (p) => {
+                if (platform !== 'node') {
+                    return
+                }
+                // needed for linked workspaces
+                const isOutside = path.relative(root, p).startsWith('..')
+                if (
+                    p.endsWith('.js') &&
+                    (p.includes('node_modules') || isOutside)
+                ) {
+                    return {
+                        path: p,
+                        external: true,
+                    }
+                }
                 // console.log(p)
             },
-            mainFields: MAIN_FIELDS,
+            mainFields,
             extensions: resolvableExtensions,
         }),
-        plugins.NodeModulesPolyfillPlugin(),
+        ...(isBrowser ? [plugins.NodeModulesPolyfillPlugin()] : []),
         // html ingest should override other html plugins in build, this is because html is transformed to js
         plugins.HtmlIngestPlugin({
             root,
@@ -87,21 +104,22 @@ export async function build({
         graph: emptyGraph,
         root,
     })
+
     const buildResult = await esbuild.build({
         ...commonEsbuildOptions,
         metafile,
         entryPoints, // TODO transform html with plugin executor
         bundle: true,
-        platform: 'browser',
+        platform,
         target: jsTarget,
         publicPath: basePath,
-        splitting: true,
+        splitting: isBrowser,
         // external: externalPackages,
         minifyIdentifiers: Boolean(minify),
         minifySyntax: Boolean(minify),
         minifyWhitespace: Boolean(minify),
-        mainFields: MAIN_FIELDS,
-        define: generateDefineObject({ env }),
+        mainFields,
+        define: generateDefineObject({ env, platform }),
         plugins: [
             ...allPlugins.map((plugin) =>
                 wrapPluginForEsbuild({
@@ -113,7 +131,7 @@ export async function build({
             ),
         ],
         // tsconfig: tsconfigTempFile,
-        format: 'esm',
+        format: isBrowser ? 'esm' : 'cjs',
         write: true,
         outdir: outDir,
         minify: Boolean(minify),
@@ -134,16 +152,17 @@ export async function build({
         root,
     })
 
-    if (!Object.keys(bundleMap).length) {
-        return
-    }
-
     const traversalGraph = await metaToTraversalResult({
         meta,
         entryPoints,
         root,
         esbuildCwd,
     })
+
+    // no outputs?
+    if (!Object.keys(bundleMap).length) {
+        return { bundleMap, traversalGraph }
+    }
 
     const cssToInject: Record<string, string[]> = fromEntries(
         entryPoints.map((x) => osAgnosticPath(x, root)).map((k) => [k, []]),
@@ -288,7 +307,11 @@ export async function build({
                 ].filter(Boolean),
             )
 
-            const result = await transformer.process(html)
+            const result = await transformer.process(html).catch((e) => {
+                throw new Error(
+                    `Cannot process html with posthtml: ${e}\n${html}`,
+                )
+            })
             let outputDirname = path.normalize(
                 path.dirname(path.relative(root, entry)),
             )
@@ -310,6 +333,10 @@ export async function build({
             // TODO support js entries
             // if entry is not html, create an html file that imports the js output bundle
         }
+    }
+    return {
+        bundleMap,
+        traversalGraph,
     }
 }
 

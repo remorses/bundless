@@ -164,6 +164,9 @@ function ExternalButInMetafile(): Plugin {
 
 type TraversalGraph = Record<string, string[]>
 
+/**
+ * Returns a module graph implemented as an object, keys are modules (relative paths from root), values are arrays of key's imports (absolute paths)
+ */
 export function metaToTraversalResult({
     meta,
     entryPoints,

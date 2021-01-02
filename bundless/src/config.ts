@@ -8,7 +8,7 @@ import path from 'path'
 export function getEntries(config: Config): string[] {
     if (config.entries) {
         for (let entry of config.entries) {
-            if (!entry.endsWith('.html')) {
+            if (config.platform === 'browser' && !entry.endsWith('.html')) {
                 throw new Error(
                     `Currently entries can only be html files: ${entry}`,
                 )
@@ -29,7 +29,10 @@ export function getEntries(config: Config): string[] {
     )
 }
 
+export type Platform = 'node' | 'browser'
+
 export interface Config {
+    platform?: Platform
     root?: string
     force?: boolean
     port?: number | string
@@ -52,6 +55,7 @@ export interface Config {
 
 export const defaultConfig: Config = {
     port: DEFAULT_PORT,
+    platform: 'browser',
     jsx: 'react',
     hmr: true,
     plugins: [],

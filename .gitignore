@@ -9,3 +9,4 @@ esm
 **/web_modules/**/**.js.map
 out
 temp
+fixtures/with-pages/node_dist

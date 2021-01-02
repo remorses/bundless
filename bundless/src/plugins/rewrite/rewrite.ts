@@ -26,6 +26,9 @@ export function RewritePlugin({} = {}) {
     return {
         name: 'rewrite',
         setup: ({ onTransform, pluginsExecutor, graph, config }: PluginHooks) => {
+            if (config.platform !== 'browser') {
+                return
+            }
             // TODO some modules like json modules are not in graph, maybe register modules in middleware? how to rewrite files that have not the js extension?
             onTransform({ filter: jsTypeRegex }, async (args) => {
                 const { contents, map } = await rewriteImports({

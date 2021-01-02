@@ -6,40 +6,38 @@ import { useMahoContext } from './context'
 export { useMahoContext, MahoContext } from './context'
 
 const routeDataFetcher = async (pathname: string) => {
-  return fetch(pathname, {
-    headers: {
-      accept: 'application/json',
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => data[pathname])
+    return fetch(pathname, {
+        headers: {
+            accept: 'application/json',
+        },
+    })
+        .then((res) => res.json())
+        .then((data) => data[pathname])
 }
 
-
-
 export const useRouteData = () => {
-  const { routeData } = useMahoContext()
-  const location = useLocation()
+    const { routeData = {} } = useMahoContext()
+    const location = useLocation()
 
-  if (process['browser']) {
-    const state = window['INITIAL_STATE']
-    const { data } = useSWR(location.pathname, routeDataFetcher, {
-      suspense: true,
-      initialData: routeData[location.pathname],
-      revalidateOnMount: state.revalidateOnMount,
-    })
-    return data
-  }
+    if (process['browser']) {
+        const state = window['INITIAL_STATE']
+        const { data } = useSWR(location.pathname, routeDataFetcher, {
+            suspense: true,
+            initialData: routeData[location.pathname],
+            revalidateOnMount: state.revalidateOnMount,
+        })
+        return data
+    }
 
-  return routeData[location.pathname] || {}
+    return routeData[location.pathname] || {}
 }
 
 export interface LoadFunctionContext {
-  params: {
-    [k: string]: string | string[]
-  }
+    params: {
+        [k: string]: string | string[]
+    }
 }
 
 export type LoadFunction = (
-  ctx: LoadFunctionContext,
+    ctx: LoadFunctionContext,
 ) => object | Promise<object>
