@@ -50,13 +50,13 @@ export function Plugin(): PluginType {
             onLoad(
                 { filter: new RegExp(escapeStringRegexp(CLIENT_ENTRY)) },
                 (args) => {
-                    args.path
                     return {
                         contents: clientEntryContent,
                         loader: 'jsx',
                     }
                 },
             )
+
             const pageGlobs = ['**/*.{ts,tsx,js,jsx}']
 
             onResolve(

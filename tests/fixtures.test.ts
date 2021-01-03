@@ -3,6 +3,7 @@ import { build, serve, loadConfig } from '@bundless/cli'
 import { jsTypeRegex } from '@bundless/cli/dist/utils'
 import fs from 'fs-extra'
 import glob from 'glob'
+import mime from 'mime-types'
 import fetch from 'node-fetch'
 import path from 'path'
 import slash from 'slash'
@@ -36,6 +37,7 @@ describe('snapshots', () => {
     for (let [i, casePath] of cases.entries()) {
         const snapshotFile = path.resolve(casePath, '__snapshots__')
         test(`${slash(casePath)}`, async () => {
+            process.stdout.write('testing ' + casePath + '\n')
             let root = path.resolve(casePath)
             const config = loadConfig(casePath)
             const server = await serve({
@@ -68,6 +70,12 @@ describe('snapshots', () => {
                             const res = await fetch(url, {
                                 headers: {
                                     ...(importer ? { Referer: importer } : {}),
+                                    Accept:
+                                        mime.lookup(
+                                            path.extname(
+                                                url.split('/').reverse()[0],
+                                            ),
+                                        ) || '*/*',
                                 },
                             })
                             if (!res.ok) {

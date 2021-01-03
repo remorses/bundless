@@ -59,86 +59,65 @@ export interface OnTransformResult {
 
 type Maybe<x> = x | undefined | null
 
-export interface PluginsExecutor {
-    load(args: esbuild.OnLoadArgs): Promise<Maybe<esbuild.OnLoadResult>>
-    transform(args: OnTransformArgs): Promise<Maybe<OnTransformResult>>
-    resolve(
-        args: esbuild.OnResolveArgs,
-    ): Promise<Maybe<esbuild.OnResolveResult>>
-    close({}): Promise<void>
+// export interface PluginsExecutor {
+//     load(args: esbuild.OnLoadArgs): Promise<Maybe<esbuild.OnLoadResult>>
+//     transform(args: OnTransformArgs): Promise<Maybe<OnTransformResult>>
+//     resolve(
+//         args: esbuild.OnResolveArgs,
+//     ): Promise<Maybe<esbuild.OnResolveResult>>
+//     close({}): Promise<void>
+// }
+
+type PluginInternalObject<CB> = {
+    name: string
+    options: { filter: RegExp; namespace?: string }
+    callback: CB
 }
 
-// adds onTransform support to esbuild
-export function wrapPluginForEsbuild(_args: {
-    plugin: Plugin
-    config: Config
-    graph: Graph
-    pluginsExecutor: PluginsExecutor
-}): esbuild.Plugin {
-    const { plugin, config, graph, pluginsExecutor } = _args
-    return {
-        name: plugin.name,
-        setup({ onLoad, onResolve }) {
-            plugin.setup({
-                onResolve,
-                // the plugin transform is already inside pluginsExecutor
-                onTransform() {},
-                onClose() {},
-                graph,
+export class PluginsExecutor {
+    root: string = ''
+    graph?: Graph
+    config?: Config
+    plugins?: Plugin[]
+
+    private transforms: PluginInternalObject<OnTransformCallback>[] = []
+    private resolvers: PluginInternalObject<OnResolveCallback>[] = []
+    private loaders: PluginInternalObject<OnLoadCallback>[] = []
+    private closers: PluginInternalObject<OnCloseCallback>[] = []
+
+    constructor(_args: {
+        plugins: Plugin[]
+        config: Config
+        graph: Graph
+        root: string
+    }) {
+        const { plugins, config, graph, root } = _args
+        Object.assign(this, _args)
+        // this.config = {...config, root}
+
+        for (let plugin of plugins) {
+            const { name, setup } = plugin
+            setup({
+                pluginsExecutor: this,
                 config,
-                pluginsExecutor,
-                // wrap onLoad to execute other plugins transforms
-                onLoad(options, callback) {
-                    onLoad(options, async (args) => {
-                        const result = await callback(args)
-                        if (!result) {
-                            return
-                        }
-                        // run all transforms from other plugins
-                        const transformed = await pluginsExecutor.transform({
-                            path: args.path,
-                            contents: String(result?.contents),
-                            loader: result.loader,
-                        })
-                        if (transformed) {
-                            return {
-                                ...result,
-                                contents: transformed.contents,
-                                loader: transformed.loader || result.loader,
-                                resolveDir: result.resolveDir,
-                            }
-                        }
-                        return result
-                    })
+                graph,
+                onLoad: (options, callback) => {
+                    this.loaders.push({ options, callback, name })
+                },
+                onResolve: (options, callback) => {
+                    this.resolvers.push({ options, callback, name })
+                },
+                onTransform: (options, callback) => {
+                    this.transforms.push({ options, callback, name })
+                },
+                onClose: (options, callback) => {
+                    this.closers.push({ options, callback, name })
                 },
             })
-        },
-    }
-}
-
-export function createPluginsExecutor({
-    plugins,
-    config,
-    graph,
-    root,
-}: {
-    plugins: Plugin[]
-    config: Config
-    graph: Graph
-    root: string
-}): PluginsExecutor {
-    type PluginObject<CB> = {
-        name: string
-        options: { filter: RegExp; namespace?: string }
-        callback: CB
+        }
     }
 
-    const transforms: PluginObject<OnTransformCallback>[] = []
-    const resolvers: PluginObject<OnResolveCallback>[] = []
-    const loaders: PluginObject<OnLoadCallback>[] = []
-    const closers: PluginObject<OnCloseCallback>[] = []
-
-    function matches(
+    private matches(
         options: { filter: RegExp; namespace?: string },
         arg: { path?: string; namespace?: string },
     ) {
@@ -156,14 +135,14 @@ export function createPluginsExecutor({
         return true
     }
 
-    async function load(arg) {
+    async load(arg) {
         let result
-        for (let { callback, options, name } of loaders) {
-            if (matches(options, arg)) {
+        for (let { callback, options, name } of this.loaders) {
+            if (this.matches(options, arg)) {
                 logger.debug(
                     `loading '${osAgnosticPath(
                         arg.path,
-                        root,
+                        this.root,
                     )}' with '${name}'`,
                 )
                 const newResult = await callback(arg)
@@ -177,15 +156,19 @@ export function createPluginsExecutor({
             return { ...result, namespace: result.namespace || 'file' }
         }
     }
-    async function transform(arg: OnTransformArgs) {
+    async transform(arg: OnTransformArgs) {
         let result: OnTransformResult = { contents: arg.contents }
-        for (let { callback, options, name } of transforms) {
-            if (matches(options, arg)) {
+        for (let { callback, options, name } of this.transforms) {
+            if (this.matches(options, arg)) {
                 logger.debug(`transforming '${arg.path}' with '${name}'`)
                 const newResult = await callback(arg)
-                if (newResult?.contents) {
+                if (newResult?.contents != null) {
                     arg.contents = newResult.contents
                     result.contents = newResult.contents
+                }
+                if (newResult?.loader) {
+                    arg.loader = newResult.loader
+                    result.loader = newResult.loader
                 }
                 // merge with previous source maps
                 if (newResult?.map) {
@@ -199,24 +182,24 @@ export function createPluginsExecutor({
         }
         return result
     }
-    async function resolve(
+    async resolve(
         arg: esbuild.OnResolveArgs,
     ): Promise<Maybe<esbuild.OnResolveResult>> {
         let result
         // support for resolving paths with queries
 
-        for (let { callback, options, name } of resolvers) {
-            if (matches(options, arg)) {
+        for (let { callback, options, name } of this.resolvers) {
+            if (this.matches(options, arg)) {
                 logger.debug(`resolving '${arg.path}' with '${name}'`)
                 // console.log(new Error('here'))
                 const newResult = await callback(arg)
-                if (newResult) {
+                if (newResult && newResult.path) {
                     logger.debug(
                         `resolved '${
                             arg.path
                         }' with '${name}' as '${osAgnosticPath(
                             newResult.path,
-                            root,
+                            this.root,
                         )}'`,
                     )
                     result = newResult
@@ -229,42 +212,67 @@ export function createPluginsExecutor({
             return { ...result, namespace: result.namespace || 'file' }
         }
     }
-    async function close() {
+    async close() {
         let result
-        for (let { callback, options, name } of closers) {
+        for (let { callback, options, name } of this.closers) {
             logger.debug(`cleaning resources for '${name}'`)
             await callback()
         }
         return result
     }
 
-    const pluginsExecutor = {
-        load,
-        resolve,
-        transform,
-        close,
+    esbuildPlugins() {
+        return this.plugins!.map((plugin, index) =>
+            // TODO skip itself
+            wrapPluginForEsbuild({ plugin, pluginsExecutor: this }),
+        )
     }
+}
 
-    for (let plugin of plugins) {
-        const { name, setup } = plugin
-        setup({
-            pluginsExecutor,
-            config,
-            graph,
-            onLoad: (options, callback) => {
-                loaders.push({ options, callback, name })
-            },
-            onResolve: (options, callback) => {
-                resolvers.push({ options, callback, name })
-            },
-            onTransform: (options, callback) => {
-                transforms.push({ options, callback, name })
-            },
-            onClose: (options, callback) => {
-                closers.push({ options, callback, name })
-            },
-        })
+// adds onTransform support to esbuild
+function wrapPluginForEsbuild(_args: {
+    plugin: Plugin
+    pluginsExecutor: PluginsExecutor
+}): esbuild.Plugin {
+    const { plugin, pluginsExecutor } = _args
+
+    return {
+        name: plugin.name,
+        setup({ onLoad, onResolve }) {
+            plugin.setup({
+                onResolve,
+                // the plugin transform is already inside pluginsExecutor
+                onTransform() {},
+                onClose() {},
+                graph: pluginsExecutor.graph!,
+                config: pluginsExecutor.config!,
+                pluginsExecutor,
+                // wrap onLoad to execute other plugins transforms
+                onLoad(options, callback) {
+                    onLoad(options, async (args) => {
+                        const result = await callback(args)
+                        if (!result) {
+                            return
+                        }
+                        // run all transforms from other plugins
+                        const transformed = await pluginsExecutor.transform({
+                            path: args.path,
+                            contents: String(result?.contents),
+                            loader: result.loader,
+                        })
+                        // console.log({ ...transformed, contents: ''  })
+                        if (!transformed) {
+                            return result
+                        }
+                        return {
+                            ...result,
+                            contents: transformed.contents,
+                            loader: transformed.loader || result.loader,
+                            resolveDir: result.resolveDir,
+                        }
+                    })
+                },
+            })
+        },
     }
-
-    return pluginsExecutor
 }

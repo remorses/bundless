@@ -1,16 +1,19 @@
 import chalk from 'chalk'
-import url from 'url'
 import chokidar, { FSWatcher } from 'chokidar'
+import { createHash } from 'crypto'
 import deepmerge from 'deepmerge'
 import { once } from 'events'
+import findUp from 'find-up'
+import fs from 'fs-extra'
 import { Server } from 'http'
 import Koa, { DefaultContext, DefaultState, Middleware } from 'koa'
+import etagMiddleware from 'koa-etag'
 import { listen } from 'listhen'
+import ora from 'ora'
 import path from 'path'
 import slash from 'slash'
 import WebSocket from 'ws'
 import { HMRPayload } from './client/types'
-import ora, { Ora } from 'ora'
 import { Config, defaultConfig, getEntries } from './config'
 import {
     DEFAULT_PORT,
@@ -25,12 +28,9 @@ import { Graph } from './graph'
 import { onFileChange } from './hmr'
 import { logger } from './logger'
 import * as middlewares from './middleware'
-import {
-    createPluginsExecutor,
-    PluginsExecutor,
-    wrapPluginForEsbuild,
-} from './plugin'
+import { PluginsExecutor } from './plugin'
 import * as plugins from './plugins'
+import { transformScriptTags } from './plugins/html-transform'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { genSourceMapString } from './sourcemaps'
@@ -43,15 +43,6 @@ import {
     parseWithQuery,
     readBody,
 } from './utils'
-import fs from 'fs-extra'
-import etagMiddleware from 'koa-etag'
-import { transformScriptTags } from './plugins/html-transform'
-import {
-    clearCommonjsAnalysisCache,
-    getAnalysis,
-} from './plugins/rewrite/commonjs'
-import findUp from 'find-up'
-import { createHash } from 'crypto'
 
 export interface ServerPluginContext {
     root: string
@@ -153,19 +144,12 @@ export async function createApp(config: Config) {
                 entryPoints,
                 filter: (p) => needsPrebundle(config, p),
                 dest: path.resolve(root, WEB_MODULES_PATH),
-                plugins: (config.plugins || []).map((plugin) =>
-                    wrapPluginForEsbuild({
-                        config,
-                        graph,
-                        plugin,
-                        pluginsExecutor: createPluginsExecutor({
-                            config,
-                            graph,
-                            plugins: [],
-                            root,
-                        }),
-                    }),
-                ),
+                plugins: new PluginsExecutor({
+                    config,
+                    graph,
+                    plugins: config.plugins || [],
+                    root,
+                }).esbuildPlugins(),
                 root,
             }).catch((e) => {
                 spinner.fail(String(e) + '\n')
@@ -197,7 +181,7 @@ export async function createApp(config: Config) {
         // lock server, start optimization, unlock, send refresh message
     }
 
-    const pluginsExecutor = createPluginsExecutor({
+    const pluginsExecutor = new PluginsExecutor({
         root,
         plugins: [
             // TODO resolve data: imports, rollup emits imports with data: ...
@@ -218,7 +202,8 @@ export async function createApp(config: Config) {
             plugins.ResolveSourcemapPlugin(),
             ...(config.plugins || []), // TODO where should i put plugins? i should let user override onResolve, but i should also run rewrite on user outputs
             plugins.RewritePlugin(),
-            plugins.HtmlTransformPlugin({
+            plugins.HtmlResolverPlugin(),
+            plugins.HtmlTransformUrlsPlugin({
                 transforms: [
                     transformScriptTags((importPath) => {
                         const { query } = parseWithQuery(importPath)
@@ -229,7 +214,10 @@ export async function createApp(config: Config) {
                     }),
                 ],
             }),
-        ],
+        ].map((plugin) => ({
+            ...plugin,
+            name: 'serve-' + plugin.name,
+        })),
         config,
         graph,
     })
@@ -256,7 +244,7 @@ export async function createApp(config: Config) {
 
     app.once('close', async () => {
         logger.debug('closing')
-        await Promise.all([watcher.close(), pluginsExecutor.close({})])
+        await Promise.all([watcher.close(), pluginsExecutor.close()])
         app.emit('closed')
     })
 
@@ -356,115 +344,80 @@ export async function createApp(config: Config) {
     }
 
     // only js ends up here
-    const pluginsMiddleware = (): Middleware => {
-        // attach server context to koa context
-        return async (ctx, next) => {
-            // Object.assign(ctx, context)
-            const req = ctx.req
-            if (
-                ctx.query.namespace == null &&
-                req.headers['sec-fetch-dest'] !== 'script'
-            ) {
-                return next()
-            }
+    const pluginsMiddleware: Middleware = async (ctx, next) => {
+        // Object.assign(ctx, context)
+        const req = ctx.req
 
-            if (ctx.path.startsWith('.')) {
-                throw new Error(
-                    `All import paths should have been rewritten to absolute paths (start with /)\n` +
-                        ` make sure import paths for '${ctx.path}' are statically analyzable`,
-                )
-            }
-
-            const isVirtual =
-                ctx.query.namespace && ctx.query.namespace !== 'file'
-            // do not resolve virtual files like node builtins to an absolute path
-            const resolvedPath = isVirtual
-                ? ctx.path.slice(1) // remove leading /
-                : importPathToFile(root, ctx.path)
-
-            // watch files outside root
-            if (
-                ctx.path.startsWith('/' + dotdotEncoding) &&
-                !resolvedPath.includes('node_modules')
-            ) {
-                watcher.add(resolvedPath)
-            }
-
-            const namespace = ctx.query.namespace || 'file'
-            const loaded = await pluginsExecutor.load({
-                path: resolvedPath,
-                namespace,
-            })
-            if (loaded == null || loaded.contents == null) {
-                return next()
-            }
-            const transformed = await pluginsExecutor.transform({
-                path: resolvedPath,
-                loader: loaded.loader,
-                namespace,
-                contents: String(loaded.contents),
-            })
-            if (transformed == null) {
-                return next()
-            }
-
-            // if (!isVirtual) {
-            //     graph.ensureEntry(resolvedPath)
-            // }
-
-            const sourcemap = transformed.map
-                ? genSourceMapString(transformed.map)
-                : ''
-
-            ctx.body = transformed.contents + sourcemap
-            ctx.status = 200
-            ctx.type = 'js'
+        if (
+            ctx.query.namespace == null &&
+            req.headers['sec-fetch-dest'] !== 'script'
+        ) {
             return next()
         }
+
+        if (ctx.path.startsWith('.')) {
+            throw new Error(
+                `All import paths should have been rewritten to absolute paths (start with /)\n` +
+                    ` make sure import paths for '${ctx.path}' are statically analyzable`,
+            )
+        }
+
+        const isVirtual = ctx.query.namespace && ctx.query.namespace !== 'file'
+        // do not resolve virtual files like node builtins to an absolute path
+        const resolvedPath = isVirtual
+            ? ctx.path.slice(1) // remove leading /
+            : importPathToFile(root, ctx.path)
+
+        // watch files outside root
+        if (
+            ctx.path.startsWith('/' + dotdotEncoding) &&
+            !resolvedPath.includes('node_modules')
+        ) {
+            watcher.add(resolvedPath)
+        }
+
+        const namespace = ctx.query.namespace || 'file'
+        const loaded = await pluginsExecutor.load({
+            path: resolvedPath,
+            namespace,
+        })
+        if (loaded == null || loaded.contents == null) {
+            return next()
+        }
+        const transformed = await pluginsExecutor.transform({
+            path: resolvedPath,
+            loader: loaded.loader,
+            namespace,
+            contents: String(loaded.contents),
+        })
+        if (transformed == null) {
+            return next()
+        }
+
+        // if (!isVirtual) {
+        //     graph.ensureEntry(resolvedPath)
+        // }
+
+        const sourcemap = transformed.map
+            ? genSourceMapString(transformed.map)
+            : ''
+
+        ctx.body = transformed.contents + sourcemap
+        ctx.status = 200
+        ctx.type = 'js'
+        return next()
     }
 
-    // app.use((_, next) => {
-    //     console.log(graph.toString())
-    //     return next()
-    // })
-
     app.use(middlewares.sourcemapMiddleware({ root }))
-    app.use(pluginsMiddleware())
+    app.use(pluginsMiddleware)
+    app.use(middlewares.historyFallbackMiddleware({ root, pluginsExecutor }))
     app.use(middlewares.staticServeMiddleware({ root })) // TODO test that serve static works with paths containing $$ and folders with name ending in .zip
     app.use(
         middlewares.staticServeMiddleware({ root: path.join(root, 'public') }),
     )
-    app.use(middlewares.historyFallbackMiddleware({ root }))
+
     // app.use(require('koa-conditional-get'))
     app.use(etagMiddleware())
-
-    // transform html
-    app.use(async (ctx, next) => {
-        // const accept = ctx.headers.accept
-        if (!ctx.response.is('html') || ctx.status >= 400) {
-            return next()
-        }
-        const publicPath = !path.extname(ctx.path)
-            ? path.posix.join(ctx.path, 'index.html')
-            : ctx.path
-        // logger.log('transforming html ' + publicPath)
-        let html = await readBody(ctx.body)
-        if (!html) {
-            return next()
-        }
-        const transformedHtml = await pluginsExecutor.transform({
-            contents: html,
-            path: importPathToFile(root, publicPath),
-            namespace: 'file',
-        })
-
-        if (!transformedHtml) {
-            return next()
-        }
-        ctx.body = transformedHtml.contents
-        ctx.status = 200
-        ctx.type = 'html'
-    })
 
     // cors
     if (config.cors) {

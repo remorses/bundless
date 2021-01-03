@@ -8,7 +8,7 @@ import { BuildConfig, Config, getEntries } from '../config'
 import { MAIN_FIELDS } from '../constants'
 import { Graph } from '../graph'
 import { logger } from '../logger'
-import { createPluginsExecutor, wrapPluginForEsbuild } from '../plugin'
+import { PluginsExecutor } from '../plugin'
 import * as plugins from '../plugins'
 import {
     commonEsbuildOptions,
@@ -51,6 +51,7 @@ export async function build({
     const root = config.root!
     const userPlugins = config.plugins || []
     const entryPoints = getEntries(config)
+    logger.log(`building ${JSON.stringify(entryPoints)}`)
     await fs.remove(outDir)
     await fs.ensureDir(outDir)
     const publicDir = path.resolve(root, 'public')
@@ -63,6 +64,12 @@ export async function build({
 
     const mainFields = isBrowser ? MAIN_FIELDS : ['main', 'module']
     const allPlugins = [
+        plugins.HtmlResolverPlugin(),
+        plugins.HtmlIngestPlugin({
+            root,
+            name: 'html-ingest',
+            transformImportPath: cleanUrl,
+        }),
         plugins.UrlResolverPlugin(),
         plugins.NodeResolvePlugin({
             name: 'build-node-resolve',
@@ -91,14 +98,13 @@ export async function build({
         }),
         ...(isBrowser ? [plugins.NodeModulesPolyfillPlugin()] : []),
         // html ingest should override other html plugins in build, this is because html is transformed to js
-        plugins.HtmlIngestPlugin({
-            root,
-            name: 'html-ingest',
-            transformImportPath: cleanUrl,
-        }),
+
         ...userPlugins,
-    ]
-    const pluginsExecutor = createPluginsExecutor({
+    ].map((plugin) => ({
+        ...plugin,
+        name: 'build-' + plugin.name,
+    }))
+    const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
         config,
         graph: emptyGraph,
@@ -120,16 +126,7 @@ export async function build({
         minifyWhitespace: Boolean(minify),
         mainFields,
         define: generateDefineObject({ env, platform }),
-        plugins: [
-            ...allPlugins.map((plugin) =>
-                wrapPluginForEsbuild({
-                    config,
-                    graph: emptyGraph,
-                    plugin,
-                    pluginsExecutor,
-                }),
-            ),
-        ],
+        plugins: pluginsExecutor.esbuildPlugins(),
         // tsconfig: tsconfigTempFile,
         format: isBrowser ? 'esm' : 'cjs',
         write: true,
@@ -200,6 +197,14 @@ export async function build({
         })
     }
 
+    // needed to run the onTransform on html entries
+    const htmlPluginsExecutor = new PluginsExecutor({
+        plugins: [...userPlugins, plugins.HtmlResolverPlugin()],
+        config,
+        graph: emptyGraph,
+        root,
+    })
+
     for (let entry of entryPoints) {
         if (path.extname(entry) === '.html') {
             const relativePath = osAgnosticPath(entry, root)
@@ -221,7 +226,7 @@ export async function build({
             // await fs.copyFile(entry, outputHtmlPath)
             let html = await (await fs.readFile(entry)).toString()
             // transform html can inject scripts, do SSR, ...
-            const htmlResult = await pluginsExecutor.transform({
+            const htmlResult = await htmlPluginsExecutor.transform({
                 contents: html,
                 path: path.resolve(root, entry),
                 namespace: 'file',

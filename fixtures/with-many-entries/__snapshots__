@@ -16,8 +16,10 @@ Array [
 exports[`snapshots fixtures/with-many-entries: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/a/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/a/main.css?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/a/main.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/b/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/b/main.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/b/text.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/common.css?namespace=file": "application/javascript; charset=utf-8",
@@ -27,8 +29,10 @@ Object {
 exports[`snapshots fixtures/with-many-entries: mirror 1`] = `
 Array [
   "_hmr_client.js",
+  "a/index.html",
   "a/main.css",
   "a/main.js",
+  "b/index.html",
   "b/main.js",
   "b/text.js",
   "common.css",

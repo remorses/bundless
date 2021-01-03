@@ -9,8 +9,16 @@ Array [
 ]
 `;
 
-exports[`snapshots fixtures/with-links: content-type headers 1`] = `Object {}`;
+exports[`snapshots fixtures/with-links: content-type headers 1`] = `
+Object {
+  "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
+}
+`;
 
-exports[`snapshots fixtures/with-links: mirror 1`] = `Array []`;
+exports[`snapshots fixtures/with-links: mirror 1`] = `
+Array [
+  "index.html",
+]
+`;
 
 exports[`snapshots fixtures/with-links: traverse result 1`] = `Array []`;

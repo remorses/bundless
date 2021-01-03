@@ -2,13 +2,13 @@ import posthtml, { Plugin } from 'posthtml'
 import { PluginHooks } from '../plugin'
 import { cleanUrl } from '../utils'
 
-export function HtmlTransformPlugin({
+export function HtmlTransformUrlsPlugin({
     transforms,
 }: {
     transforms: Plugin<any>[]
 }) {
     return {
-        name: 'html-transform',
+        name: 'html-transform-urls',
         setup: ({ onTransform, onResolve }: PluginHooks) => {
             onTransform({ filter: /\.html$/ }, async (args) => {
                 const transformer = posthtml([...transforms])

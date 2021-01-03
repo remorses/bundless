@@ -25,7 +25,12 @@ const rewriteCache = new LRUCache({ max: 1024 })
 export function RewritePlugin({} = {}) {
     return {
         name: 'rewrite',
-        setup: ({ onTransform, pluginsExecutor, graph, config }: PluginHooks) => {
+        setup: ({
+            onTransform,
+            pluginsExecutor,
+            graph,
+            config,
+        }: PluginHooks) => {
             if (config.platform !== 'browser') {
                 return
             }
@@ -36,7 +41,7 @@ export function RewritePlugin({} = {}) {
                     namespace: args.namespace || 'file',
                     importerFilePath: args.path,
                     root: config.root!,
-                    resolve: pluginsExecutor.resolve,
+                    pluginsExecutor,
                     source: args.contents,
                 })
                 return {
@@ -52,14 +57,14 @@ export async function rewriteImports({
     source,
     importerFilePath,
     graph,
-    resolve,
+    pluginsExecutor,
     namespace,
     root,
 }: {
     source: string
     namespace: string
     importerFilePath: string
-    resolve: PluginsExecutor['resolve']
+    pluginsExecutor: PluginsExecutor
     root: string
     graph: Graph
 }): Promise<{ contents: string; map?: any }> {
@@ -129,7 +134,7 @@ export async function rewriteImports({
                     continue
                 }
 
-                const resolveResult = await resolve({
+                const resolveResult = await pluginsExecutor.resolve({
                     importer: importerFilePath,
                     namespace,
                     resolveDir: path.dirname(importerFilePath),

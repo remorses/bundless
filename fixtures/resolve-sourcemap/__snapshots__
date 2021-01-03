@@ -11,12 +11,14 @@ Array [
 exports[`snapshots fixtures/resolve-sourcemap: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/folder/main.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
 }
 `;
 
 exports[`snapshots fixtures/resolve-sourcemap: mirror 1`] = `
 Array [
   "folder/main.js",
+  "index.html",
 ]
 `;
 

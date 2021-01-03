@@ -9,6 +9,7 @@
         "jasmine-fail-fast": "^2.0.1",
         "jest-specific-snapshot": "^4.0.0",
         "node-fetch": "2.6.1",
+        "mime-types": "^2.1.28",
         "slash": "3.0.0"
     },
     "devDependencies": {

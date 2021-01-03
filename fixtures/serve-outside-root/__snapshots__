@@ -11,12 +11,14 @@ Array [
 exports[`snapshots fixtures/serve-outside-root: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/.../outsider.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
 
 exports[`snapshots fixtures/serve-outside-root: mirror 1`] = `
 Array [
+  "index.html",
   "main.js",
 ]
 `;

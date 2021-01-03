@@ -37,7 +37,7 @@ export const commonEsbuildOptions: esbuild.BuildOptions = {
     platform: 'browser',
     format: 'esm',
     write: true,
-    logLevel: 'warning',
+    logLevel: 'error',
     loader: {
         '.js': 'jsx',
         '.cjs': 'js',

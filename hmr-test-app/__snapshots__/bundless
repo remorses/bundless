@@ -3,10 +3,7 @@
 exports[`hmr 1 src/main.jsx bundless: messages 1`] = `
 Array [
   Object {
-    "namespace": "file",
-    "path": "/src/main.jsx",
-    "type": "update",
-    "updateID": 1,
+    "type": "reload",
   },
 ]
 `;
@@ -16,122 +13,67 @@ exports[`hmr 1 src/main.jsx bundless: urls 1`] = `Set {}`;
 exports[`hmr 2 src/file.jsx bundless: messages 1`] = `
 Array [
   Object {
-    "namespace": "file",
-    "path": "/src/file.jsx",
-    "type": "update",
-    "updateID": 1,
+    "type": "reload",
   },
 ]
 `;
 
-exports[`hmr 2 src/file.jsx bundless: urls 1`] = `
-Set {
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=1",
-}
-`;
+exports[`hmr 2 src/file.jsx bundless: urls 1`] = `Set {}`;
 
 exports[`hmr 3 src/file.css bundless: messages 1`] = `
 Array [
   Object {
-    "namespace": "file",
-    "path": "/src/file.css",
-    "type": "update",
-    "updateID": 1,
+    "type": "reload",
   },
 ]
 `;
 
-exports[`hmr 3 src/file.css bundless: urls 1`] = `
-Set {
-  "http://127.0.0.1:4000/src/file.css?namespace=file&t=1",
-}
-`;
+exports[`hmr 3 src/file.css bundless: urls 1`] = `Set {}`;
 
 exports[`hmr 4 src/file.module.css bundless: messages 1`] = `
 Array [
   Object {
-    "namespace": "file",
-    "path": "/src/file.module.css",
-    "type": "update",
-    "updateID": 1,
+    "type": "reload",
   },
 ]
 `;
 
-exports[`hmr 4 src/file.module.css bundless: urls 1`] = `
-Set {
-  "http://127.0.0.1:4000/src/file.module.css?namespace=file&t=1",
-}
-`;
+exports[`hmr 4 src/file.module.css bundless: urls 1`] = `Set {}`;
 
 exports[`hmr 5 src/file.json bundless: messages 1`] = `
 Array [
   Object {
-    "namespace": "file",
-    "path": "/src/bridge.jsx",
-    "type": "update",
-    "updateID": 1,
+    "type": "reload",
   },
 ]
 `;
 
-exports[`hmr 5 src/file.json bundless: urls 1`] = `
-Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=1",
-  "http://127.0.0.1:4000/src/file.json?namespace=file&t=1",
-}
-`;
+exports[`hmr 5 src/file.json bundless: urls 1`] = `Set {}`;
 
 exports[`hmr 6 src/file2.js bundless: messages 1`] = `
 Array [
   Object {
-    "namespace": "file",
-    "path": "/src/file.jsx",
-    "type": "update",
-    "updateID": 1,
+    "type": "reload",
   },
 ]
 `;
 
-exports[`hmr 6 src/file2.js bundless: urls 1`] = `
-Set {
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=1",
-  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=1",
-}
-`;
+exports[`hmr 6 src/file2.js bundless: urls 1`] = `Set {}`;
 
 exports[`hmr 7 src/imported-many-times.js bundless: messages 1`] = `
 Array [
   Object {
-    "namespace": "file",
-    "path": "/src/main.jsx",
-    "type": "update",
-    "updateID": 1,
-  },
-  Object {
-    "namespace": "file",
-    "path": "/src/file.jsx",
-    "type": "update",
-    "updateID": 1,
+    "type": "reload",
   },
 ]
 `;
 
-exports[`hmr 7 src/imported-many-times.js bundless: urls 1`] = `
-Set {
-  "http://127.0.0.1:4000/src/imported-many-times.js?namespace=file&t=1",
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=1",
-  "http://127.0.0.1:4000/src/imported-many-times.js?namespace=file&t=2",
-}
-`;
+exports[`hmr 7 src/imported-many-times.js bundless: urls 1`] = `Set {}`;
 
 exports[`hmr 8 src/file2.js, src/file.jsx bundless: messages 1`] = `
 Array [
   Object {
-    "namespace": "file",
-    "path": "/src/file.jsx",
-    "type": "update",
-    "updateID": 1,
+    "type": "reload",
   },
 ]
 `;
@@ -139,24 +81,11 @@ Array [
 exports[`hmr 8 src/file2.js, src/file.jsx bundless: messages 2`] = `
 Array [
   Object {
-    "namespace": "file",
-    "path": "/src/file.jsx",
-    "type": "update",
-    "updateID": 2,
+    "type": "reload",
   },
 ]
 `;
 
-exports[`hmr 8 src/file2.js, src/file.jsx bundless: urls 1`] = `
-Set {
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=1",
-  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=1",
-}
-`;
+exports[`hmr 8 src/file2.js, src/file.jsx bundless: urls 1`] = `Set {}`;
 
-exports[`hmr 8 src/file2.js, src/file.jsx bundless: urls 2`] = `
-Set {
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=2",
-  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=1",
-}
-`;
+exports[`hmr 8 src/file2.js, src/file.jsx bundless: urls 2`] = `Set {}`;

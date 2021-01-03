@@ -18,6 +18,7 @@ Object {
   "http://127.0.0.1:9000/.../.../paged/src/client/index.ts?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_bundless_paged_entry_.jsx?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/pages/about.tsx?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/pages/index.tsx?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/chunk.YL6YMLLH.js?namespace=file": "application/javascript; charset=utf-8",
@@ -33,6 +34,7 @@ exports[`snapshots fixtures/with-pages: mirror 1`] = `
 Array [
   "_bundless_paged_entry_.jsx",
   "_bundless_paged_routes_.jsx",
+  "index.html",
   "pages/about.tsx",
   "pages/index.tsx",
   "web_modules/chunk.YL6YMLLH.js",

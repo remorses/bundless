@@ -1,32 +1,26 @@
+import deepmerge from 'deepmerge'
+import { build, BuildOptions, Metadata, Plugin } from 'esbuild'
+import fromEntries from 'fromentries'
+import { promises as fsp } from 'fs'
+import fsx from 'fs-extra'
+import os from 'os'
+import path from 'path'
+import { MAIN_FIELDS } from '../constants'
+import { Graph } from '../graph'
+import { PluginsExecutor } from '../plugin'
 import {
     HtmlIngestPlugin,
+    HtmlResolverPlugin,
     NodeModulesPolyfillPlugin,
     NodeResolvePlugin,
 } from '../plugins'
-import deepmerge from 'deepmerge'
-import { build, BuildOptions, Metadata, Plugin } from 'esbuild'
-import { promises as fsp } from 'fs'
-import fsx, { copySync } from 'fs-extra'
-import os from 'os'
-import path from 'path'
-import slash from 'slash'
-import {
-    importableAssets,
-    isRunningWithYarnPnp,
-    JS_EXTENSIONS,
-    MAIN_FIELDS,
-} from '../constants'
-
-import { osAgnosticPath, runFunctionOnPaths } from './support'
-import fromEntries from 'fromentries'
-import { stripColon, unique } from './support'
 import { flatten } from '../utils'
-import { logger } from '../logger'
 import {
     commonEsbuildOptions,
     generateDefineObject,
     resolvableExtensions,
 } from './esbuild'
+import { osAgnosticPath, runFunctionOnPaths, stripColon } from './support'
 
 type Args = {
     esbuildCwd: string
@@ -58,6 +52,43 @@ export async function traverseWithEsbuild({
         }
     }
 
+    const allPlugins = [
+        ...(plugins || []),
+        
+        ExternalButInMetafile(),
+        NodeModulesPolyfillPlugin(),
+        HtmlResolverPlugin(),
+        HtmlIngestPlugin({ root }),
+        NodeResolvePlugin({
+            name: 'traverse-node-resolve',
+            mainFields: MAIN_FIELDS,
+            extensions: resolvableExtensions,
+            onResolved: function external(resolved) {
+                if (stopTraversing && stopTraversing(resolved)) {
+                    return {
+                        namespace: externalNamespace,
+                        path: resolved,
+                    }
+                }
+                return
+            },
+            onNonResolved: (p) => {
+                console.error(`Cannot resolve '${p}' during traversal`)
+                // return {
+                //     external: true,
+                // }
+            },
+        }),
+    ].map((plugin) => ({
+        ...plugin,
+        name: 'traversal-' + plugin.name,
+    }))
+    const pluginsExecutor = new PluginsExecutor({
+        plugins: allPlugins,
+        config: { root },
+        graph: new Graph({ root }),
+        root,
+    })
     try {
         const metafile = path.join(destLoc, 'meta.json')
         // logger.log(`Running esbuild in cwd '${process.cwd()}'`)
@@ -70,37 +101,7 @@ export async function traverseWithEsbuild({
                     entryPoints,
                     outdir: destLoc,
                     metafile,
-                    plugins: [
-                        ...(plugins || []),
-                        HtmlIngestPlugin({ root }),
-                        ExternalButInMetafile(),
-                        NodeModulesPolyfillPlugin(),
-                        NodeResolvePlugin({
-                            name: 'traverse-node-resolve',
-                            mainFields: MAIN_FIELDS,
-                            extensions: resolvableExtensions,
-                            onResolved: function external(resolved) {
-                                if (
-                                    stopTraversing &&
-                                    stopTraversing(resolved)
-                                ) {
-                                    return {
-                                        namespace: externalNamespace,
-                                        path: resolved,
-                                    }
-                                }
-                                return
-                            },
-                            onNonResolved: (p) => {
-                                console.error(
-                                    `Cannot resolve '${p}' during traversal`,
-                                )
-                                // return {
-                                //     external: true,
-                                // }
-                            },
-                        }),
-                    ],
+                    plugins: pluginsExecutor.esbuildPlugins(),
                 } as BuildOptions,
                 esbuildOptions,
             ),

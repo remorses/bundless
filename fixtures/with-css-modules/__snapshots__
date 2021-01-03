@@ -14,6 +14,7 @@ Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/file.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/file.module.css?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
@@ -23,6 +24,7 @@ Array [
   "_hmr_client.js",
   "file.js",
   "file.module.css",
+  "index.html",
   "main.js",
 ]
 `;

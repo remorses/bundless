@@ -12,6 +12,7 @@ Array [
 exports[`snapshots fixtures/with-assets-imports: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/image.png?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
@@ -19,6 +20,7 @@ Object {
 exports[`snapshots fixtures/with-assets-imports: mirror 1`] = `
 Array [
   "image.png",
+  "index.html",
   "main.js",
 ]
 `;
