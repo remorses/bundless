@@ -41,10 +41,10 @@ export async function build({
 }: BuildConfig & {
     config: Config
 }): Promise<{ bundleMap; traversalGraph }> {
-    if (!process.env.NODE_ENV) {
-        logger.log(`setting env.NODE_ENV = 'production'`)
-        process.env.NODE_ENV = 'production'
-    }
+    // if (!process.env.NODE_ENV) {
+    //     logger.log(`setting env.NODE_ENV = 'production'`)
+    //     process.env.NODE_ENV = 'production'
+    // }
 
     const platform = config.platform || 'browser'
     const isBrowser = platform === 'browser'

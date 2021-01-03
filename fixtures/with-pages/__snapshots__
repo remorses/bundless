@@ -4,9 +4,9 @@ exports[`snapshots fixtures/with-pages: build 1`] = `
 Array [
   "about/index.html",
   "about/index.js",
-  "chunk.CTYP6TOD.js",
-  "chunk.J7D4EJTC.js",
-  "chunk.JX5C3APE.js",
+  "chunk.3UMCZ5SJ.js",
+  "chunk.3ZGQHB23.js",
+  "chunk.BJEGZC2A.js",
   "index.html",
   "index.js",
   "metafile.json",
@@ -21,12 +21,14 @@ Object {
   "http://127.0.0.1:9000/.../.../paged/src/client/index.ts?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_bundless_paged_entry_.jsx?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/_react-refresh-runtime_?namespace=react-refresh-runtime": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/about/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/pages/about.tsx?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/pages/index.tsx?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/chunk.YL6YMLLH.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/web_modules/chunk.YLINEMVY.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/react-dom/index.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file": "application/javascript; charset=utf-8",
@@ -38,12 +40,14 @@ exports[`snapshots fixtures/with-pages: mirror 1`] = `
 Array [
   "_bundless_paged_entry_.jsx",
   "_bundless_paged_routes_.jsx",
+  "_hmr_client.js",
+  "_react-refresh-runtime_",
   "about/index.html",
   "index.html",
   "pages/about.tsx",
   "pages/index.tsx",
+  "web_modules/chunk.UGVOUZLI.js",
   "web_modules/chunk.YL6YMLLH.js",
-  "web_modules/chunk.YLINEMVY.js",
   "web_modules/react-dom/index.js",
   "web_modules/react-router-dom/esm/react-router-dom.js",
   "web_modules/react/index.js",
@@ -74,6 +78,66 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file",
   },
   Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/pages/about.tsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/pages/about.tsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_react-refresh-runtime_?namespace=react-refresh-runtime",
+    "importer": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_react-refresh-runtime_?namespace=react-refresh-runtime",
+  },
+  Object {
+    "importPath": "/_react-refresh-runtime_?namespace=react-refresh-runtime",
+    "importer": "http://127.0.0.1:9000/pages/about.tsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_react-refresh-runtime_?namespace=react-refresh-runtime",
+  },
+  Object {
+    "importPath": "/_react-refresh-runtime_?namespace=react-refresh-runtime",
+    "importer": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_react-refresh-runtime_?namespace=react-refresh-runtime",
+  },
+  Object {
+    "importPath": "/_react-refresh-runtime_?namespace=react-refresh-runtime",
+    "importer": "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_react-refresh-runtime_?namespace=react-refresh-runtime",
+  },
+  Object {
+    "importPath": "/_react-refresh-runtime_?namespace=react-refresh-runtime",
+    "importer": "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_react-refresh-runtime_?namespace=react-refresh-runtime",
+  },
+  Object {
+    "importPath": "/_react-refresh-runtime_?namespace=react-refresh-runtime",
+    "importer": "http://127.0.0.1:9000/pages/about.tsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_react-refresh-runtime_?namespace=react-refresh-runtime",
+  },
+  Object {
     "importPath": "/.../.../paged/src/client/context.ts?namespace=file",
     "importer": "http://127.0.0.1:9000/.../.../paged/src/client/index.ts?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/.../.../paged/src/client/context.ts?namespace=file",
@@ -124,64 +188,64 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.YL6YMLLH.js?namespace=file",
+    "importPath": "/web_modules/chunk.UGVOUZLI.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YL6YMLLH.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.YL6YMLLH.js?namespace=file",
+    "importPath": "/web_modules/chunk.UGVOUZLI.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/swr/esm/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YL6YMLLH.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.YL6YMLLH.js?namespace=file",
+    "importPath": "/web_modules/chunk.UGVOUZLI.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/swr/esm/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YL6YMLLH.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.YL6YMLLH.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YL6YMLLH.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.YLINEMVY.js?namespace=file",
+    "importPath": "/web_modules/chunk.UGVOUZLI.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/react-dom/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YLINEMVY.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.YLINEMVY.js?namespace=file",
+    "importPath": "/web_modules/chunk.UGVOUZLI.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YLINEMVY.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.YLINEMVY.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YLINEMVY.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.YLINEMVY.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/swr/esm/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YLINEMVY.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.YLINEMVY.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YLINEMVY.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.YLINEMVY.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/swr/esm/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YLINEMVY.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.YLINEMVY.js?namespace=file",
+    "importPath": "/web_modules/chunk.UGVOUZLI.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YLINEMVY.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.YLINEMVY.js?namespace=file",
+    "importPath": "/web_modules/chunk.UGVOUZLI.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/react-dom/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YLINEMVY.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.UGVOUZLI.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.YL6YMLLH.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YL6YMLLH.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.YL6YMLLH.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/swr/esm/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YL6YMLLH.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.YL6YMLLH.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YL6YMLLH.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.YL6YMLLH.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/swr/esm/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.YL6YMLLH.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/react-dom/index.js?namespace=file",
@@ -195,7 +259,7 @@ Array [
   },
   Object {
     "importPath": "/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/.../.../paged/src/client/index.ts?namespace=file",
+    "importer": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
   },
   Object {
@@ -205,7 +269,17 @@ Array [
   },
   Object {
     "importPath": "/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/.../.../paged/src/client/index.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
     "importer": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
   },
   Object {
@@ -216,16 +290,6 @@ Array [
   Object {
     "importPath": "/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
     "importer": "http://127.0.0.1:9000/_bundless_paged_entry_.jsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
   },
   Object {
@@ -235,7 +299,12 @@ Array [
   },
   Object {
     "importPath": "/web_modules/react/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file",
+    "importer": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/react/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/pages/about.tsx?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
   },
   Object {
@@ -250,11 +319,6 @@ Array [
   },
   Object {
     "importPath": "/web_modules/react/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/pages/about.tsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/react/index.js?namespace=file",
     "importer": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
   },
@@ -265,7 +329,7 @@ Array [
   },
   Object {
     "importPath": "/web_modules/react/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
+    "importer": "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
   },
   Object {

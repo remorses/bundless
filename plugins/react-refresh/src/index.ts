@@ -56,7 +56,7 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                     export default exports
                     `
                     return {
-                        loader: 'js',
+                        loader: 'jsx',
                         contents: runtimeCode,
                     }
                 },
@@ -70,6 +70,8 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                 const result = await transform(args.contents, {
                     plugins: [
                         require('@babel/plugin-syntax-import-meta'),
+                        require('@babel/plugin-syntax-jsx'),
+                        require('@babel/plugin-syntax-class-properties'),
                         require('react-refresh/babel'),
                         {
                             visitor: {
@@ -110,9 +112,9 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                 }
 
                 const footer = makeFooter(nonComponentExports.length === 0)
-                
+
                 return {
-                    loader: 'js',
+                    loader: 'jsx',
                     contents: `${result.code}${footer}`,
                     map: result.map,
                 }
@@ -233,11 +235,17 @@ if (import.meta.hot) {
 }`
 
 export function parse(source: string): Statement[] {
-    return _parse(source, {
-        sourceType: 'module',
-        plugins: [
-            // required for import.meta.hot
-            'importMeta',
-        ],
-    }).program.body
+    try {
+        return _parse(source, {
+            sourceType: 'module',
+            plugins: [
+                'jsx',
+                'classProperties',
+                // required for import.meta.hot
+                'importMeta',
+            ],
+        }).program.body
+    } catch (e) {
+        throw new Error(`Cannot parse with babel: ${e}`)
+    }
 }

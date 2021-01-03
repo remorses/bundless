@@ -20,8 +20,8 @@
       "bytes": 2108,
       "imports": []
     },
-    "../../node_modules/react/cjs/react.production.min.js": {
-      "bytes": 7589,
+    "../../node_modules/react/cjs/react.development.js": {
+      "bytes": 74538,
       "imports": [
         {
           "path": "../../node_modules/object-assign/index.js"
@@ -32,24 +32,24 @@
       "bytes": 190,
       "imports": [
         {
-          "path": "../../node_modules/react/cjs/react.production.min.js"
+          "path": "../../node_modules/react/cjs/react.development.js"
         }
       ]
     },
-    "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.production.min.js": {
-      "bytes": 3556,
+    "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js": {
+      "bytes": 18684,
       "imports": []
     },
     "../../node_modules/scheduler/unstable_no_dom.js": {
       "bytes": 230,
       "imports": [
         {
-          "path": "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.production.min.js"
+          "path": "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js"
         }
       ]
     },
-    "../../node_modules/scheduler/cjs/scheduler.production.min.js": {
-      "bytes": 4343,
+    "../../node_modules/scheduler/cjs/scheduler.development.js": {
+      "bytes": 21831,
       "imports": []
     },
     "../../node_modules/scheduler/index.js": {
@@ -59,12 +59,24 @@
           "path": "../../node_modules/scheduler/unstable_no_dom.js"
         },
         {
-          "path": "../../node_modules/scheduler/cjs/scheduler.production.min.js"
+          "path": "../../node_modules/scheduler/cjs/scheduler.development.js"
         }
       ]
     },
-    "../../node_modules/react-dom/cjs/react-dom.production.min.js": {
-      "bytes": 128701,
+    "../../node_modules/scheduler/cjs/scheduler-tracing.development.js": {
+      "bytes": 9023,
+      "imports": []
+    },
+    "../../node_modules/scheduler/tracing.js": {
+      "bytes": 214,
+      "imports": [
+        {
+          "path": "../../node_modules/scheduler/cjs/scheduler-tracing.development.js"
+        }
+      ]
+    },
+    "../../node_modules/react-dom/cjs/react-dom.development.js": {
+      "bytes": 957314,
       "imports": [
         {
           "path": "../../node_modules/react/index.js"
@@ -74,6 +86,9 @@
         },
         {
           "path": "../../node_modules/scheduler/index.js"
+        },
+        {
+          "path": "../../node_modules/scheduler/tracing.js"
         }
       ]
     },
@@ -81,7 +96,7 @@
       "bytes": 1363,
       "imports": [
         {
-          "path": "../../node_modules/react-dom/cjs/react-dom.production.min.js"
+          "path": "../../node_modules/react-dom/cjs/react-dom.development.js"
         }
       ]
     },
@@ -89,15 +104,44 @@
       "bytes": 204,
       "imports": []
     },
+    "../../node_modules/react-is/cjs/react-is.development.js": {
+      "bytes": 6980,
+      "imports": []
+    },
+    "../../node_modules/react-is/index.js": {
+      "bytes": 196,
+      "imports": [
+        {
+          "path": "../../node_modules/react-is/cjs/react-is.development.js"
+        }
+      ]
+    },
     "../../node_modules/prop-types/lib/ReactPropTypesSecret.js": {
       "bytes": 314,
       "imports": []
     },
-    "../../node_modules/prop-types/factoryWithThrowingShims.js": {
-      "bytes": 1621,
+    "../../node_modules/prop-types/checkPropTypes.js": {
+      "bytes": 3781,
       "imports": [
         {
           "path": "../../node_modules/prop-types/lib/ReactPropTypesSecret.js"
+        }
+      ]
+    },
+    "../../node_modules/prop-types/factoryWithTypeCheckers.js": {
+      "bytes": 21563,
+      "imports": [
+        {
+          "path": "../../node_modules/react-is/index.js"
+        },
+        {
+          "path": "../../node_modules/object-assign/index.js"
+        },
+        {
+          "path": "../../node_modules/prop-types/lib/ReactPropTypesSecret.js"
+        },
+        {
+          "path": "../../node_modules/prop-types/checkPropTypes.js"
         }
       ]
     },
@@ -105,7 +149,10 @@
       "bytes": 710,
       "imports": [
         {
-          "path": "../../node_modules/prop-types/factoryWithThrowingShims.js"
+          "path": "../../node_modules/react-is/index.js"
+        },
+        {
+          "path": "../../node_modules/prop-types/factoryWithTypeCheckers.js"
         }
       ]
     },
@@ -175,18 +222,6 @@
       "imports": [
         {
           "path": "../../node_modules/isarray/index.js"
-        }
-      ]
-    },
-    "../../node_modules/react-is/cjs/react-is.production.min.js": {
-      "bytes": 2554,
-      "imports": []
-    },
-    "../../node_modules/react-is/index.js": {
-      "bytes": 196,
-      "imports": [
-        {
-          "path": "../../node_modules/react-is/cjs/react-is.production.min.js"
         }
       ]
     },
@@ -373,7 +408,7 @@
     "web_modules/react/index.js": {
       "imports": [
         {
-          "path": "web_modules/react/chunk.YLINEMVY.js"
+          "path": "web_modules/react/chunk.UGVOUZLI.js"
         }
       ],
       "exports": [
@@ -389,33 +424,39 @@
     "web_modules/react-dom/index.js": {
       "imports": [
         {
-          "path": "web_modules/react-dom/chunk.YLINEMVY.js"
+          "path": "web_modules/react-dom/chunk.UGVOUZLI.js"
         }
       ],
       "exports": [
         "default"
       ],
       "inputs": {
-        "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.production.min.js": {
-          "bytesInOutput": 5743
+        "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js": {
+          "bytesInOutput": 19207
         },
         "../../node_modules/scheduler/unstable_no_dom.js": {
-          "bytesInOutput": 213
+          "bytesInOutput": 211
         },
-        "../../node_modules/scheduler/cjs/scheduler.production.min.js": {
-          "bytesInOutput": 6722
+        "../../node_modules/scheduler/cjs/scheduler.development.js": {
+          "bytesInOutput": 21000
         },
         "../../node_modules/scheduler/index.js": {
-          "bytesInOutput": 325
+          "bytesInOutput": 323
         },
-        "../../node_modules/react-dom/cjs/react-dom.production.min.js": {
-          "bytesInOutput": 206422
+        "../../node_modules/scheduler/cjs/scheduler-tracing.development.js": {
+          "bytesInOutput": 9260
+        },
+        "../../node_modules/scheduler/tracing.js": {
+          "bytesInOutput": 195
+        },
+        "../../node_modules/react-dom/cjs/react-dom.development.js": {
+          "bytesInOutput": 791801
         },
         "../../node_modules/react-dom/index.js": {
-          "bytesInOutput": 557
+          "bytesInOutput": 205
         }
       },
-      "bytes": 604015
+      "bytes": 2609404
     },
     "web_modules/react-router-dom/esm/react-router-dom.js": {
       "imports": [
@@ -423,7 +464,7 @@
           "path": "web_modules/react-router-dom/esm/chunk.YL6YMLLH.js"
         },
         {
-          "path": "web_modules/react-router-dom/esm/chunk.YLINEMVY.js"
+          "path": "web_modules/react-router-dom/esm/chunk.UGVOUZLI.js"
         }
       ],
       "exports": [
@@ -447,26 +488,29 @@
         "withRouter"
       ],
       "inputs": {
+        "../../node_modules/react-is/cjs/react-is.development.js": {
+          "bytesInOutput": 7333
+        },
+        "../../node_modules/react-is/index.js": {
+          "bytesInOutput": 187
+        },
         "../../node_modules/prop-types/lib/ReactPropTypesSecret.js": {
           "bytesInOutput": 207
         },
-        "../../node_modules/prop-types/factoryWithThrowingShims.js": {
-          "bytesInOutput": 1415
+        "../../node_modules/prop-types/checkPropTypes.js": {
+          "bytesInOutput": 2333
+        },
+        "../../node_modules/prop-types/factoryWithTypeCheckers.js": {
+          "bytesInOutput": 17179
         },
         "../../node_modules/prop-types/index.js": {
-          "bytesInOutput": 313
+          "bytesInOutput": 325
         },
         "../../node_modules/isarray/index.js": {
           "bytesInOutput": 185
         },
         "../../node_modules/path-to-regexp/index.js": {
           "bytesInOutput": 7572
-        },
-        "../../node_modules/react-is/cjs/react-is.production.min.js": {
-          "bytesInOutput": 3663
-        },
-        "../../node_modules/react-is/index.js": {
-          "bytesInOutput": 189
         },
         "../../node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js": {
           "bytesInOutput": 2685
@@ -475,7 +519,7 @@
           "bytesInOutput": 190
         },
         "../../node_modules/react-router/esm/react-router.js": {
-          "bytesInOutput": 19330
+          "bytesInOutput": 22378
         },
         "../../node_modules/@babel/runtime/helpers/esm/extends.js": {
           "bytesInOutput": 379
@@ -486,23 +530,26 @@
         "../../node_modules/value-equal/esm/value-equal.js": {
           "bytesInOutput": 750
         },
+        "../../node_modules/tiny-warning/dist/tiny-warning.esm.js": {
+          "bytesInOutput": 346
+        },
         "../../node_modules/tiny-invariant/dist/tiny-invariant.esm.js": {
-          "bytesInOutput": 287
+          "bytesInOutput": 290
         },
         "../../node_modules/history/esm/history.js": {
-          "bytesInOutput": 22008
+          "bytesInOutput": 24294
         },
         "../../node_modules/mini-create-react-context/dist/esm/index.js": {
-          "bytesInOutput": 4974
+          "bytesInOutput": 4973
         },
         "../../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js": {
           "bytesInOutput": 344
         },
         "../../node_modules/react-router-dom/esm/react-router-dom.js": {
-          "bytesInOutput": 8710
+          "bytesInOutput": 9162
         }
       },
-      "bytes": 246577
+      "bytes": 324958
     },
     "web_modules/swr/esm/index.js": {
       "imports": [
@@ -510,7 +557,7 @@
           "path": "web_modules/swr/esm/chunk.YL6YMLLH.js"
         },
         {
-          "path": "web_modules/swr/esm/chunk.YLINEMVY.js"
+          "path": "web_modules/swr/esm/chunk.UGVOUZLI.js"
         }
       ],
       "exports": [
@@ -560,7 +607,7 @@
       "inputs": {},
       "bytes": 1199
     },
-    "web_modules/chunk.YLINEMVY.js": {
+    "web_modules/chunk.UGVOUZLI.js": {
       "imports": [],
       "exports": [
         "__commonJS",
@@ -571,14 +618,14 @@
         "../../node_modules/object-assign/index.js": {
           "bytesInOutput": 2017
         },
-        "../../node_modules/react/cjs/react.production.min.js": {
-          "bytesInOutput": 10343
+        "../../node_modules/react/cjs/react.development.js": {
+          "bytesInOutput": 62141
         },
         "../../node_modules/react/index.js": {
-          "bytesInOutput": 183
+          "bytesInOutput": 181
         }
       },
-      "bytes": 37217
+      "bytes": 201862
     }
   }
 }

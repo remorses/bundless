@@ -44,6 +44,8 @@ import {
     readBody,
 } from './utils'
 
+process.env.NODE_ENV = 'development'
+
 export interface ServerPluginContext {
     root: string
     app: Koa

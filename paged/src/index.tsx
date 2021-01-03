@@ -27,9 +27,9 @@ import { MahoContext } from './client'
 const CLIENT_ENTRY = '_bundless_paged_entry_.jsx'
 const ROUTES_ENTRY = '_bundless_paged_routes_.jsx'
 
-const namespace = 'paged-namespace'
-
-export function Plugin({ clientScriptSrc = '/' + CLIENT_ENTRY } = {}): PluginType {
+export function Plugin({
+    clientScriptSrc = '/' + CLIENT_ENTRY,
+} = {}): PluginType {
     // in prod the html template uses the output bundle as script
     const htmlTemplate = `
     <!DOCTYPE html>
@@ -83,12 +83,17 @@ export function Plugin({ clientScriptSrc = '/' + CLIENT_ENTRY } = {}): PluginTyp
                 const routesPaths = await (await getRoutes()).map((x) =>
                     path.posix.join(x.path, 'index.html'),
                 )
+                // TODO use react router utils instead
+                // import {
+                //     matchRoutes,
+                //     createRoutesFromArray,
+                //     generatePath,
+                // } from 'react-router-dom'
                 const indexPath = args.path.endsWith('.html')
                     ? args.path
                     : path.posix.join(args.path, 'index.html')
                 const relativeIndexPath = fileToImportPath(root, indexPath)
                 const route = routesPaths.find((x) => x === relativeIndexPath)
-                console.log({ routesPaths, indexPath, route })
                 if (route) {
                     return {
                         path: indexPath,
@@ -134,7 +139,6 @@ export function Plugin({ clientScriptSrc = '/' + CLIENT_ENTRY } = {}): PluginTyp
                 const prerenderedHtml = renderToString(
                     <App Router={StaticRouter} context={context} />,
                 )
-                console.log({ prerenderedHtml })
                 const html = renderToStaticMarkup(
                     <MahoContext.Provider value={context}>
                         <script
