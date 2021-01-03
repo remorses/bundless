@@ -3,7 +3,7 @@
     "private": true,
     "version": "0.0.0",
     "dependencies": {
-        "es-module-traversal": "^0.0.47",
+        "es-module-traversal": "^0.0.49",
         "@bundless/cli": "*",
         "glob": "^7.1.6",
         "jasmine-fail-fast": "^2.0.1",
