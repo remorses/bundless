@@ -239,7 +239,7 @@ export function parse(source: string): Statement[] {
         return _parse(source, {
             sourceType: 'module',
             plugins: [
-                'jsx',
+                'jsx', // TODO i shouldn't need jsx here, maybe it's because other plugins like paged are returning stuff with jsx code?
                 'classProperties',
                 // required for import.meta.hot
                 'importMeta',

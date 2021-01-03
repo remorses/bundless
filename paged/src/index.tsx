@@ -1,28 +1,14 @@
-import fs from 'fs'
-import { StaticRouter } from 'react-router-dom'
-import React from 'react'
-import { renderToString, renderToStaticMarkup } from 'react-dom/server'
-import escapeStringRegexp from 'escape-string-regexp'
-import memoize from 'micro-memoize'
-import { Plugin as PluginType, build } from '@bundless/cli'
-import { fileToImportPath, importPathToFile } from '@bundless/cli/dist/utils'
-import glob from 'fast-glob'
-import { addHook } from 'pirates'
-import {
-    commonEsbuildOptions,
-    generateDefineObject,
-    metafileToBundleMap,
-    resolvableExtensions,
-} from '@bundless/cli/dist/prebundle/esbuild'
-import {
-    matchRoutes,
-    createRoutesFromArray,
-    generatePath,
-} from 'react-router-dom'
-import path = require('path')
-import { NodeResolvePlugin } from '@esbuild-plugins/all'
+import { build, Plugin as PluginType } from '@bundless/cli'
 import { osAgnosticPath } from '@bundless/cli/dist/prebundle/support'
+import { fileToImportPath } from '@bundless/cli/dist/utils'
+import escapeStringRegexp from 'escape-string-regexp'
+import glob from 'fast-glob'
+import memoize from 'micro-memoize'
+import React from 'react'
+import { renderToStaticMarkup, renderToString } from 'react-dom/server'
+import { StaticRouter } from 'react-router-dom'
 import { MahoContext } from './client'
+import path = require('path')
 
 const CLIENT_ENTRY = '_bundless_paged_entry_.jsx'
 const ROUTES_ENTRY = '_bundless_paged_routes_.jsx'
