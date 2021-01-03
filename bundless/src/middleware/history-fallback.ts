@@ -38,7 +38,7 @@ export function historyFallbackMiddleware({
             return next()
         }
         // use the executor first to resolve virtual html files
-        const resolvedHtml = await resolveWithPlugins(pluginsExecutor, {
+        const resolvedHtml = await resolveHtmlWithPlugins(pluginsExecutor, {
             filePath: importPathToFile(root, ctx.path), // TODO discard non html results? i must only resolve with html stuff, this could resolve to non html
             root,
         })
@@ -60,7 +60,7 @@ export function historyFallbackMiddleware({
     }
 }
 
-async function resolveWithPlugins(
+async function resolveHtmlWithPlugins(
     pluginsExecutor: PluginsExecutor,
     { root, filePath },
 ) {

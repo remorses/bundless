@@ -87,11 +87,16 @@ export class PluginsExecutor {
 
     constructor(_args: {
         plugins: Plugin[]
-        config: Config
-        graph: Graph
+        config?: Config
         root: string
+        graph?: Graph
     }) {
-        const { plugins, config, graph, root } = _args
+        const root = _args.root
+        const {
+            plugins,
+            config = { root },
+            graph = new Graph({ root }),
+        } = _args
         Object.assign(this, _args)
         // this.config = {...config, root}
 

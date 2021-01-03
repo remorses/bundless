@@ -29,7 +29,17 @@ const ROUTES_ENTRY = '_bundless_paged_routes_.jsx'
 
 const namespace = 'paged-namespace'
 
-export function Plugin(): PluginType {
+export function Plugin({ clientScriptSrc = '/' + CLIENT_ENTRY } = {}): PluginType {
+    // in prod the html template uses the output bundle as script
+    const htmlTemplate = `
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <script type="module" src="${clientScriptSrc}"></script>
+        </body>
+    </html>
+    `
+
     return {
         name: 'paged-plugin',
         setup({ config, onLoad, onResolve, onTransform, pluginsExecutor }) {
@@ -203,16 +213,6 @@ function tryRequire(p: string) {
         throw new Error(`Cannot require '${p}': ${e}`)
     }
 }
-
-const htmlTemplate = `
-<!DOCTYPE html>
-<html>
-    <body>
-        <script type="module" src="/${CLIENT_ENTRY}"></script>
-    </body>
-</html>
-
-`
 
 const clientEntryContent = `
 import React from 'react'

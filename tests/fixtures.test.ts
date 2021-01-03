@@ -71,7 +71,7 @@ describe('snapshots', () => {
                                 headers: {
                                     ...(importer ? { Referer: importer } : {}),
                                     Accept:
-                                        mime.lookup(
+                                        mime.contentType(
                                             path.extname(
                                                 url.split('/').reverse()[0],
                                             ),
