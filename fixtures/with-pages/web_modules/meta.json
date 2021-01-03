@@ -16,455 +16,414 @@
       "bytes": 0,
       "imports": []
     },
-    "node_modules/object-assign/index.js": {
+    "../../node_modules/object-assign/index.js": {
       "bytes": 2108,
       "imports": []
     },
-    "node_modules/react/cjs/react.development.js": {
-      "bytes": 74538,
+    "../../node_modules/react/cjs/react.production.min.js": {
+      "bytes": 7589,
       "imports": [
         {
-          "path": "node_modules/object-assign/index.js"
+          "path": "../../node_modules/object-assign/index.js"
         }
       ]
     },
-    "node_modules/react/index.js": {
+    "../../node_modules/react/index.js": {
       "bytes": 190,
       "imports": [
         {
-          "path": "node_modules/react/cjs/react.development.js"
+          "path": "../../node_modules/react/cjs/react.production.min.js"
         }
       ]
     },
-    "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js": {
-      "bytes": 18684,
+    "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.production.min.js": {
+      "bytes": 3556,
       "imports": []
     },
-    "node_modules/scheduler/unstable_no_dom.js": {
+    "../../node_modules/scheduler/unstable_no_dom.js": {
       "bytes": 230,
       "imports": [
         {
-          "path": "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js"
+          "path": "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.production.min.js"
         }
       ]
     },
-    "node_modules/scheduler/cjs/scheduler.development.js": {
-      "bytes": 21831,
+    "../../node_modules/scheduler/cjs/scheduler.production.min.js": {
+      "bytes": 4343,
       "imports": []
     },
-    "node_modules/scheduler/index.js": {
+    "../../node_modules/scheduler/index.js": {
       "bytes": 331,
       "imports": [
         {
-          "path": "node_modules/scheduler/unstable_no_dom.js"
+          "path": "../../node_modules/scheduler/unstable_no_dom.js"
         },
         {
-          "path": "node_modules/scheduler/cjs/scheduler.development.js"
+          "path": "../../node_modules/scheduler/cjs/scheduler.production.min.js"
         }
       ]
     },
-    "node_modules/scheduler/cjs/scheduler-tracing.development.js": {
-      "bytes": 9023,
-      "imports": []
-    },
-    "node_modules/scheduler/tracing.js": {
-      "bytes": 214,
+    "../../node_modules/react-dom/cjs/react-dom.production.min.js": {
+      "bytes": 128701,
       "imports": [
         {
-          "path": "node_modules/scheduler/cjs/scheduler-tracing.development.js"
+          "path": "../../node_modules/react/index.js"
+        },
+        {
+          "path": "../../node_modules/object-assign/index.js"
+        },
+        {
+          "path": "../../node_modules/scheduler/index.js"
         }
       ]
     },
-    "node_modules/react-dom/cjs/react-dom.development.js": {
-      "bytes": 957314,
-      "imports": [
-        {
-          "path": "node_modules/react/index.js"
-        },
-        {
-          "path": "node_modules/object-assign/index.js"
-        },
-        {
-          "path": "node_modules/scheduler/index.js"
-        },
-        {
-          "path": "node_modules/scheduler/tracing.js"
-        }
-      ]
-    },
-    "node_modules/react-dom/index.js": {
+    "../../node_modules/react-dom/index.js": {
       "bytes": 1363,
       "imports": [
         {
-          "path": "node_modules/react-dom/cjs/react-dom.development.js"
+          "path": "../../node_modules/react-dom/cjs/react-dom.production.min.js"
         }
       ]
     },
-    "node_modules/@babel/runtime/helpers/esm/inheritsLoose.js": {
+    "../../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js": {
       "bytes": 204,
       "imports": []
     },
-    "node_modules/react-is/cjs/react-is.development.js": {
-      "bytes": 6980,
-      "imports": []
-    },
-    "node_modules/react-is/index.js": {
-      "bytes": 196,
-      "imports": [
-        {
-          "path": "node_modules/react-is/cjs/react-is.development.js"
-        }
-      ]
-    },
-    "node_modules/prop-types/lib/ReactPropTypesSecret.js": {
+    "../../node_modules/prop-types/lib/ReactPropTypesSecret.js": {
       "bytes": 314,
       "imports": []
     },
-    "node_modules/prop-types/checkPropTypes.js": {
-      "bytes": 3781,
+    "../../node_modules/prop-types/factoryWithThrowingShims.js": {
+      "bytes": 1621,
       "imports": [
         {
-          "path": "node_modules/prop-types/lib/ReactPropTypesSecret.js"
+          "path": "../../node_modules/prop-types/lib/ReactPropTypesSecret.js"
         }
       ]
     },
-    "node_modules/prop-types/factoryWithTypeCheckers.js": {
-      "bytes": 21563,
-      "imports": [
-        {
-          "path": "node_modules/react-is/index.js"
-        },
-        {
-          "path": "node_modules/object-assign/index.js"
-        },
-        {
-          "path": "node_modules/prop-types/lib/ReactPropTypesSecret.js"
-        },
-        {
-          "path": "node_modules/prop-types/checkPropTypes.js"
-        }
-      ]
-    },
-    "node_modules/prop-types/index.js": {
+    "../../node_modules/prop-types/index.js": {
       "bytes": 710,
       "imports": [
         {
-          "path": "node_modules/react-is/index.js"
-        },
-        {
-          "path": "node_modules/prop-types/factoryWithTypeCheckers.js"
+          "path": "../../node_modules/prop-types/factoryWithThrowingShims.js"
         }
       ]
     },
-    "node_modules/@babel/runtime/helpers/esm/extends.js": {
+    "../../node_modules/@babel/runtime/helpers/esm/extends.js": {
       "bytes": 397,
       "imports": []
     },
-    "node_modules/resolve-pathname/esm/resolve-pathname.js": {
+    "../../node_modules/resolve-pathname/esm/resolve-pathname.js": {
       "bytes": 1765,
       "imports": []
     },
-    "node_modules/value-equal/esm/value-equal.js": {
+    "../../node_modules/value-equal/esm/value-equal.js": {
       "bytes": 860,
       "imports": []
     },
-    "node_modules/tiny-warning/dist/tiny-warning.esm.js": {
+    "../../node_modules/tiny-warning/dist/tiny-warning.esm.js": {
       "bytes": 361,
       "imports": []
     },
-    "node_modules/tiny-invariant/dist/tiny-invariant.esm.js": {
+    "../../node_modules/tiny-invariant/dist/tiny-invariant.esm.js": {
       "bytes": 321,
       "imports": []
     },
-    "node_modules/history/esm/history.js": {
+    "../../node_modules/history/esm/history.js": {
       "bytes": 28728,
       "imports": [
         {
-          "path": "node_modules/@babel/runtime/helpers/esm/extends.js"
+          "path": "../../node_modules/@babel/runtime/helpers/esm/extends.js"
         },
         {
-          "path": "node_modules/resolve-pathname/esm/resolve-pathname.js"
+          "path": "../../node_modules/resolve-pathname/esm/resolve-pathname.js"
         },
         {
-          "path": "node_modules/value-equal/esm/value-equal.js"
+          "path": "../../node_modules/value-equal/esm/value-equal.js"
         },
         {
-          "path": "node_modules/tiny-warning/dist/tiny-warning.esm.js"
+          "path": "../../node_modules/tiny-warning/dist/tiny-warning.esm.js"
         },
         {
-          "path": "node_modules/tiny-invariant/dist/tiny-invariant.esm.js"
+          "path": "../../node_modules/tiny-invariant/dist/tiny-invariant.esm.js"
         }
       ]
     },
-    "node_modules/mini-create-react-context/dist/esm/index.js": {
+    "../../node_modules/mini-create-react-context/dist/esm/index.js": {
       "bytes": 5052,
       "imports": [
         {
-          "path": "node_modules/react/index.js"
+          "path": "../../node_modules/react/index.js"
         },
         {
-          "path": "node_modules/@babel/runtime/helpers/esm/inheritsLoose.js"
+          "path": "../../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js"
         },
         {
-          "path": "node_modules/prop-types/index.js"
+          "path": "../../node_modules/prop-types/index.js"
         },
         {
-          "path": "node_modules/tiny-warning/dist/tiny-warning.esm.js"
+          "path": "../../node_modules/tiny-warning/dist/tiny-warning.esm.js"
         }
       ]
     },
-    "node_modules/isarray/index.js": {
+    "../../node_modules/isarray/index.js": {
       "bytes": 120,
       "imports": []
     },
-    "node_modules/path-to-regexp/index.js": {
+    "../../node_modules/path-to-regexp/index.js": {
       "bytes": 10854,
       "imports": [
         {
-          "path": "node_modules/isarray/index.js"
+          "path": "../../node_modules/isarray/index.js"
         }
       ]
     },
-    "node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js": {
+    "../../node_modules/react-is/cjs/react-is.production.min.js": {
+      "bytes": 2554,
+      "imports": []
+    },
+    "../../node_modules/react-is/index.js": {
+      "bytes": 196,
+      "imports": [
+        {
+          "path": "../../node_modules/react-is/cjs/react-is.production.min.js"
+        }
+      ]
+    },
+    "../../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js": {
       "bytes": 350,
       "imports": []
     },
-    "node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js": {
+    "../../node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js": {
       "bytes": 2743,
       "imports": [
         {
-          "path": "node_modules/react-is/index.js"
+          "path": "../../node_modules/react-is/index.js"
         }
       ]
     },
-    "node_modules/react-router/esm/react-router.js": {
+    "../../node_modules/react-router/esm/react-router.js": {
       "bytes": 25530,
       "imports": [
         {
-          "path": "node_modules/@babel/runtime/helpers/esm/inheritsLoose.js"
+          "path": "../../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js"
         },
         {
-          "path": "node_modules/react/index.js"
+          "path": "../../node_modules/react/index.js"
         },
         {
-          "path": "node_modules/prop-types/index.js"
+          "path": "../../node_modules/prop-types/index.js"
         },
         {
-          "path": "node_modules/history/esm/history.js"
+          "path": "../../node_modules/history/esm/history.js"
         },
         {
-          "path": "node_modules/tiny-warning/dist/tiny-warning.esm.js"
+          "path": "../../node_modules/tiny-warning/dist/tiny-warning.esm.js"
         },
         {
-          "path": "node_modules/mini-create-react-context/dist/esm/index.js"
+          "path": "../../node_modules/mini-create-react-context/dist/esm/index.js"
         },
         {
-          "path": "node_modules/tiny-invariant/dist/tiny-invariant.esm.js"
+          "path": "../../node_modules/tiny-invariant/dist/tiny-invariant.esm.js"
         },
         {
-          "path": "node_modules/@babel/runtime/helpers/esm/extends.js"
+          "path": "../../node_modules/@babel/runtime/helpers/esm/extends.js"
         },
         {
-          "path": "node_modules/path-to-regexp/index.js"
+          "path": "../../node_modules/path-to-regexp/index.js"
         },
         {
-          "path": "node_modules/react-is/index.js"
+          "path": "../../node_modules/react-is/index.js"
         },
         {
-          "path": "node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js"
+          "path": "../../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js"
         },
         {
-          "path": "node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js"
+          "path": "../../node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js"
         }
       ]
     },
-    "node_modules/react-router-dom/esm/react-router-dom.js": {
+    "../../node_modules/react-router-dom/esm/react-router-dom.js": {
       "bytes": 10323,
       "imports": [
         {
-          "path": "node_modules/react-router/esm/react-router.js"
+          "path": "../../node_modules/react-router/esm/react-router.js"
         },
         {
-          "path": "node_modules/react-router/esm/react-router.js"
+          "path": "../../node_modules/react-router/esm/react-router.js"
         },
         {
-          "path": "node_modules/@babel/runtime/helpers/esm/inheritsLoose.js"
+          "path": "../../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js"
         },
         {
-          "path": "node_modules/react/index.js"
+          "path": "../../node_modules/react/index.js"
         },
         {
-          "path": "node_modules/history/esm/history.js"
+          "path": "../../node_modules/history/esm/history.js"
         },
         {
-          "path": "node_modules/prop-types/index.js"
+          "path": "../../node_modules/prop-types/index.js"
         },
         {
-          "path": "node_modules/tiny-warning/dist/tiny-warning.esm.js"
+          "path": "../../node_modules/tiny-warning/dist/tiny-warning.esm.js"
         },
         {
-          "path": "node_modules/@babel/runtime/helpers/esm/extends.js"
+          "path": "../../node_modules/@babel/runtime/helpers/esm/extends.js"
         },
         {
-          "path": "node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js"
+          "path": "../../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js"
         },
         {
-          "path": "node_modules/tiny-invariant/dist/tiny-invariant.esm.js"
+          "path": "../../node_modules/tiny-invariant/dist/tiny-invariant.esm.js"
         }
       ]
     },
-    "node_modules/dequal/lite/index.mjs": {
+    "../../node_modules/dequal/lite/index.mjs": {
       "bytes": 784,
       "imports": []
     },
-    "node_modules/swr/esm/libs/hash.js": {
+    "../../node_modules/swr/esm/libs/hash.js": {
       "bytes": 1377,
       "imports": []
     },
-    "node_modules/swr/esm/cache.js": {
+    "../../node_modules/swr/esm/cache.js": {
       "bytes": 2744,
       "imports": [
         {
-          "path": "node_modules/swr/esm/libs/hash.js"
+          "path": "../../node_modules/swr/esm/libs/hash.js"
         }
       ]
     },
-    "node_modules/swr/esm/libs/web-preset.js": {
+    "../../node_modules/swr/esm/libs/web-preset.js": {
       "bytes": 614,
       "imports": []
     },
-    "node_modules/swr/esm/config.js": {
+    "../../node_modules/swr/esm/config.js": {
       "bytes": 1703,
       "imports": [
         {
-          "path": "node_modules/dequal/lite/index.mjs"
+          "path": "../../node_modules/dequal/lite/index.mjs"
         },
         {
-          "path": "node_modules/swr/esm/cache.js"
+          "path": "../../node_modules/swr/esm/cache.js"
         },
         {
-          "path": "node_modules/swr/esm/libs/web-preset.js"
+          "path": "../../node_modules/swr/esm/libs/web-preset.js"
         }
       ]
     },
-    "node_modules/swr/esm/swr-config-context.js": {
+    "../../node_modules/swr/esm/swr-config-context.js": {
       "bytes": 165,
       "imports": [
         {
-          "path": "node_modules/react/index.js"
+          "path": "../../node_modules/react/index.js"
         }
       ]
     },
-    "node_modules/swr/esm/use-swr.js": {
+    "../../node_modules/swr/esm/use-swr.js": {
       "bytes": 32194,
       "imports": [
         {
-          "path": "node_modules/react/index.js"
+          "path": "../../node_modules/react/index.js"
         },
         {
-          "path": "node_modules/swr/esm/config.js"
+          "path": "../../node_modules/swr/esm/config.js"
         },
         {
-          "path": "node_modules/swr/esm/swr-config-context.js"
+          "path": "../../node_modules/swr/esm/swr-config-context.js"
         }
       ]
     },
-    "node_modules/swr/esm/use-swr-infinite.js": {
+    "../../node_modules/swr/esm/use-swr-infinite.js": {
       "bytes": 9855,
       "imports": [
         {
-          "path": "node_modules/react/index.js"
+          "path": "../../node_modules/react/index.js"
         },
         {
-          "path": "node_modules/swr/esm/config.js"
+          "path": "../../node_modules/swr/esm/config.js"
         },
         {
-          "path": "node_modules/swr/esm/swr-config-context.js"
+          "path": "../../node_modules/swr/esm/swr-config-context.js"
         },
         {
-          "path": "node_modules/swr/esm/use-swr.js"
+          "path": "../../node_modules/swr/esm/use-swr.js"
         }
       ]
     },
-    "node_modules/swr/esm/index.js": {
+    "../../node_modules/swr/esm/index.js": {
       "bytes": 184,
       "imports": [
         {
-          "path": "node_modules/swr/esm/use-swr.js"
+          "path": "../../node_modules/swr/esm/use-swr.js"
         },
         {
-          "path": "node_modules/swr/esm/use-swr.js"
+          "path": "../../node_modules/swr/esm/use-swr.js"
         },
         {
-          "path": "node_modules/swr/esm/use-swr-infinite.js"
+          "path": "../../node_modules/swr/esm/use-swr-infinite.js"
         },
         {
-          "path": "node_modules/swr/esm/config.js"
+          "path": "../../node_modules/swr/esm/config.js"
         }
       ]
     }
   },
   "outputs": {
-    "fixtures/with-pages/web_modules/react/index.js": {
+    "web_modules/react/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-pages/web_modules/react/chunk.YXTZTS4Z.js"
+          "path": "web_modules/react/chunk.YLINEMVY.js"
         }
       ],
       "exports": [
         "default"
       ],
       "inputs": {
-        "node_modules/react/index.js": {
+        "../../node_modules/react/index.js": {
           "bytesInOutput": 0
         }
       },
       "bytes": 263
     },
-    "fixtures/with-pages/web_modules/react-dom/index.js": {
+    "web_modules/react-dom/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-pages/web_modules/react-dom/chunk.YXTZTS4Z.js"
+          "path": "web_modules/react-dom/chunk.YLINEMVY.js"
         }
       ],
       "exports": [
         "default"
       ],
       "inputs": {
-        "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js": {
-          "bytesInOutput": 19207
+        "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.production.min.js": {
+          "bytesInOutput": 5743
         },
-        "node_modules/scheduler/unstable_no_dom.js": {
-          "bytesInOutput": 211
+        "../../node_modules/scheduler/unstable_no_dom.js": {
+          "bytesInOutput": 213
         },
-        "node_modules/scheduler/cjs/scheduler.development.js": {
-          "bytesInOutput": 21000
+        "../../node_modules/scheduler/cjs/scheduler.production.min.js": {
+          "bytesInOutput": 6722
         },
-        "node_modules/scheduler/index.js": {
-          "bytesInOutput": 323
+        "../../node_modules/scheduler/index.js": {
+          "bytesInOutput": 325
         },
-        "node_modules/scheduler/cjs/scheduler-tracing.development.js": {
-          "bytesInOutput": 9260
+        "../../node_modules/react-dom/cjs/react-dom.production.min.js": {
+          "bytesInOutput": 206422
         },
-        "node_modules/scheduler/tracing.js": {
-          "bytesInOutput": 195
-        },
-        "node_modules/react-dom/cjs/react-dom.development.js": {
-          "bytesInOutput": 791797
-        },
-        "node_modules/react-dom/index.js": {
-          "bytesInOutput": 205
+        "../../node_modules/react-dom/index.js": {
+          "bytesInOutput": 557
         }
       },
-      "bytes": 2609340
+      "bytes": 604015
     },
-    "fixtures/with-pages/web_modules/react-router-dom/esm/react-router-dom.js": {
+    "web_modules/react-router-dom/esm/react-router-dom.js": {
       "imports": [
         {
-          "path": "fixtures/with-pages/web_modules/react-router-dom/esm/chunk.YL6YMLLH.js"
+          "path": "web_modules/react-router-dom/esm/chunk.YL6YMLLH.js"
         },
         {
-          "path": "fixtures/with-pages/web_modules/react-router-dom/esm/chunk.YXTZTS4Z.js"
+          "path": "web_modules/react-router-dom/esm/chunk.YLINEMVY.js"
         }
       ],
       "exports": [
@@ -488,76 +447,70 @@
         "withRouter"
       ],
       "inputs": {
-        "node_modules/react-is/cjs/react-is.development.js": {
-          "bytesInOutput": 7333
-        },
-        "node_modules/react-is/index.js": {
-          "bytesInOutput": 187
-        },
-        "node_modules/prop-types/lib/ReactPropTypesSecret.js": {
+        "../../node_modules/prop-types/lib/ReactPropTypesSecret.js": {
           "bytesInOutput": 207
         },
-        "node_modules/prop-types/checkPropTypes.js": {
-          "bytesInOutput": 2333
+        "../../node_modules/prop-types/factoryWithThrowingShims.js": {
+          "bytesInOutput": 1415
         },
-        "node_modules/prop-types/factoryWithTypeCheckers.js": {
-          "bytesInOutput": 17179
+        "../../node_modules/prop-types/index.js": {
+          "bytesInOutput": 313
         },
-        "node_modules/prop-types/index.js": {
-          "bytesInOutput": 325
-        },
-        "node_modules/isarray/index.js": {
+        "../../node_modules/isarray/index.js": {
           "bytesInOutput": 185
         },
-        "node_modules/path-to-regexp/index.js": {
+        "../../node_modules/path-to-regexp/index.js": {
           "bytesInOutput": 7572
         },
-        "node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js": {
+        "../../node_modules/react-is/cjs/react-is.production.min.js": {
+          "bytesInOutput": 3663
+        },
+        "../../node_modules/react-is/index.js": {
+          "bytesInOutput": 189
+        },
+        "../../node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js": {
           "bytesInOutput": 2685
         },
-        "node_modules/@babel/runtime/helpers/esm/inheritsLoose.js": {
+        "../../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js": {
           "bytesInOutput": 190
         },
-        "node_modules/react-router/esm/react-router.js": {
-          "bytesInOutput": 21874
+        "../../node_modules/react-router/esm/react-router.js": {
+          "bytesInOutput": 19330
         },
-        "node_modules/@babel/runtime/helpers/esm/extends.js": {
+        "../../node_modules/@babel/runtime/helpers/esm/extends.js": {
           "bytesInOutput": 379
         },
-        "node_modules/resolve-pathname/esm/resolve-pathname.js": {
+        "../../node_modules/resolve-pathname/esm/resolve-pathname.js": {
           "bytesInOutput": 1579
         },
-        "node_modules/value-equal/esm/value-equal.js": {
+        "../../node_modules/value-equal/esm/value-equal.js": {
           "bytesInOutput": 750
         },
-        "node_modules/tiny-warning/dist/tiny-warning.esm.js": {
-          "bytesInOutput": 346
+        "../../node_modules/tiny-invariant/dist/tiny-invariant.esm.js": {
+          "bytesInOutput": 287
         },
-        "node_modules/tiny-invariant/dist/tiny-invariant.esm.js": {
-          "bytesInOutput": 290
+        "../../node_modules/history/esm/history.js": {
+          "bytesInOutput": 22008
         },
-        "node_modules/history/esm/history.js": {
-          "bytesInOutput": 24335
+        "../../node_modules/mini-create-react-context/dist/esm/index.js": {
+          "bytesInOutput": 4974
         },
-        "node_modules/mini-create-react-context/dist/esm/index.js": {
-          "bytesInOutput": 4924
-        },
-        "node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js": {
+        "../../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js": {
           "bytesInOutput": 344
         },
-        "node_modules/react-router-dom/esm/react-router-dom.js": {
-          "bytesInOutput": 8858
+        "../../node_modules/react-router-dom/esm/react-router-dom.js": {
+          "bytesInOutput": 8710
         }
       },
-      "bytes": 323966
+      "bytes": 246577
     },
-    "fixtures/with-pages/web_modules/swr/esm/index.js": {
+    "web_modules/swr/esm/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-pages/web_modules/swr/esm/chunk.YL6YMLLH.js"
+          "path": "web_modules/swr/esm/chunk.YL6YMLLH.js"
         },
         {
-          "path": "fixtures/with-pages/web_modules/swr/esm/chunk.YXTZTS4Z.js"
+          "path": "web_modules/swr/esm/chunk.YLINEMVY.js"
         }
       ],
       "exports": [
@@ -569,37 +522,37 @@
         "useSWRInfinite"
       ],
       "inputs": {
-        "node_modules/swr/esm/use-swr.js": {
-          "bytesInOutput": 21010
+        "../../node_modules/swr/esm/use-swr.js": {
+          "bytesInOutput": 21078
         },
-        "node_modules/dequal/lite/index.mjs": {
+        "../../node_modules/dequal/lite/index.mjs": {
           "bytesInOutput": 873
         },
-        "node_modules/swr/esm/libs/hash.js": {
+        "../../node_modules/swr/esm/libs/hash.js": {
           "bytesInOutput": 683
         },
-        "node_modules/swr/esm/cache.js": {
+        "../../node_modules/swr/esm/cache.js": {
           "bytesInOutput": 2180
         },
-        "node_modules/swr/esm/libs/web-preset.js": {
+        "../../node_modules/swr/esm/libs/web-preset.js": {
           "bytesInOutput": 491
         },
-        "node_modules/swr/esm/config.js": {
-          "bytesInOutput": 1274
+        "../../node_modules/swr/esm/config.js": {
+          "bytesInOutput": 1268
         },
-        "node_modules/swr/esm/swr-config-context.js": {
-          "bytesInOutput": 191
+        "../../node_modules/swr/esm/swr-config-context.js": {
+          "bytesInOutput": 205
         },
-        "node_modules/swr/esm/index.js": {
+        "../../node_modules/swr/esm/index.js": {
           "bytesInOutput": 35
         },
-        "node_modules/swr/esm/use-swr-infinite.js": {
-          "bytesInOutput": 8419
+        "../../node_modules/swr/esm/use-swr-infinite.js": {
+          "bytesInOutput": 8468
         }
       },
-      "bytes": 129646
+      "bytes": 129837
     },
-    "fixtures/with-pages/web_modules/chunk.YL6YMLLH.js": {
+    "web_modules/chunk.YL6YMLLH.js": {
       "imports": [],
       "exports": [
         "__toModule"
@@ -607,7 +560,7 @@
       "inputs": {},
       "bytes": 1199
     },
-    "fixtures/with-pages/web_modules/chunk.YXTZTS4Z.js": {
+    "web_modules/chunk.YLINEMVY.js": {
       "imports": [],
       "exports": [
         "__commonJS",
@@ -615,17 +568,17 @@
         "require_react"
       ],
       "inputs": {
-        "node_modules/object-assign/index.js": {
+        "../../node_modules/object-assign/index.js": {
           "bytesInOutput": 2017
         },
-        "node_modules/react/cjs/react.development.js": {
-          "bytesInOutput": 62137
+        "../../node_modules/react/cjs/react.production.min.js": {
+          "bytesInOutput": 10343
         },
-        "node_modules/react/index.js": {
-          "bytesInOutput": 181
+        "../../node_modules/react/index.js": {
+          "bytesInOutput": 183
         }
       },
-      "bytes": 201828
+      "bytes": 37217
     }
   }
 }

@@ -48,6 +48,7 @@ export function HtmlResolverPlugin({} = {}) {
                         loader: 'html' as any,
                     }
                 } catch (e) {
+                    return null
                     throw new Error(`Cannot load ${args.path}, ${e}`)
                 }
             })

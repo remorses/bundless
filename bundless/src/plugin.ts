@@ -135,7 +135,7 @@ export class PluginsExecutor {
         return true
     }
 
-    async load(arg) {
+    async load(arg: esbuild.OnLoadArgs): Promise<Maybe<esbuild.OnLoadResult>> {
         let result
         for (let { callback, options, name } of this.loaders) {
             if (this.matches(options, arg)) {
@@ -156,7 +156,7 @@ export class PluginsExecutor {
             return { ...result, namespace: result.namespace || 'file' }
         }
     }
-    async transform(arg: OnTransformArgs) {
+    async transform(arg: OnTransformArgs): Promise<Maybe<OnTransformResult>> {
         let result: OnTransformResult = { contents: arg.contents }
         for (let { callback, options, name } of this.transforms) {
             if (this.matches(options, arg)) {

@@ -5,7 +5,7 @@ import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import escapeStringRegexp from 'escape-string-regexp'
 import memoize from 'micro-memoize'
 import { Plugin as PluginType, build } from '@bundless/cli'
-import { fileToImportPath } from '@bundless/cli/dist/utils'
+import { fileToImportPath, importPathToFile } from '@bundless/cli/dist/utils'
 import glob from 'fast-glob'
 import { addHook } from 'pirates'
 import {
@@ -68,7 +68,29 @@ export function Plugin(): PluginType {
                 },
             )
 
-            // TODO i need the current requested url in transformHtml
+            // resolve virtual html files
+            onResolve({ filter: /.*/ }, async (args) => {
+                const routesPaths = await (await getRoutes()).map((x) =>
+                    path.posix.join(x.path, 'index.html'),
+                )
+                const indexPath = args.path.endsWith('.html')
+                    ? args.path
+                    : path.posix.join(args.path, 'index.html')
+                const relativeIndexPath = fileToImportPath(root, indexPath)
+                const route = routesPaths.find((x) => x === relativeIndexPath)
+                console.log({ routesPaths, indexPath, route })
+                if (route) {
+                    return {
+                        path: indexPath,
+                    }
+                }
+            })
+
+            // load html paths with html template
+            onLoad({ filter: /\.html/ }, async (args) => {
+                return { contents: htmlTemplate, loader: 'html' as any }
+            })
+
             onTransform({ filter: /\.html/ }, async (args) => {
                 // if (config.platform === 'node') {
                 //     return
@@ -97,7 +119,7 @@ export function Plugin(): PluginType {
                 outputPath = path.resolve(root, outputPath)
 
                 const { App } = tryRequire(outputPath)
-                const url = '/' //  fileToImportPath(args.)
+                const url = fileToImportPath(root, args.path)
                 const context = { url }
                 const prerenderedHtml = renderToString(
                     <App Router={StaticRouter} context={context} />,
@@ -132,10 +154,8 @@ export function Plugin(): PluginType {
                 }
             })
 
-            // TODO memoise and invalidate on pages file changes
-            onLoad(
-                { filter: new RegExp(escapeStringRegexp(ROUTES_ENTRY)) },
-                async (args) => {
+            const getRoutes = memoize(
+                async function getRoutes() {
                     const files = new Set(
                         await glob(pageGlobs, {
                             cwd: pagesDir,
@@ -156,6 +176,16 @@ export function Plugin(): PluginType {
                             name: file.replace(/[^a-zA-Z0-9]/g, '_'),
                         }
                     })
+                    return routes
+                },
+                { isPromise: true },
+            )
+
+            // TODO memoise and invalidate on pages file changes
+            onLoad(
+                { filter: new RegExp(escapeStringRegexp(ROUTES_ENTRY)) },
+                async (args) => {
+                    const routes = await getRoutes()
                     return {
                         contents: makeRoutesContent({ root, routes }),
                         loader: 'jsx',
@@ -174,6 +204,16 @@ function tryRequire(p: string) {
     }
 }
 
+const htmlTemplate = `
+<!DOCTYPE html>
+<html>
+    <body>
+        <script type="module" src="/${CLIENT_ENTRY}"></script>
+    </body>
+</html>
+
+`
+
 const clientEntryContent = `
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -182,7 +222,7 @@ import { App } from './${ROUTES_ENTRY}'
 
 const state = window.INITIAL_STATE
 
-ReactDOM.unstable_createRoot(document.getElementById('root'))
+ReactDOM.unstable_createRoot(document.getElementById('_maho'))
     .render(<App 
     Router={BrowserRouter}
     context={{ statusCode: state.statusCode, url: location.href, routeData: state.routeData }} />)
@@ -285,7 +325,7 @@ export const App = ({ context, Router }) => {
     return <MahoContext.Provider value={context}>
         <ErrorBoundary>
             <Suspense fallback={<div>Loading...</div>}>
-                <Router location={'/'}>
+                <Router location={context.url}>
                     <Routes />
                 </Router>
             </Suspense>

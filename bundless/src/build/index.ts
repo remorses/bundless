@@ -50,8 +50,7 @@ export async function build({
     const isBrowser = platform === 'browser'
     const root = config.root!
     const userPlugins = config.plugins || []
-    const entryPoints = getEntries(config)
-    logger.log(`building ${JSON.stringify(entryPoints)}`)
+
     await fs.remove(outDir)
     await fs.ensureDir(outDir)
     const publicDir = path.resolve(root, 'public')
@@ -64,6 +63,7 @@ export async function build({
 
     const mainFields = isBrowser ? MAIN_FIELDS : ['main', 'module']
     const allPlugins = [
+        ...userPlugins,
         plugins.HtmlResolverPlugin(),
         plugins.HtmlIngestPlugin({
             root,
@@ -98,18 +98,34 @@ export async function build({
         }),
         ...(isBrowser ? [plugins.NodeModulesPolyfillPlugin()] : []),
         // html ingest should override other html plugins in build, this is because html is transformed to js
-
-        ...userPlugins,
     ].map((plugin) => ({
         ...plugin,
         name: 'build-' + plugin.name,
     }))
+
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
         config,
         graph: emptyGraph,
         root,
     })
+
+    const entryPoints = await Promise.all(
+        getEntries(config).map(async (x) => {
+            const resolved = await pluginsExecutor.resolve({
+                path: x,
+                importer: '',
+                namespace: 'file',
+                resolveDir: root,
+            })
+            if (!resolved || !resolved.path) {
+                throw new Error(`Cannot resolve entry ${x} with plugins`)
+            }
+            return resolved.path
+        }),
+    )
+
+    logger.log(`building ${JSON.stringify(entryPoints)}`)
 
     const buildResult = await esbuild.build({
         ...commonEsbuildOptions,
@@ -224,14 +240,21 @@ export async function build({
             //     path.basename(entry),
             // )
             // await fs.copyFile(entry, outputHtmlPath)
-            let html = await (await fs.readFile(entry)).toString()
+            let loadedHtml = await htmlPluginsExecutor.load({
+                path: entry,
+                namespace: 'file',
+            })
+            if (!loadedHtml) {
+                throw new Error(`Cannot load html for entry ${entry}`)
+            }
+            let html = String(loadedHtml.contents)
             // transform html can inject scripts, do SSR, ...
-            const htmlResult = await htmlPluginsExecutor.transform({
-                contents: html,
+            const transformedHtml = await htmlPluginsExecutor.transform({
+                contents: String(html),
                 path: path.resolve(root, entry),
                 namespace: 'file',
             })
-            html = htmlResult?.contents || html
+            html = String(transformedHtml?.contents || html)
             const transformer = posthtml(
                 [
                     (tree) => {
