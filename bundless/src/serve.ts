@@ -5,13 +5,14 @@ import deepmerge from 'deepmerge'
 import { once } from 'events'
 import findUp from 'find-up'
 import fs from 'fs-extra'
-import { Server } from 'http'
+import { getPort } from 'get-port-please'
+import { createServer, Server } from 'http'
 import Koa, { DefaultContext, DefaultState, Middleware } from 'koa'
 import etagMiddleware from 'koa-etag'
-import { listen } from 'listhen'
 import ora from 'ora'
 import path from 'path'
 import slash from 'slash'
+import { promisify } from 'util'
 import WebSocket from 'ws'
 import { HMRPayload } from './client/types'
 import { Config, defaultConfig, getEntries } from './config'
@@ -41,7 +42,6 @@ import {
     Lock,
     needsPrebundle,
     parseWithQuery,
-    readBody,
 } from './utils'
 
 process.env.NODE_ENV = 'development'
@@ -64,16 +64,17 @@ export type ServerMiddleware = (ctx: ServerPluginContext) => void
 export async function serve(config: Config) {
     config = deepmerge(defaultConfig, config)
     const app = await createApp(config)
-    const { server, close } = await listen(app.callback(), {
-        port: config.port || DEFAULT_PORT,
-        showURL: true,
-        clipboard: false,
-        autoClose: true,
-        open: config.openBrowser,
-    })
+    const server = createServer(app.callback())
+    const port = await getPort(config.port || DEFAULT_PORT)
+    await promisify(server.listen.bind(server) as any)(port)
+
+    console.log(
+        `> listening on ${chalk.cyan.underline(`http://localhost:${port}`)}`,
+    )
+
     app.context.server = server
     app.emit('listening')
-    const port = server.address()?.['port']
+
     app.context.port = port
     config.port = port
     return {
@@ -81,7 +82,7 @@ export async function serve(config: Config) {
         close: async () => {
             app.emit('close')
             await once(app, 'closed')
-            return await close()
+            return await server.close()
         },
     }
 }
