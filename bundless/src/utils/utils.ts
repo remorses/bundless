@@ -209,7 +209,7 @@ export function partition<T>(
 
 export class Lock extends EventEmitter {
     private READY_EVENT = 'READY_EVENT'
-    private isReady = true
+    isReady = true
     constructor() {
         super()
     }

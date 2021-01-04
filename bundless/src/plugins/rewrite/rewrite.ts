@@ -10,6 +10,7 @@ import { Graph } from '../../graph'
 import { logger } from '../../logger'
 import { PluginHooks, PluginsExecutor } from '../../plugin'
 import { osAgnosticPath } from '../../prebundle/support'
+import { onResolveLock } from '../../serve'
 import {
     appendQuery,
     cleanUrl,
@@ -74,6 +75,9 @@ export async function rewriteImports({
     }
     graph.ensureEntry(importerFilePath)
     try {
+        if (!onResolveLock.isReady) {
+            throw new Error(`Cannot run rewrite when onResolveLock is locked!`)
+        }
         let imports: ImportSpecifier[] = []
         try {
             imports = parseImports(source)[0]

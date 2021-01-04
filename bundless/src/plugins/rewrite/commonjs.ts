@@ -8,6 +8,8 @@ import { parse } from '../../utils'
 import { makeLegalIdentifier } from '@rollup/pluginutils'
 import { osAgnosticPath } from '../../prebundle/support'
 import memoize from 'micro-memoize'
+import { onResolveLock } from '../../serve'
+import { logger } from '../../logger'
 
 export interface OptimizeAnalysisResult {
     isCommonjs: { [name: string]: true }
@@ -23,27 +25,50 @@ export const getAnalysis = memoize(function getAnalysis(
 ): OptimizeAnalysisResult | null {
     let analysis: OptimizeAnalysisResult | null
     try {
-        const cacheDir = path.resolve(root, WEB_MODULES_PATH)
-        analysis = fs.readJsonSync(path.join(cacheDir, COMMONJS_ANALYSIS_PATH))
+        analysis = fs.readJsonSync(
+            path.resolve(root, WEB_MODULES_PATH, COMMONJS_ANALYSIS_PATH),
+        )
     } catch (error) {
+        logger.debug(
+            `Cannot find commonjs analysis at ${path.resolve(
+                root,
+                WEB_MODULES_PATH,
+                COMMONJS_ANALYSIS_PATH,
+            )}`,
+        )
         analysis = null
     }
     if (analysis && !isPlainObject(analysis.isCommonjs)) {
         throw new Error(`invalid ${COMMONJS_ANALYSIS_PATH}`)
     }
+    logger.debug(
+        `Got new commonjs analysis: ${JSON.stringify(
+            analysis?.isCommonjs,
+            null,
+            4,
+        )}`,
+    )
     return analysis
 })
 
 export function clearCommonjsAnalysisCache() {
-    getAnalysis.cache.keys = []
-    getAnalysis.cache.values = []
+    logger.debug(`Invalidating commonjs cache`)
+    getAnalysis.cache.keys.length = 0
+    getAnalysis.cache.values.length = 0
 }
 
 export function isOptimizedCjs(root: string, filename: string) {
-    // console.log(`isOptimizedCjs ${filename}`)
+    if (!onResolveLock.isReady) {
+        throw new Error(
+            `Cannot call isOptimizedCjs when onResolveLock is locked!`,
+        )
+    }
     const analysis = getAnalysis(root)
-    if (!analysis) return false
-    return !!analysis.isCommonjs[osAgnosticPath(filename, root)]
+    if (!analysis) {
+        return false
+    }
+    const isCommonjs = !!analysis.isCommonjs[osAgnosticPath(filename, root)]
+    return isCommonjs
 }
 
 type ImportNameSpecifier = { importedName: string; localName: string }

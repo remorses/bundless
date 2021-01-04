@@ -16,6 +16,8 @@ The html loader instead will be always used
 
 ## Should this server be used in prod?
 
+No. But you can reuse plugins via PluginsExecutor, you could also pass additional context to plugins, to let them know you are in "production"
+
 I could make the dev server usable i prod, to reuse plugins, but this way i should completely change a lot of stuff, it's better to expose the pluginsExecutor and use it in your own server to resolve, load, transform and pass custom stuff, this way i can make something like nextjs
 
 Inside the server you would still be able to call build to build stuff for node for example
@@ -49,3 +51,11 @@ app.get('*', async (req, res) => {
     res.status = 200
 })
 ```
+
+## Prebundle and commonjs stale cache
+
+Weird cases that makes rewrite fail:
+
+-   Rewrite starts, it uses cached web_modules bundleMap
+-   Resolver finds non prebundled path, it generates new bundleMap with different paths
+-   Previous rewrite used wrong paths

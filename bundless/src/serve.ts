@@ -87,6 +87,8 @@ export async function serve(config: Config) {
     }
 }
 
+export const onResolveLock = new Lock()
+
 export async function createApp(config: Config) {
     if (!config.root) {
         config.root = process.cwd()
@@ -115,8 +117,6 @@ export async function createApp(config: Config) {
         await fs.remove(path.resolve(root, WEB_MODULES_PATH))
         // clearCommonjsAnalysisCache()
     }
-
-    const onResolveLock = new Lock()
 
     async function onResolved(resolvedPath: string, importer: string) {
         try {

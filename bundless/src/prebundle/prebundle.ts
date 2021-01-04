@@ -9,37 +9,40 @@ import { osAgnosticPath } from './support'
 import { traverseWithEsbuild } from './traverse'
 
 export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
-    const traversalResult = await traverseWithEsbuild({
-        entryPoints,
-        root,
-        plugins,
-        stopTraversing: filter,
-        esbuildCwd: process.cwd(),
-    })
+    try {
+        const traversalResult = await traverseWithEsbuild({
+            entryPoints,
+            root,
+            plugins,
+            stopTraversing: filter,
+            esbuildCwd: process.cwd(),
+        })
 
-    const dependenciesPaths = traversalResult.filter(filter)
+        const dependenciesPaths = traversalResult.filter(filter)
 
-    logger.log(
-        `prebundling [${dependenciesPaths
-            .map((x) => osAgnosticPath(x, root))
-            .join(', ')}]`,
-    )
+        logger.log(
+            `prebundling [${dependenciesPaths
+                .map((x) => osAgnosticPath(x, root))
+                .join(', ')}]`,
+        )
 
-    await fs.remove(dest)
-    const { bundleMap, analysis, stats } = await bundleWithEsBuild({
-        dest,
-        root,
-        plugins,
-        entryPoints: dependenciesPaths.map((x) => path.resolve(root, x)),
-    })
+        await fs.remove(dest)
+        const { bundleMap, analysis, stats } = await bundleWithEsBuild({
+            dest,
+            root,
+            plugins,
+            entryPoints: dependenciesPaths.map((x) => path.resolve(root, x)),
+        })
 
-    const analysisFile = path.join(dest, COMMONJS_ANALYSIS_PATH)
-    await fs.createFile(analysisFile)
+        const analysisFile = path.join(dest, COMMONJS_ANALYSIS_PATH)
+        await fs.createFile(analysisFile)
 
-    await fs.writeFile(analysisFile, JSON.stringify(analysis, null, 4))
-    clearCommonjsAnalysisCache()
-    console.info(printStats(stats))
-    return bundleMap
+        await fs.writeFile(analysisFile, JSON.stringify(analysis, null, 4))
+        console.info(printStats(stats))
+        return bundleMap
+    } finally {
+        clearCommonjsAnalysisCache()
+    }
 }
 
 // on start, check if already optimized dependencies, else
