@@ -25,7 +25,7 @@ import {
     showGraph,
     WEB_MODULES_PATH,
 } from './constants'
-import { Graph } from './graph'
+import { HmrGraph } from './graph'
 import { onFileChange } from './hmr'
 import { logger } from './logger'
 import * as middlewares from './middleware'
@@ -49,7 +49,7 @@ process.env.NODE_ENV = 'development'
 export interface ServerPluginContext {
     root: string
     app: Koa
-    graph: Graph
+    graph: HmrGraph
     pluginExecutor: PluginsExecutor
     // server: Server
     watcher: FSWatcher
@@ -103,7 +103,7 @@ export async function createApp(config: Config) {
 
     const app = new Koa<DefaultState, DefaultContext>()
 
-    const graph = new Graph({ root })
+    const graph = new HmrGraph({ root })
     const bundleMapCachePath = path.resolve(
         root,
         WEB_MODULES_PATH,

@@ -6,7 +6,7 @@ import path from 'path'
 import posthtml, { Node } from 'posthtml'
 import { BuildConfig, Config, getEntries } from '../config'
 import { MAIN_FIELDS } from '../constants'
-import { Graph } from '../graph'
+import { HmrGraph } from '../graph'
 import { logger } from '../logger'
 import { PluginsExecutor } from '../plugins-executor'
 import * as plugins from '../plugins'
@@ -53,7 +53,7 @@ export async function build(
     if (fs.existsSync(publicDir)) {
         await fs.copy(publicDir, outDir)
     }
-    const emptyGraph = new Graph({ root })
+    const emptyGraph = new HmrGraph({ root })
 
     const mainFields = isBrowser ? MAIN_FIELDS : ['main', 'module']
     const allPlugins = [

@@ -7,7 +7,7 @@ import fsx from 'fs-extra'
 import os from 'os'
 import path from 'path'
 import { MAIN_FIELDS } from '../constants'
-import { Graph } from '../graph'
+import { HmrGraph } from '../graph'
 import { logger } from '../logger'
 import { PluginsExecutor } from '../plugins-executor'
 import * as plugins from '../plugins'
@@ -85,7 +85,7 @@ export async function traverseWithEsbuild({
         ctx: {
             isBuild: false,
             config: { root, plugins: userPlugins },
-            graph: new Graph({ root }),
+            graph: new HmrGraph({ root }),
             root,
         },
     })

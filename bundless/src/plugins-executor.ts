@@ -3,7 +3,7 @@ import * as esbuild from 'esbuild'
 import { promises } from 'fs-extra'
 import { Config } from './config'
 import url from 'url'
-import { Graph } from './graph'
+import { HmrGraph } from './graph'
 import { logger } from './logger'
 import { osAgnosticPath } from './prebundle/support'
 import qs from 'qs'
@@ -32,7 +32,7 @@ type OnCloseCallback = () => void | Promise<void>
 export interface PluginsExecutorCtx {
     config: Config
     root: string
-    graph: Graph
+    graph: HmrGraph
     isBuild: boolean
 }
 export interface PluginHooks {

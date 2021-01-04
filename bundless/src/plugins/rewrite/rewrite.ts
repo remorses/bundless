@@ -6,7 +6,7 @@ import { SourceMap } from 'module'
 import path from 'path'
 import qs from 'qs'
 import { CLIENT_PUBLIC_PATH, hmrPreamble } from '../../constants'
-import { Graph } from '../../graph'
+import { HmrGraph } from '../../graph'
 import { logger } from '../../logger'
 import { PluginHooks, PluginsExecutor } from '../../plugins-executor'
 import { osAgnosticPath } from '../../prebundle/support'
@@ -65,7 +65,7 @@ export async function rewriteImports({
     importerFilePath: string
     pluginsExecutor: PluginsExecutor
     root: string
-    graph: Graph
+    graph: HmrGraph
 }): Promise<{ contents: string; map?: any }> {
     // strip UTF-8 BOM
     if (source.charCodeAt(0) === 0xfeff) {

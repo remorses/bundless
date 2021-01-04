@@ -5,18 +5,19 @@ import path from 'path'
 import mime from 'mime-types'
 import { Plugin as PagedPlugin } from '@bundless/plugin-react-paged'
 import { importPathToFile } from '@bundless/cli/dist/utils'
+import { HmrGraph } from '@bundless/cli'
 
 const root = __dirname
 const builtAssets = path.resolve(root, 'out')
 
 async function prepare() {
     await build({
-        config: {
-            entries: ['index.html', 'about/index.html'], // TODO the server should compute the paths with a glob
-            root,
-            plugins: [PagedPlugin()],
+        entries: ['index.html', 'about/index.html'], // TODO the server should compute the paths with a glob
+        root,
+        plugins: [PagedPlugin()],
+        build: {
+            outDir: builtAssets,
         },
-        outDir: builtAssets,
     })
 }
 
@@ -32,8 +33,12 @@ app.use(async (_, next) => {
 app.use(serveStatic({ root: builtAssets }))
 
 const productionPluginsExecutor = new PluginsExecutor({
-    root,
-    config: { root },
+    ctx: {
+        root,
+        config: { root },
+        isBuild: true,
+        graph: new HmrGraph({ root }),
+    },
     // here the clientScriptSrc is different because it must be the one built by esbuild
     plugins: [PagedPlugin({ clientScriptSrc: '/index.js' })],
 })

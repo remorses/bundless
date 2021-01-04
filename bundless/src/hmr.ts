@@ -1,5 +1,5 @@
 import { HMRPayload } from './client/types'
-import { Graph } from './graph'
+import { HmrGraph } from './graph'
 import { logger } from './logger'
 import { osAgnosticPath } from './prebundle/support'
 import { fileToImportPath, importPathToFile } from './utils'
@@ -13,7 +13,7 @@ export async function onFileChange({
     filePath,
     sendHmrMessage,
 }: {
-    graph: Graph
+    graph: HmrGraph
     root: string
     filePath: string
     sendHmrMessage: (x: HMRPayload) => any

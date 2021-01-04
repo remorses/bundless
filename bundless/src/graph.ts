@@ -10,7 +10,7 @@ type OsAgnosticPath = string
 
 // examples are /path/file.js or /.../file.js
 type ImportPath = string
-export interface Node {
+export interface HmrNode {
     importers(): Set<OsAgnosticPath> // returns osAgnosticPaths
     importees: Set<ImportPath>
     dirtyImportersCount: number // modules that have imported this and have been updated
@@ -19,15 +19,15 @@ export interface Node {
     hasHmrAccept?: boolean
 }
 
-export class Graph {
+export class HmrGraph {
     // keys are always os agnostic paths and not public paths
-    nodes: { [osAgnosticPath: string]: Node } = {}
+    nodes: { [osAgnosticPath: string]: HmrNode } = {}
     root = ''
     constructor({ root }: { root: string }) {
         this.nodes = {}
         this.root = root
     }
-    ensureEntry(path: string, newNode?: Partial<Node>): Node {
+    ensureEntry(path: string, newNode?: Partial<HmrNode>): HmrNode {
         path = osAgnosticPath(path, this.root)
         if (this.nodes[path]) {
             Object.assign(this.nodes[path], newNode || {})
