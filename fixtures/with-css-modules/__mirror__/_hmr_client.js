@@ -165,9 +165,8 @@ async function runModuleAccept({ path, namespace, updateID }) {
     for (const { deps, callback: acceptCallback } of acceptCallbacks) {
         const encodedNamespace = encodeURIComponent(namespace || 'file');
         const [module, ...depModules] = await Promise.all([
-            // TODO add the namespace query here
             import(appendQuery(path, `namespace=${encodedNamespace}&t=${updateID}`)),
-            ...deps.map((d) => import(appendQuery(d, `t=${Date.now()}`))),
+            ...deps.map((d) => import(appendQuery(d, `t=${Date.now()}&namespace=file`))),
         ]);
         acceptCallback({ module, deps: depModules });
     }

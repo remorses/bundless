@@ -100,6 +100,7 @@ export async function build(
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
         config,
+        isBuild: true,
         graph: emptyGraph,
         root,
     })
@@ -212,6 +213,7 @@ export async function build(
         plugins: [...userPlugins, plugins.HtmlResolverPlugin()],
         config,
         graph: emptyGraph,
+        isBuild: true,
         root,
     })
 

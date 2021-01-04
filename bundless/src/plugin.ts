@@ -33,6 +33,7 @@ export interface PluginHooks {
     pluginsExecutor: PluginsExecutor
     config: Config
     graph: Graph
+    isBuild: boolean
     onResolve(
         options: esbuild.OnResolveOptions,
         callback: OnResolveCallback,
@@ -79,6 +80,7 @@ export class PluginsExecutor {
     root: string = ''
     graph?: Graph
     config?: Config
+    isBuild: boolean = false
     plugins?: Plugin[]
 
     private transforms: PluginInternalObject<OnTransformCallback>[] = []
@@ -91,11 +93,13 @@ export class PluginsExecutor {
         config: Config
         root: string
         graph?: Graph
+        isBuild: boolean
     }) {
         const root = _args.root
         const {
             plugins,
             config = { root },
+            isBuild = false,
             graph = new Graph({ root }),
         } = _args
         Object.assign(this, _args)
@@ -107,6 +111,7 @@ export class PluginsExecutor {
                 pluginsExecutor: this,
                 config,
                 graph,
+                isBuild,
                 onLoad: (options, callback) => {
                     this.loaders.push({ options, callback, name })
                 },
@@ -305,6 +310,7 @@ function wrapPluginForEsbuild(_args: {
                 graph: pluginsExecutor.graph!,
                 config: pluginsExecutor.config!,
                 pluginsExecutor,
+                isBuild: pluginsExecutor.isBuild,
                 // wrap onLoad to execute other plugins transforms
                 onLoad(options, callback) {
                     onLoad(options, async (args) => {

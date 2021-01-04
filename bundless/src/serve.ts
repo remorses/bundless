@@ -154,6 +154,7 @@ export async function createApp(config: Config) {
                 dest: path.resolve(root, WEB_MODULES_PATH),
                 plugins: new PluginsExecutor({
                     config,
+                    isBuild: false,
                     graph,
                     plugins: config.plugins || [],
                     root,
@@ -191,6 +192,7 @@ export async function createApp(config: Config) {
 
     const pluginsExecutor = new PluginsExecutor({
         root,
+        isBuild: false,
         plugins: [
             // TODO resolve data: imports, rollup emits imports with data: ...
             plugins.UrlResolverPlugin(), // resolves urls with queries

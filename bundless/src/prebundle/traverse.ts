@@ -82,6 +82,7 @@ export async function traverseWithEsbuild({
     }))
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
+        isBuild: false,
         config: { root, plugins: userPlugins },
         graph: new Graph({ root }),
         root,
