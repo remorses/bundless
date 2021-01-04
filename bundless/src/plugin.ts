@@ -188,6 +188,10 @@ export class PluginsExecutor {
         }
         return result
     }
+
+    /**
+     * Resolve filter should match on basename and not rely on absolute path, "virtual" could be passed as absolute paths from root: /path/to/virtual_file
+     */
     async resolve(
         arg: esbuild.OnResolveArgs,
     ): Promise<Maybe<esbuild.OnResolveResult>> {
@@ -237,7 +241,7 @@ export class PluginsExecutor {
         importer?: string
         namespace?: string
         expectedExtensions?: string[]
-    }): Promise<undefined | { path: string; contents: string }> {
+    }): Promise<{ path?: string; contents?: string }> {
         let resolveDir = path.dirname(p)
         if (resolveDir === '/' || resolveDir === '.') {
             resolveDir = ''
@@ -249,20 +253,20 @@ export class PluginsExecutor {
             resolveDir,
         })
         if (!resolved || !resolved.path) {
-            return
+            return {}
         }
         if (
             expectedExtensions &&
             !expectedExtensions.includes(path.extname(resolved.path))
         ) {
-            return
+            return {}
         }
         const loaded = await this.load({
             namespace: resolved.namespace || 'file',
             path: resolved.path,
         })
         if (!loaded) {
-            return
+            return {}
         }
         const transformed = await this.transform({
             contents: String(loaded.contents),

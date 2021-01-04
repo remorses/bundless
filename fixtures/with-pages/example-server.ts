@@ -42,11 +42,13 @@ app.use(async (ctx, next) => {
     if (ctx.method !== 'GET') return next()
 
     const filePath = importPathToFile(root, ctx.path)
+
+    // resolve load and transform the html with the pages plugin in prod mode
     const {
         contents,
         path: resolvedPath,
     } = await productionPluginsExecutor.resolveLoadTransform({
-        path: filePath,
+        path: filePath, // TODO i am passing a file path to resolve, maybe it's better to pas the ctx.path directly and let the url resolver handle it?
     })
 
     if (contents) {

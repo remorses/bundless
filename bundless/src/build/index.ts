@@ -240,21 +240,12 @@ export async function build({
             //     path.basename(entry),
             // )
             // await fs.copyFile(entry, outputHtmlPath)
-            let loadedHtml = await htmlPluginsExecutor.load({
-                path: entry,
-                namespace: 'file',
-            })
-            if (!loadedHtml) {
-                throw new Error(`Cannot load html for entry ${entry}`)
+            const {
+                contents: html = '',
+            } = await htmlPluginsExecutor.resolveLoadTransform({ path: entry })
+            if (!html) {
+                throw new Error(`Cannot load html for ${entry}`)
             }
-            let html = String(loadedHtml.contents)
-            // transform html can inject scripts, do SSR, ...
-            const transformedHtml = await htmlPluginsExecutor.transform({
-                contents: String(html),
-                path: path.resolve(root, entry),
-                namespace: 'file',
-            })
-            html = String(transformedHtml?.contents || html)
             const transformer = posthtml(
                 [
                     (tree) => {
