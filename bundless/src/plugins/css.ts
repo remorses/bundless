@@ -28,6 +28,10 @@ export function CssPlugin({} = {}) {
             onTransform,
             isBuild,
         }: PluginHooks) => {
+            if (isBuild) {
+                return
+            }
+
             const root = config.root!
             NodeResolvePlugin({
                 name: 'css-node-resolve',
