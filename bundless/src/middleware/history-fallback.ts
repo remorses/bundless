@@ -38,9 +38,11 @@ export function historyFallbackMiddleware({
             return next()
         }
         // use the executor first to resolve virtual html files
-        const resolvedHtml = await resolveHtmlWithPlugins(pluginsExecutor, {
-            filePath: importPathToFile(root, ctx.path), // TODO discard non html results? i must only resolve with html stuff, this could resolve to non html
-            root,
+        const {
+            contents: resolvedHtml,
+        } = await pluginsExecutor.resolveLoadTransform({
+            path: importPathToFile(root, ctx.path),
+            expectedExtensions: ['.html'],
         })
         if (resolvedHtml) {
             logger.debug(`Resolved html for ${ctx.path}`)
@@ -58,41 +60,4 @@ export function historyFallbackMiddleware({
         return next()
         // return next()
     }
-}
-
-async function resolveHtmlWithPlugins(
-    pluginsExecutor: PluginsExecutor,
-    { root, filePath },
-) {
-    const resolved = await pluginsExecutor.resolve({
-        importer: '',
-        namespace: 'file',
-        resolveDir: path.dirname(filePath),
-        path: filePath,
-    })
-
-    if (!resolved || !resolved.path) {
-        return
-    }
-
-    if (path.extname(resolved.path) !== '.html') {
-        return
-    }
-    const loaded = await pluginsExecutor.load({
-        namespace: 'file',
-        path: resolved.path,
-    })
-    if (!loaded || !loaded.contents) {
-        return
-    }
-    const transformed = await pluginsExecutor.transform({
-        contents: String(loaded.contents),
-        path: resolved.path,
-        namespace: 'file',
-    })
-    if (!transformed) {
-        return
-    }
-
-    return transformed.contents
 }
