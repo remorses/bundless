@@ -172,7 +172,7 @@ export async function build(
         return { bundleMap, traversalGraph }
     }
 
-    const cssToInject: Record<string, string[]> = fromEntries(
+    const cssToPreload: Record<string, string[]> = fromEntries(
         entryPoints.map((x) => osAgnosticPath(x, root)).map((k) => [k, []]),
     )
 
@@ -202,11 +202,16 @@ export async function build(
                         throw new Error(`Cannot find output for '${imported}'`)
                     }
                     output = path.resolve(esbuildCwd, output)
-                    cssToInject[entry].push(output)
+                    cssToPreload[entry].push(output)
                 }
             },
         })
     }
+
+    // TODO remove this after esbuild has css code splitting via js
+    const cssToInject = Object.keys(meta.outputs).filter((x) =>
+        x.endsWith('.css'),
+    )
 
     // needed to run the onTransform on html entries
     const htmlPluginsExecutor = new PluginsExecutor({
@@ -302,15 +307,29 @@ export async function build(
                         }
 
                         tree.match({ tag: 'head' }, (node) => {
-                            const cssHrefs =
-                                cssToInject[osAgnosticPath(entry, root)] || []
+                            const cssPreloadHrefs =
+                                cssToPreload[osAgnosticPath(entry, root)] || []
                             node.content = [
                                 // TODO maybe include imported fonts as links?
-                                ...cssHrefs.map((href) => {
+                                ...cssPreloadHrefs.map((href) => {
                                     href = '/' + path.relative(outDir, href)
                                     return MyNode({
                                         tag: 'link',
-                                        attrs: { href, rel: 'stylesheet' },
+                                        attrs: {
+                                            href,
+                                            rel: 'preload',
+                                            as: 'style',
+                                        },
+                                    })
+                                }),
+                                ...cssToInject.map((href) => {
+                                    href = '/' + path.relative(outDir, href)
+                                    return MyNode({
+                                        tag: 'link',
+                                        attrs: {
+                                            href,
+                                            rel: 'stylesheet',
+                                        },
                                     })
                                 }),
                                 ...(node.content || []),
