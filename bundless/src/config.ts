@@ -32,14 +32,14 @@ export function getEntries(config: Config): string[] {
 export type Platform = 'node' | 'browser'
 
 export interface Config {
+    server?: ServerConfig
+    build?: BuildConfig
     platform?: Platform
     root?: string
     force?: boolean
-    port?: number | string
+    env?: Record<string, string>
     entries?: string[]
-    cors?: boolean
-    hmr?: HmrConfig | boolean
-    openBrowser?: boolean
+
     plugins?: Plugin[]
     // TODO replace needsPrebundle with something less generic, like bundle workspaces, do not bundle node_modules, ....
     needsPrebundle?: (p: string) => boolean
@@ -53,13 +53,22 @@ export interface Config {
           }
 }
 
+export interface ServerConfig {
+    openBrowser?: boolean
+    cors?: boolean
+    port?: number | string
+    hmr?: HmrConfig | boolean
+}
+
 export const defaultConfig: Config = {
-    port: DEFAULT_PORT,
+    server: {
+        openBrowser: false,
+        port: DEFAULT_PORT,
+        hmr: true,
+    },
     platform: 'browser',
     jsx: 'react',
-    hmr: true,
     plugins: [],
-    openBrowser: false,
 }
 
 export function loadConfig(from: string, name = CONFIG_NAME): Config {
@@ -89,6 +98,5 @@ export interface BuildConfig {
     basePath?: string
     outDir?: string
     minify?: boolean
-    env?: Record<string, string>
     jsTarget?: string
 }

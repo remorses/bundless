@@ -1,5 +1,5 @@
 import { serve } from '@bundless/cli'
-import { Config } from '@bundless/cli/dist/config'
+import { Config } from '@bundless/cli'
 import { spawn } from 'child_process'
 import {
     readFromUrlOrPath,
@@ -37,8 +37,10 @@ process.env.NODE_ENV = 'development' // fix for snowpack that does not start in 
 
 const config: Config = {
     ...require('./bundless.config'),
-    openBrowser: false,
-    port: PORT,
+    server: {
+        openBrowser: false,
+        port: PORT,
+    },
     root: tempDir,
 }
 
@@ -311,7 +313,7 @@ async function registerHotModules(traversedFiles, ws) {
                     null,
                     4,
                 )
-                
+
                 return msg
             }
             return ''

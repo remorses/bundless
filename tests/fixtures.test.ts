@@ -43,8 +43,10 @@ describe('snapshots', () => {
             const server = await serve({
                 ...config,
                 force: true,
-                port: PORT,
                 root,
+                server: {
+                    port: PORT,
+                },
             })
             const entryPoints = config?.entries || ['index.html']
             try {
@@ -131,12 +133,12 @@ describe('snapshots', () => {
                 // BUILD
                 const outDir = path.resolve(casePath, 'dist')
                 await build({
-                    config: {
-                        ...config,
-                        root,
-                        entries: entryPoints.map((x) => path.resolve(root, x)),
+                    ...config,
+                    root,
+                    entries: entryPoints.map((x) => path.resolve(root, x)),
+                    build: {
+                        outDir,
                     },
-                    outDir,
                 })
                 const allBuildFiles = glob.sync(`**/*`, {
                     ignore: ['__snapshots__'],

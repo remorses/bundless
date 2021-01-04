@@ -48,18 +48,14 @@ const buildCommand: CommandModule = {
     handler: async (argv: any) => {
         let config = loadConfig(process.cwd(), argv.config)
         const root = config.root || process.cwd()
-        if (!config.root) {
-            config = { ...config, root }
-        }
+        config = deepMerge({ root, outDir: argv.outDir }, config)
         return build({
             ...config,
-            config,
-            outDir: argv.outDir,
         })
     },
 }
 
-const argv = yargs
+yargs
     .locale('en')
     .option('config', {
         alias: 'c',

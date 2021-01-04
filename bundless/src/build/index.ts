@@ -30,27 +30,24 @@ import { cleanUrl, partition } from '../utils'
 // TODO build for SSR, sets target to node, do not polyfill node stuff
 // TODO esbuild recreates the directory tree, this means the index.js for the index.html can be not in root, this could be mitigated by reusing the web bundles?
 // TODO esbuild creates too many chunks
-export async function build({
+export async function build(
     // TODO get args from config
-    config,
-    minify = false,
-    outDir = 'out',
-    env = {},
-    jsTarget = 'es2018',
-    basePath = '/',
-}: BuildConfig & {
-    config: Config
-}): Promise<{ bundleMap; traversalGraph }> {
+    config: Config,
+): Promise<{ bundleMap; traversalGraph }> {
     // if (!process.env.NODE_ENV) {
     //     logger.log(`setting env.NODE_ENV = 'production'`)
     //     process.env.NODE_ENV = 'production'
     // }
+    const {
+        minify = false,
+        outDir = 'out',
+        jsTarget = 'es2018',
+        basePath = '/',
+    } = config.build || {}
 
-    const platform = config.platform || 'browser'
+    const { env = {}, platform = 'browser', root = '' } = config
     const isBrowser = platform === 'browser'
-    const root = config.root!
     const userPlugins = config.plugins || []
-
     await fs.remove(outDir)
     await fs.ensureDir(outDir)
     const publicDir = path.resolve(root, 'public')

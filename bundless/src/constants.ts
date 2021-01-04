@@ -14,7 +14,7 @@ try {
     logger.debug('Using Yarn PnP')
 } catch {}
 
-export const MAIN_FIELDS = ['browser:module', 'module', 'browser', 'main']
+export const MAIN_FIELDS = ['browser:module', 'browser', 'module', 'main']
 
 export const showGraph = process.env.SHOW_HMR_GRAPH
 

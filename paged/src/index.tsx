@@ -100,13 +100,13 @@ export function Plugin({
                 const ssrOutDir = await path.resolve(root, 'node_dist')
                 const entry = path.resolve(root, ROUTES_ENTRY)
                 const { bundleMap } = await build({
-                    config: {
-                        ...config,
-                        platform: 'node',
-                        entries: [entry],
-                        plugins: [Plugin()], // TODO do not run this in ssr mode to not recurse forever?
+                    ...config,
+                    platform: 'node',
+                    entries: [entry],
+                    plugins: [Plugin()], // TODO do not run this in ssr mode to not recurse forever?
+                    build: {
+                        outDir: ssrOutDir,
                     },
-                    outDir: ssrOutDir,
                 })
 
                 let outputPath = bundleMap[osAgnosticPath(entry, root)]

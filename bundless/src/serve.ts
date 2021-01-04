@@ -65,7 +65,11 @@ export async function serve(config: Config) {
     config = deepmerge(defaultConfig, config)
     const app = await createApp(config)
     const server = createServer(app.callback())
-    const port = await getPort(config.port || DEFAULT_PORT)
+    const port = await getPort(config.server?.port || DEFAULT_PORT)
+
+    if (config.server?.port && Number(port) !== Number(config.server?.port)) {
+        logger.warn(`Using port ${port} because ${config.server?.port} is already in use`)
+    }
     await promisify(server.listen.bind(server) as any)(port)
 
     console.log(
@@ -76,7 +80,7 @@ export async function serve(config: Config) {
     app.emit('listening')
 
     app.context.port = port
-    config.port = port
+    config.server = { ...config.server, port }
     return {
         ...server,
         close: async () => {
@@ -299,7 +303,9 @@ export async function createApp(config: Config) {
             const stringified = JSON.stringify(payload, null, 4)
             logger.log(`hmr: ${stringified}`)
             if (!wss.clients.size) {
-                logger.debug(chalk.yellow(`No clients listening for HMR message`))
+                logger.debug(
+                    chalk.yellow(`No clients listening for HMR message`),
+                )
             }
             wss.clients.forEach((client) => {
                 if (client.readyState === WebSocket.OPEN) {
@@ -316,7 +322,7 @@ export async function createApp(config: Config) {
     })
 
     // changing anything inside root that is not ignored and that is not in graph will cause reload
-    if (config.hmr) {
+    if (config.server?.hmr) {
         watcher.on('change', (filePath) => {
             onFileChange({
                 graph,
@@ -343,7 +349,7 @@ export async function createApp(config: Config) {
         },
         // port is exposed on the context for hmr client connection
         // in case the files are served under a different port
-        port: Number(config.port || 3000),
+        port: Number(config.server?.port || 3000),
     }
 
     // only js ends up here
@@ -423,10 +429,12 @@ export async function createApp(config: Config) {
     app.use(etagMiddleware())
 
     // cors
-    if (config.cors) {
+    if (config.server?.cors) {
         app.use(
             require('@koa/cors')(
-                typeof config.cors === 'boolean' ? {} : config.cors,
+                typeof config.server?.cors === 'boolean'
+                    ? {}
+                    : config.server?.cors,
             ),
         )
     }
