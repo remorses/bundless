@@ -33,6 +33,7 @@ app.use(serveStatic({ root: builtAssets }))
 
 const productionPluginsExecutor = new PluginsExecutor({
     root,
+    config: { root },
     // here the clientScriptSrc is different because it must be the one built by esbuild
     plugins: [PagedPlugin({ clientScriptSrc: '/index.js' })],
 })
@@ -41,62 +42,20 @@ app.use(async (ctx, next) => {
     if (ctx.method !== 'GET') return next()
 
     const filePath = importPathToFile(root, ctx.path)
-    const { contents, contentType } = await resolveHtmlWithPlugins(
-        productionPluginsExecutor,
-        {
-            filePath,
-            root,
-        },
-    )
+    const {
+        contents,
+        path: resolvedPath,
+    } = await productionPluginsExecutor.resolveLoadTransform({
+        path: filePath,
+    })
 
     if (contents) {
         ctx.body = contents
         ctx.status = 200
-        ctx.type = contentType
+        ctx.type = String(mime.lookup(resolvedPath)) || '*/*'
         return next()
     }
 })
-
-// the main plugin logic is run here
-async function resolveHtmlWithPlugins(
-    pluginsExecutor: PluginsExecutor,
-    { root, filePath },
-) {
-    const resolved = await pluginsExecutor.resolve({
-        importer: '',
-        namespace: 'file',
-        resolveDir: path.dirname(filePath),
-        path: filePath,
-    })
-
-    if (!resolved || !resolved.path) {
-        return {}
-    }
-
-    if (path.extname(resolved.path) !== '.html') {
-        return
-    }
-    const loaded = await pluginsExecutor.load({
-        namespace: 'file',
-        path: resolved.path,
-    })
-    if (!loaded || !loaded.contents) {
-        return {}
-    }
-    const transformed = await pluginsExecutor.transform({
-        contents: String(loaded.contents),
-        path: resolved.path,
-        namespace: 'file',
-    })
-    if (!transformed) {
-        return {}
-    }
-
-    return {
-        contents: transformed.contents,
-        contentType: String(mime.lookup(resolved.path)) || '*/*',
-    }
-}
 
 function serveStatic({ root }) {
     return async function staticServer(ctx, next) {

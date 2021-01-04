@@ -8,6 +8,7 @@ import { logger } from './logger'
 import { osAgnosticPath } from './prebundle/support'
 import qs from 'qs'
 import { mergeSourceMap } from './sourcemaps'
+import path from 'path'
 
 export interface Plugin {
     name: string
@@ -224,6 +225,55 @@ export class PluginsExecutor {
             await callback()
         }
         return result
+    }
+
+    async resolveLoadTransform({
+        path: p,
+        importer = '',
+        namespace = 'file',
+        expectedExtensions,
+    }: {
+        path: string
+        importer?: string
+        namespace?: string
+        expectedExtensions?: string[]
+    }): Promise<undefined | { path: string; contents: string }> {
+        let resolveDir = path.dirname(p)
+        if (resolveDir === '/' || resolveDir === '.') {
+            resolveDir = ''
+        }
+        const resolved = await this.resolve({
+            importer,
+            namespace,
+            path: p,
+            resolveDir,
+        })
+        if (!resolved || !resolved.path) {
+            return
+        }
+        if (
+            expectedExtensions &&
+            !expectedExtensions.includes(path.extname(resolved.path))
+        ) {
+            return
+        }
+        const loaded = await this.load({
+            namespace: resolved.namespace || 'file',
+            path: resolved.path,
+        })
+        if (!loaded) {
+            return
+        }
+        const transformed = await this.transform({
+            contents: String(loaded.contents),
+            path: resolved.path,
+            loader: loaded.loader || 'default',
+            namespace: resolved.namespace || 'file',
+        })
+        if (!transformed) {
+            return { contents: String(loaded.contents), path: resolved.path }
+        }
+        return { contents: String(transformed.contents), path: resolved.path }
     }
 
     esbuildPlugins() {
