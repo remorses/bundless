@@ -12,7 +12,7 @@ export class Logger {
 
     private print(x) {
         if (this.spinner) {
-            this.spinner.info(x )
+            this.spinner.info(x)
         } else {
             process.stderr.write(chalk.dim(this.prefix) + x + '\n')
         }
@@ -44,8 +44,13 @@ export class Logger {
 
     debug = DEBUG
         ? (...x) => {
-              // return
-              process.stderr.write(chalk.dim(this.prefix + x.join(' ') + '\n'))
+              if (this.spinner) {
+                  this.spinner.info(x.join(' ') + '\n')
+              } else {
+                  process.stderr.write(
+                      chalk.dim(this.prefix + x.join(' ') + '\n'),
+                  )
+              }
           }
         : () => {}
 }
