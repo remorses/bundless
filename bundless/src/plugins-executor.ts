@@ -142,7 +142,7 @@ export class PluginsExecutor {
                 logger.debug(
                     `loading '${osAgnosticPath(
                         arg.path,
-                        this.ctx!.root,
+                        this.ctx.root,
                     )}' with '${name}'`,
                 )
                 const newResult = await callback(arg)
@@ -203,7 +203,7 @@ export class PluginsExecutor {
                             arg.path
                         }' with '${name}' as '${osAgnosticPath(
                             newResult.path,
-                            this.ctx!.root,
+                            this.ctx.root,
                         )}'`,
                     )
                     result = newResult
@@ -275,7 +275,7 @@ export class PluginsExecutor {
     }
 
     esbuildPlugins() {
-        return this.plugins!.map((plugin, index) =>
+        return this.plugins.map((plugin, index) =>
             wrapPluginForEsbuild({ plugin, pluginsExecutor: this }),
         )
     }
@@ -296,7 +296,7 @@ function wrapPluginForEsbuild(_args: {
                 // the plugin transform is already inside pluginsExecutor
                 onTransform() {},
                 onClose() {},
-                ctx: pluginsExecutor.ctx!,
+                ctx: pluginsExecutor.ctx,
                 pluginsExecutor,
 
                 // wrap onLoad to execute other plugins transforms
