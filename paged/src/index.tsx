@@ -103,7 +103,7 @@ export function Plugin({
                     ...config,
                     platform: 'node',
                     entries: [entry],
-                    plugins: [Plugin()], // TODO do not run this in ssr mode to not recurse forever?
+                    plugins: [Plugin()],
                     build: {
                         outDir: ssrOutDir,
                     },

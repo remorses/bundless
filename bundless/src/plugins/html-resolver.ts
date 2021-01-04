@@ -7,8 +7,7 @@ export function HtmlResolverPlugin({} = {}) {
     return {
         name: 'html-resolver',
         setup: ({ onLoad, onResolve }: PluginHooks) => {
-            // TODO HtmlResolverPlugin must resolve directories to index.html, /a -> /a/index.html
-            // TODO resolve root index html to public
+            // TODO test that HtmlResolverPlugin can resolve directories to index.html, /a -> /a/index.html
             onResolve({ filter: /\.*/ }, async (args) => {
                 var resolved = await resolveAsync(args.path, {
                     basedir: args.resolveDir,

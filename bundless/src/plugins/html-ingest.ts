@@ -8,8 +8,6 @@ const NAME = 'html-ingest'
 const debug = require('debug')(NAME)
 
 interface Options {
-    // TODO i need to know the esbuild output entrypoint to inject it into the html,
-    // TODO i need to emit html file but i don't know the outdir
     name?: string
     root: string // to resolve paths in case the html page is not in root
     transformImportPath?: (importPath: string) => string

@@ -85,8 +85,8 @@ const testCases: Array<TestCase | TestCase[]> = [
             replacer: defaultReplacer,
         },
     ],
-    // TODO test when removing an import
-    // TODO test when adding an import
+    // TODO test hmr when removing an import
+    // TODO test hmr when adding an import
 ]
 
 beforeAll(async () => {

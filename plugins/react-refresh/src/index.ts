@@ -123,7 +123,6 @@ export function ReactRefreshPlugin({} = {}): Plugin {
     }
 }
 
-// TODO return the names of non react exports for easier debugging, maybe also return the file and line number
 function getNonComponentExports(ast: BabelAST) {
     // Every export must be a React component.
     return flatten(
@@ -239,7 +238,7 @@ export function parse(source: string): Statement[] {
         return _parse(source, {
             sourceType: 'module',
             plugins: [
-                'jsx', // TODO i shouldn't need jsx here, maybe it's because other plugins like paged are returning stuff with jsx code?
+                'jsx',
                 'classProperties',
                 // required for import.meta.hot
                 'importMeta',

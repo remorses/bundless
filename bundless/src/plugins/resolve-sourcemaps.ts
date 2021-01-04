@@ -5,7 +5,7 @@ import { RawSourceMap } from 'source-map'
 import { PluginHooks } from '../plugin'
 import { fileToImportPath, jsTypeRegex, readFile } from '../utils'
 
-const sourcemapRegex = /\/\/#\ssourceMappingURL=([\w\d-_\.]+)\n*$/ // TODO do not match data:, support for spaces in file paths and non word characters
+const sourcemapRegex = /\/\/#\ssourceMappingURL=([\w\d-_\.]+)\n*$/
 
 export function ResolveSourcemapPlugin({} = {}) {
     return {
@@ -19,7 +19,7 @@ export function ResolveSourcemapPlugin({} = {}) {
                     return
                 }
                 let filePath = match[1]
-                if (!filePath) {
+                if (!filePath || filePath.startsWith('data:')) { // TODO skip other data: like formats in sourcemaps
                     return
                 }
                 if (!filePath.startsWith('.') && !filePath.startsWith('/')) {

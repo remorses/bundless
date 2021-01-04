@@ -27,11 +27,8 @@ import { cleanUrl, partition } from '../utils'
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
-// TODO build for SSR, sets target to node, do not polyfill node stuff
-// TODO esbuild recreates the directory tree, this means the index.js for the index.html can be not in root, this could be mitigated by reusing the web bundles?
 // TODO esbuild creates too many chunks
 export async function build(
-    // TODO get args from config
     config: Config,
 ): Promise<{ bundleMap; traversalGraph }> {
     // if (!process.env.NODE_ENV) {
@@ -127,7 +124,7 @@ export async function build(
     const buildResult = await esbuild.build({
         ...commonEsbuildOptions,
         metafile,
-        entryPoints, // TODO transform html with plugin executor
+        entryPoints,
         bundle: true,
         platform,
         target: jsTarget,

@@ -54,7 +54,7 @@ export function generateDefineObject({
 }) {
     if (platform === 'node') {
         return {
-            ...define, // TODO mock browser stuff like fetch?
+            ...define, // TODO mock browser stuff like fetch? this allows me to target other platform like cloudflare workers ...
         }
     }
     const noop = 'String'

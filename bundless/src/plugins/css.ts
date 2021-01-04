@@ -35,8 +35,6 @@ if (typeof document !== 'undefined') {
 }
 
 /* 
-TODO code split css
-
 importing a css module file does 2 things
 - import a js file that calls ensureCssLink and exports the class names as js object
 - add the link in the html entry at build time

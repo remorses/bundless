@@ -1,0 +1,7 @@
+{
+    "todo-tree.filtering.excludeGlobs": [
+        "**/web_modules/**",
+        "**/web_modules/**",
+        "**/fixtures/**"
+    ]
+}

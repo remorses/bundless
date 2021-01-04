@@ -68,7 +68,9 @@ export async function serve(config: Config) {
     const port = await getPort(config.server?.port || DEFAULT_PORT)
 
     if (config.server?.port && Number(port) !== Number(config.server?.port)) {
-        logger.warn(`Using port ${port} because ${config.server?.port} is already in use`)
+        logger.warn(
+            `Using port ${port} because ${config.server?.port} is already in use`,
+        )
     }
     await promisify(server.listen.bind(server) as any)(port)
 
@@ -137,7 +139,6 @@ export async function createApp(config: Config) {
                 return path.resolve(root, webBundle!)
             }
 
-            // TODO fails with import cycles?
             onResolveLock.lock()
             logger.log(
                 `Found still not bundled module, running prebundle phase: ` +
@@ -420,7 +421,7 @@ export async function createApp(config: Config) {
     app.use(middlewares.sourcemapMiddleware({ root }))
     app.use(pluginsMiddleware)
     app.use(middlewares.historyFallbackMiddleware({ root, pluginsExecutor }))
-    app.use(middlewares.staticServeMiddleware({ root })) // TODO test that serve static works with paths containing $$ and folders with name ending in .zip
+    app.use(middlewares.staticServeMiddleware({ root }))
     app.use(
         middlewares.staticServeMiddleware({ root: path.join(root, 'public') }),
     )

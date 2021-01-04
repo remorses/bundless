@@ -282,7 +282,6 @@ export class PluginsExecutor {
 
     esbuildPlugins() {
         return this.plugins!.map((plugin, index) =>
-            // TODO skip itself
             wrapPluginForEsbuild({ plugin, pluginsExecutor: this }),
         )
     }

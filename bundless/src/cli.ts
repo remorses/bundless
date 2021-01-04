@@ -25,7 +25,7 @@ const serveCommand: CommandModule = {
     },
     handler: async (argv: any) => {
         const loadedConfig = loadConfig(process.cwd(), argv.config)
-        let config: Config = deepMerge(loadedConfig, { port: argv.port }) // TODO resolve and load config
+        let config: Config = deepMerge(loadedConfig, { port: argv.port })
         if (!config.root) {
             config = { ...config, root: process.cwd() }
         }

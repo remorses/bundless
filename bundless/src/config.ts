@@ -10,7 +10,7 @@ export function getEntries(config: Config): string[] {
         for (let entry of config.entries) {
             if (config.platform === 'browser' && !entry.endsWith('.html')) {
                 throw new Error(
-                    `Currently entries can only be html files: ${entry}`,
+                    `Currently when targeting browser entries can only be html files: ${entry}`,
                 )
             }
         }
