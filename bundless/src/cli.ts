@@ -55,7 +55,7 @@ const buildCommand: CommandModule = {
     },
 }
 
-yargs
+const argv = yargs
     .locale('en')
     .option('config', {
         alias: 'c',
@@ -64,7 +64,15 @@ yargs
         required: false,
         description: `The config path to use`,
     })
+    .option('debug', {
+        type: 'boolean',
+        description: `Enables debug logging`,
+    })
     .command(serveCommand)
     .command(buildCommand)
     .version()
     .help('help', 'h').argv
+
+if (argv.debug) {
+    process.env.DEBUG = 'true'
+}

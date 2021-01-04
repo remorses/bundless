@@ -5,15 +5,18 @@ function print(x) {
     process.stderr.write(chalk.dim(prefix) + x + '\n')
 }
 
+const DEBUG = process.env.debug
 export const logger = {
-    log(...x) {
+    log: (...x) => {
         print(x.join(' '))
     },
     warn(...x) {
         print(chalk.yellow(x.join(' ')))
     },
-    debug(...x) {
-        // return
-        process.stderr.write(chalk.dim(prefix + x.join(' ') + '\n'))
-    },
+    debug: DEBUG
+        ? (...x) => {
+              // return
+              process.stderr.write(chalk.dim(prefix + x.join(' ') + '\n'))
+          }
+        : () => {},
 }

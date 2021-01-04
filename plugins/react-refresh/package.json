@@ -1,6 +1,6 @@
 {
     "name": "@bundless/plugin-react-refresh",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "description": "",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -21,7 +21,6 @@
     "devDependencies": {
         "@babel/types": "^7.12.7",
         "@bundless/cli": "*",
-        "@babel/plugin-syntax-jsx": "^7.12.1",
         "@types/node": "^14.14.13"
     },
     "dependencies": {
@@ -29,6 +28,7 @@
         "@babel/parser": "^7.12.11",
         "@babel/plugin-syntax-class-properties": "^7.12.1",
         "@babel/plugin-syntax-import-meta": "^7.10.4",
+        "@babel/plugin-syntax-jsx": "^7.12.1",
         "react-refresh": "^0.8.2"
     },
     "peerDependencies": {
