@@ -28,8 +28,7 @@ export function Plugin({
 
     return {
         name: 'paged-plugin',
-        setup({ config, onLoad, onResolve, onTransform, pluginsExecutor }) {
-            const root = config.root!
+        setup({ onLoad, onResolve, onTransform, ctx: { root, config } }) {
             const pagesDir = path.resolve(root, 'pages')
 
             // NodeResolvePlugin({ namespace, extensions: ['.js'] }).setup({ onLoad() {}, onResolve })

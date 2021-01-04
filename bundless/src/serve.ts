@@ -153,11 +153,8 @@ export async function createApp(config: Config) {
                 filter: (p) => needsPrebundle(config, p),
                 dest: path.resolve(root, WEB_MODULES_PATH),
                 plugins: new PluginsExecutor({
-                    config,
-                    isBuild: false,
-                    graph,
+                    ctx: executorCtx,
                     plugins: config.plugins || [],
-                    root,
                 }).esbuildPlugins(),
                 root,
             }).catch((e) => {
@@ -190,9 +187,10 @@ export async function createApp(config: Config) {
         // lock server, start optimization, unlock, send refresh message
     }
 
+    const executorCtx = { config, isBuild: false, graph, root }
+
     const pluginsExecutor = new PluginsExecutor({
-        root,
-        isBuild: false,
+        ctx: executorCtx,
         plugins: [
             // TODO resolve data: imports, rollup emits imports with data: ...
             plugins.UrlResolverPlugin(), // resolves urls with queries
@@ -228,8 +226,6 @@ export async function createApp(config: Config) {
             ...plugin,
             name: 'serve-' + plugin.name,
         })),
-        config,
-        graph,
     })
 
     let useFsEvents = false

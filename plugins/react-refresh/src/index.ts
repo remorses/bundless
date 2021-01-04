@@ -17,7 +17,7 @@ export default ReactRefreshPlugin
 export function ReactRefreshPlugin({} = {}): Plugin {
     return {
         name: 'react-refresh',
-        setup({ onTransform, onResolve, onLoad, isBuild }) {
+        setup({ onTransform, onResolve, onLoad, ctx: { isBuild } }) {
             if (process.env.NODE_ENV === 'production' || isBuild) {
                 return
             }

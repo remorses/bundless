@@ -29,11 +29,15 @@ type OnTransformCallback = (
 
 type OnCloseCallback = () => void | Promise<void>
 
-export interface PluginHooks {
-    pluginsExecutor: PluginsExecutor
+export interface PluginsExecutorCtx {
     config: Config
+    root: string
     graph: Graph
     isBuild: boolean
+}
+export interface PluginHooks {
+    ctx: PluginsExecutorCtx
+    pluginsExecutor: PluginsExecutor
     onResolve(
         options: esbuild.OnResolveOptions,
         callback: OnResolveCallback,
@@ -77,41 +81,26 @@ type PluginInternalObject<CB> = {
 }
 
 export class PluginsExecutor {
-    root: string = ''
-    graph?: Graph
-    config?: Config
-    isBuild: boolean = false
-    plugins?: Plugin[]
+    ctx: PluginsExecutorCtx
+    plugins: Plugin[]
 
     private transforms: PluginInternalObject<OnTransformCallback>[] = []
     private resolvers: PluginInternalObject<OnResolveCallback>[] = []
     private loaders: PluginInternalObject<OnLoadCallback>[] = []
     private closers: PluginInternalObject<OnCloseCallback>[] = []
 
-    constructor(_args: {
-        plugins: Plugin[]
-        config: Config
-        root: string
-        graph?: Graph
-        isBuild: boolean
-    }) {
-        const root = _args.root
-        const {
-            plugins,
-            config = { root },
-            isBuild = false,
-            graph = new Graph({ root }),
-        } = _args
-        Object.assign(this, _args)
+    constructor(_args: { plugins: Plugin[]; ctx: PluginsExecutorCtx }) {
+        const { ctx, plugins } = _args
+
+        this.ctx = ctx
+        this.plugins = plugins
         // this.config = {...config, root}
 
         for (let plugin of plugins) {
             const { name, setup } = plugin
             setup({
+                ctx,
                 pluginsExecutor: this,
-                config,
-                graph,
-                isBuild,
                 onLoad: (options, callback) => {
                     this.loaders.push({ options, callback, name })
                 },
@@ -153,7 +142,7 @@ export class PluginsExecutor {
                 logger.debug(
                     `loading '${osAgnosticPath(
                         arg.path,
-                        this.root,
+                        this.ctx!.root,
                     )}' with '${name}'`,
                 )
                 const newResult = await callback(arg)
@@ -214,7 +203,7 @@ export class PluginsExecutor {
                             arg.path
                         }' with '${name}' as '${osAgnosticPath(
                             newResult.path,
-                            this.root,
+                            this.ctx!.root,
                         )}'`,
                     )
                     result = newResult
@@ -307,10 +296,9 @@ function wrapPluginForEsbuild(_args: {
                 // the plugin transform is already inside pluginsExecutor
                 onTransform() {},
                 onClose() {},
-                graph: pluginsExecutor.graph!,
-                config: pluginsExecutor.config!,
+                ctx: pluginsExecutor.ctx!,
                 pluginsExecutor,
-                isBuild: pluginsExecutor.isBuild,
+
                 // wrap onLoad to execute other plugins transforms
                 onLoad(options, callback) {
                     onLoad(options, async (args) => {

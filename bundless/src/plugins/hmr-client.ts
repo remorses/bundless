@@ -11,7 +11,7 @@ export const hmrClientNamespace = 'hmr-client'
 export function HmrClientPlugin({ getPort }) {
     return {
         name: 'hmr-client',
-        setup: ({ onLoad, config }: PluginHooks) => {
+        setup: ({ onLoad, ctx: { config } }: PluginHooks) => {
             onLoad(
                 { filter: /.*/, namespace: hmrClientNamespace },
                 async (args) => {

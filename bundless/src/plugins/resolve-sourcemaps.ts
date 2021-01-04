@@ -10,7 +10,11 @@ const sourcemapRegex = /\/\/#\ssourceMappingURL=([\w\d-_\.]+)\n*$/
 export function ResolveSourcemapPlugin({} = {}) {
     return {
         name: 'resolve-sourcemaps',
-        setup: ({ onTransform, pluginsExecutor, config }: PluginHooks) => {
+        setup: ({
+            onTransform,
+            pluginsExecutor,
+            ctx: { root },
+        }: PluginHooks) => {
             onTransform({ filter: jsTypeRegex }, async (args) => {
                 let contents = args.contents
                 const match = contents.match(sourcemapRegex)
@@ -19,7 +23,8 @@ export function ResolveSourcemapPlugin({} = {}) {
                     return
                 }
                 let filePath = match[1]
-                if (!filePath || filePath.startsWith('data:')) { // TODO skip other data: like formats in sourcemaps
+                if (!filePath || filePath.startsWith('data:')) {
+                    // TODO skip other data: like formats in sourcemaps
                     return
                 }
                 if (!filePath.startsWith('.') && !filePath.startsWith('/')) {
@@ -37,7 +42,7 @@ export function ResolveSourcemapPlugin({} = {}) {
                 contents = contents.replace(
                     sourcemapRegex,
                     `//# sourceMappingURL=${fileToImportPath(
-                        config.root!,
+                        root,
                         resolved?.path,
                     )}`,
                 )

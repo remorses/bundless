@@ -8,7 +8,7 @@ import qs from 'qs'
 export function UrlResolverPlugin({} = {}) {
     return {
         name: 'url-resolver',
-        setup: ({ config, onResolve }: PluginHooks) => {
+        setup: ({ ctx: { root }, onResolve }: PluginHooks) => {
             onResolve({ filter: /\?/ }, async (arg) => {
                 if (!arg.path.includes('?')) {
                     return
@@ -31,7 +31,7 @@ export function UrlResolverPlugin({} = {}) {
                 }
 
                 return {
-                    path: importPathToFile(config.root!, parsed.pathname),
+                    path: importPathToFile(root, parsed.pathname),
                 }
             })
         },

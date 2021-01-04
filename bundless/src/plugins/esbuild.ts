@@ -15,7 +15,7 @@ import { generateCodeFrame } from '../utils'
 export function EsbuildTransformPlugin({} = {}) {
     return {
         name: 'esbuild-transform',
-        setup: ({ onTransform, onClose, config }: PluginHooks) => {
+        setup: ({ onTransform, onClose, ctx: { config } }: PluginHooks) => {
             onTransform({ filter: /\.(tsx?|jsx)$/ }, async (args) => {
                 return transform({
                     src: args.contents,

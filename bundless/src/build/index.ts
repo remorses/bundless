@@ -99,10 +99,7 @@ export async function build(
 
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
-        config,
-        isBuild: true,
-        graph: emptyGraph,
-        root,
+        ctx: { config, isBuild: true, graph: emptyGraph, root },
     })
 
     const entryPoints = await Promise.all(
@@ -218,10 +215,7 @@ export async function build(
     // needed to run the onTransform on html entries
     const htmlPluginsExecutor = new PluginsExecutor({
         plugins: [...userPlugins, plugins.HtmlResolverPlugin()],
-        config,
-        graph: emptyGraph,
-        isBuild: true,
-        root,
+        ctx: pluginsExecutor.ctx,
     })
 
     for (let entry of entryPoints) {

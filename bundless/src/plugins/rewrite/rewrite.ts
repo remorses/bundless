@@ -29,8 +29,7 @@ export function RewritePlugin({} = {}) {
         setup: ({
             onTransform,
             pluginsExecutor,
-            graph,
-            config,
+            ctx: { graph, config, root },
         }: PluginHooks) => {
             if (config.platform !== 'browser') {
                 return
@@ -40,7 +39,7 @@ export function RewritePlugin({} = {}) {
                     graph,
                     namespace: args.namespace || 'file',
                     importerFilePath: args.path,
-                    root: config.root!,
+                    root,
                     pluginsExecutor,
                     source: args.contents,
                 })

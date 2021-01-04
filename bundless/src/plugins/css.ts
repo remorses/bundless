@@ -22,17 +22,15 @@ export function CssPlugin({} = {}) {
     return {
         name: 'css',
         setup: ({
-            config,
+            ctx: { root, config, isBuild },
             onLoad,
             onResolve,
             onTransform,
-            isBuild,
         }: PluginHooks) => {
             if (isBuild) {
                 return
             }
 
-            const root = config.root!
             NodeResolvePlugin({
                 name: 'css-node-resolve',
                 extensions: ['.css'],

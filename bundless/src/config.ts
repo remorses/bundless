@@ -6,6 +6,9 @@ import { Plugin } from './plugins-executor'
 import path from 'path'
 
 export function getEntries(config: Config): string[] {
+    if (!config.root) {
+        throw new Error(`Cannot get entries without having root`)
+    }
     if (config.entries) {
         for (let entry of config.entries) {
             if (config.platform === 'browser' && !entry.endsWith('.html')) {
@@ -16,11 +19,11 @@ export function getEntries(config: Config): string[] {
         }
         return config.entries.map((x) => path.resolve(config.root!, x))
     }
-    const index1 = path.resolve(config.root!, 'index.html')
+    const index1 = path.resolve(config.root, 'index.html')
     if (fs.existsSync(index1)) {
         return [index1]
     }
-    const index2 = path.resolve(config.root!, 'public/index.html')
+    const index2 = path.resolve(config.root, 'public/index.html')
     if (fs.existsSync(index2)) {
         return [index2]
     }
