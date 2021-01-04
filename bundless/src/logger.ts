@@ -1,22 +1,53 @@
 import chalk from 'chalk'
-const prefix = '[bundless] '
+import ora, { Ora } from 'ora'
 
-function print(x) {
-    process.stderr.write(chalk.dim(prefix) + x + '\n')
-}
+const defaultPrefix = '[bundless] '
 
 const DEBUG = process.env.DEBUG
-export const logger = {
-    log: (...x) => {
-        print(x.join(' '))
-    },
+export class Logger {
+    prefix: string = ''
+    constructor({ prefix = defaultPrefix } = {}) {
+        this.prefix = prefix
+    }
+
+    private print(x) {
+        if (this.spinner) {
+            this.spinner.info(x )
+        } else {
+            process.stderr.write(chalk.dim(this.prefix) + x + '\n')
+        }
+    }
+    log(...x) {
+        this.print(x.join(' '))
+    }
     warn(...x) {
-        print(chalk.yellow(x.join(' ')))
-    },
-    debug: DEBUG
+        this.print(chalk.yellow(x.join(' ')))
+    }
+
+    private spinner?: Ora
+
+    spinStart(text: string) {
+        this.spinner = ora(text).start()
+    }
+    spinSucceed(text: string) {
+        if (this.spinner) {
+            this.spinner.succeed(text)
+        }
+        this.spinner = undefined
+    }
+    spinFail(text: string) {
+        if (this.spinner) {
+            this.spinner.fail(text)
+        }
+        this.spinner = undefined
+    }
+
+    debug = DEBUG
         ? (...x) => {
               // return
-              process.stderr.write(chalk.dim(prefix + x.join(' ') + '\n'))
+              process.stderr.write(chalk.dim(this.prefix + x.join(' ') + '\n'))
           }
-        : () => {},
+        : () => {}
 }
+
+export const logger = new Logger()

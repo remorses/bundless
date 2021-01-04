@@ -8,6 +8,7 @@ import os from 'os'
 import path from 'path'
 import { MAIN_FIELDS } from '../constants'
 import { Graph } from '../graph'
+import { logger } from '../logger'
 import { PluginsExecutor } from '../plugin'
 import * as plugins from '../plugins'
 import { flatten } from '../utils'
@@ -68,7 +69,7 @@ export async function traverseWithEsbuild({
                 return
             },
             onNonResolved: (p) => {
-                console.error(`Cannot resolve '${p}' during traversal`)
+                logger.warn(`Cannot resolve '${p}' during traversal`)
                 // return {
                 //     external: true,
                 // }

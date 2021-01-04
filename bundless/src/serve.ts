@@ -9,7 +9,7 @@ import { getPort } from 'get-port-please'
 import { createServer, Server } from 'http'
 import Koa, { DefaultContext, DefaultState, Middleware } from 'koa'
 import etagMiddleware from 'koa-etag'
-import ora from 'ora'
+
 import path from 'path'
 import slash from 'slash'
 import { promisify } from 'util'
@@ -142,7 +142,7 @@ export async function createApp(config: Config) {
             logger.log(`'${relativePath}' imported by '${importer}'`)
             // node module path not bundled, rerun bundling
             const entryPoints = getEntries(config)
-            const spinner = ora('Prebundling modules').start()
+            logger.spinStart('Prebundling modules')
             bundleMap = await prebundle({
                 entryPoints,
                 filter: (p) => needsPrebundle(config, p),
@@ -155,14 +155,14 @@ export async function createApp(config: Config) {
                 }).esbuildPlugins(),
                 root,
             }).catch((e) => {
-                spinner.fail(String(e) + '\n')
+                logger.spinFail(String(e) + '\n')
                 e.message = `Cannot prebundle: ${e.message}`
                 throw e
             })
             if (isHashDifferent) {
                 await updateHash(hashPath, depHash)
             }
-            spinner.succeed('Finish\n')
+            logger.spinSucceed('Finish\n')
             await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
             context.sendHmrMessage({ type: 'reload' })
             const webBundle = bundleMap[relativePath]
@@ -299,7 +299,7 @@ export async function createApp(config: Config) {
             const stringified = JSON.stringify(payload, null, 4)
             logger.log(`hmr: ${stringified}`)
             if (!wss.clients.size) {
-                logger.log(chalk.yellow(`No clients listening for HMR message`))
+                logger.debug(chalk.yellow(`No clients listening for HMR message`))
             }
             wss.clients.forEach((client) => {
                 if (client.readyState === WebSocket.OPEN) {
