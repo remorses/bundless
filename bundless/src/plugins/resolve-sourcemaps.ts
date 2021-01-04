@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
 import { RawSourceMap } from 'source-map'
-import { PluginHooks } from '../plugin'
+import { PluginHooks } from '../plugins-executor'
 import { fileToImportPath, jsTypeRegex, readFile } from '../utils'
 
 const sourcemapRegex = /\/\/#\ssourceMappingURL=([\w\d-_\.]+)\n*$/

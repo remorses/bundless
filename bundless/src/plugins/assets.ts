@@ -1,7 +1,7 @@
 import { NodeResolvePlugin } from '@esbuild-plugins/all'
 import escapeStringRegexp from 'escape-string-regexp'
 import path from 'path'
-import { PluginHooks } from '../plugin'
+import { PluginHooks } from '../plugins-executor'
 import { fileToImportPath } from '../utils'
 
 

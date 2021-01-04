@@ -9,7 +9,7 @@ import path from 'path'
 import { MAIN_FIELDS } from '../constants'
 import { Graph } from '../graph'
 import { logger } from '../logger'
-import { PluginsExecutor } from '../plugin'
+import { PluginsExecutor } from '../plugins-executor'
 import * as plugins from '../plugins'
 import { flatten } from '../utils'
 import {

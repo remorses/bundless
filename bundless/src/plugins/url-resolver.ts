@@ -1,5 +1,5 @@
 import { NodeResolvePlugin } from '@esbuild-plugins/all'
-import { PluginHooks } from '../plugin'
+import { PluginHooks } from '../plugins-executor'
 import { importPathToFile, readFile } from '../utils'
 import url from 'url'
 import { logger } from '../logger'

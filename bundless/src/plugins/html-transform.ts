@@ -1,5 +1,5 @@
 import posthtml, { Plugin } from 'posthtml'
-import { PluginHooks } from '../plugin'
+import { PluginHooks } from '../plugins-executor'
 import { cleanUrl } from '../utils'
 
 export function HtmlTransformUrlsPlugin({

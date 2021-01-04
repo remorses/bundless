@@ -1,6 +1,6 @@
 import { NodeResolvePlugin } from '@esbuild-plugins/all'
 import { dataToEsm } from '@rollup/pluginutils'
-import { PluginHooks } from '../plugin'
+import { PluginHooks } from '../plugins-executor'
 import { readFile } from '../utils'
 
 export function JSONPlugin({} = {}) {

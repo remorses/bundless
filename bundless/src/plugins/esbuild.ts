@@ -8,7 +8,7 @@ import {
 } from 'esbuild'
 import path from 'path'
 import { Config } from '../config'
-import { OnTransformResult, PluginHooks } from '../plugin'
+import { OnTransformResult, PluginHooks } from '../plugins-executor'
 import { generateDefineObject } from '../prebundle/esbuild'
 import { generateCodeFrame } from '../utils'
 

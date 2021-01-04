@@ -4,7 +4,7 @@ import escapeStringRegexp from 'escape-string-regexp'
 import hash_sum from 'hash-sum'
 import path from 'path'
 import { CLIENT_PUBLIC_PATH, hmrPreamble } from '../constants'
-import { PluginHooks } from '../plugin'
+import { PluginHooks } from '../plugins-executor'
 
 const CSS_UTILS_PATH = '_bundless_css_utils.js'
 

@@ -8,7 +8,7 @@ import qs from 'qs'
 import { CLIENT_PUBLIC_PATH, hmrPreamble } from '../../constants'
 import { Graph } from '../../graph'
 import { logger } from '../../logger'
-import { PluginHooks, PluginsExecutor } from '../../plugin'
+import { PluginHooks, PluginsExecutor } from '../../plugins-executor'
 import { osAgnosticPath } from '../../prebundle/support'
 import { onResolveLock } from '../../serve'
 import {

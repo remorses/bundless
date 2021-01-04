@@ -1,5 +1,5 @@
 import { NodeResolvePlugin, resolveAsync } from '@esbuild-plugins/all'
-import { PluginHooks } from '../plugin'
+import { PluginHooks } from '../plugins-executor'
 import fs from 'fs-extra'
 import path from 'path'
 

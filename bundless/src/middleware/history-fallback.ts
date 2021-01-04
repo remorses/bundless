@@ -2,7 +2,7 @@ import { Middleware } from 'koa'
 import path from 'path'
 import send from 'koa-send'
 import { logger } from '../logger'
-import { PluginsExecutor } from '../plugin'
+import { PluginsExecutor } from '../plugins-executor'
 import { importPathToFile } from '../utils'
 
 export function historyFallbackMiddleware({

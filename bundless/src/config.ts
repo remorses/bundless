@@ -2,7 +2,7 @@ import { CONFIG_NAME, DEFAULT_PORT } from './constants'
 import findUp from 'find-up'
 import fs from 'fs'
 import * as esbuild from 'esbuild'
-import { Plugin } from './plugin'
+import { Plugin } from './plugins-executor'
 import path from 'path'
 
 export function getEntries(config: Config): string[] {

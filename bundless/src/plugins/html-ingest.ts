@@ -1,7 +1,7 @@
 import fs from 'fs'
 import posthtml, { Node, Plugin as PosthtmlPlugin } from 'posthtml'
 import path from 'path'
-import { Plugin } from '../plugin'
+import { Plugin } from '../plugins-executor'
 import { NodeResolvePlugin, resolveAsync } from '@esbuild-plugins/node-resolve'
 import { cleanUrl } from '../utils'
 const NAME = 'html-ingest'

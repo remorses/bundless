@@ -8,7 +8,7 @@ import { BuildConfig, Config, getEntries } from '../config'
 import { MAIN_FIELDS } from '../constants'
 import { Graph } from '../graph'
 import { logger } from '../logger'
-import { PluginsExecutor } from '../plugin'
+import { PluginsExecutor } from '../plugins-executor'
 import * as plugins from '../plugins'
 import {
     commonEsbuildOptions,
@@ -66,7 +66,7 @@ export async function build(
         }),
         plugins.UrlResolverPlugin(),
         plugins.NodeResolvePlugin({
-            name: 'build-node-resolve',
+            name: 'node-resolve',
             onNonResolved: (p) => {
                 // throw new Error(`Cannot resolve '${p}'`)
             },
@@ -144,6 +144,8 @@ export async function build(
         outdir: outDir,
         minify: Boolean(minify),
     })
+
+    logger.debug('finished esbuild build')
 
     let meta: esbuild.Metadata = JSON.parse(
         await (await fs.promises.readFile(metafile)).toString(),
