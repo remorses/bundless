@@ -59,12 +59,12 @@ exports[`snapshots fixtures/with-pages: traverse result 1`] = `
 Array [
   Object {
     "importPath": "/_bundless_paged_entry_.jsx?namespace=file",
-    "importer": "http://127.0.0.1:9000/index.html",
+    "importer": "http://127.0.0.1:9000/about/index.html",
     "resolvedImportPath": "http://127.0.0.1:9000/_bundless_paged_entry_.jsx?namespace=file",
   },
   Object {
     "importPath": "/_bundless_paged_entry_.jsx?namespace=file",
-    "importer": "http://127.0.0.1:9000/about/index.html",
+    "importer": "http://127.0.0.1:9000/index.html",
     "resolvedImportPath": "http://127.0.0.1:9000/_bundless_paged_entry_.jsx?namespace=file",
   },
   Object {
