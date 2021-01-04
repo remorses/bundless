@@ -43,17 +43,27 @@ Array [
   },
   Object {
     "importPath": "/web_modules/chunk.6LFFTHWT.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.6LFFTHWT.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.6LFFTHWT.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react/index.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.6LFFTHWT.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/node_modules/slash/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/chunk.6LFFTHWT.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/chunk.6LFFTHWT.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
   },
   Object {
@@ -63,17 +73,7 @@ Array [
   },
   Object {
     "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/chunk.6LFFTHWT.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/chunk.6LFFTHWT.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/node_modules/slash/index.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
   },
   Object {

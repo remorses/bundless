@@ -111,13 +111,11 @@ describe('snapshots', () => {
                     'content-type headers',
                 )
                 expect(
-                    res
-                        .map(osAgnosticResult)
-                        .sort((a, b) =>
-                            a.resolvedImportPath.localeCompare(
-                                b.resolvedImportPath,
-                            ),
-                        ),
+                    res.map(osAgnosticResult).sort((_a, _b) => {
+                        const a = _a.resolvedImportPath + _a.importer
+                        const b = _b.resolvedImportPath + _b.importer
+                        return a.localeCompare(b)
+                    }),
                 ).toMatchSpecificSnapshot(snapshotFile, 'traverse result')
 
                 // MIRROR
