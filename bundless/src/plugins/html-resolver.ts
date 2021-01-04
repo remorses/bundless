@@ -27,7 +27,6 @@ export function HtmlResolverPlugin({} = {}) {
                     },
                 ).catch(() => '')
                 if (resolved) {
-                    console.log({ resolved })
                     return {
                         path: resolved,
                     }

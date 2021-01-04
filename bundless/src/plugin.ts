@@ -265,7 +265,6 @@ function wrapPluginForEsbuild(_args: {
                             contents: String(result?.contents),
                             loader: result.loader,
                         })
-                        // console.log({ ...transformed, contents: ''  })
                         if (!transformed) {
                             return result
                         }
