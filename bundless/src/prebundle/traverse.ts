@@ -2,18 +2,14 @@ import deepmerge from 'deepmerge'
 import { build, BuildOptions, Metadata, Plugin } from 'esbuild'
 import fromEntries from 'fromentries'
 import { promises as fsp } from 'fs'
+
 import fsx from 'fs-extra'
 import os from 'os'
 import path from 'path'
 import { MAIN_FIELDS } from '../constants'
 import { Graph } from '../graph'
 import { PluginsExecutor } from '../plugin'
-import {
-    HtmlIngestPlugin,
-    HtmlResolverPlugin,
-    NodeModulesPolyfillPlugin,
-    NodeResolvePlugin,
-} from '../plugins'
+import * as plugins from '../plugins'
 import { flatten } from '../utils'
 import {
     commonEsbuildOptions,
@@ -36,8 +32,8 @@ export async function traverseWithEsbuild({
     entryPoints,
     esbuildCwd,
     root,
-    plugins,
-    esbuildOptions = { plugins: [] },
+    plugins: userPlugins,
+    esbuildOptions = {},
     stopTraversing,
 }: Args): Promise<string[]> {
     const destLoc = await fsp.realpath(
@@ -53,13 +49,12 @@ export async function traverseWithEsbuild({
     }
 
     const allPlugins = [
-        ...(plugins || []),
-        
+        ...(userPlugins || []),
         ExternalButInMetafile(),
-        NodeModulesPolyfillPlugin(),
-        HtmlResolverPlugin(),
-        HtmlIngestPlugin({ root }),
-        NodeResolvePlugin({
+        plugins.NodeModulesPolyfillPlugin(),
+        plugins.HtmlResolverPlugin(),
+        plugins.HtmlIngestPlugin({ root }),
+        plugins.NodeResolvePlugin({
             name: 'traverse-node-resolve',
             mainFields: MAIN_FIELDS,
             extensions: resolvableExtensions,
@@ -79,16 +74,18 @@ export async function traverseWithEsbuild({
                 // }
             },
         }),
+        plugins.UrlResolverPlugin(),
     ].map((plugin) => ({
         ...plugin,
         name: 'traversal-' + plugin.name,
     }))
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
-        config: { root },
+        config: { root, plugins: userPlugins },
         graph: new Graph({ root }),
         root,
     })
+
     try {
         const metafile = path.join(destLoc, 'meta.json')
         // logger.log(`Running esbuild in cwd '${process.cwd()}'`)

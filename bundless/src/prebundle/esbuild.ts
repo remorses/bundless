@@ -1,8 +1,3 @@
-import {
-    HtmlIngestPlugin,
-    NodeModulesPolyfillPlugin,
-    NodeResolvePlugin,
-} from '@esbuild-plugins/all'
 import * as esbuild from 'esbuild'
 import { Metadata } from 'esbuild'
 import fromEntries from 'fromentries'
@@ -11,6 +6,7 @@ import path from 'path'
 import toUnixPath from 'slash'
 import tmpfile from 'tmpfile'
 import { Platform } from '../config'
+import * as plugins from '../plugins'
 import {
     importableAssets as importableImagesExtensions,
     JS_EXTENSIONS,
@@ -100,7 +96,7 @@ export const resolvableExtensions = [
 export async function bundleWithEsBuild({
     entryPoints,
     root,
-    plugins,
+    plugins: userPlugins,
     dest: destLoc,
     ...options
 }) {
@@ -136,9 +132,9 @@ export async function bundleWithEsBuild({
         define: generateDefineObject({ env }),
         plugins: [
             // HtmlIngestPlugin(),
-            ...(plugins || []), // TODO esbuild should resolve with all plugins
-            NodeModulesPolyfillPlugin(),
-            NodeResolvePlugin({
+            ...(userPlugins || []), // TODO esbuild should resolve with all plugins
+            plugins.NodeModulesPolyfillPlugin(),
+            plugins.NodeResolvePlugin({
                 name: 'prebundle-node-resolve',
                 mainFields: MAIN_FIELDS,
                 extensions: resolvableExtensions,
@@ -146,6 +142,7 @@ export async function bundleWithEsBuild({
                     logger.warn(`Cannot resolve '${r}'`)
                 },
             }),
+            plugins.UrlResolverPlugin(),
         ],
     })
 

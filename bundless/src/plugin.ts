@@ -87,7 +87,7 @@ export class PluginsExecutor {
 
     constructor(_args: {
         plugins: Plugin[]
-        config?: Config
+        config: Config
         root: string
         graph?: Graph
     }) {

@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 require('source-map-support').install()
+if (process.argv.includes('--debug')) {
+    process.env.DEBUG = 'true'
+}
+
 import yargs, { CommandModule } from 'yargs'
 import deepMerge from 'deepmerge'
 import { serve } from './serve'
@@ -72,7 +76,3 @@ const argv = yargs
     .command(buildCommand)
     .version()
     .help('help', 'h').argv
-
-if (argv.debug) {
-    process.env.DEBUG = 'true'
-}

@@ -7,7 +7,7 @@ import qs from 'qs'
 
 export function UrlResolverPlugin({} = {}) {
     return {
-        name: 'json',
+        name: 'url-resolver',
         setup: ({ config, onResolve }: PluginHooks) => {
             onResolve({ filter: /\?/ }, async (arg) => {
                 if (!arg.path.includes('?')) {

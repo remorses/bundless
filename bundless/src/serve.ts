@@ -136,7 +136,7 @@ export async function createApp(config: Config) {
             // TODO fails with import cycles?
             onResolveLock.lock()
             logger.log(
-                `Found still not bundled module, running prebundle phase:` +
+                `Found still not bundled module, running prebundle phase: ` +
                     JSON.stringify(bundleMap),
             )
             logger.log(`'${relativePath}' imported by '${importer}'`)

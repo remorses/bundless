@@ -5,7 +5,7 @@ function print(x) {
     process.stderr.write(chalk.dim(prefix) + x + '\n')
 }
 
-const DEBUG = process.env.debug
+const DEBUG = process.env.DEBUG
 export const logger = {
     log: (...x) => {
         print(x.join(' '))
