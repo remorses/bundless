@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import launchEditor from 'launch-editor'
 import chokidar, { FSWatcher } from 'chokidar'
 import { createHash } from 'crypto'
 import deepmerge from 'deepmerge'
@@ -101,7 +102,7 @@ export async function createApp(config: Config) {
     if (!config.root) {
         config.root = process.cwd()
     }
-    const { root } = config
+    const { root = '' } = config
 
     const app = new Koa<DefaultState, DefaultContext>()
 
@@ -265,8 +266,9 @@ export async function createApp(config: Config) {
         app.emit('closed')
     })
 
-    app.on('error', (e) => {
-        console.log(chalk.red(e))
+    app.on('error', (e: Error) => {
+        console.log(chalk.red(e.message))
+        console.log(chalk.red(e.stack))
         context.sendHmrMessage({ type: 'overlay-error', err: prepareError(e) })
     })
 
@@ -428,6 +430,8 @@ export async function createApp(config: Config) {
         return next()
     }
 
+    // open errors in editor
+    app.use(middlewares.openInEditorMiddleware({ root }))
     app.use(middlewares.sourcemapMiddleware({ root }))
     app.use(pluginsMiddleware)
     app.use(middlewares.historyFallbackMiddleware({ root, pluginsExecutor }))

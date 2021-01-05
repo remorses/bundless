@@ -234,6 +234,22 @@ socket.addEventListener('message', ({ data: _data }) => {
 })
 log('listening for file changes...')
 
+/** Runtime error reporting: If a runtime error occurs, show it in an overlay. */
+if (isWindowDefined) {
+    window.addEventListener('error', function(event) {
+        const err: OverlayErrorPayload['err'] = {
+            message: `${event.message}`,
+            loc: {
+                file: event.filename,
+                column: event.colno,
+                line: event.lineno,
+            },
+            stack: event.error ? event.error.stack : '',
+        }
+        ErrorOverlay.show(err)
+    })
+}
+
 const enableOverlay = __HMR_ENABLE_OVERLAY__
 
 function appendQuery(url: string, query: string) {
@@ -381,28 +397,38 @@ class CommonOverlay extends HTMLElement {
         if (!linkFiles) {
             el.textContent = text
         } else {
-            let curIndex = 0
-            let match
-            while ((match = fileRE.exec(text))) {
-                const { 0: file, index } = match
-                if (index != null) {
-                    const frag = text.slice(curIndex, index)
-                    el.appendChild(document.createTextNode(frag))
-                    const link = document.createElement('a')
-                    link.textContent = file
-                    link.className = 'file-link'
-                    link.onclick = () => {
-                        fetch(
-                            '/__open-in-editor?file=' +
-                                encodeURIComponent(file),
-                        )
-                    }
-                    el.appendChild(link)
-                    curIndex += frag.length + file.length
+            const matches = getAllMatches(text, /(https?:\/\/.*)/g)
+            for (let { frag, matched } of matches) {
+                el.appendChild(document.createTextNode(frag))
+                const link = document.createElement('a')
+                link.textContent = matched
+                link.className = 'file-link'
+                const path = /https?:\/\//.test(matched)
+                    ? new URL(matched).pathname.slice(1)
+                    : matched
+                link.onclick = () => {
+                    fetch('/__open-in-editor?file=' + encodeURIComponent(path))
                 }
+                el.appendChild(link)
             }
         }
     }
+}
+
+function getAllMatches(text: string, regex: RegExp) {
+    let curIndex = 0
+    let match
+    const matches: { frag; matched }[] = []
+    while ((match = regex.exec(text))) {
+        console.log(match)
+        const { 0: matched, index } = match
+        if (index != null) {
+            const frag = text.slice(curIndex, index)
+            matches.push({ frag, matched })
+            curIndex += frag.length + matched.length
+        }
+    }
+    return matches
 }
 
 export class ErrorOverlay extends CommonOverlay {
@@ -458,4 +484,3 @@ export class ErrorOverlay extends CommonOverlay {
 }
 
 customElements.define(ErrorOverlay.overlayId, ErrorOverlay)
-

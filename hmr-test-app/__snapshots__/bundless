@@ -69,23 +69,3 @@ Array [
 `;
 
 exports[`hmr 7 src/imported-many-times.js bundless: urls 1`] = `Set {}`;
-
-exports[`hmr 8 src/file2.js, src/file.jsx bundless: messages 1`] = `
-Array [
-  Object {
-    "type": "reload",
-  },
-]
-`;
-
-exports[`hmr 8 src/file2.js, src/file.jsx bundless: messages 2`] = `
-Array [
-  Object {
-    "type": "reload",
-  },
-]
-`;
-
-exports[`hmr 8 src/file2.js, src/file.jsx bundless: urls 1`] = `Set {}`;
-
-exports[`hmr 8 src/file2.js, src/file.jsx bundless: urls 2`] = `Set {}`;

@@ -1,20 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`snapshots fixtures/with-pages: build 1`] = `
-Array [
-  "about/index.html",
-  "about/index.js",
-  "chunk.CTYP6TOD.js",
-  "chunk.J7D4EJTC.js",
-  "chunk.JX5C3APE.js",
-  "index.html",
-  "index.js",
-  "metafile.json",
-  "pages/about.js",
-  "pages/index.js",
-]
-`;
-
 exports[`snapshots fixtures/with-pages: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/.../.../paged/src/client/context.ts?namespace=file": "application/javascript; charset=utf-8",

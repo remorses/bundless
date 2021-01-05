@@ -40,7 +40,7 @@ interface PingPayload {
 export interface OverlayErrorPayload {
     type: 'overlay-error'
     err: {
-        [name: string]: any
+        // [name: string]: any
         message: string
         stack: string
         id?: string

@@ -5,6 +5,9 @@ export const dotdotEncoding = '...'
 
 // maybe keep track of namespace query here?
 export function importPathToFile(root: string, request: string) {
+    if (!request) {
+        return ''
+    }
     request = decodeURIComponent(request)
     request = cleanUrl(request)
     request = request.startsWith('/') ? request.slice(1) : request

@@ -237,6 +237,7 @@ export function prepareError(err: Error) {
         ...err,
         message: strip(err.message),
         stack: strip(err.stack || ''),
+
         // TODO add frame to error somehow?
         // frame: strip(err?.frame || ''),
     }
