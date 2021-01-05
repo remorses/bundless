@@ -168,12 +168,12 @@ socket.addEventListener('message', ({ data: _data }) => {
     }
     if (data.type === 'overlay-info-open') {
         log('message: info open');
-        ErrorOverlay.show({ ...data.info, stack: '' });
+        InfoOverlay.show({ ...data.info, stack: '' });
         return;
     }
     if (data.type === 'overlay-info-close') {
         log('message: info close');
-        ErrorOverlay.clear();
+        InfoOverlay.clear();
         return;
     }
     if (data.type === 'update') {
@@ -183,6 +183,7 @@ socket.addEventListener('message', ({ data: _data }) => {
             .then((ok) => {
             if (ok) {
                 ErrorOverlay.clear();
+                InfoOverlay.clear();
             }
             else {
                 reload();
@@ -230,7 +231,7 @@ function appendQuery(url, query) {
     }
     return `${url}?${query}`;
 }
-const template = /*html*/ `
+const template = ({ mainColor, tip = '' }) => /*html*/ `
 <style>
 :host {
   position: fixed;
@@ -259,11 +260,12 @@ const template = /*html*/ `
   margin: 30px auto;
   padding: 25px 40px;
   position: relative;
-  background: #181818;
+  background: #000;
   border-radius: 6px 6px 8px 8px;
-  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  box-shadow: 0 19px 38px rgba(0,0,20,0.01), 0 15px 12px rgba(0,0,20,0.1);
   overflow: hidden;
-  border-top: 8px solid var(--red);
+  border-top: 8px solid var(${mainColor});
+  min-height: 200px;
 }
 
 pre {
@@ -286,7 +288,7 @@ pre::-webkit-scrollbar {
 }
 
 .message-body {
-  color: var(--red);
+  color: var(${mainColor});
 }
 
 .plugin {
@@ -332,11 +334,11 @@ code {
   <pre class="file"></pre>
   <pre class="frame"></pre>
   <pre class="stack"></pre>
-  <div class="tip">
-    Click outside or fix the code to dismiss.<br>
-    You can also disable this overlay with
-    <code>hmr: { overlay: false }</code> in <code>vite.config.js.</code>
-  </div>
+  ${tip &&
+    `<div class="tip">
+        ${tip}
+        </div>
+  `}
 </div>
 `;
 const fileRE = /(?:[a-zA-Z]:\\|\/).*?:\d+:\d+/g;
@@ -353,6 +355,10 @@ class CommonOverlay extends HTMLElement {
         document
             .querySelectorAll(this.overlayId)
             .forEach((n) => n.close());
+    }
+    close() {
+        var _a;
+        (_a = this.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(this);
     }
     displayText(selector, text, linkFiles = false) {
         const el = this.root.querySelector(selector);
@@ -398,7 +404,10 @@ export class ErrorOverlay extends CommonOverlay {
         var _a;
         super();
         this.root = this.attachShadow({ mode: 'open' });
-        this.root.innerHTML = template;
+        this.root.innerHTML = template({
+            mainColor: '--red',
+            tip: `Click outside or fix the code to dismiss.<br>`,
+        });
         const hasFrame = err.frame && codeframeRE.test(err.frame);
         const message = hasFrame
             ? err.message.replace(codeframeRE, '')
@@ -425,11 +434,24 @@ export class ErrorOverlay extends CommonOverlay {
             this.close();
         });
     }
-    close() {
-        var _a;
-        (_a = this.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(this);
-    }
 }
 ErrorOverlay.overlayId = 'bundless-error-overlay';
 customElements.define(ErrorOverlay.overlayId, ErrorOverlay);
+export class InfoOverlay extends CommonOverlay {
+    constructor(info) {
+        super();
+        this.root = this.attachShadow({ mode: 'open' });
+        this.root.innerHTML = template({ mainColor: '--cyan' });
+        this.displayText('.message-body', info.message.trim());
+        this.root.querySelector('.window').addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        // this.addEventListener('click', () => {
+        //     this.close()
+        // })
+    }
+}
+InfoOverlay.overlayId = 'bundless-info-overlay';
+customElements.define(InfoOverlay.overlayId, InfoOverlay);
+// InfoOverlay.show({ message: 'Prebundling modules' })
 //template.js.map

@@ -14,3 +14,4 @@ console.log(useState)
 console.log(ReactDom.render)
 
 export const variable = 10
+
