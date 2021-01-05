@@ -1,3 +1,4 @@
+import '/_hmr_client.js?namespace=hmr-client';
 import path from '/path?namespace=node-builtins'
 
 console.log({ path })

@@ -1,3 +1,4 @@
+import '/_hmr_client.js?namespace=hmr-client';
 import {text} from "/text.ts?namespace=file";
 function jsx(t, p, children) {
   var node = document.createElement(t);

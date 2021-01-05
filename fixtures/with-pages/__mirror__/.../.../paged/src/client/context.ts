@@ -1,3 +1,4 @@
+import '/_hmr_client.js?namespace=hmr-client';
 import react_cjsImport0 from "/web_modules/react/index.js?namespace=file";
 const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0;;
 export const MahoContext = React.createContext(null);

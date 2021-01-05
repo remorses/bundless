@@ -1,3 +1,4 @@
+import '/_hmr_client.js?namespace=hmr-client';
 var define_process_default = {};
 import {useLocation} from "/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file";
 import useSWR from "/web_modules/swr/esm/index.js?namespace=file";

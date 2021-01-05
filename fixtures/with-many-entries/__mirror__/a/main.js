@@ -1,3 +1,4 @@
+import '/_hmr_client.js?namespace=hmr-client';
 import '/a/main.css?namespace=file'
 import '/common.css?namespace=file'
 

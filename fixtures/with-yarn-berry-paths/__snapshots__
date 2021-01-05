@@ -11,6 +11,7 @@ Array [
 exports[`snapshots fixtures/with-yarn-berry-paths: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/$$virtual/react-dom-virtual-73426b59bc/0/cache/react-dom-npm-16.13.1-b0abd8a83a-fb5c3ad413.zip/react-dom/index.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
 }
@@ -18,6 +19,7 @@ Object {
 
 exports[`snapshots fixtures/with-yarn-berry-paths: mirror 1`] = `
 Array [
+  "_hmr_client.js",
   "$$virtual/react-dom-virtual-73426b59bc/0/cache/react-dom-npm-16.13.1-b0abd8a83a-fb5c3ad413.zip/react-dom/index.js",
   "index.html",
   "main.js",
@@ -26,6 +28,11 @@ Array [
 
 exports[`snapshots fixtures/with-yarn-berry-paths: traverse result 1`] = `
 Array [
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
   Object {
     "importPath": "/$$virtual/react-dom-virtual-73426b59bc/0/cache/react-dom-npm-16.13.1-b0abd8a83a-fb5c3ad413.zip/react-dom/index.js?namespace=file",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",

@@ -79,12 +79,52 @@ Array [
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/_bundless_paged_entry_.jsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/_bundless_paged_entry_.jsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
     "importer": "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
     "importer": "http://127.0.0.1:9000/_bundless_paged_routes_.jsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/.../.../paged/src/client/context.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/.../.../paged/src/client/context.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/.../.../paged/src/client/context.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/.../.../paged/src/client/context.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/.../.../paged/src/client/index.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/.../.../paged/src/client/index.ts?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
@@ -105,6 +145,46 @@ Array [
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
     "importer": "http://127.0.0.1:9000/pages/index.tsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/web_modules/react-dom/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/web_modules/react-dom/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/web_modules/react-router-dom/esm/react-router-dom.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/web_modules/swr/esm/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/web_modules/swr/esm/index.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {

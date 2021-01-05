@@ -1,3 +1,4 @@
+import '/_hmr_client.js?namespace=hmr-client';
 import slash_cjsImport0 from "/web_modules/index.js?namespace=file";
 const slash = slash_cjsImport0 && slash_cjsImport0.__esModule ? slash_cjsImport0.default : slash_cjsImport0;
 

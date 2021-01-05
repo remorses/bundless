@@ -10,6 +10,7 @@ Array [
 
 exports[`snapshots fixtures/with-node-polyfills: content-type headers 1`] = `
 Object {
+  "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/path?namespace=node-builtins": "application/javascript; charset=utf-8",
@@ -18,6 +19,7 @@ Object {
 
 exports[`snapshots fixtures/with-node-polyfills: mirror 1`] = `
 Array [
+  "_hmr_client.js",
   "index.html",
   "main.js",
   "path",
@@ -26,6 +28,11 @@ Array [
 
 exports[`snapshots fixtures/with-node-polyfills: traverse result 1`] = `
 Array [
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
   Object {
     "importPath": "/main.js?namespace=file",
     "importer": "http://127.0.0.1:9000/index.html",

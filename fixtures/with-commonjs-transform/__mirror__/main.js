@@ -1,3 +1,4 @@
+import '/_hmr_client.js?namespace=hmr-client';
 import react_cjsImport0 from "/web_modules/index.js?namespace=file";
 const useState = react_cjsImport0["useState"];
 

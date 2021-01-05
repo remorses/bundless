@@ -1,3 +1,4 @@
+import '/_hmr_client.js?namespace=hmr-client';
 import {allCaps} from "/utils.ts?namespace=file";
 export const text = allCaps("works!");
 
