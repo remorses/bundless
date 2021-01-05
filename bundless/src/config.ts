@@ -2,10 +2,14 @@ import { CONFIG_NAME, DEFAULT_PORT } from './constants'
 import findUp from 'find-up'
 import fs from 'fs'
 import * as esbuild from 'esbuild'
-import { Plugin } from './plugins-executor'
+import { Plugin, PluginsExecutor } from './plugins-executor'
 import path from 'path'
 
-export function getEntries(config: Config): string[] {
+// TODO use the executor to find entries
+export function getEntries(
+    // pluginsExecutor: PluginsExecutor,
+    config: Config,
+): string[] {
     if (!config.root) {
         throw new Error(`Cannot get entries without having root`)
     }
@@ -28,7 +32,11 @@ export function getEntries(config: Config): string[] {
         return [index2]
     }
     throw new Error(
-        `Cannot find entries, neither config.entries, index.html or public/index.html files are present`,
+        `Cannot find entries, neither config.entries, index.html or public/index.html files are present\n${JSON.stringify(
+            config,
+            null,
+            4,
+        )}`,
     )
 }
 

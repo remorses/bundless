@@ -21,9 +21,9 @@ export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
         const dependenciesPaths = traversalResult.filter(filter)
 
         logger.log(
-            `prebundling [${dependenciesPaths
+            `prebundling [\n    ${dependenciesPaths
                 .map((x) => osAgnosticPath(x, root))
-                .join(', ')}]`,
+                .join('\n    ')}\n]`,
         )
 
         await fs.remove(dest)

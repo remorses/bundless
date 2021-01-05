@@ -127,10 +127,10 @@ export async function createApp(config: Config) {
     async function onResolved(resolvedPath: string, importer: string) {
         try {
             // lock browser requests until not prebundled
+            await onResolveLock.wait()
             if (!needsPrebundle(config, resolvedPath)) {
                 return
             }
-            await onResolveLock.wait()
             const relativePath = slash(
                 path.relative(root, resolvedPath),
             ).replace('$$virtual', 'virtual')
@@ -141,8 +141,8 @@ export async function createApp(config: Config) {
 
             onResolveLock.lock()
             logger.log(
-                `Found still not bundled module, running prebundle phase: ` +
-                    JSON.stringify(bundleMap),
+                `Found still not bundled module, running prebundle phase:` 
+                    
             )
             logger.log(`'${relativePath}' imported by '${importer}'`)
             // node module path not bundled, rerun bundling

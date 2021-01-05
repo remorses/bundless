@@ -214,8 +214,8 @@ export class Lock extends EventEmitter {
         super()
     }
     ready() {
-        this.emit(this.READY_EVENT)
         this.isReady = true
+        this.emit(this.READY_EVENT)
     }
     lock() {
         this.isReady = false
