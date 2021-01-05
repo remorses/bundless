@@ -1,4 +1,5 @@
 import { parse as _parse } from '@babel/parser'
+import strip from 'strip-ansi'
 import { Statement } from '@babel/types'
 import escapeStringRegexp from 'escape-string-regexp'
 import { EventEmitter, once } from 'events'
@@ -228,5 +229,15 @@ export class Lock extends EventEmitter {
             return
         }
         return once(this, this.READY_EVENT)
+    }
+}
+
+export function prepareError(err: Error) {
+    return {
+        ...err,
+        message: strip(err.message),
+        stack: strip(err.stack || ''),
+        // TODO add frame to error somehow?
+        // frame: strip(err?.frame || ''),
     }
 }

@@ -2,7 +2,9 @@ export type HMRPayload =
     | ConnectedPayload
     | UpdatePayload
     | FullReloadPayload
-    | ErrorPayload
+    | OverlayErrorPayload
+    | OverlayInfoOpenPayload
+    | OverlayInfoClosePayload
     | HotAcceptPayload
     | ConnectPayload
 
@@ -28,15 +30,45 @@ interface HotAcceptPayload {
     path: string
 }
 
-interface ErrorPayload {
-    type: 'error'
-    title?: string
-    errorMessage?: string
-    fileLoc?: string
-}
 interface ConnectPayload {
     type: 'connected'
 }
 interface PingPayload {
     type: 'ping'
+}
+
+export interface OverlayErrorPayload {
+    type: 'overlay-error'
+    err: {
+        [name: string]: any
+        message: string
+        stack: string
+        id?: string
+        frame?: string
+        plugin?: string
+        pluginCode?: string
+        loc?: {
+            file?: string
+            line: number
+            column: number
+        }
+    }
+}
+
+export interface OverlayInfoOpenPayload {
+    type: 'overlay-info-open'
+    info: {
+        [name: string]: any
+        message: string
+        showSpinner?: boolean
+    }
+}
+
+export interface OverlayInfoClosePayload {
+    type: 'overlay-info-close'
+    info: {
+        [name: string]: any
+        message: string
+        showSpinner?: boolean
+    }
 }

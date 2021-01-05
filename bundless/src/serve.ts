@@ -42,6 +42,7 @@ import {
     Lock,
     needsPrebundle,
     parseWithQuery,
+    prepareError,
 } from './utils'
 
 process.env.NODE_ENV = 'development'
@@ -141,8 +142,7 @@ export async function createApp(config: Config) {
 
             onResolveLock.lock()
             logger.log(
-                `Found still not bundled module, running prebundle phase:` 
-                    
+                `Found still not bundled module, running prebundle phase:`,
             )
             logger.log(`'${relativePath}' imported by '${importer}'`)
             // node module path not bundled, rerun bundling
@@ -254,9 +254,10 @@ export async function createApp(config: Config) {
         app.emit('closed')
     })
 
-    // app.on('error', (e) => {
-    //     logger.log(chalk.red(e))
-    // })
+    app.on('error', (e) => {
+        console.log(chalk.red(e))
+        context.sendHmrMessage({ type: 'error', err: prepareError(e) })
+    })
 
     // start HMR ws server
     app.once('listening', async () => {
@@ -298,21 +299,21 @@ export async function createApp(config: Config) {
             }
         })
 
+        // TODO send should wait for clients to be available and resend error and reload messages
         context.sendHmrMessage = (payload: HMRPayload) => {
             const stringified = JSON.stringify(payload, null, 4)
             logger.log(`hmr: ${stringified}`)
             if (!wss.clients.size) {
-                logger.debug(
-                    chalk.yellow(`No clients listening for HMR message`),
-                )
+                logger.warn(`No clients listening for HMR message`)
             }
-            wss.clients.forEach((client) => {
+            wss.clients.forEach((client, i) => {
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(stringified)
                 } else {
                     console.log(
                         chalk.red(
-                            `Cannot send HMR message, hmr client is not open`,
+                            `Cannot send HMR message, hmr client ${i +
+                                1} is not open`,
                         ),
                     )
                 }

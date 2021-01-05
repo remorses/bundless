@@ -102,6 +102,8 @@ export async function rewriteImports({
 
         if (isHmrEnabled) {
             magicString.prepend(hmrPreamble)
+        } else {
+            magicString.prepend(`import '${CLIENT_PUBLIC_PATH}';\n`)
         }
         const currentNode = graph.ensureEntry(importerFilePath, {
             isHmrEnabled,

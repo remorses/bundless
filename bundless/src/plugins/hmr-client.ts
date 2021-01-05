@@ -51,6 +51,10 @@ export function HmrClientPlugin({ getPort }) {
                             )
                             .replace(`__HMR_PORT__`, JSON.stringify(socketPort))
                             .replace(
+                                `__HMR_ENABLE_OVERLAY__`,
+                                JSON.stringify(true),
+                            )
+                            .replace(
                                 `__HMR_TIMEOUT__`,
                                 JSON.stringify(socketTimeout),
                             ),
