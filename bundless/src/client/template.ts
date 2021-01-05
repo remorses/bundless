@@ -459,4 +459,3 @@ export class ErrorOverlay extends CommonOverlay {
 
 customElements.define(ErrorOverlay.overlayId, ErrorOverlay)
 
-ErrorOverlay.show({ message: 'caioo', stack: '' })

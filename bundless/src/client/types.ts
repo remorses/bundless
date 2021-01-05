@@ -66,9 +66,4 @@ export interface OverlayInfoOpenPayload {
 
 export interface OverlayInfoClosePayload {
     type: 'overlay-info-close'
-    info: {
-        [name: string]: any
-        message: string
-        showSpinner?: boolean
-    }
 }

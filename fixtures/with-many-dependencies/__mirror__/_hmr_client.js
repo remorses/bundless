@@ -406,5 +406,4 @@ export class ErrorOverlay extends CommonOverlay {
 }
 ErrorOverlay.overlayId = 'bundless-error-overlay';
 customElements.define(ErrorOverlay.overlayId, ErrorOverlay);
-ErrorOverlay.show({ message: 'caioo', stack: '' });
 //template.js.map

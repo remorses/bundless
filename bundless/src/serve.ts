@@ -43,6 +43,7 @@ import {
     needsPrebundle,
     parseWithQuery,
     prepareError,
+    sleep,
 } from './utils'
 
 process.env.NODE_ENV = 'development'
@@ -145,6 +146,13 @@ export async function createApp(config: Config) {
                 `Found still not bundled module, running prebundle phase:`,
             )
             logger.log(`'${relativePath}' imported by '${importer}'`)
+            context.sendHmrMessage({
+                type: 'overlay-info-open',
+                info: {
+                    message: `Prebundling dependencies`,
+                    showSpinner: true,
+                },
+            })
             // node module path not bundled, rerun bundling
             const entryPoints = getEntries(config)
             logger.spinStart('Prebundling modules')
@@ -183,6 +191,9 @@ export async function createApp(config: Config) {
             throw e
         } finally {
             onResolveLock.ready()
+            context.sendHmrMessage({
+                type: 'overlay-info-close',
+            })
         }
         // lock server, start optimization, unlock, send refresh message
     }
@@ -256,7 +267,7 @@ export async function createApp(config: Config) {
 
     app.on('error', (e) => {
         console.log(chalk.red(e))
-        context.sendHmrMessage({ type: 'error', err: prepareError(e) })
+        context.sendHmrMessage({ type: 'overlay-error', err: prepareError(e) })
     })
 
     // start HMR ws server
