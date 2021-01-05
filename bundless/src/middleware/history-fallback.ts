@@ -71,18 +71,6 @@ export function historyFallbackMiddleware({
             return next()
         }
 
-        const {
-            contents: resolvedTopPublicHtml,
-        } = await pluginsExecutor.resolveLoadTransform({
-            path: path.resolve(root, 'public/index.html'),
-            expectedExtensions: ['.html'],
-        })
-
-        if (resolvedTopPublicHtml) {
-            send(ctx, resolvedTopPublicHtml, '/public/index.html')
-            return next()
-        }
-
         return next()
         // return next()
     }
