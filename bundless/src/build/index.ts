@@ -103,7 +103,7 @@ export async function build(
     })
 
     const entryPoints = await Promise.all(
-        getEntries(config).map(async (x) => {
+        (await getEntries(pluginsExecutor, config)).map(async (x) => {
             const resolved = await pluginsExecutor.resolve({
                 path: x,
                 importer: '',

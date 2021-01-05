@@ -4,12 +4,12 @@ if (process.argv.includes('--debug')) {
     process.env.DEBUG = 'true'
 }
 
-import yargs, { CommandModule } from 'yargs'
 import deepMerge from 'deepmerge'
-import { serve } from './serve'
-import { Config, getEntries, loadConfig } from './config'
-import { CONFIG_NAME } from './constants'
+import yargs, { CommandModule } from 'yargs'
 import { build } from './build'
+import { Config, loadConfig } from './config'
+import { CONFIG_NAME } from './constants'
+import { serve } from './serve'
 
 const serveCommand: CommandModule = {
     command: ['serve', '*'],

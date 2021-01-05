@@ -49,6 +49,8 @@ export async function traverseWithEsbuild({
         }
     }
 
+    logger.debug(`Traversing entrypoints ${JSON.stringify(entryPoints, [], 4)}`)
+
     const allPlugins = [
         ...(userPlugins || []),
         ExternalButInMetafile(),

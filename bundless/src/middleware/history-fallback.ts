@@ -38,15 +38,15 @@ export function historyFallbackMiddleware({
         }
         // use the executor to resolve virtual html files
         // TODO decide if we want to pass the path with index.html or the normal path and let the plugins decide if they watn to serve html, the second way is harder because html should be served as last thing (fallback) but user plugins run first
-        let filePath = !cleanUrl(ctx.path).endsWith('/')
-            ? ctx.path
-            : ctx.path + 'index.html'
-        filePath = importPathToFile(root, filePath)
+        let filePath = !cleanUrl(ctx.path).endsWith('.html')
+            ? path.posix.join(ctx.path, 'index.html')
+            : ctx.path
+
         const {
             contents: resolvedHtml,
             path: resolveHtmlPath,
         } = await pluginsExecutor.resolveLoadTransform({
-            path: filePath,
+            path: importPathToFile(root, filePath),
             expectedExtensions: ['.html'],
         })
 
@@ -58,8 +58,7 @@ export function historyFallbackMiddleware({
             )
             return next()
         }
-
-        logger.debug(`redirecting ${ctx.url} to /index.html`)
+        logger.debug(`fallback ${ctx.url} to html`)
         const {
             contents: resolvedTopHtml,
         } = await pluginsExecutor.resolveLoadTransform({

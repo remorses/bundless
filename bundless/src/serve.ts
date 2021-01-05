@@ -155,7 +155,7 @@ export async function createApp(config: Config) {
                 },
             })
             // node module path not bundled, rerun bundling
-            const entryPoints = getEntries(config)
+            const entryPoints = await getEntries(pluginsExecutor, config)
             logger.spinStart('Prebundling modules')
             bundleMap = await prebundle({
                 entryPoints,
@@ -205,6 +205,7 @@ export async function createApp(config: Config) {
         ctx: executorCtx,
         plugins: [
             // TODO resolve data: imports, rollup emits imports with data: ...
+            plugins.HtmlResolverPlugin(),
             plugins.UrlResolverPlugin(), // resolves urls with queries
             plugins.HmrClientPlugin({ getPort: () => app.context.port }),
             // NodeResolvePlugin must be called first, to not skip prebundling
@@ -222,7 +223,7 @@ export async function createApp(config: Config) {
             plugins.ResolveSourcemapPlugin(),
             ...(config.plugins || []), // TODO where should i put plugins? i should let user override onResolve, but i should also run rewrite on user outputs
             plugins.RewritePlugin(),
-            plugins.HtmlResolverPlugin(),
+            
             plugins.HtmlTransformUrlsPlugin({
                 transforms: [
                     transformScriptTags((importPath) => {

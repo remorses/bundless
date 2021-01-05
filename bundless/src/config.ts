@@ -6,10 +6,10 @@ import { Plugin, PluginsExecutor } from './plugins-executor'
 import path from 'path'
 
 // TODO use the executor to find entries
-export function getEntries(
-    // pluginsExecutor: PluginsExecutor,
+export async function getEntries(
+    pluginsExecutor: PluginsExecutor,
     config: Config,
-): string[] {
+) {
     if (!config.root) {
         throw new Error(`Cannot get entries without having root`)
     }
@@ -21,16 +21,29 @@ export function getEntries(
                 )
             }
         }
-        return config.entries.map((x) => path.resolve(config.root!, x))
+        return (
+            await Promise.all(
+                config.entries.map((x) =>
+                    pluginsExecutor
+                        .resolve({
+                            path: x,
+                            resolveDir: config.root,
+                        })
+                        .then((x) => x?.path || ''),
+                ),
+            )
+        ).filter(Boolean)
     }
-    const index1 = path.resolve(config.root, 'index.html')
-    if (fs.existsSync(index1)) {
-        return [index1]
+
+    // public folder logic is already in the html resolver plugin
+    const index1 = await pluginsExecutor.resolve({
+        path: 'index.html',
+        resolveDir: config.root,
+    })
+    if (index1?.path) {
+        return [index1.path]
     }
-    const index2 = path.resolve(config.root, 'public/index.html')
-    if (fs.existsSync(index2)) {
-        return [index2]
-    }
+
     throw new Error(
         `Cannot find entries, neither config.entries, index.html or public/index.html files are present\n${JSON.stringify(
             config,

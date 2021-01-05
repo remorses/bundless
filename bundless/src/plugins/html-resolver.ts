@@ -6,9 +6,10 @@ import path from 'path'
 export function HtmlResolverPlugin({} = {}) {
     return {
         name: 'html-resolver',
-        setup: ({ onLoad, onResolve }: PluginHooks) => {
+        setup: ({ ctx: { root }, onLoad, onResolve }: PluginHooks) => {
             // TODO test that HtmlResolverPlugin can resolve directories to index.html, /a -> /a/index.html
-            onResolve({ filter: /\.*/ }, async (args) => {
+            onResolve({ filter: /\.html/ }, async (args) => {
+                args.path = path.resolve(root, args.path)
                 var resolved = await resolveAsync(args.path, {
                     basedir: args.resolveDir,
                     extensions: ['.html'],
@@ -18,8 +19,9 @@ export function HtmlResolverPlugin({} = {}) {
                         path: resolved,
                     }
                 }
+                const relativePath = path.relative(root, args.path)
                 var resolved = await resolveAsync(
-                    path.join(args.path, 'public') + '/',
+                    path.resolve(root, path.join('public', relativePath)),
                     {
                         basedir: args.resolveDir,
                         extensions: ['.html'],
