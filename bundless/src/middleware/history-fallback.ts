@@ -1,9 +1,8 @@
 import { Middleware } from 'koa'
 import path from 'path'
-import send from 'koa-send'
 import { logger } from '../logger'
 import { PluginsExecutor } from '../plugins-executor'
-import { importPathToFile } from '../utils'
+import { cleanUrl, importPathToFile } from '../utils'
 
 export function historyFallbackMiddleware({
     root,
@@ -37,27 +36,63 @@ export function historyFallbackMiddleware({
             logger.debug(`not redirecting ${ctx.url} (not accepting html)`)
             return next()
         }
-        // use the executor first to resolve virtual html files
+        // use the executor to resolve virtual html files
+        // TODO decide if we want to pass the path with index.html or the normal path and let the plugins decide if they watn to serve html, the second way is harder because html should be served as last thing (fallback) but user plugins run first
+        let filePath = !cleanUrl(ctx.path).endsWith('/')
+            ? ctx.path
+            : ctx.path + 'index.html'
+        filePath = importPathToFile(root, filePath)
         const {
             contents: resolvedHtml,
+            path: resolveHtmlPath,
         } = await pluginsExecutor.resolveLoadTransform({
-            path: importPathToFile(root, ctx.path),
+            path: filePath,
             expectedExtensions: ['.html'],
         })
+
         if (resolvedHtml) {
-            logger.debug(`Resolved html for ${ctx.path}`)
-            ctx.body = resolvedHtml
-            ctx.status = 200
-            ctx.type = 'html'
+            send(
+                ctx,
+                resolvedHtml,
+                '/' + path.relative(root, resolveHtmlPath || ''),
+            )
             return next()
         }
 
         logger.debug(`redirecting ${ctx.url} to /index.html`)
-        await send(ctx, `index.html`, { root }).catch(() => {})
-        await send(ctx, `index.html`, {
-            root: path.join(root, 'public'),
-        }).catch(() => {})
+        const {
+            contents: resolvedTopHtml,
+        } = await pluginsExecutor.resolveLoadTransform({
+            path: path.resolve(root, 'index.html'),
+            expectedExtensions: ['.html'],
+        })
+
+        if (resolvedTopHtml) {
+            send(ctx, resolvedTopHtml, '/index.html')
+            return next()
+        }
+
+        const {
+            contents: resolvedTopPublicHtml,
+        } = await pluginsExecutor.resolveLoadTransform({
+            path: path.resolve(root, 'public/index.html'),
+            expectedExtensions: ['.html'],
+        })
+
+        if (resolvedTopPublicHtml) {
+            send(ctx, resolvedTopPublicHtml, '/public/index.html')
+            return next()
+        }
+
         return next()
         // return next()
     }
+}
+
+function send(ctx, resolvedHtml, as = '') {
+    logger.debug(`Resolved html for ${ctx.path} as ${as}`)
+    ctx.body = resolvedHtml
+    ctx.status = 200
+    ctx.type = 'html'
+    // return next()
 }

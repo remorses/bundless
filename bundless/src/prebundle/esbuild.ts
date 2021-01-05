@@ -20,6 +20,8 @@ import {
     runFunctionOnPaths,
     stripColon,
 } from './support'
+import { PluginsExecutor } from '../plugins-executor'
+import { HmrGraph } from '../graph'
 
 export const commonEsbuildOptions: esbuild.BuildOptions = {
     target: 'es2020',
@@ -130,20 +132,28 @@ export async function bundleWithEsBuild({
         outdir: destLoc,
         metafile,
         define: generateDefineObject({ env }),
-        plugins: [
-            // HtmlIngestPlugin(),
-            ...(userPlugins || []), // TODO esbuild should resolve with all plugins
-            plugins.NodeModulesPolyfillPlugin(),
-            plugins.NodeResolvePlugin({
-                name: 'prebundle-node-resolve',
-                mainFields: MAIN_FIELDS,
-                extensions: resolvableExtensions,
-                onNonResolved: (r) => {
-                    logger.warn(`Cannot resolve '${r}'`)
-                },
-            }),
-            plugins.UrlResolverPlugin(),
-        ],
+        plugins: new PluginsExecutor({
+            ctx: {
+                config: { root },
+                isBuild: true,
+                graph: new HmrGraph({ root }),
+                root,
+            },
+            plugins: [
+                // HtmlIngestPlugin(),
+                ...(userPlugins || []), // TODO esbuild should resolve with all plugins
+                plugins.NodeModulesPolyfillPlugin(),
+                plugins.NodeResolvePlugin({
+                    name: 'prebundle-node-resolve',
+                    mainFields: MAIN_FIELDS,
+                    extensions: resolvableExtensions,
+                    onNonResolved: (r) => {
+                        logger.warn(`Cannot resolve '${r}'`)
+                    },
+                }),
+                plugins.UrlResolverPlugin(),
+            ],
+        }).esbuildPlugins(),
     })
 
     // TODO use esbuild write to not load files in memory after https://github.com/yarnpkg/berry/issues/2259 gets fixed

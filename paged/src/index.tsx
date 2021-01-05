@@ -64,7 +64,8 @@ export function Plugin({
             )
 
             // resolve virtual html files
-            onResolve({ filter: /.*/ }, async (args) => {
+            onResolve({ filter: /\.html/ }, async (args) => {
+                
                 const routesPaths = await (await getRoutes()).map((x) =>
                     path.posix.join(x.path, 'index.html'),
                 )
@@ -79,6 +80,7 @@ export function Plugin({
                     : path.posix.join(args.path, 'index.html')
                 const relativeIndexPath = fileToImportPath(root, indexPath)
                 const route = routesPaths.find((x) => x === relativeIndexPath)
+                // console.log({relativeIndexPath, route, routesPaths })
                 if (route) {
                     return {
                         path: indexPath,
