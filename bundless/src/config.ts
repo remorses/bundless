@@ -17,7 +17,7 @@ export async function getEntries(
         for (let entry of config.entries) {
             if (config.platform === 'browser' && !entry.endsWith('.html')) {
                 throw new Error(
-                    `Currently when targeting browser entries can only be html files: ${entry}`,
+                    `When targeting browser config.entries can only contain html files: ${entry}`,
                 )
             }
         }
