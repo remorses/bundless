@@ -381,7 +381,6 @@ code {
 </div>
 `
 
-const fileRE = /(?:[a-zA-Z]:\\|\/).*?:\d+:\d+/g
 const codeframeRE = /^(?:>?\s+\d+\s+\|.*|\s+\|\s*\^.*)\r?\n/gm
 
 class CommonOverlay extends HTMLElement {

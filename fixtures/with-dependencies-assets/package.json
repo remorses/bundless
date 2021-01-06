@@ -1,9 +1,9 @@
 {
-    "name": "fixture-with-sourcemaps",
+    "name": "fixtures-with-dependencies-assets",
     "version": "0.0.0",
     "main": "main.js",
     "private": true,
     "dependencies": {
-        "react": "experimental"
+        "tailwindcss": "1.7.2"
     }
 }

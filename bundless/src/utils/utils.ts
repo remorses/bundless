@@ -1,4 +1,5 @@
 import { parse as _parse } from '@babel/parser'
+import { ParserOptions } from '@babel/core'
 import strip from 'strip-ansi'
 import { Statement } from '@babel/types'
 import escapeStringRegexp from 'escape-string-regexp'
@@ -161,23 +162,25 @@ export function needsPrebundle(config: Config, p: string) {
     return p.includes('node_modules') && !p.includes('web_modules') // TODO make something more robust to skip detection of node_modules inside web_modules
 }
 
+export const babelParserOpts: ParserOptions = {
+    sourceType: 'module',
+    plugins: [
+        // required for import.meta.hot
+        'importMeta',
+        'jsx',
+        // by default we enable proposals slated for ES2020.
+        // full list at https://babeljs.io/docs/en/next/babel-parser#plugins
+        // this should be kept in async with @vue/compiler-core's support range
+        'bigInt',
+        'optionalChaining',
+        'classProperties',
+        'nullishCoalescingOperator',
+    ],
+}
+
 export function parse(source: string): Statement[] {
     try {
-        return _parse(source, {
-            sourceType: 'module',
-            plugins: [
-                // required for import.meta.hot
-                'importMeta',
-                'jsx',
-                // by default we enable proposals slated for ES2020.
-                // full list at https://babeljs.io/docs/en/next/babel-parser#plugins
-                // this should be kept in async with @vue/compiler-core's support range
-                'bigInt',
-                'optionalChaining',
-                'classProperties',
-                'nullishCoalescingOperator',
-            ],
-        }).program.body
+        return _parse(source, babelParserOpts).program.body
     } catch (e) {
         throw new Error(`Cannot parse with babel: ${e}`)
     }

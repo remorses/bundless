@@ -1,8 +1,8 @@
 {
-    "name": "with-linked-workspace",
+    "name": "fixtures-with-linked-workspace",
     "version": "0.0.0",
     "private": true,
     "dependencies": {
-        "with-many-dependencies": "*"
+        "fixtures-with-many-dependencies": "*"
     }
 }

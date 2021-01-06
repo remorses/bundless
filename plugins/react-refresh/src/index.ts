@@ -7,6 +7,7 @@ import {
 import fs from 'fs'
 import { parse as _parse } from '@babel/parser'
 import { Plugin, logger } from '@bundless/cli'
+import { babelParserOpts } from '@bundless/cli/dist/utils'
 import { transform } from '@babel/core'
 
 const runtimeNamespace = 'react-refresh-runtime'
@@ -68,10 +69,8 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                 }
 
                 const result = await transform(args.contents, {
+                    parserOpts: babelParserOpts,
                     plugins: [
-                        require('@babel/plugin-syntax-import-meta'),
-                        require('@babel/plugin-syntax-jsx'),
-                        require('@babel/plugin-syntax-class-properties'),
                         require('react-refresh/babel'),
                         {
                             visitor: {
@@ -235,15 +234,7 @@ if (import.meta.hot) {
 
 export function parse(source: string): Statement[] {
     try {
-        return _parse(source, {
-            sourceType: 'module',
-            plugins: [
-                'jsx',
-                'classProperties',
-                // required for import.meta.hot
-                'importMeta',
-            ],
-        }).program.body
+        return _parse(source, babelParserOpts).program.body
     } catch (e) {
         throw new Error(`Cannot parse with babel: ${e}`)
     }
