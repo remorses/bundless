@@ -1,5 +1,5 @@
 {
-    "name": "example-with-commonjs-transform",
+    "name": "fixtures-with-commonjs-transform",
     "version": "0.0.0",
     "private": true,
     "dependencies": {
