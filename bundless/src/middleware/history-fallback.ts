@@ -59,6 +59,8 @@ export function historyFallbackMiddleware({
             return next()
         }
         logger.debug(`fallback ${ctx.url} to html`)
+
+        // html resolver already search in public
         const {
             contents: resolvedTopHtml,
         } = await pluginsExecutor.resolveLoadTransform({
