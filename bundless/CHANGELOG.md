@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.1.2
+
+### Patch Changes
+
+-   410f40a: Better logs on nonResolved
+
 ## 0.1.1
 
 ### Patch Changes
