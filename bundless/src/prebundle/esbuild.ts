@@ -9,6 +9,7 @@ import { Platform } from '../config'
 import * as plugins from '../plugins'
 import {
     importableAssets as importableImagesExtensions,
+    isRunningWithYarnPnp,
     JS_EXTENSIONS,
     MAIN_FIELDS,
 } from '../constants'
@@ -147,8 +148,10 @@ export async function bundleWithEsBuild({
                     name: 'prebundle-node-resolve',
                     mainFields: MAIN_FIELDS,
                     extensions: resolvableExtensions,
-                    onNonResolved: (r) => {
-                        logger.warn(`Cannot resolve '${r}'`)
+                    onNonResolved: (p, importer) => {
+                        logger.warn(
+                            `Cannot resolve '${p}' from '${importer}' during traversal, using yarn pnp: ${isRunningWithYarnPnp}`,
+                        )
                     },
                 }),
                 plugins.UrlResolverPlugin(),

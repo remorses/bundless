@@ -230,7 +230,6 @@ export async function createApp(config: Config) {
             plugins.ResolveSourcemapPlugin(),
             ...(config.plugins || []), // TODO where should i put plugins? i should let user override onResolve, but i should also run rewrite on user outputs
             plugins.RewritePlugin(),
-
             plugins.HtmlTransformUrlsPlugin({
                 transforms: [
                     transformScriptTags((importPath) => {

@@ -6,7 +6,7 @@ import { promises as fsp } from 'fs'
 import fsx from 'fs-extra'
 import os from 'os'
 import path from 'path'
-import { MAIN_FIELDS } from '../constants'
+import { isRunningWithYarnPnp, MAIN_FIELDS } from '../constants'
 import { HmrGraph } from '../graph'
 import { logger } from '../logger'
 import { PluginsExecutor } from '../plugins-executor'
@@ -70,11 +70,10 @@ export async function traverseWithEsbuild({
                 }
                 return
             },
-            onNonResolved: (p) => {
-                logger.warn(`Cannot resolve '${p}' during traversal`)
-                // return {
-                //     external: true,
-                // }
+            onNonResolved: (p, importer) => {
+                logger.warn(
+                    `Cannot resolve '${p}' from '${importer}' during traversal, using yarn pnp: ${isRunningWithYarnPnp}`,
+                )
             },
         }),
         plugins.UrlResolverPlugin(),

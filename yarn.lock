@@ -548,16 +548,16 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@esbuild-plugins/all@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/all/-/all-0.0.11.tgz#3c49dfb5c5947abd54813896da809caec3f07b59"
-  integrity sha512-qCtz3fCy5N0hnjuB7Wyae4QVbzBjMfseMj+Ha2sjFcouzBoDplGF3a3X2VGf0cbrVqExgB/wlyXn50b/IyKunA==
+"@esbuild-plugins/all@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/all/-/all-0.0.12.tgz#d233b86525de62852590c194ceb39c7b68c9cbd0"
+  integrity sha512-vhCG0JgzOReoJ0MbDuSaZUe35lM3hrOwmygzbFNx2lBR9giBvW4q+eApL81RNGm2Y6DarcnvmsXKkNXlPBelCA==
   dependencies:
     "@esbuild-plugins/esm-externals" "0.0.2"
-    "@esbuild-plugins/html" "0.0.12"
+    "@esbuild-plugins/html" "0.0.13"
     "@esbuild-plugins/node-globals-polyfill" "0.0.5"
     "@esbuild-plugins/node-modules-polyfill" "0.0.2"
-    "@esbuild-plugins/node-resolve" "0.0.9"
+    "@esbuild-plugins/node-resolve" "0.0.10"
 
 "@esbuild-plugins/esm-externals@0.0.2":
   version "0.0.2"
@@ -567,12 +567,12 @@
     debug "^4.3.1"
     escape-string-regexp "^4.0.0"
 
-"@esbuild-plugins/html@0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/html/-/html-0.0.12.tgz#28618228f1fab1da35e73405238e6ca9a002b200"
-  integrity sha512-s1Xt6zmL2B+ber90OL8fi2mJ/b+pzZKaYMuT9jSOgP5+uYCQKSthR0Bzoogin0b6hNychYlfraa/VzwnmUDkKw==
+"@esbuild-plugins/html@0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/html/-/html-0.0.13.tgz#391e01faf480a001850995211944428e679970f4"
+  integrity sha512-2BJxghF+ngYb63zQa2QcieziCosDcOsfGMcYhdp73rnu1ZojIR9YNo2PigtrQpo9IiKcq4rNJiCa2Phwtc+w1Q==
   dependencies:
-    "@esbuild-plugins/node-resolve" "0.0.9"
+    "@esbuild-plugins/node-resolve" "0.0.10"
     debug "^4.3.1"
     posthtml "^0.15.1"
 
@@ -594,10 +594,10 @@
     resolve "^1.19.0"
     rollup-plugin-node-polyfills "0.2.1"
 
-"@esbuild-plugins/node-resolve@0.0.9", "@esbuild-plugins/node-resolve@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-resolve/-/node-resolve-0.0.9.tgz#dfad6c9507254153e2972eba865f48353d8ad82c"
-  integrity sha512-1E8CKJacwcY1HdwKqynX0f26CLIgUfM4xHQeZoGYCRSh6cGO51YRasPWXtVHgJh25D2EbJTA4HvjhT8zP+sHqg==
+"@esbuild-plugins/node-resolve@0.0.10", "@esbuild-plugins/node-resolve@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-resolve/-/node-resolve-0.0.10.tgz#e4a02eaeb31cfb4d36134dc9ae6b1593bf5b65ff"
+  integrity sha512-XhYyUh+JCXAN4auHhdQKns527WCOao8nmgw137lEMAqGyqVNIvxwqLluX7ShMayu5+mr5PYdA2LB32LGWD0WYA==
   dependencies:
     "@types/resolve" "^1.17.1"
     debug "^4.3.1"
