@@ -322,9 +322,9 @@ export async function createApp(config: Config) {
         // TODO send should wait for clients to be available and resend error and reload messages
         context.sendHmrMessage = (payload: HMRPayload) => {
             const stringified = JSON.stringify(payload, null, 4)
-            logger.log(`hmr: ${stringified}`)
+            logger.debug(`hmr: ${stringified}`)
             if (!wss.clients.size) {
-                logger.warn(`No clients listening for HMR message`)
+                logger.debug(`No clients listening for HMR message`)
             }
             wss.clients.forEach((client, i) => {
                 if (client.readyState === WebSocket.OPEN) {
