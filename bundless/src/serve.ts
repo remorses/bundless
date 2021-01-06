@@ -167,9 +167,19 @@ export async function createApp(config: Config) {
                 }).esbuildPlugins(),
                 root,
             }).catch((e) => {
-                logger.spinFail(String(e) + '\n')
+                context.sendHmrMessage({
+                    type: 'overlay-info-close',
+                })
                 e.message = `Cannot prebundle: ${e.message}`
+                logger.spinFail(String(e) + '\n')
+                context.sendHmrMessage({
+                    type: 'overlay-error',
+                    err: prepareError(e),
+                })
                 throw e
+            })
+            context.sendHmrMessage({
+                type: 'overlay-info-close',
             })
             if (isHashDifferent) {
                 await updateHash(hashPath, depHash)
@@ -192,9 +202,6 @@ export async function createApp(config: Config) {
             throw e
         } finally {
             onResolveLock.ready()
-            context.sendHmrMessage({
-                type: 'overlay-info-close',
-            })
         }
         // lock server, start optimization, unlock, send refresh message
     }
@@ -223,7 +230,7 @@ export async function createApp(config: Config) {
             plugins.ResolveSourcemapPlugin(),
             ...(config.plugins || []), // TODO where should i put plugins? i should let user override onResolve, but i should also run rewrite on user outputs
             plugins.RewritePlugin(),
-            
+
             plugins.HtmlTransformUrlsPlugin({
                 transforms: [
                     transformScriptTags((importPath) => {

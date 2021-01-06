@@ -197,11 +197,13 @@ socket.addEventListener('message', ({ data: _data }) => {
     }
     if (data.type === 'overlay-error') {
         log('message: error')
+        InfoOverlay.clear()
         ErrorOverlay.show(data.err)
         return
     }
     if (data.type === 'overlay-info-open') {
         log('message: info open')
+        ErrorOverlay.clear()
         InfoOverlay.show({ ...data.info, stack: '' })
         return
     }
