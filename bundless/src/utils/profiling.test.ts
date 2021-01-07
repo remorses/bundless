@@ -1,4 +1,4 @@
-import { ansiChart, humanizeStats, stats } from './'
+import { ansiChart, humanizeStats, stats } from './profiling'
 
 test('ansiChart', () => {
     const res = ansiChart(data, { limit: 4 })

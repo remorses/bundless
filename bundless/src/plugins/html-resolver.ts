@@ -10,6 +10,7 @@ export function HtmlResolverPlugin({} = {}) {
             // TODO test that HtmlResolverPlugin can resolve directories to index.html, /a -> /a/index.html
             onResolve({ filter: /\.html/ }, async (args) => {
                 args.path = path.resolve(root, args.path)
+
                 var resolved = path.resolve(args.resolveDir || root, args.path)
                 if (resolved && fs.existsSync(resolved)) {
                     return {

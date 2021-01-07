@@ -86,13 +86,16 @@ export async function serve(config: Config) {
 
     app.context.port = port
     config.server = { ...config.server, port }
+    async function close() {
+        app.emit('close')
+        await once(app, 'closed')
+        return await server.close()
+    }
+    // process.on('exit', () => close())
+    // process.on('SIGINT', () => close())
     return {
         ...server,
-        close: async () => {
-            app.emit('close')
-            await once(app, 'closed')
-            return await server.close()
-        },
+        close,
     }
 }
 
@@ -112,6 +115,7 @@ export async function createDevApp(config: Config) {
 
     const pluginsExecutor = new PluginsExecutor({
         ctx: executorCtx,
+        isProfiling: config.profile,
         plugins: [
             // TODO resolve data: imports, rollup emits imports with data: ...
             plugins.HtmlResolverPlugin(),
@@ -282,6 +286,16 @@ export async function createDevApp(config: Config) {
         await Promise.all([watcher.close(), pluginsExecutor.close()])
         app.emit('closed')
     })
+
+    function printStats() {
+        console.info(pluginsExecutor.printProfilingResult())
+    }
+    if (config.profile) {
+        process.on('SIGINT', () => {
+            printStats()
+            process.exit(0)
+        })
+    }
 
     app.on('error', (e: Error) => {
         console.error(chalk.red(e.message))

@@ -56,10 +56,8 @@ export function ansiChart(
         .map((item) => {
             const label = item['path']
             const v = Number(item['timeConsume'])
-            const barLength = Math.max(
-                1,
-                Math.round((v * maxWidth) / highlights.max),
-            )
+            const barLength =
+                Math.max(1, Math.round((v * maxWidth) / highlights.max)) || 0
             const padLength = 10 - barLength
             const barColor = highlights.outliers.find(
                 ({ path }) => path === label,

@@ -97,15 +97,15 @@ export async function build(
 
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
+        isProfiling: config.profile,
         ctx: { config, isBuild: true, graph: emptyGraph, root },
     })
 
+    const initialEntries = await getEntries(pluginsExecutor, config)
     const entryPoints = await Promise.all(
-        (await getEntries(pluginsExecutor, config)).map(async (x) => {
+        initialEntries.map(async (x) => {
             const resolved = await pluginsExecutor.resolve({
                 path: x,
-                importer: '',
-                namespace: 'file',
                 resolveDir: root,
             })
             if (!resolved || !resolved.path) {
@@ -139,6 +139,10 @@ export async function build(
         outdir: outDir,
         minify: Boolean(minify),
     })
+
+    if (config.profile) {
+        console.info(pluginsExecutor.printProfilingResult())
+    }
 
     logger.debug('finished esbuild build')
 

@@ -58,12 +58,12 @@ export type Platform = 'node' | 'browser'
 export interface Config {
     server?: ServerConfig
     build?: BuildConfig
+    profile?: boolean
     platform?: Platform
     root?: string
     force?: boolean
     env?: Record<string, string>
     entries?: string[]
-
     plugins?: Plugin[]
     // TODO replace needsPrebundle with something less generic, like bundle workspaces, do not bundle node_modules, ....
     needsPrebundle?: (p: string) => boolean

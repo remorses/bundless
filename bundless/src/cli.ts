@@ -25,11 +25,14 @@ const serveCommand: CommandModule = {
     },
     handler: async (argv: any) => {
         const loadedConfig = loadConfig(process.cwd(), argv.config)
-        let config: Config = deepMerge(loadedConfig, { port: argv.port })
+        let config: Config = deepMerge(loadedConfig, {
+            port: argv.port,
+            profile: argv.profile,
+        } as Config)
         if (!config.root) {
             config = { ...config, root: process.cwd() }
         }
-        return serve(config)
+        return await serve(config)
     },
 }
 
@@ -42,14 +45,24 @@ const buildCommand: CommandModule = {
             required: false,
             description: 'The output directory',
         })
+        argv.option('profile', {
+            type: 'boolean',
+            required: false,
+            description: 'Show profiling stats',
+        })
 
         return argv
     },
     handler: async (argv: any) => {
         let config = loadConfig(process.cwd(), argv.config)
-        const root = config.root || process.cwd()
-        config = deepMerge({ root, outDir: argv.outDir }, config)
-        return build({
+        config = deepMerge(config, {
+            outDir: argv.outDir,
+            profile: argv.profile,
+        } as Config)
+        if (!config.root) {
+            config = { ...config, root: process.cwd() }
+        }
+        return await build({
             ...config,
         })
     },

@@ -1,8 +1,5 @@
 import fs from 'fs'
-import { escapeRegExp } from 'lodash'
-import { CLIENT_PUBLIC_PATH } from '../constants'
 import { PluginHooks } from '../plugins-executor'
-import { ServerMiddleware } from '../serve'
 
 export const clientFilePath = require.resolve('../../esm/client/template.js')
 
