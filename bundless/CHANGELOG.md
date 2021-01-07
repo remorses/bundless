@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.1.3
+
+### Patch Changes
+
+-   1b976b6: Less noise in logs, prebundle at start
+
 ## 0.1.2
 
 ### Patch Changes
