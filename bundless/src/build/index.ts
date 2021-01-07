@@ -372,7 +372,7 @@ export async function build(
     console.info(
         printStats({
             dependencyStats: metafileToStats({ meta, destLoc: outDir }),
-            destLoc: outDir,
+            destLoc: path.basename(outDir),
         }),
     )
 

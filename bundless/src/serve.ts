@@ -1,5 +1,4 @@
 import chalk from 'chalk'
-import launchEditor from 'launch-editor'
 import chokidar, { FSWatcher } from 'chokidar'
 import { createHash } from 'crypto'
 import deepmerge from 'deepmerge'
@@ -10,7 +9,6 @@ import { getPort } from 'get-port-please'
 import { createServer, Server } from 'http'
 import Koa, { DefaultContext, DefaultState, Middleware } from 'koa'
 import etagMiddleware from 'koa-etag'
-
 import path from 'path'
 import slash from 'slash'
 import { promisify } from 'util'
@@ -29,12 +27,11 @@ import {
 import { HmrGraph } from './hmr-graph'
 import { logger } from './logger'
 import * as middlewares from './middleware'
-import { PluginsExecutor } from './plugins-executor'
 import * as plugins from './plugins'
+import { PluginsExecutor } from './plugins-executor'
 import { transformScriptTags } from './plugins/html-transform'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
-import { genSourceMapString } from './utils/sourcemaps'
 import {
     appendQuery,
     dotdotEncoding,
@@ -44,8 +41,8 @@ import {
     needsPrebundle,
     parseWithQuery,
     prepareError,
-    sleep,
 } from './utils'
+import { genSourceMapString } from './utils/sourcemaps'
 
 process.env.NODE_ENV = 'development'
 
@@ -89,10 +86,8 @@ export async function serve(config: Config) {
     async function close() {
         app.emit('close')
         await once(app, 'closed')
-        return await server.close()
+        await server.close()
     }
-    // process.on('exit', () => close())
-    // process.on('SIGINT', () => close())
     return {
         ...server,
         close,
@@ -287,15 +282,12 @@ export async function createDevApp(config: Config) {
         app.emit('closed')
     })
 
-    function printStats() {
-        console.info(pluginsExecutor.printProfilingResult())
-    }
-    if (config.profile) {
-        process.on('SIGINT', () => {
-            printStats()
-            process.exit(0)
-        })
-    }
+    // process.on('SIGINT', () => {
+    //     if (config.profile) {
+    //         console.info(pluginsExecutor.printProfilingResult())
+    //     }
+    //     process.exit(0)
+    // })
 
     app.on('error', (e: Error) => {
         console.error(chalk.red(e.message))

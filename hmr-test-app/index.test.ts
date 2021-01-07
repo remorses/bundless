@@ -19,7 +19,7 @@ const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
 
 const tempDir = path.resolve(__dirname, '../temp')
-const fixtureDir = path.resolve(__dirname)
+const fixtureDir = path.resolve(__dirname, '../hmr-test-app')
 const testTargets = process.env.HRM_TESTS
     ? ['snowpack', 'vite', 'bundless']
     : ['bundless']
