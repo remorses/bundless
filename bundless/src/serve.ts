@@ -27,7 +27,6 @@ import {
     WEB_MODULES_PATH,
 } from './constants'
 import { HmrGraph } from './graph'
-import { onFileChange } from './hmr'
 import { logger } from './logger'
 import * as middlewares from './middleware'
 import { PluginsExecutor } from './plugins-executor'
@@ -344,10 +343,8 @@ export async function createApp(config: Config) {
     // changing anything inside root that is not ignored and that is not in graph will cause reload
     if (config.server?.hmr) {
         watcher.on('change', (filePath) => {
-            onFileChange({
-                graph,
+            graph.onFileChange({
                 filePath,
-                root,
                 sendHmrMessage: context.sendHmrMessage,
             })
             if (showGraph) {

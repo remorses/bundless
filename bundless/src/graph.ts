@@ -3,7 +3,10 @@
 import path from 'path'
 import chalk from 'chalk'
 import { osAgnosticPath } from './prebundle/support'
-import { fileToImportPath } from './utils'
+import { fileToImportPath, importPathToFile } from './utils'
+import { HMRPayload } from './client/types'
+import { logger } from './logger'
+import {} from './utils'
 
 // examples are ./main.js and ../folder/main.js
 type OsAgnosticPath = string
@@ -84,5 +87,71 @@ export class HmrGraph {
             `${chalk.redBright('[ ]')} accepts HMR\n` +
             `${chalk.yellow('[ ]')} HMR enabled\n\n`
         return legend + `ImportGraph {\n${content}\n}\n`
+    }
+
+    // TODO maybe rewrite should happen before to prune the graph from removed imports? in case old imports remain in the graph what could happen? the hmr algo only depend on the importers, this means that the worst thing could be that a non importer could be updated, but this is impossible because the only changed imports can only be the ones in the updated file, this means that only the current file imports could be invalid, which means that changed files importers will always be valid
+    // TODO to make this work for vue and vite, i need to support virtual files, vite files will be rewritten as js files with imports of virtual css files, the current implementation will see the change in the vite file, but it cannot know about changed virtual files, maybe i can put a property in the result of onTransform or onLoad to say `computedFiles: [virtualFile]`, save this info in graph (taken during rewrite) and in onChange i can send an update to these dependent modules too
+    async onFileChange({
+        filePath,
+        sendHmrMessage,
+    }: {
+        filePath: string
+        sendHmrMessage: (x: HMRPayload) => any
+    }) {
+        const graph = this
+
+        const root = this.root
+
+        const initialRelativePath = osAgnosticPath(filePath, root)
+
+        const toVisit: string[] = [initialRelativePath]
+        const visited: string[] = []
+        const messages: HMRPayload[] = []
+
+        while (toVisit.length) {
+            const relativePath = toVisit.shift()
+            if (!relativePath || visited.includes(relativePath)) {
+                continue
+            }
+            const importPath = fileToImportPath(root, relativePath)
+            visited.push(relativePath)
+            const node = graph.nodes[relativePath]
+            // can be a non js file, like index.html
+            if (!node) {
+                console.log(graph.toString())
+                logger.log(
+                    `node for '${relativePath}' not found in graph, reloading`,
+                )
+                sendHmrMessage({ type: 'reload' })
+                continue
+            }
+            // trigger an update if the module is able to handle it
+            if (node.isHmrEnabled) {
+                messages.push({
+                    type: 'update',
+                    namespace: 'file',
+                    path: importPath,
+                    updateID: ++node.lastUsedTimestamp,
+                })
+            }
+            // reached a boundary, stop hmr propagation
+            if (node.hasHmrAccept) {
+                continue
+            }
+            const importers = node.importers()
+            // reached another boundary, reload
+            if (!importers.size) {
+                logger.log(`reached top boundary '${relativePath}', reloading`)
+                sendHmrMessage({ type: 'reload' })
+                continue
+            }
+            for (let importer of importers) {
+                graph.ensureEntry(importer)
+                // mark module as dirty, importers will refetch this module to see updates
+                node.dirtyImportersCount++
+            }
+            toVisit.push(...importers)
+        }
+        messages.forEach(sendHmrMessage)
     }
 }
