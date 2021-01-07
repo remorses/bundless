@@ -119,7 +119,7 @@ export async function createDevApp(config: Config) {
             plugins.HmrClientPlugin({ getPort: () => app.context.port }),
             // NodeResolvePlugin must be called first, to not skip prebundling
             plugins.NodeResolvePlugin({
-                name: 'executor-node-resolve',
+                name: 'node-resolve',
                 mainFields: MAIN_FIELDS,
                 extensions: [...JS_EXTENSIONS],
                 onResolved,
@@ -157,7 +157,7 @@ export async function createDevApp(config: Config) {
     const hashPath = path.resolve(root, WEB_MODULES_PATH, 'deps_hash')
 
     const depHash = await getDepsHash(root)
-    let prevHash = await fs.readFile(hashPath, 'utf-8').catch(() => '')
+    let prevHash = await fs.readFile(hashPath).catch(() => '')
     const isHashDifferent = !depHash || !prevHash || prevHash !== depHash
     if (!config.force && isHashDifferent) {
         await fs.remove(path.resolve(root, WEB_MODULES_PATH))
@@ -180,13 +180,7 @@ export async function createDevApp(config: Config) {
                 plugins: config.plugins || [],
             }).esbuildPlugins(),
             root,
-        }).catch((e) => {
-            e.message = `Cannot prebundle: ${e.message}`
-            throw e
         })
-        if (!isEmpty(bundleMap)) {
-            await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
-        }
     }
 
     async function onResolved(resolvedPath: string, importer: string) {
@@ -218,7 +212,6 @@ export async function createDevApp(config: Config) {
             })
             // node module path not bundled, rerun bundling
             const entryPoints = await getEntries(pluginsExecutor, config)
-            logger.spinStart('Prebundling modules')
             bundleMap = await prebundle({
                 entryPoints,
                 filter: (p) => needsPrebundle(config, p),
@@ -232,8 +225,6 @@ export async function createDevApp(config: Config) {
                 context.sendHmrMessage({
                     type: 'overlay-info-close',
                 })
-                e.message = `Cannot prebundle: ${e.message}`
-                logger.spinFail(String(e) + '\n')
                 context.sendHmrMessage({
                     type: 'overlay-error',
                     err: prepareError(e),
@@ -246,8 +237,6 @@ export async function createDevApp(config: Config) {
             if (isHashDifferent) {
                 await updateHash(hashPath, depHash)
             }
-            logger.spinSucceed('Finish\n')
-            await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
             context.sendHmrMessage({ type: 'reload' })
             const webBundle = bundleMap[relativePath]
             if (!webBundle) {

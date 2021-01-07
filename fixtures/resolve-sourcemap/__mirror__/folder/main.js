@@ -5,4 +5,4 @@ var textnode = document.createTextNode('works!')
 node.appendChild(textnode) 
 document.body.appendChild(node) 
 
-//# sourceMappingURL=main.js.map
+//# sourceMappingURL=/folder/main.js.map

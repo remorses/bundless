@@ -1,11 +1,11 @@
 import fs from 'fs-extra'
 import path from 'path'
-import { COMMONJS_ANALYSIS_PATH } from '../constants'
+import { COMMONJS_ANALYSIS_PATH, WEB_MODULES_PATH } from '../constants'
 import { logger } from '../logger'
 import { clearCommonjsAnalysisCache } from '../plugins/rewrite/commonjs'
 import { bundleWithEsBuild } from './esbuild'
 import { printStats } from './stats'
-import { osAgnosticPath } from '../utils'
+import { isEmpty, osAgnosticPath } from '../utils'
 import { traverseWithEsbuild } from './traverse'
 
 export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
@@ -27,6 +27,7 @@ export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
             return {}
         }
 
+        logger.spinStart('Prebundling modules')
         logger.log(
             `prebundling [\n    ${dependenciesPaths
                 .map((x) => osAgnosticPath(x, root))
@@ -40,6 +41,8 @@ export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
             entryPoints: dependenciesPaths.map((x) => path.resolve(root, x)),
         })
 
+        logger.spinSucceed('Finish\n')
+
         const analysisFile = path.join(dest, COMMONJS_ANALYSIS_PATH)
         await fs.createFile(analysisFile)
 
@@ -47,7 +50,19 @@ export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
         console.info(
             printStats({ dependencyStats: stats, destLoc: 'web_modules/' }),
         )
+        if (!isEmpty(bundleMap)) {
+            const bundleMapCachePath = path.resolve(
+                root,
+                WEB_MODULES_PATH,
+                'bundleMap.json',
+            )
+            await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
+        }
         return bundleMap
+    } catch (e) {
+        logger.spinFail(String(e) + '\n')
+        e.message = `Cannot prebundle: ${e.message}`
+        throw e
     } finally {
         clearCommonjsAnalysisCache()
     }
