@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.1.4
+
+### Patch Changes
+
+-   9c57b90: Better build logs
+
 ## 0.1.3
 
 ### Patch Changes
