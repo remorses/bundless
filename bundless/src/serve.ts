@@ -34,7 +34,7 @@ import * as plugins from './plugins'
 import { transformScriptTags } from './plugins/html-transform'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
-import { genSourceMapString } from './sourcemaps'
+import { genSourceMapString } from './utils/sourcemaps'
 import {
     appendQuery,
     dotdotEncoding,

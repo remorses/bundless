@@ -9,7 +9,7 @@ import { CLIENT_PUBLIC_PATH, hmrPreamble } from '../../constants'
 import { HmrGraph } from '../../graph'
 import { logger } from '../../logger'
 import { PluginHooks, PluginsExecutor } from '../../plugins-executor'
-import { osAgnosticPath } from '../../prebundle/support'
+import { osAgnosticPath } from '../../utils'
 import { onResolveLock } from '../../serve'
 import {
     appendQuery,

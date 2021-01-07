@@ -5,9 +5,9 @@ import { Config } from './config'
 import url from 'url'
 import { HmrGraph } from './graph'
 import { logger } from './logger'
-import { osAgnosticPath } from './prebundle/support'
+import { osAgnosticPath } from './utils'
 import qs from 'qs'
-import { mergeSourceMap } from './sourcemaps'
+import { mergeSourceMap } from './utils/sourcemaps'
 import path from 'path'
 
 export interface Plugin {

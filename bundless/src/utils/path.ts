@@ -1,4 +1,5 @@
 import path from 'path'
+import slash from 'slash'
 import { cleanUrl } from './utils'
 
 export const dotdotEncoding = '...'
@@ -22,4 +23,19 @@ export function fileToImportPath(root: string, filePath: string) {
     filePath = filePath.replace(/\.\./g, dotdotEncoding)
     filePath = '/' + filePath
     return filePath
+}
+
+export function osAgnosticPath(absPath: string | undefined, root: string) {
+    if (!root) {
+        throw new Error(
+            `root argument is required, cannot make os agnostic path for ${absPath}`,
+        )
+    }
+    if (!absPath) {
+        return ''
+    }
+    if (!path.isAbsolute(absPath)) {
+        absPath = path.resolve(root, absPath)
+    }
+    return slash(path.relative(root, absPath))
 }

@@ -2,7 +2,7 @@
 
 import path from 'path'
 import chalk from 'chalk'
-import { osAgnosticPath } from './prebundle/support'
+import { osAgnosticPath } from './utils'
 import { fileToImportPath, importPathToFile } from './utils'
 import { HMRPayload } from './client/types'
 import { logger } from './logger'

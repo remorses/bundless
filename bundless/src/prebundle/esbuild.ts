@@ -6,6 +6,7 @@ import path from 'path'
 import toUnixPath from 'slash'
 import tmpfile from 'tmpfile'
 import { Platform } from '../config'
+import { osAgnosticPath } from '../utils'
 import * as plugins from '../plugins'
 import {
     importableAssets as importableImagesExtensions,
@@ -17,7 +18,6 @@ import { logger } from '../logger'
 import { DependencyStatsOutput } from './stats'
 import {
     OptimizeAnalysisResult,
-    osAgnosticPath,
     runFunctionOnPaths,
     stripColon,
 } from './support'

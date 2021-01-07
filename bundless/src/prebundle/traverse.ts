@@ -11,13 +11,14 @@ import { HmrGraph } from '../graph'
 import { logger } from '../logger'
 import { PluginsExecutor } from '../plugins-executor'
 import * as plugins from '../plugins'
-import { flatten } from '../utils'
+import { flatten, osAgnosticPath } from '../utils'
 import {
     commonEsbuildOptions,
     generateDefineObject,
     resolvableExtensions,
 } from './esbuild'
-import { osAgnosticPath, runFunctionOnPaths, stripColon } from './support'
+
+import { runFunctionOnPaths, stripColon } from './support'
 
 type Args = {
     esbuildCwd: string

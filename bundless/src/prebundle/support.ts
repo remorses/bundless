@@ -32,21 +32,6 @@ export class Lock extends EventEmitter {
     }
 }
 
-export function osAgnosticPath(absPath: string | undefined, root: string) {
-    if (!root) {
-        throw new Error(
-            `root argument is required, cannot make os agnostic path for ${absPath}`,
-        )
-    }
-    if (!absPath) {
-        return ''
-    }
-    if (!path.isAbsolute(absPath)) {
-        absPath = path.resolve(root, absPath)
-    }
-    return slash(path.relative(root, absPath))
-}
-
 export function unique<T>(array: T[], key = (x: T): any => x): T[] {
     const cache: Record<any, boolean> = {}
     return array.filter(function(a) {

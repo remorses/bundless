@@ -16,14 +16,9 @@ import {
     metafileToBundleMap,
     resolvableExtensions,
 } from '../prebundle/esbuild'
-import {
-    isUrl,
-    osAgnosticPath,
-    runFunctionOnPaths,
-    stripColon,
-} from '../prebundle/support'
+import { isUrl, runFunctionOnPaths, stripColon } from '../prebundle/support'
 import { metaToTraversalResult } from '../prebundle/traverse'
-import { cleanUrl, partition } from '../utils'
+import { cleanUrl, partition, osAgnosticPath } from '../utils'
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build

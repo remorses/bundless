@@ -5,7 +5,7 @@ import { logger } from '../logger'
 import { clearCommonjsAnalysisCache } from '../plugins/rewrite/commonjs'
 import { bundleWithEsBuild } from './esbuild'
 import { printStats } from './stats'
-import { osAgnosticPath } from './support'
+import { osAgnosticPath } from '../utils'
 import { traverseWithEsbuild } from './traverse'
 
 export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
