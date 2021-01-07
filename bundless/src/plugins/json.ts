@@ -9,6 +9,7 @@ export function JSONPlugin({} = {}) {
         setup: ({ onLoad, onResolve }: PluginHooks) => {
             NodeResolvePlugin({
                 name: 'json-node-resolve',
+                isExtensionRequiredInImportPath: true,
                 extensions: ['.json'],
             }).setup({
                 onLoad() {},

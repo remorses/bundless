@@ -33,6 +33,7 @@ export function CssPlugin({} = {}) {
 
             NodeResolvePlugin({
                 name: 'css-node-resolve',
+                isExtensionRequiredInImportPath: true,
                 extensions: ['.css'],
             }).setup({
                 onLoad,

@@ -15,6 +15,7 @@ export function AssetsPlugin({ extensions }) {
             // what if an image is in another module and this resolver bypasses the node resolve plugin that runs the prebundle? maybe i need to throw? no because assets do not need to be optimized, i just need to make sure that node resolve is called before all other resolvers
             NodeResolvePlugin({
                 name: 'assets-node-resolve',
+                isExtensionRequiredInImportPath: true,
                 extensions,
             }).setup({
                 onLoad() {},

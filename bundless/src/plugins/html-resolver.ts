@@ -1,7 +1,7 @@
-import { NodeResolvePlugin, resolveAsync } from '@esbuild-plugins/all'
-import { PluginHooks } from '../plugins-executor'
+import { resolveAsync } from '@esbuild-plugins/all'
 import fs from 'fs-extra'
 import path from 'path'
+import { PluginHooks } from '../plugins-executor'
 
 export function HtmlResolverPlugin({} = {}) {
     return {
@@ -10,24 +10,17 @@ export function HtmlResolverPlugin({} = {}) {
             // TODO test that HtmlResolverPlugin can resolve directories to index.html, /a -> /a/index.html
             onResolve({ filter: /\.html/ }, async (args) => {
                 args.path = path.resolve(root, args.path)
-                var resolved = await resolveAsync(args.path, {
-                    basedir: args.resolveDir,
-                    extensions: ['.html'],
-                }).catch(() => '')
-                if (resolved) {
+                var resolved = path.resolve(args.resolveDir || root, args.path)
+                if (resolved && fs.existsSync(resolved)) {
                     return {
                         path: resolved,
                     }
                 }
                 const relativePath = path.relative(root, args.path)
-                var resolved = await resolveAsync(
+                var resolved = path.resolve(
                     path.resolve(root, path.join('public', relativePath)),
-                    {
-                        basedir: args.resolveDir,
-                        extensions: ['.html'],
-                    },
-                ).catch(() => '')
-                if (resolved) {
+                )
+                if (resolved && fs.existsSync(resolved)) {
                     return {
                         path: resolved,
                     }

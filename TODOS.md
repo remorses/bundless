@@ -1,3 +1,4 @@
 -   test the html entries resolution (public, name.html, html paths in entries, ...)
+-   dont use resolve package for trivial plugins like html resolver, 
 -   implement postcss processing to enable sass, tailwind, ...
 -   implement build.basePath changing esbuild publicPath and other plugins like paged that inject virtual files at root
