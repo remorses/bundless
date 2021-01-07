@@ -178,9 +178,13 @@ export const babelParserOpts: ParserOptions = {
     ],
 }
 
-export function parse(source: string): Statement[] {
+export function parse(
+    source: string,
+    sourceFilename: string = 'file.tsx',
+): Statement[] {
     try {
-        return _parse(source, babelParserOpts).program.body
+        return _parse(source, { ...babelParserOpts, sourceFilename }).program
+            .body
     } catch (e) {
         throw new Error(`Cannot parse with babel: ${e}`)
     }

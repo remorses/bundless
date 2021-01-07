@@ -69,7 +69,10 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                 }
 
                 const result = await transform(args.contents, {
-                    parserOpts: babelParserOpts,
+                    parserOpts: {
+                        ...babelParserOpts,
+                        sourceFilename: args.path,
+                    },
                     plugins: [
                         require('react-refresh/babel'),
                         {
@@ -85,6 +88,7 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                         },
                     ],
                     ast: true,
+                    filename: args.path,
                     sourceMaps: true,
                     sourceFileName: args.path,
                 })
@@ -232,9 +236,13 @@ if (import.meta.hot) {
   }
 }`
 
-export function parse(source: string): Statement[] {
+export function parse(
+    source: string,
+    sourceFilename = 'file.tsx',
+): Statement[] {
     try {
-        return _parse(source, babelParserOpts).program.body
+        return _parse(source, { ...babelParserOpts, sourceFilename }).program
+            .body
     } catch (e) {
         throw new Error(`Cannot parse with babel: ${e}`)
     }
