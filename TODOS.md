@@ -1,4 +1,3 @@
--   remove arguments from build that are in config
--   css chunking should only add preload links, css in prod is transformed to js files that create a link element in DOM
+-   test the html entries resolution (public, name.html, html paths in entries, ...)
 -   implement postcss processing to enable sass, tailwind, ...
 -   implement build.basePath changing esbuild publicPath and other plugins like paged that inject virtual files at root

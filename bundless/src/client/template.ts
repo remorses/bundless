@@ -432,7 +432,6 @@ function getAllMatches(text: string, regex: RegExp) {
     let match
     const matches: { frag; matched }[] = []
     while ((match = regex.exec(text))) {
-        console.log(match)
         const { 0: matched, index } = match
         if (index != null) {
             const frag = text.slice(curIndex, index)

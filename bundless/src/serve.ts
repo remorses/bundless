@@ -39,6 +39,7 @@ import {
     appendQuery,
     dotdotEncoding,
     importPathToFile,
+    isEmpty,
     Lock,
     needsPrebundle,
     parseWithQuery,
@@ -65,7 +66,7 @@ export type ServerMiddleware = (ctx: ServerPluginContext) => void
 
 export async function serve(config: Config) {
     config = deepmerge(defaultConfig, config)
-    const app = await createApp(config)
+    const app = await createDevApp(config)
     const server = createServer(app.callback())
     const port = await getPort(config.server?.port || DEFAULT_PORT)
 
@@ -76,7 +77,7 @@ export async function serve(config: Config) {
     }
     await promisify(server.listen.bind(server) as any)(port)
 
-    console.log(
+    logger.log(
         `> listening on ${chalk.cyan.underline(`http://localhost:${port}`)}`,
     )
 
@@ -97,7 +98,7 @@ export async function serve(config: Config) {
 
 export const onResolveLock = new Lock()
 
-export async function createApp(config: Config) {
+export async function createDevApp(config: Config) {
     if (!config.root) {
         config.root = process.cwd()
     }
@@ -106,6 +107,48 @@ export async function createApp(config: Config) {
     const app = new Koa<DefaultState, DefaultContext>()
 
     const graph = new HmrGraph({ root })
+
+    const executorCtx = { config, isBuild: false, graph, root }
+
+    const pluginsExecutor = new PluginsExecutor({
+        ctx: executorCtx,
+        plugins: [
+            // TODO resolve data: imports, rollup emits imports with data: ...
+            plugins.HtmlResolverPlugin(),
+            plugins.UrlResolverPlugin(), // resolves urls with queries
+            plugins.HmrClientPlugin({ getPort: () => app.context.port }),
+            // NodeResolvePlugin must be called first, to not skip prebundling
+            plugins.NodeResolvePlugin({
+                name: 'executor-node-resolve',
+                mainFields: MAIN_FIELDS,
+                extensions: [...JS_EXTENSIONS],
+                onResolved,
+            }),
+            plugins.AssetsPlugin({ extensions: importableAssets }),
+            plugins.NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
+            plugins.EsbuildTransformPlugin(),
+            plugins.CssPlugin(),
+            plugins.JSONPlugin(),
+            plugins.ResolveSourcemapPlugin(),
+            ...(config.plugins || []), // TODO where should i put plugins? i should let user override onResolve, but i should also run rewrite on user outputs
+            plugins.RewritePlugin(),
+            plugins.HtmlTransformUrlsPlugin({
+                transforms: [
+                    transformScriptTags((importPath) => {
+                        const { query } = parseWithQuery(importPath)
+                        if (query?.namespace != null) {
+                            return importPath
+                        }
+                        return appendQuery(importPath, `namespace=file`)
+                    }),
+                ],
+            }),
+        ].map((plugin) => ({
+            ...plugin,
+            name: 'serve-' + plugin.name,
+        })),
+    })
+
     const bundleMapCachePath = path.resolve(
         root,
         WEB_MODULES_PATH,
@@ -113,17 +156,37 @@ export async function createApp(config: Config) {
     )
     const hashPath = path.resolve(root, WEB_MODULES_PATH, 'deps_hash')
 
-    let bundleMap: BundleMap = await fs
-        .readJSON(bundleMapCachePath)
-        .catch(() => ({}))
-
     const depHash = await getDepsHash(root)
     let prevHash = await fs.readFile(hashPath, 'utf-8').catch(() => '')
     const isHashDifferent = !depHash || !prevHash || prevHash !== depHash
     if (!config.force && isHashDifferent) {
-        bundleMap = {}
         await fs.remove(path.resolve(root, WEB_MODULES_PATH))
-        // clearCommonjsAnalysisCache()
+    }
+
+    let bundleMap: BundleMap = await fs
+        .readJSON(bundleMapCachePath)
+        .catch(() => ({}))
+
+    if (isEmpty(bundleMap)) {
+        logger.log(
+            `bundleMap is empty: Prebundling modules in '${WEB_MODULES_PATH}'`,
+        )
+        bundleMap = await prebundle({
+            entryPoints: await getEntries(pluginsExecutor, config),
+            filter: (p) => needsPrebundle(config, p),
+            dest: path.resolve(root, WEB_MODULES_PATH),
+            plugins: new PluginsExecutor({
+                ctx: executorCtx,
+                plugins: config.plugins || [],
+            }).esbuildPlugins(),
+            root,
+        }).catch((e) => {
+            e.message = `Cannot prebundle: ${e.message}`
+            throw e
+        })
+        if (!isEmpty(bundleMap)) {
+            await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
+        }
     }
 
     async function onResolved(resolvedPath: string, importer: string) {
@@ -205,47 +268,6 @@ export async function createApp(config: Config) {
         // lock server, start optimization, unlock, send refresh message
     }
 
-    const executorCtx = { config, isBuild: false, graph, root }
-
-    const pluginsExecutor = new PluginsExecutor({
-        ctx: executorCtx,
-        plugins: [
-            // TODO resolve data: imports, rollup emits imports with data: ...
-            plugins.HtmlResolverPlugin(),
-            plugins.UrlResolverPlugin(), // resolves urls with queries
-            plugins.HmrClientPlugin({ getPort: () => app.context.port }),
-            // NodeResolvePlugin must be called first, to not skip prebundling
-            plugins.NodeResolvePlugin({
-                name: 'executor-node-resolve',
-                mainFields: MAIN_FIELDS,
-                extensions: [...JS_EXTENSIONS],
-                onResolved,
-            }),
-            plugins.AssetsPlugin({ extensions: importableAssets }),
-            plugins.NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
-            plugins.EsbuildTransformPlugin(),
-            plugins.CssPlugin(),
-            plugins.JSONPlugin(),
-            plugins.ResolveSourcemapPlugin(),
-            ...(config.plugins || []), // TODO where should i put plugins? i should let user override onResolve, but i should also run rewrite on user outputs
-            plugins.RewritePlugin(),
-            plugins.HtmlTransformUrlsPlugin({
-                transforms: [
-                    transformScriptTags((importPath) => {
-                        const { query } = parseWithQuery(importPath)
-                        if (query?.namespace != null) {
-                            return importPath
-                        }
-                        return appendQuery(importPath, `namespace=file`)
-                    }),
-                ],
-            }),
-        ].map((plugin) => ({
-            ...plugin,
-            name: 'serve-' + plugin.name,
-        })),
-    })
-
     let useFsEvents = false
     try {
         eval('require')('fsevents')
@@ -273,8 +295,8 @@ export async function createApp(config: Config) {
     })
 
     app.on('error', (e: Error) => {
-        console.log(chalk.red(e.message))
-        console.log(chalk.red(e.stack))
+        console.error(chalk.red(e.message))
+        console.error(chalk.red(e.stack))
         context.sendHmrMessage({ type: 'overlay-error', err: prepareError(e) })
     })
 
@@ -329,7 +351,7 @@ export async function createApp(config: Config) {
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(stringified)
                 } else {
-                    console.log(
+                    logger.log(
                         chalk.red(
                             `Cannot send HMR message, hmr client ${i +
                                 1} is not open`,

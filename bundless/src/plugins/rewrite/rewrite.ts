@@ -80,13 +80,11 @@ export async function rewriteImports({
         try {
             imports = parseImports(source)[0]
         } catch (e) {
-            console.error(
-                chalk.yellow(
-                    `failed to parse ${chalk.cyan(
-                        importerFilePath,
-                    )} for import rewrite.\nIf you are using ` +
-                        `JSX, make sure to named the file with the .jsx extension.`,
-                ),
+            throw new Error(
+                `Failed to parse ${chalk.cyan(
+                    importerFilePath,
+                )} for import rewrite.\nIf you are using ` +
+                    `JSX, make sure to named the file with the .jsx extension.`,
             )
         }
 

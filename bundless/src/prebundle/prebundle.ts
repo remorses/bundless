@@ -20,13 +20,19 @@ export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
 
         const dependenciesPaths = traversalResult.filter(filter)
 
+        await fs.remove(dest)
+
+        if (!dependenciesPaths.length) {
+            logger.log(`No dependencies to prebundle found`)
+            return {}
+        }
+
         logger.log(
             `prebundling [\n    ${dependenciesPaths
                 .map((x) => osAgnosticPath(x, root))
                 .join('\n    ')}\n]`,
         )
 
-        await fs.remove(dest)
         const { bundleMap, analysis, stats } = await bundleWithEsBuild({
             dest,
             root,

@@ -1,0 +1,19 @@
+{
+  "inputs": {
+    "node_modules/tailwindcss/dist/base.css": {
+      "bytes": 11039,
+      "imports": []
+    }
+  },
+  "outputs": {
+    "fixtures/with-dependencies-assets/web_modules/base.css": {
+      "imports": [],
+      "inputs": {
+        "node_modules/tailwindcss/dist/base.css": {
+          "bytesInOutput": 3766
+        }
+      },
+      "bytes": 3811
+    }
+  }
+}

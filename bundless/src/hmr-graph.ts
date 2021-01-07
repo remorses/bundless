@@ -118,7 +118,7 @@ export class HmrGraph {
             const node = graph.nodes[relativePath]
             // can be a non js file, like index.html
             if (!node) {
-                console.log(graph.toString())
+                // console.log(graph.toString())
                 logger.log(
                     `node for '${relativePath}' not found in graph, reloading`,
                 )
