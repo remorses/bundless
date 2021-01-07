@@ -1,6 +1,5 @@
 import { build, Plugin as PluginType } from '@bundless/cli'
-import { osAgnosticPath } from '@bundless/cli/dist/prebundle/support'
-import { fileToImportPath } from '@bundless/cli/dist/utils'
+import { fileToImportPath, osAgnosticPath } from '@bundless/cli/dist/utils'
 import escapeStringRegexp from 'escape-string-regexp'
 import glob from 'fast-glob'
 import memoize from 'micro-memoize'
@@ -65,7 +64,6 @@ export function Plugin({
 
             // resolve virtual html files
             onResolve({ filter: /\.html/ }, async (args) => {
-                
                 const routesPaths = await (await getRoutes()).map((x) =>
                     path.posix.join(x.path, 'index.html'),
                 )
