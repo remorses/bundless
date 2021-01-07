@@ -250,3 +250,16 @@ export const sleep = (t) => new Promise((r) => setTimeout(() => r, t))
 export function isEmpty(map) {
     return Object.keys(map).length === 0
 }
+
+export function computeDuration(
+    startTime: number,
+    interval = 'seconds',
+): string {
+    const endTime = Date.now()
+    const delta = endTime - startTime
+    const intervalMap = {
+        seconds: 1000,
+    }
+    const seconds = delta / (intervalMap[interval] || 1000)
+    return seconds.toFixed(2) + ' ' + interval
+}

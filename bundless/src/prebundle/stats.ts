@@ -10,7 +10,11 @@ type DependencyStats = { size: number }
 
 export type DependencyStatsOutput = Record<DependencyType, DependencyStatsMap>
 
-export function printStats(dependencyStats: DependencyStatsOutput): string {
+export function printStats(_args: {
+    dependencyStats: DependencyStatsOutput
+    destLoc: string
+}): string {
+    const { dependencyStats, destLoc = 'web_modules/' } = _args
     let output = ''
     const { direct, common } = dependencyStats
     const allDirect = Object.entries(direct).sort(entriesSort)
@@ -18,10 +22,10 @@ export function printStats(dependencyStats: DependencyStatsOutput): string {
     const maxFileNameLength =
         [...allCommon, ...allDirect].reduce(
             (max, [filename]) => Math.max(filename.length, max),
-            'web_modules/'.length,
+            destLoc.length,
         ) + 1
     output +=
-        `  ⦿ ${chalk.bold('web_modules/'.padEnd(maxFileNameLength + 4))}` +
+        `  ⦿ ${chalk.bold(destLoc.padEnd(maxFileNameLength + 4))}` +
         chalk.bold(chalk.underline('size'.padEnd(SIZE_COLUMN_WIDTH - 2))) +
         '  ' +
         // chalk.bold(chalk.underline('gzip'.padEnd(SIZE_COLUMN_WIDTH - 2))) +

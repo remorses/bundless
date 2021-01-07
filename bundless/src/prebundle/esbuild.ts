@@ -284,7 +284,7 @@ function metafileToAnalysis(_options: {
     return analysis
 }
 
-function metafileToStats(_options: {
+export function metafileToStats(_options: {
     meta: Metadata
     destLoc: string
 }): DependencyStatsOutput {

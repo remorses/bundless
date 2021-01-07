@@ -44,7 +44,9 @@ export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
         await fs.createFile(analysisFile)
 
         await fs.writeFile(analysisFile, JSON.stringify(analysis, null, 4))
-        console.info(printStats(stats))
+        console.info(
+            printStats({ dependencyStats: stats, destLoc: 'web_modules/' }),
+        )
         return bundleMap
     } finally {
         clearCommonjsAnalysisCache()

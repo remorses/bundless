@@ -195,7 +195,6 @@ export class PluginsExecutor {
         for (let { callback, options, name } of this.resolvers) {
             if (this.matches(options, arg)) {
                 logger.debug(`resolving '${arg.path}' with '${name}'`)
-                // console.log(new Error('here'))
                 const newResult = await callback({
                     importer: '',
                     namespace: 'file',

@@ -14,11 +14,13 @@ import {
     commonEsbuildOptions,
     generateDefineObject,
     metafileToBundleMap,
+    metafileToStats,
     resolvableExtensions,
 } from '../prebundle/esbuild'
 import { isUrl, runFunctionOnPaths, stripColon } from '../prebundle/support'
 import { metaToTraversalResult } from '../prebundle/traverse'
-import { cleanUrl, partition, osAgnosticPath } from '../utils'
+import { cleanUrl, partition, osAgnosticPath, computeDuration } from '../utils'
+import { printStats } from '../prebundle/stats'
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
@@ -36,6 +38,8 @@ export async function build(
         jsTarget = 'es2018',
         basePath = '/',
     } = config.build || {}
+
+    const startTime = Date.now()
 
     const { env = {}, platform = 'browser', root = '' } = config
     const isBrowser = platform === 'browser'
@@ -80,7 +84,6 @@ export async function build(
                         external: true,
                     }
                 }
-                // console.log(p)
             },
             mainFields,
             extensions: resolvableExtensions,
@@ -112,7 +115,7 @@ export async function build(
         }),
     )
 
-    logger.log(`building ${JSON.stringify(entryPoints)}`)
+    logger.log(`building ${JSON.stringify(entryPoints, [], 4)}\n`)
 
     const buildResult = await esbuild.build({
         ...commonEsbuildOptions,
@@ -359,6 +362,18 @@ export async function build(
             // if entry is not html, create an html file that imports the js output bundle
         }
     }
+
+    logger.log(`Saved files to ./${osAgnosticPath(outDir, process.cwd())}`)
+
+    console.info(
+        printStats({
+            dependencyStats: metafileToStats({ meta, destLoc: outDir }),
+            destLoc: outDir,
+        }),
+    )
+
+    logger.log(`Built in ${computeDuration(startTime)}`)
+
     return {
         bundleMap,
         traversalGraph,
