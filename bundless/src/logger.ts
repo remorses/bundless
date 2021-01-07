@@ -37,7 +37,7 @@ export class Logger {
     }
     spinFail(text: string) {
         if (this.spinner) {
-            this.spinner.fail(text)
+            this.spinner.fail(chalk.red(text))
         }
         this.spinner = undefined
     }
