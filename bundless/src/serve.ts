@@ -26,7 +26,7 @@ import {
     showGraph,
     WEB_MODULES_PATH,
 } from './constants'
-import { HmrGraph } from './graph'
+import { HmrGraph } from './hmr-graph'
 import { logger } from './logger'
 import * as middlewares from './middleware'
 import { PluginsExecutor } from './plugins-executor'

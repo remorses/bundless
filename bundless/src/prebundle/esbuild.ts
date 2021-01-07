@@ -22,7 +22,7 @@ import {
     stripColon,
 } from './support'
 import { PluginsExecutor } from '../plugins-executor'
-import { HmrGraph } from '../graph'
+import { HmrGraph } from '../hmr-graph'
 
 export const commonEsbuildOptions: esbuild.BuildOptions = {
     target: 'es2020',
