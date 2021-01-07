@@ -1,8 +1,5 @@
 import { Metadata } from 'esbuild'
-import { EventEmitter, once } from 'events'
 import { forOwn, isPlainObject } from 'lodash'
-import path from 'path'
-import slash from 'slash'
 
 export function isUrl(req: string) {
     return (
@@ -13,23 +10,6 @@ export function isUrl(req: string) {
 }
 export interface OptimizeAnalysisResult {
     isCommonjs: { [name: string]: true }
-}
-
-export class Lock extends EventEmitter {
-    READY_EVENT = 'READY_EVENT'
-    isReady = false
-    constructor() {
-        super()
-        this.once(this.READY_EVENT, () => {
-            this.isReady = true
-        })
-    }
-    ready() {
-        this.emit(this.READY_EVENT)
-    }
-    wait(): Promise<any> {
-        return once(this, this.READY_EVENT)
-    }
 }
 
 export function unique<T>(array: T[], key = (x: T): any => x): T[] {
