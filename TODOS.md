@@ -1,4 +1,5 @@
 -   test the html entries resolution (public, name.html, html paths in entries, ...)
+-   prebundleWorkspacePackages option (can be glob[], glob or boolean)
 -   profile the plugins, maybe the wrapper can wrap the plugins onLoad and onResolve functions to make this work both on server and build, or just wrap the plugins executor methods?
 -   implement postcss processing to enable sass, tailwind, ...
 -   implement build.basePath changing esbuild publicPath and other plugins like paged that inject virtual files at root
