@@ -274,7 +274,7 @@ const template = ({ mainColor, tip = '' }) => /*html*/ `
 <style>
 :host {
   position: fixed;
-  z-index: 99999;
+  z-index: 1000001;
   top: 0;
   left: 0;
   width: 100%;
