@@ -10,6 +10,7 @@ import { createServer, Server } from 'http'
 import Koa, { DefaultContext, DefaultState, Middleware } from 'koa'
 import etagMiddleware from 'koa-etag'
 import path from 'path'
+import { Node } from 'posthtml'
 import slash from 'slash'
 import { promisify } from 'util'
 import WebSocket from 'ws'
@@ -30,9 +31,9 @@ import { logger } from './logger'
 import * as middlewares from './middleware'
 import * as plugins from './plugins'
 import { PluginsExecutor } from './plugins-executor'
-import { transformScriptTags } from './plugins/html-transform'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
+import { isUrl } from './prebundle/support'
 import {
     appendQuery,
     dotdotEncoding,
@@ -133,15 +134,7 @@ export async function createDevApp(config: Config) {
             ...(config.plugins || []), // TODO where should i put plugins? i should let user override onResolve, but i should also run rewrite on user outputs
             plugins.RewritePlugin(),
             plugins.HtmlTransformUrlsPlugin({
-                transforms: [
-                    transformScriptTags((importPath) => {
-                        const { query } = parseWithQuery(importPath)
-                        if (query?.namespace != null) {
-                            return importPath
-                        }
-                        return appendQuery(importPath, `namespace=file`)
-                    }),
-                ],
+                transforms: [rewriteScriptUrlsTransform],
             }),
         ].map((plugin) => ({
             ...plugin,
@@ -515,4 +508,32 @@ async function getDepsHash(root: string) {
 async function updateHash(hashPath: string, newHash: string) {
     await fs.createFile(hashPath)
     await fs.writeFile(hashPath, newHash.trim())
+}
+
+export const rewriteScriptUrlsTransform = (tree: Node) => {
+    let count = 0
+    tree.walk((node) => {
+        if (
+            node &&
+            node.tag === 'script' &&
+            node.attrs &&
+            node.attrs['src'] &&
+            !isUrl(node.attrs['src'])
+        ) {
+            count += 1
+            let importPath = node.attrs['src']
+            if (node.attrs['type'] !== 'module') {
+                logger.warn(
+                    `<script src="${importPath}"> is missing type="module". Only module scripts are handled by Bundless`,
+                )
+                return
+            }
+            const { query } = parseWithQuery(importPath)
+            if (query?.namespace != null) {
+                return importPath
+            }
+            node.attrs['src'] = appendQuery(importPath, `namespace=file`)
+        }
+        return node as any
+    })
 }

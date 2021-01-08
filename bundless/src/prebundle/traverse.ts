@@ -19,6 +19,7 @@ import {
 } from './esbuild'
 
 import { runFunctionOnPaths, stripColon } from './support'
+import { rewriteScriptUrlsTransform } from '../serve'
 
 type Args = {
     esbuildCwd: string
@@ -57,6 +58,9 @@ export async function traverseWithEsbuild({
         ExternalButInMetafile(),
         plugins.NodeModulesPolyfillPlugin(),
         plugins.HtmlResolverPlugin(),
+        plugins.HtmlTransformUrlsPlugin({
+            transforms: [rewriteScriptUrlsTransform],
+        }),
         plugins.HtmlIngestPlugin({ root }),
         plugins.NodeResolvePlugin({
             name: 'traverse-node-resolve',
@@ -77,6 +81,7 @@ export async function traverseWithEsbuild({
                 )
             },
         }),
+
         plugins.UrlResolverPlugin(),
     ].map((plugin) => ({
         ...plugin,
