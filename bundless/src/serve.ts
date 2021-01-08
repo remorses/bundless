@@ -16,6 +16,7 @@ import WebSocket from 'ws'
 import { HMRPayload } from './client/types'
 import { Config, defaultConfig, getEntries } from './config'
 import {
+    BUNDLE_MAP_PATH,
     DEFAULT_PORT,
     HMR_SERVER_NAME,
     importableAssets,
@@ -151,7 +152,7 @@ export async function createDevApp(config: Config) {
     const bundleMapCachePath = path.resolve(
         root,
         WEB_MODULES_PATH,
-        'bundleMap.json',
+        BUNDLE_MAP_PATH,
     )
     const hashPath = path.resolve(root, WEB_MODULES_PATH, 'deps_hash')
 
@@ -159,16 +160,21 @@ export async function createDevApp(config: Config) {
     let prevHash = await fs.readFile(hashPath).catch(() => '')
     const isHashDifferent = !depHash || !prevHash || prevHash !== depHash
     if (!config.force && isHashDifferent) {
+        logger.log(
+            `Dependencies changed, removing ${WEB_MODULES_PATH}`,
+        )
         await fs.remove(path.resolve(root, WEB_MODULES_PATH))
     }
 
     let bundleMap: BundleMap = await fs
         .readJSON(bundleMapCachePath)
-        .catch(() => ({}))
+        .catch((e) => {
+            return {}
+        })
 
     if (isEmpty(bundleMap)) {
         logger.log(
-            `bundleMap is empty: Prebundling modules in '${WEB_MODULES_PATH}'`,
+            `${BUNDLE_MAP_PATH} is empty: Prebundling modules in '${WEB_MODULES_PATH}'`,
         )
         bundleMap = await prebundle({
             entryPoints: await getEntries(pluginsExecutor, config),
@@ -177,6 +183,10 @@ export async function createDevApp(config: Config) {
             plugins: config.plugins || [],
             root,
         })
+    }
+
+    if (isHashDifferent) {
+        await updateHash(hashPath, depHash)
     }
 
     async function onResolved(resolvedPath: string, importer: string) {

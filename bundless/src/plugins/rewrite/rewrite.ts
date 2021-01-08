@@ -217,7 +217,7 @@ export async function rewriteImports({
                             magicString.overwrite(
                                 dynamicIndex,
                                 end + 1,
-                                `import('${resolvedImportPath}').then(m=>m.default)`,
+                                `import('${resolvedImportPath}').then(m=>({...(m && m.__esModule ? m.default : {}), ...m}))`, // TODO how to handle requirejs conversion for dynamic imports?
                             )
                         }
                     } else {

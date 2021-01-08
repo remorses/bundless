@@ -1,6 +1,10 @@
 import fs from 'fs-extra'
 import path from 'path'
-import { COMMONJS_ANALYSIS_PATH, WEB_MODULES_PATH } from '../constants'
+import {
+    BUNDLE_MAP_PATH,
+    COMMONJS_ANALYSIS_PATH,
+    WEB_MODULES_PATH,
+} from '../constants'
 import { logger } from '../logger'
 import { clearCommonjsAnalysisCache } from '../plugins/rewrite/commonjs'
 import { bundleWithEsBuild } from './esbuild'
@@ -54,7 +58,7 @@ export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
             const bundleMapCachePath = path.resolve(
                 root,
                 WEB_MODULES_PATH,
-                'bundleMap.json',
+                BUNDLE_MAP_PATH,
             )
             await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
         }

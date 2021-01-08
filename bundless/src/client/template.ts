@@ -415,10 +415,15 @@ class CommonOverlay extends HTMLElement {
                 const link = document.createElement('a')
                 link.textContent = matched
                 link.className = 'file-link'
-                const path = /https?:\/\//.test(matched)
-                    ? new URL(matched).pathname.slice(1)
-                    : matched
+                const isUrl = /https?:\/\//.test(matched)
+                let path = isUrl ? new URL(matched).pathname.slice(1) : matched
+
+                // if (isUrl) {
+                //     const lineNumAndCol = /(:\d+:\d+)$/.exec(matched)?.[1] || ''
+                //     path += lineNumAndCol
+                // }
                 link.onclick = () => {
+                    console.info(`Opening ${path} in editor`)
                     fetch('/__open-in-editor?file=' + encodeURIComponent(path))
                 }
                 el.appendChild(link)
@@ -430,9 +435,10 @@ class CommonOverlay extends HTMLElement {
 function getAllMatches(text: string, regex: RegExp) {
     let curIndex = 0
     let match
-    const matches: { frag; matched }[] = []
+    const matches: { frag: string; matched: string }[] = []
     while ((match = regex.exec(text))) {
-        const { 0: matched, index } = match
+        let { 0: matched, index } = match
+        matched = matched.trim()
         if (index != null) {
             const frag = text.slice(curIndex, index)
             matches.push({ frag, matched })
