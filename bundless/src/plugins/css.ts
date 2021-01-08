@@ -31,6 +31,7 @@ export function CssPlugin({} = {}) {
                 return
             }
 
+            // TODO use custom resolver that adds the .js extension to css paths?
             NodeResolvePlugin({
                 name: 'css-node-resolve',
                 isExtensionRequiredInImportPath: true,

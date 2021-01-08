@@ -26,7 +26,6 @@ export function ReactRefreshPlugin({} = {}): Plugin {
 
             // injects stuff in html
             onTransform({ filter: /\.html$/ }, (args) => {
-                // console.log('transforming html with react refresh')
                 return {
                     contents: transformHtml(args.contents),
                 }
