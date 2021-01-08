@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 require('source-map-support').install()
 if (process.argv.includes('--debug')) {
-    process.env.DEBUG = 'true'
+    process.env.DEBUG_BUNDLESS = 'true'
 }
 
 import deepMerge from 'deepmerge'

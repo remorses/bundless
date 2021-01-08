@@ -3,7 +3,7 @@ import ora, { Ora } from 'ora'
 
 const defaultPrefix = '[bundless] '
 
-const DEBUG = process.env.DEBUG
+const DEBUG = process.env.DEBUG_BUNDLESS
 export class Logger {
     prefix: string = ''
     constructor({ prefix = defaultPrefix } = {}) {
