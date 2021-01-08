@@ -5,7 +5,7 @@ var _s = $RefreshSig$(),
     _s2 = $RefreshSig$();
 
 const __this_path__ = "/Users/morse/Documents/GitHub/espack/fixtures/with-pages/_bundless_paged_routes_.jsx";
-import RefreshRuntime from "/_react-refresh-runtime_?namespace=react-refresh-runtime";
+import RefreshRuntime from "/_react-refresh-runtime_.js?namespace=react-refresh-runtime";
 let prevRefreshReg;
 let prevRefreshSig;
 

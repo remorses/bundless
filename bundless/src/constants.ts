@@ -9,7 +9,7 @@ export const BUNDLE_MAP_PATH = 'bundleMap.json'
 export const HMR_SERVER_NAME = 'esm-hmr'
 export const CONFIG_NAME = 'bundless.config.js'
 
-export let isRunningWithYarnPnp: boolean
+export let isRunningWithYarnPnp: boolean = false
 try {
     isRunningWithYarnPnp = Boolean(require('pnpapi'))
     logger.debug('Using Yarn PnP')

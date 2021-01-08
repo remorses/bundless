@@ -9,16 +9,17 @@ import { parse as _parse } from '@babel/parser'
 import { Plugin, logger } from '@bundless/cli'
 import { babelParserOpts } from '@bundless/cli/dist/utils'
 import { transform } from '@babel/core'
+import path from 'path'
 
 const runtimeNamespace = 'react-refresh-runtime'
-const runtimePath = `/_react-refresh-runtime_?namespace=${runtimeNamespace}`
+const runtimePath = `_react-refresh-runtime_.js`
 
 export default ReactRefreshPlugin
 
 export function ReactRefreshPlugin({} = {}): Plugin {
     return {
         name: 'react-refresh',
-        setup({ onTransform, onResolve, onLoad, ctx: { isBuild } }) {
+        setup({ onTransform, onResolve, onLoad, ctx: { root, isBuild } }) {
             if (process.env.NODE_ENV === 'production' || isBuild) {
                 return
             }
@@ -32,25 +33,27 @@ export function ReactRefreshPlugin({} = {}): Plugin {
             })
 
             onResolve({ filter: new RegExp(runtimePath) }, (args) => {
-                if (args.path === runtimePath) {
-                    return {
-                        path: runtimePath,
-                        namespace: runtimeNamespace,
-                    }
+                if (path.basename(args.path) !== runtimePath) {
+                    return
+                }
+
+                return {
+                    path: runtimePath,
+                    namespace: runtimeNamespace,
                 }
             })
 
             onLoad(
                 { filter: /.*/, namespace: runtimeNamespace },
                 async (args) => {
-                    const runtimePath = require.resolve(
+                    const runtimeModulePath = require.resolve(
                         'react-refresh/cjs/react-refresh-runtime.development.js',
                     )
                     const runtimeCode = `
                     const exports = {}
                     const process = {env: {NODE_ENV: 'development'}}
                     ${await (
-                        await fs.promises.readFile(runtimePath)
+                        await fs.promises.readFile(runtimeModulePath)
                     ).toString()}
                     ${debounce.toString()}
                     exports.performReactRefresh = debounce(exports.performReactRefresh, 16)
@@ -173,7 +176,7 @@ function transformHtml(contents) {
         /<body.*?>/,
         `$&
   <script type="module">
-  import RefreshRuntime from "${runtimePath}"
+  import RefreshRuntime from "/${runtimePath}?namespace=${runtimeNamespace}"
   RefreshRuntime.injectIntoGlobalHook(window)
   window.$RefreshReg$ = () => {}
   window.$RefreshSig$ = () => (type) => type
@@ -201,7 +204,7 @@ const THIS_PATH_NAME = '__this_path__'
 
 const header = parse(
     `
-import RefreshRuntime from "${runtimePath}";
+import RefreshRuntime from "/${runtimePath}";
 
 let prevRefreshReg;
 let prevRefreshSig;
