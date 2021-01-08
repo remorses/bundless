@@ -20,18 +20,25 @@ const serveCommand: CommandModule = {
             required: false,
             description: 'The port for the dev server',
         })
-
+        argv.option('force', {
+            alias: 'f',
+            type: 'boolean',
+            required: false,
+            description:
+                'Force prebundling even if dependencies did not change',
+        })
         return argv
     },
     handler: async (argv: any) => {
         const loadedConfig = loadConfig(process.cwd(), argv.config)
-        let config: Config = deepMerge(loadedConfig, {
-            port: argv.port,
+        const configFromArgv: Config = {
+            server: {
+                port: argv.port,
+                forcePrebundle: argv.force,
+            },
             profile: argv.profile,
-        } as Config)
-        if (!config.root) {
-            config = { ...config, root: process.cwd() }
         }
+        let config: Config = deepMerge(loadedConfig, configFromArgv)
         return await serve(config)
     },
 }
@@ -55,13 +62,13 @@ const buildCommand: CommandModule = {
     },
     handler: async (argv: any) => {
         let config = loadConfig(process.cwd(), argv.config)
-        config = deepMerge(config, {
-            outDir: argv.outDir,
+        const configFromArgv: Config = {
+            build: {
+                outDir: argv.outDir,
+            },
             profile: argv.profile,
-        } as Config)
-        if (!config.root) {
-            config = { ...config, root: process.cwd() }
         }
+        config = deepMerge(config, configFromArgv)
         return await build({
             ...config,
         })

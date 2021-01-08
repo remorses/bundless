@@ -97,11 +97,14 @@ export const defaultConfig: Config = {
 
 export function loadConfig(from: string, name = CONFIG_NAME): Config {
     const configPath = findUp.sync(name, { cwd: from })
+    let config: Config = {}
     if (configPath) {
-        return require(configPath)
+        config = require(configPath)
     }
-    // TODO handle ts config
-    return {}
+    if (!config.root) {
+        config = { ...config, root: process.cwd() }
+    }
+    return config
 }
 
 export interface HmrConfig {
