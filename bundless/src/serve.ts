@@ -174,10 +174,7 @@ export async function createDevApp(config: Config) {
             entryPoints: await getEntries(pluginsExecutor, config),
             filter: (p) => needsPrebundle(config, p),
             dest: path.resolve(root, WEB_MODULES_PATH),
-            plugins: new PluginsExecutor({
-                ctx: executorCtx,
-                plugins: config.plugins || [],
-            }).esbuildPlugins(),
+            plugins: config.plugins || [],
             root,
         })
     }
@@ -342,7 +339,7 @@ export async function createDevApp(config: Config) {
             if (!wss.clients.size) {
                 logger.debug(`No clients listening for HMR message`)
             }
-            wss.clients.forEach((client, i) => {
+            for (let [i, client] of [...wss.clients].entries()) {
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(stringified)
                 } else {
@@ -353,7 +350,7 @@ export async function createDevApp(config: Config) {
                         ),
                     )
                 }
-            })
+            }
         }
     })
 
