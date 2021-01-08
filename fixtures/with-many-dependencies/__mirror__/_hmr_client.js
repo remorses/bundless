@@ -237,7 +237,7 @@ const template = ({ mainColor, tip = '' }) => /*html*/ `
 <style>
 :host {
   position: fixed;
-  z-index: 99999;
+  z-index: 1000001;
   top: 0;
   left: 0;
   width: 100%;
@@ -373,10 +373,14 @@ class CommonOverlay extends HTMLElement {
                 const link = document.createElement('a');
                 link.textContent = matched;
                 link.className = 'file-link';
-                const path = /https?:\/\//.test(matched)
-                    ? new URL(matched).pathname.slice(1)
-                    : matched;
+                const isUrl = /https?:\/\//.test(matched);
+                let path = isUrl ? new URL(matched).pathname.slice(1) : matched;
+                // if (isUrl) {
+                //     const lineNumAndCol = /(:\d+:\d+)$/.exec(matched)?.[1] || ''
+                //     path += lineNumAndCol
+                // }
                 link.onclick = () => {
+                    console.info(`Opening ${path} in editor`);
                     fetch('/__open-in-editor?file=' + encodeURIComponent(path));
                 };
                 el.appendChild(link);
@@ -390,7 +394,8 @@ function getAllMatches(text, regex) {
     let match;
     const matches = [];
     while ((match = regex.exec(text))) {
-        const { 0: matched, index } = match;
+        let { 0: matched, index } = match;
+        matched = matched.trim();
         if (index != null) {
             const frag = text.slice(curIndex, index);
             matches.push({ frag, matched });
