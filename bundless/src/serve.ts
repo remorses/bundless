@@ -156,13 +156,15 @@ export async function createDevApp(config: Config) {
     )
     const hashPath = path.resolve(root, WEB_MODULES_PATH, 'deps_hash')
 
-    const depHash = await getDepsHash(root)
-    let prevHash = await fs.readFile(hashPath).catch(() => '')
-    const isHashDifferent = !depHash || !prevHash || prevHash !== depHash
+    const depsHash = await getDepsHash(root)
+    let prevHash = await fs
+        .readFile(hashPath)
+        .catch(() => '')
+        .then((x) => x.toString().trim())
+    const isHashDifferent = !depsHash || !prevHash || prevHash !== depsHash
     if (!config.force && isHashDifferent) {
-        logger.log(
-            `Dependencies changed, removing ${WEB_MODULES_PATH}`,
-        )
+        logger.log(`Dependencies changed, removing ${WEB_MODULES_PATH}`)
+        logger.debug('isHashDifferent', isHashDifferent, prevHash, depsHash)
         await fs.remove(path.resolve(root, WEB_MODULES_PATH))
     }
 
@@ -183,10 +185,7 @@ export async function createDevApp(config: Config) {
             plugins: config.plugins || [],
             root,
         })
-    }
-
-    if (isHashDifferent) {
-        await updateHash(hashPath, depHash)
+        await updateHash(hashPath, depsHash)
     }
 
     async function onResolved(resolvedPath: string, importer: string) {
@@ -241,7 +240,7 @@ export async function createDevApp(config: Config) {
                 type: 'overlay-info-close',
             })
             if (isHashDifferent) {
-                await updateHash(hashPath, depHash)
+                await updateHash(hashPath, depsHash)
             }
             context.sendHmrMessage({ type: 'reload' })
             const webBundle = bundleMap[relativePath]
@@ -289,12 +288,13 @@ export async function createDevApp(config: Config) {
         app.emit('closed')
     })
 
-    // process.on('SIGINT', () => {
-    //     if (config.profile) {
-    //         console.info(pluginsExecutor.printProfilingResult())
-    //     }
-    //     process.exit(0)
-    // })
+    if (config.profile) {
+        process.on('SIGINT', () => {
+            console.info()
+            console.info(pluginsExecutor.printProfilingResult())
+            process.exit(0)
+        })
+    }
 
     app.on('error', (e: Error) => {
         console.error(chalk.red(e.message))
