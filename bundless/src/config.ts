@@ -61,7 +61,6 @@ export interface Config {
     profile?: boolean
     platform?: Platform
     root?: string
-    force?: boolean
     env?: Record<string, string>
     entries?: string[]
     plugins?: Plugin[]
@@ -80,6 +79,7 @@ export interface Config {
 export interface ServerConfig {
     openBrowser?: boolean
     cors?: boolean
+    forcePrebundle?: boolean
     port?: number | string
     hmr?: HmrConfig | boolean
 }

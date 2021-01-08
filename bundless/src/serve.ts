@@ -162,15 +162,18 @@ export async function createDevApp(config: Config) {
         .catch(() => '')
         .then((x) => x.toString().trim())
     const isHashDifferent = !depsHash || !prevHash || prevHash !== depsHash
-    if (!config.force && isHashDifferent) {
-        logger.log(`Dependencies changed, removing ${WEB_MODULES_PATH}`)
-        logger.debug('isHashDifferent', isHashDifferent, prevHash, depsHash)
+
+    if (config.server?.forcePrebundle || isHashDifferent) {
+        if (isHashDifferent) {
+            logger.log(`Dependencies changed, removing ${WEB_MODULES_PATH}`)
+            logger.debug('isHashDifferent', isHashDifferent, prevHash, depsHash)
+        }
         await fs.remove(path.resolve(root, WEB_MODULES_PATH))
     }
 
     let bundleMap: BundleMap = await fs
         .readJSON(bundleMapCachePath)
-        .catch((e) => {
+        .catch(() => {
             return {}
         })
 
@@ -239,9 +242,8 @@ export async function createDevApp(config: Config) {
             context.sendHmrMessage({
                 type: 'overlay-info-close',
             })
-            if (isHashDifferent) {
-                await updateHash(hashPath, depsHash)
-            }
+            await updateHash(hashPath, depsHash)
+
             context.sendHmrMessage({ type: 'reload' })
             const webBundle = bundleMap[relativePath]
             if (!webBundle) {
@@ -259,7 +261,6 @@ export async function createDevApp(config: Config) {
         } finally {
             onResolveLock.ready()
         }
-        // lock server, start optimization, unlock, send refresh message
     }
 
     let useFsEvents = false
@@ -269,13 +270,8 @@ export async function createDevApp(config: Config) {
     } catch (e) {}
 
     const watcher = chokidar.watch(root, {
-        // cwd: root,
-        // disableGlobbing: true,
         ignored: [
             /(^|[/\\])(node_modules|\.git|\.DS_Store|web_modules)([/\\]|$)/,
-
-            // path.resolve(root, out),
-            // path.resolve(root, distDir),
         ],
         useFsEvents,
         ignoreInitial: true,
