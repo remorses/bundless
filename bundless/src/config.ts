@@ -10,9 +10,7 @@ export async function getEntries(
     pluginsExecutor: PluginsExecutor,
     config: Config,
 ) {
-    if (!config.root) {
-        throw new Error(`Cannot get entries without having root`)
-    }
+    const root = pluginsExecutor.ctx.root
     if (config.entries) {
         for (let entry of config.entries) {
             if (config.platform === 'browser' && !entry.endsWith('.html')) {
@@ -32,7 +30,9 @@ export async function getEntries(
                         .then((x) => x?.path || ''),
                 ),
             )
-        ).filter(Boolean)
+        )
+            .filter(Boolean)
+            .map((x) => path.resolve(root, x))
     }
 
     // public folder logic is already in the html resolver plugin
@@ -41,7 +41,7 @@ export async function getEntries(
         resolveDir: config.root,
     })
     if (index1?.path) {
-        return [index1.path]
+        return [path.resolve(root, index1.path)]
     }
 
     throw new Error(

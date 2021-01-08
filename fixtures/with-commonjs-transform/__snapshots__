@@ -2,9 +2,11 @@
 
 exports[`snapshots fixtures/with-commonjs-transform: build 1`] = `
 Array [
+  "chunk.AII2ZRKM.js",
+  "fixtures/with-commonjs-transform/index.js",
   "index.html",
-  "index.js",
   "metafile.json",
+  "node_modules/react-dom/index.js",
 ]
 `;
 
@@ -12,8 +14,10 @@ exports[`snapshots fixtures/with-commonjs-transform: content-type headers 1`] = 
 Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
-  "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/web_modules/index.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/main.jsx?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/react-dom/index.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -21,8 +25,10 @@ exports[`snapshots fixtures/with-commonjs-transform: mirror 1`] = `
 Array [
   "_hmr_client.js",
   "index.html",
-  "main.js",
-  "web_modules/index.js",
+  "main.jsx",
+  "web_modules/chunk.UGVOUZLI.js",
+  "web_modules/react-dom/index.js",
+  "web_modules/react/index.js",
 ]
 `;
 
@@ -30,18 +36,58 @@ exports[`snapshots fixtures/with-commonjs-transform: traverse result 1`] = `
 Array [
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.jsx?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/main.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/index.html",
-    "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/web_modules/react-dom/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/web_modules/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/index.js?namespace=file",
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/main.jsx?namespace=file",
+    "importer": "http://127.0.0.1:9000/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/main.jsx?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.UGVOUZLI.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/react-dom/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.UGVOUZLI.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.UGVOUZLI.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UGVOUZLI.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/react-dom/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.jsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react-dom/index.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/react/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.jsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/react/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.jsx?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
   },
 ]
 `;

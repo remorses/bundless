@@ -1,5 +1,6 @@
 {
     "isCommonjs": {
-        "web_modules/index.js": true
+        "web_modules/react/index.js": true,
+        "web_modules/react-dom/index.js": true
     }
 }

@@ -213,11 +213,14 @@ export async function rewriteImports({
                             )
                             magicString.overwrite(expStart, expEnd, replacement)
                         } else if (hasLiteralDynamicId) {
-                            // rewrite `import('package')`
+                            // rewrite `import('package')` to
+                            // import('/package').then(m=>({...((m.default instanceof Object && m.default.constructor === Object) && m.default), ...m})));
                             magicString.overwrite(
                                 dynamicIndex,
                                 end + 1,
-                                `import('${resolvedImportPath}').then(m=>({...(m && m.__esModule ? m.default : {}), ...m}))`, // TODO how to handle requirejs conversion for dynamic imports?
+                                `import('${resolvedImportPath}').then(m=>({...(${renderIsObjectExpression(
+                                    'm.default',
+                                )} && m.default), ...m}))`, // TODO how to handle requirejs conversion for dynamic imports?
                             )
                         }
                     } else {
@@ -296,4 +299,8 @@ function removeUnRelatedHmrQuery(url: string) {
         return path + '?' + qs.stringify(query)
     }
     return path
+}
+
+function renderIsObjectExpression(x) {
+    return `(${x} instanceof Object && ${x}.constructor === Object)`
 }

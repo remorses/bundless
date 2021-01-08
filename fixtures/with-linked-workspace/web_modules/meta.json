@@ -137,7 +137,7 @@
     "fixtures/with-linked-workspace/web_modules/node_modules/react/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-linked-workspace/web_modules/node_modules/react/chunk.6LFFTHWT.js"
+          "path": "fixtures/with-linked-workspace/web_modules/node_modules/react/chunk.UKA52XQJ.js"
         },
         {
           "path": "fixtures/with-linked-workspace/web_modules/node_modules/react/chunk.RGTLKSWD.js"
@@ -181,7 +181,7 @@
     "fixtures/with-linked-workspace/web_modules/node_modules/react-dom/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-linked-workspace/web_modules/node_modules/react-dom/chunk.6LFFTHWT.js"
+          "path": "fixtures/with-linked-workspace/web_modules/node_modules/react-dom/chunk.UKA52XQJ.js"
         },
         {
           "path": "fixtures/with-linked-workspace/web_modules/node_modules/react-dom/chunk.RGTLKSWD.js"
@@ -210,15 +210,15 @@
           "bytesInOutput": 195
         },
         "node_modules/react-dom/cjs/react-dom.development.js": {
-          "bytesInOutput": 791797
+          "bytesInOutput": 791801
         },
         "node_modules/react-dom/index.js": {
           "bytesInOutput": 205
         }
       },
-      "bytes": 2609417
+      "bytes": 2609437
     },
-    "fixtures/with-linked-workspace/web_modules/chunk.6LFFTHWT.js": {
+    "fixtures/with-linked-workspace/web_modules/chunk.UKA52XQJ.js": {
       "imports": [
         {
           "path": "fixtures/with-linked-workspace/web_modules/chunk.RGTLKSWD.js"
@@ -233,13 +233,13 @@
           "bytesInOutput": 2017
         },
         "node_modules/react/cjs/react.development.js": {
-          "bytesInOutput": 62137
+          "bytesInOutput": 62141
         },
         "node_modules/react/index.js": {
           "bytesInOutput": 181
         }
       },
-      "bytes": 201700
+      "bytes": 201716
     },
     "fixtures/with-linked-workspace/web_modules/chunk.RGTLKSWD.js": {
       "imports": [],

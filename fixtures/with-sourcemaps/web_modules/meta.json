@@ -48,13 +48,13 @@
           "bytesInOutput": 2017
         },
         "node_modules/react/cjs/react.development.js": {
-          "bytesInOutput": 62137
+          "bytesInOutput": 62141
         },
         "node_modules/react/index.js": {
           "bytesInOutput": 181
         }
       },
-      "bytes": 201792
+      "bytes": 201808
     }
   }
 }
