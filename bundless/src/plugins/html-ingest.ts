@@ -4,7 +4,6 @@ import path from 'path'
 import { Plugin } from '../plugins-executor'
 import { cleanUrl } from '../utils'
 const NAME = 'html-ingest'
-const debug = require('debug')(NAME)
 
 interface Options {
     name?: string
@@ -21,7 +20,6 @@ export function HtmlIngestPlugin({
     root,
     transformImportPath,
 }: Options): Plugin {
-    debug('setup')
     return {
         name,
         setup: function setup({ onLoad, onTransform, onResolve }) {
@@ -58,8 +56,6 @@ export function HtmlIngestPlugin({
                         )
                         .map((importPath) => `export * from '${importPath}'`)
                         .join('\n')
-
-                    debug('onLoad')
                     
                     return {
                         loader: 'js',
