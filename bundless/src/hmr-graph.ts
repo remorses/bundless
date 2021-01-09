@@ -72,7 +72,7 @@ export class HmrGraph {
         })
     }
 
-    sendHmrMessage = (payload: HMRPayload) => {
+    sendHmrMessage(payload: HMRPayload) {
         if (!this.wss) {
             throw new Error(`HMR Websocket server has not started yet`)
         }
