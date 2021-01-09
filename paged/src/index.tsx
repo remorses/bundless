@@ -21,15 +21,17 @@ import React from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { MahoContext } from './client'
+import picomatch from 'picomatch'
 
 const CLIENT_ENTRY = '_bundless_paged_entry_.jsx'
 const ROUTES_ENTRY = '_bundless_paged_routes_.jsx'
-const pageGlobs = ['**/*.{ts,tsx,js,jsx}']
+const pageGlobs = '**/*.{ts,tsx,js,jsx}'
+const isPage = picomatch(pageGlobs)
 
 export function Plugin({} = {}): PluginType {
     return {
         name: 'paged-plugin',
-        setup({ onLoad, onResolve, ctx: { root } }) {
+        setup({ onLoad, onResolve, ctx: { root, watcher, isBuild } }) {
             const pagesDir = path.resolve(root, 'pages')
 
             onResolve(
@@ -61,7 +63,22 @@ export function Plugin({} = {}): PluginType {
                 },
             )
 
-            // TODO memoise and invalidate on pages file changes
+            if (watcher && !isBuild) {
+                function onChange(filePath) {
+                    // filePath = path.resolve(filePath)
+                    const isInsidePages = !path
+                        .relative(pagesDir, filePath)
+                        .startsWith('..')
+                    if (isInsidePages && isPage(filePath)) {
+                        // invalidate routes cache keys
+                        getRoutes.cache.keys.length = 0
+                        getRoutes.cache.values.length = 0
+                    }
+                }
+                // TODO reserach what chokidar events means, i should probably add add, remove, ...
+                watcher.on('change', onChange)
+            }
+
             onLoad(
                 { filter: new RegExp(escapeStringRegexp(ROUTES_ENTRY)) },
                 async (args) => {
@@ -164,7 +181,7 @@ export async function createServer({
         incremental: true,
     })
 
-    console.log({rebuild})
+    console.log({ rebuild })
 
     let outputPath = bundleMap[osAgnosticPath(ssrEntry, root)]
     if (!outputPath) {
