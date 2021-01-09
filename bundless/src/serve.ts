@@ -84,23 +84,17 @@ export async function serve(config: Config) {
     logger.log(
         `> listening on ${chalk.cyan.underline(`http://localhost:${port}`)}`,
     )
-    async function close() {
-        await server.close()
-        // await once(app, 'closed')
-    }
-    return {
-        ...server,
-        close,
-    }
+    return server
 }
 
 export const onResolveLock = new Lock()
 
 export async function createDevApp(server: net.Server, config: Config) {
+    config = deepmerge(defaultConfig, config)
     if (!config.root) {
         config.root = process.cwd()
     }
-    const { root = '' } = config
+    const { root } = config
 
     const app = new Koa<DefaultState, DefaultContext>()
 
@@ -123,6 +117,7 @@ export async function createDevApp(server: net.Server, config: Config) {
         watcher,
     }
 
+    // most of the logic is in plugins
     const pluginsExecutor = new PluginsExecutor({
         ctx: executorCtx,
         isProfiling: config.profile,
@@ -199,6 +194,7 @@ export async function createDevApp(server: net.Server, config: Config) {
         await updateHash(hashPath, depsHash)
     }
 
+    // when resolving if we encounter a node_module run the prebundling phase and invalidate some caches
     async function onResolved(resolvedPath: string, importer: string) {
         try {
             // lock browser requests until not prebundled
@@ -295,7 +291,6 @@ export async function createDevApp(server: net.Server, config: Config) {
         config.server = { ...config.server, port: server.address()?.['port'] }
     })
 
-    // changing anything inside root that is not ignored and that is not in graph will cause reload
     if (config.server?.hmr) {
         watcher.on('change', (filePath) => {
             graph.onFileChange({
@@ -308,81 +303,16 @@ export async function createDevApp(server: net.Server, config: Config) {
     }
 
     // only js ends up here
-    const pluginsMiddleware: Middleware = async (ctx, next) => {
-        // Object.assign(ctx, context)
-        const req = ctx.req
 
-        if (
-            ctx.query.namespace == null &&
-            req.headers['sec-fetch-dest'] !== 'script'
-        ) {
-            return next()
-        }
-
-        if (ctx.path.startsWith('.')) {
-            throw new Error(
-                `All import paths should have been rewritten to absolute paths (start with /)\n` +
-                    ` make sure import paths for '${ctx.path}' are statically analyzable`,
-            )
-        }
-
-        const isVirtual = ctx.query.namespace && ctx.query.namespace !== 'file'
-        // do not resolve virtual files like node builtins to an absolute path
-        const resolvedPath = isVirtual
-            ? ctx.path.slice(1) // remove leading /
-            : importPathToFile(root, ctx.path)
-
-        // watch files outside root
-        if (
-            ctx.path.startsWith('/' + dotdotEncoding) &&
-            !resolvedPath.includes('node_modules')
-        ) {
-            watcher.add(resolvedPath)
-        }
-
-        const namespace = ctx.query.namespace || 'file'
-        const loaded = await pluginsExecutor.load({
-            path: resolvedPath,
-            namespace,
-        })
-        if (loaded == null || loaded.contents == null) {
-            return next()
-        }
-        const transformed = await pluginsExecutor.transform({
-            path: resolvedPath,
-            loader: loaded.loader,
-            namespace,
-            contents: String(loaded.contents),
-        })
-        if (transformed == null) {
-            return next()
-        }
-
-        // if (!isVirtual) {
-        //     graph.ensureEntry(resolvedPath)
-        // }
-
-        const sourcemap = transformed.map
-            ? genSourceMapString(transformed.map)
-            : ''
-
-        ctx.body = transformed.contents + sourcemap
-        ctx.status = 200
-        ctx.type = 'js'
-        return next()
-    }
-
-    // open errors in editor
     app.use(middlewares.openInEditorMiddleware({ root }))
     app.use(middlewares.sourcemapMiddleware({ root }))
-    app.use(pluginsMiddleware)
+    app.use(middlewares.pluginsMiddleware({ root, pluginsExecutor, watcher }))
     app.use(middlewares.historyFallbackMiddleware({ root, pluginsExecutor }))
     app.use(middlewares.staticServeMiddleware({ root }))
     app.use(
         middlewares.staticServeMiddleware({ root: path.join(root, 'public') }),
     )
 
-    // app.use(require('koa-conditional-get'))
     app.use(etagMiddleware())
 
     // cors
@@ -397,19 +327,6 @@ export async function createDevApp(server: net.Server, config: Config) {
     }
 
     return { app, pluginsExecutor }
-}
-
-function etagCache() {
-    return function conditional() {
-        return async function(ctx, next) {
-            await next()
-
-            if (ctx.fresh) {
-                ctx.status = 304
-                ctx.body = null
-            }
-        }
-    }
 }
 
 // hash assumes that import paths can only grow when installed dependencies grow, this is not the case for deep paths like `lodash/path`, in these cases you will need to use `--force`

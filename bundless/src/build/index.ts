@@ -4,7 +4,7 @@ import fromEntries from 'fromentries'
 import fs from 'fs-extra'
 import path from 'path'
 import posthtml, { Node } from 'posthtml'
-import { BuildConfig, Config, getEntries } from '../config'
+import { BuildConfig, Config, defaultConfig, getEntries } from '../config'
 import { MAIN_FIELDS } from '../constants'
 import { HmrGraph } from '../hmr-graph'
 import { Logger, logger } from '../logger'
@@ -21,6 +21,7 @@ import { isUrl, runFunctionOnPaths, stripColon } from '../prebundle/support'
 import { metaToTraversalResult } from '../prebundle/traverse'
 import { cleanUrl, partition, osAgnosticPath, computeDuration } from '../utils'
 import { printStats } from '../prebundle/stats'
+import deepmerge from 'deepmerge'
 
 interface OwnArgs {
     logger?: Logger
@@ -39,10 +40,7 @@ export async function build({
     traversalGraph
     rebuild?: esbuild.BuildInvalidate
 }> {
-    // if (!process.env.NODE_ENV) {
-    //     logger.log(`setting env.NODE_ENV = 'production'`)
-    //     process.env.NODE_ENV = 'production'
-    // }
+    config = deepmerge(defaultConfig, config)
 
     const {
         minify = false,
