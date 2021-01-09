@@ -42,9 +42,9 @@ describe('snapshots', () => {
             const config = loadConfig(casePath)
             const server = await serve({
                 ...config,
-                force: true,
                 root,
                 server: {
+                    forcePrebundle: true,
                     port: PORT,
                 },
             })
