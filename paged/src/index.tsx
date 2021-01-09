@@ -168,7 +168,6 @@ export async function createServer({
     const ssrLogger = new Logger({ silent: true })
     const ssrEntry = path.resolve(root, ROUTES_ENTRY)
 
-    // TODO incremental ssr builds
     const { bundleMap, rebuild } = await build({
         ...baseConfig,
         logger: ssrLogger,
@@ -199,7 +198,7 @@ export async function createServer({
         const routesPaths = await (
             await getRoutes({ pageGlobs, pagesDir })
         ).map((x) => path.posix.join(x.path, 'index.html'))
-        // TODO use react router utils instead
+        // TODO use react router utils instead of appending index.html
         // import {
         //     matchRoutes,
         //     createRoutesFromArray,

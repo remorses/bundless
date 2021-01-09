@@ -1,4 +1,3 @@
-import { resolveAsync } from '@esbuild-plugins/all'
 import fs from 'fs-extra'
 import path from 'path'
 import { PluginHooks } from '../plugins-executor'
@@ -7,7 +6,6 @@ export function HtmlResolverPlugin({} = {}) {
     return {
         name: 'html-resolver',
         setup: ({ ctx: { root }, onLoad, onResolve }: PluginHooks) => {
-            // TODO test that HtmlResolverPlugin can resolve directories to index.html, /a -> /a/index.html
             onResolve({ filter: /\.html/ }, async (args) => {
                 args.path = path.resolve(root, args.path)
 

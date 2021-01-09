@@ -103,7 +103,6 @@ export class PluginsExecutor {
         this.ctx = ctx
         this.plugins = plugins
         this.isProfiling = isProfiling
-        // this.config = {...config, root}
 
         for (let plugin of plugins) {
             if (isProfiling) {

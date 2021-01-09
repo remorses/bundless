@@ -37,7 +37,7 @@ export function historyFallbackMiddleware({
             return next()
         }
         // use the executor to resolve virtual html files
-        // TODO decide if we want to pass the path with index.html or the normal path and let the plugins decide if they watn to serve html, the second way is harder because html should be served as last thing (fallback) but user plugins run first
+        // TODO decide if we want to pass to plugins the path with appended index.html or the normal path and let the plugins decide if they watn to serve html, the second way is harder because html should be served as last thing (fallback) but user plugins run first
         let filePath = !cleanUrl(ctx.path).endsWith('.html')
             ? path.posix.join(ctx.path, 'index.html')
             : ctx.path

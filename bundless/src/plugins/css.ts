@@ -41,7 +41,6 @@ export function CssPlugin({} = {}) {
                 onResolve,
             })
 
-            // TODO try to make this path virtual
             onResolve(
                 { filter: new RegExp(escapeStringRegexp(CSS_UTILS_PATH)) },
                 (args) => {

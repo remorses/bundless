@@ -141,7 +141,7 @@ export async function bundleWithEsBuild({
             },
             plugins: [
                 // HtmlIngestPlugin(),
-                ...(userPlugins || []), // TODO esbuild should resolve with all plugins
+                ...(userPlugins || []),
                 plugins.NodeModulesPolyfillPlugin(),
                 plugins.NodeResolvePlugin({
                     name: 'prebundle-node-resolve',
@@ -158,7 +158,7 @@ export async function bundleWithEsBuild({
         }).esbuildPlugins(),
     })
 
-    // TODO use esbuild write to not load files in memory after https://github.com/yarnpkg/berry/issues/2259 gets fixed
+    // TODO use esbuild write to not load files in memory after https://github.com/yarnpkg/berry/issues/2259 gets fixed or we have onEmit in plugins
     for (let outputFile of buildResult.outputFiles || []) {
         const filePath = outputFile.path.replace('$$virtual', 'virtual')
         await fs.ensureDir(path.dirname(filePath))
@@ -207,7 +207,6 @@ function makeTsConfig({ alias }) {
 
 export type BundleMap = Partial<Record<string, string>>
 
-// TODO not working for some packages
 /**
  * Returns aon object that maps from entry (relative path from root) to output (relative path from root too)
  */

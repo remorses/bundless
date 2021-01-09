@@ -141,7 +141,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             plugins.CssPlugin(),
             plugins.JSONPlugin(),
             plugins.ResolveSourcemapPlugin(),
-            ...(config.plugins || []), // TODO where should i put plugins? i should let user override onResolve, but i should also run rewrite on user outputs
+            ...(config.plugins || []), // TODO where should i put user plugins? i should let user override onResolve, but i should also run rewrite on user outputs
             plugins.RewritePlugin(),
             plugins.HtmlTransformUrlsPlugin({
                 transforms: [rewriteScriptUrlsTransform],

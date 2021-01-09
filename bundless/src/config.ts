@@ -5,7 +5,7 @@ import * as esbuild from 'esbuild'
 import { Plugin, PluginsExecutor } from './plugins-executor'
 import path from 'path'
 
-// TODO use the executor to find entries
+
 export async function getEntries(
     pluginsExecutor: PluginsExecutor,
     config: Config,

@@ -159,7 +159,7 @@ export function needsPrebundle(config: Config, p: string) {
     if (config.needsPrebundle && config.needsPrebundle(p)) {
         return true
     }
-    return p.includes('node_modules') && !p.includes('web_modules') // TODO make something more robust to skip detection of node_modules inside web_modules
+    return p.includes('node_modules') && !p.includes('web_modules')
 }
 
 export const babelParserOpts: ParserOptions = {
@@ -243,8 +243,6 @@ export function prepareError(err: Error) {
         ...err,
         message: strip(err.message),
         stack: strip(err.stack || ''),
-
-        // TODO add frame to error somehow?
         // frame: strip(err?.frame || ''),
     }
 }

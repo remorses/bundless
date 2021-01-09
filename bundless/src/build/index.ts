@@ -223,7 +223,7 @@ export async function build({
         })
     }
 
-    // TODO remove this after esbuild has css code splitting via js
+    // TODO remove complete css injection after esbuild has css code splitting via js
     const cssToInject = Object.keys(meta.outputs).filter((x) =>
         x.endsWith('.css'),
     )
@@ -376,7 +376,6 @@ export async function build({
 
             // emit html to dist directory, in dirname same as the output files corresponding to html entries
         } else {
-            // TODO support js entries
             // if entry is not html, create an html file that imports the js output bundle
         }
     }
