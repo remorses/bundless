@@ -31,7 +31,7 @@ import { HmrGraph } from './hmr-graph'
 import { logger } from './logger'
 import * as middlewares from './middleware'
 import * as plugins from './plugins'
-import { PluginsExecutor } from './plugins-executor'
+import { PluginsExecutor, PluginsExecutorCtx } from './plugins-executor'
 import { prebundle } from './prebundle'
 import { BundleMap } from './prebundle/esbuild'
 import { isUrl } from './prebundle/support'
@@ -106,7 +106,22 @@ export async function createDevApp(server: net.Server, config: Config) {
 
     const graph = new HmrGraph({ root })
 
-    const executorCtx = { config, isBuild: false, graph, root }
+    const watcher = chokidar.watch(root, {
+        ignored: [
+            /(^|[/\\])(node_modules|\.git|\.DS_Store|web_modules)([/\\]|$)/,
+        ],
+        useFsEvents: shouldUseFsEvents(),
+        ignoreInitial: true,
+        //   ...chokidarWatchOptions
+    })
+
+    const executorCtx: PluginsExecutorCtx = {
+        config,
+        isBuild: false,
+        graph,
+        root,
+        watcher,
+    }
 
     const pluginsExecutor = new PluginsExecutor({
         ctx: executorCtx,
@@ -204,7 +219,7 @@ export async function createDevApp(server: net.Server, config: Config) {
                 `Found still not bundled module, running prebundle phase:`,
             )
             logger.log(`'${relativePath}' imported by '${importer}'`)
-            context.sendHmrMessage({
+            graph.sendHmrMessage({
                 type: 'overlay-info-open',
                 info: {
                     message: `Prebundling dependencies`,
@@ -223,21 +238,21 @@ export async function createDevApp(server: net.Server, config: Config) {
                 }).esbuildPlugins(),
                 root,
             }).catch((e) => {
-                context.sendHmrMessage({
+                graph.sendHmrMessage({
                     type: 'overlay-info-close',
                 })
-                context.sendHmrMessage({
+                graph.sendHmrMessage({
                     type: 'overlay-error',
                     err: prepareError(e),
                 })
                 throw e
             })
-            context.sendHmrMessage({
+            graph.sendHmrMessage({
                 type: 'overlay-info-close',
             })
             await updateHash(hashPath, depsHash)
 
-            context.sendHmrMessage({ type: 'reload' })
+            graph.sendHmrMessage({ type: 'reload' })
             const webBundle = bundleMap[relativePath]
             if (!webBundle) {
                 throw new Error(
@@ -256,21 +271,6 @@ export async function createDevApp(server: net.Server, config: Config) {
         }
     }
 
-    let useFsEvents = false
-    try {
-        eval('require')('fsevents')
-        useFsEvents = true
-    } catch (e) {}
-
-    const watcher = chokidar.watch(root, {
-        ignored: [
-            /(^|[/\\])(node_modules|\.git|\.DS_Store|web_modules)([/\\]|$)/,
-        ],
-        useFsEvents,
-        ignoreInitial: true,
-        //   ...chokidarWatchOptions
-    })
-
     server.once('close', async () => {
         logger.debug('closing')
         await Promise.all([watcher.close(), pluginsExecutor.close()])
@@ -288,7 +288,7 @@ export async function createDevApp(server: net.Server, config: Config) {
     app.on('error', (e: Error) => {
         console.error(chalk.red(e.message))
         console.error(chalk.red(e.stack))
-        context.sendHmrMessage({ type: 'overlay-error', err: prepareError(e) })
+        graph.sendHmrMessage({ type: 'overlay-error', err: prepareError(e) })
     })
 
     server.once('listening', () => {
@@ -333,23 +333,24 @@ export async function createDevApp(server: net.Server, config: Config) {
         })
 
         // TODO send should wait for clients to be available and resend error and reload messages
-        context.sendHmrMessage = (payload: HMRPayload) => {
+        graph.sendHmrMessage = (payload: HMRPayload) => {
             const stringified = JSON.stringify(payload, null, 4)
             logger.debug(`hmr: ${stringified}`)
             if (!wss.clients.size) {
                 logger.debug(`No clients listening for HMR message`)
             }
-            for (let [i, client] of [...wss.clients].entries()) {
+            let clientIndex = 1
+            for (let client of wss.clients.values()) {
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(stringified)
                 } else {
                     logger.log(
                         chalk.red(
-                            `Cannot send HMR message, hmr client ${i +
-                                1} is not open`,
+                            `Cannot send HMR message, hmr client ${clientIndex} is not open`,
                         ),
                     )
                 }
+                clientIndex += 1
             }
         }
     })
@@ -359,28 +360,12 @@ export async function createDevApp(server: net.Server, config: Config) {
         watcher.on('change', (filePath) => {
             graph.onFileChange({
                 filePath,
-                sendHmrMessage: context.sendHmrMessage,
+                sendHmrMessage: graph.sendHmrMessage,
             })
             if (showGraph) {
                 logger.log(graph.toString())
             }
         })
-    }
-
-    const context: ServerPluginContext = {
-        root,
-        app,
-        watcher,
-        config,
-        graph,
-        pluginExecutor: pluginsExecutor,
-        sendHmrMessage: () => {
-            // assigned in the hmr middleware
-            logger.warn(`hmr ws server has not started yet`)
-        },
-        // port is exposed on the context for hmr client connection
-        // in case the files are served under a different port
-        port: Number(config.server?.port || 3000),
     }
 
     // only js ends up here
@@ -537,4 +522,12 @@ export const rewriteScriptUrlsTransform = (tree: Node) => {
         }
         return node as any
     })
+}
+
+function shouldUseFsEvents() {
+    try {
+        eval('require')('fsevents')
+        return true
+    } catch (e) {}
+    return false
 }

@@ -10,6 +10,7 @@ import qs from 'qs'
 import { mergeSourceMap } from './utils/sourcemaps'
 import path from 'path'
 import { ansiChart } from './utils/profiling'
+import { FSWatcher } from 'chokidar'
 
 export interface Plugin {
     name: string
@@ -35,6 +36,7 @@ export interface PluginsExecutorCtx {
     root: string
     graph: HmrGraph
     isBuild: boolean
+    watcher?: FSWatcher
 }
 export interface PluginHooks {
     ctx: PluginsExecutorCtx
@@ -317,7 +319,7 @@ export class PluginsExecutor {
                 timeConsume,
             }
         })
-        if (data.map(x => x.timeConsume).reduce(sum, 0) === 0) {
+        if (data.map((x) => x.timeConsume).reduce(sum, 0) === 0) {
             return ''
         }
         str += ansiChart(data)

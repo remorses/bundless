@@ -90,7 +90,7 @@ export async function traverseWithEsbuild({
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
         ctx: {
-            isBuild: false,
+            isBuild: true,
             config: { root, plugins: userPlugins },
             graph: new HmrGraph({ root }),
             root,

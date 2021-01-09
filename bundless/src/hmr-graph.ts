@@ -30,6 +30,10 @@ export class HmrGraph {
         this.nodes = {}
         this.root = root
     }
+    sendHmrMessage(message: HMRPayload) {
+        throw new Error(`HMR Websocket server has not started yet`)
+    }
+
     ensureEntry(path: string, newNode?: Partial<HmrNode>): HmrNode {
         path = osAgnosticPath(path, this.root)
         if (this.nodes[path]) {

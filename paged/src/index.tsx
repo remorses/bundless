@@ -198,7 +198,6 @@ export async function createServer({
             return next()
         }
 
-        // TODO do incremental rebuilds
         // on dev rebuild on every refresh
         if (!isProduction) {
             logger.log('rebuilding')

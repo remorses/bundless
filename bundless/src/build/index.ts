@@ -399,6 +399,7 @@ export async function build({
 
     return {
         bundleMap,
+        // TODO rebuild should also trigger index.html rewrite, ask esbuild to add an event emitter that emits rebuild methods
         rebuild,
         traversalGraph,
     }
