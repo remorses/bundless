@@ -1,5 +1,5 @@
 import { NodeResolvePlugin } from '@esbuild-plugins/all'
-import { dataToEsm } from '@rollup/pluginutils'
+import { transform } from 'esbuild'
 import escapeStringRegexp from 'escape-string-regexp'
 import hash_sum from 'hash-sum'
 import path from 'path'
@@ -60,15 +60,11 @@ export function CssPlugin({} = {}) {
                 },
             )
 
-            const codegenCss = isBuild
-                ? codegenCssForProduction
-                : codegenCssForDev
-
             onTransform({ filter: /\.css$/ }, async (args) => {
                 const css = args.contents
                 // const id = hash_sum(args.path)
 
-                const contents = codegenCss(css)
+                const contents = await codegenCssForDev(css, args.path)
                 return { contents }
             })
         },
@@ -94,10 +90,11 @@ function ensureCss(href) {
 }
 `
 
-export function codegenCssForDev(
+export async function codegenCssForDev(
     css: string,
+    sourcefile: string,
     modules?: Record<string, string>,
-): string {
+) {
     let code =
         hmrPreamble +
         `
@@ -116,7 +113,12 @@ if (typeof document !== 'undefined') {
 }
 `
     if (modules) {
-        code += dataToEsm(modules, { namedExports: true })
+        const transformed = await transform(JSON.stringify(modules), {
+            format: 'esm',
+            loader: 'json',
+            sourcefile,
+        })
+        code += transformed.code
     } else {
         code += `export default css`
     }

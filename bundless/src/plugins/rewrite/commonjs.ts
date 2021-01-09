@@ -1,15 +1,12 @@
-import { isPlainObject } from 'lodash'
-import path from 'path'
-import fs from 'fs-extra'
-import { COMMONJS_ANALYSIS_PATH, WEB_MODULES_PATH } from '../../constants'
-import slash from 'slash'
 import { ImportDeclaration } from '@babel/types'
-import { parse } from '../../utils'
-import { makeLegalIdentifier } from '@rollup/pluginutils'
-import { osAgnosticPath } from '../../utils'
+import fs from 'fs-extra'
+import { isPlainObject } from 'lodash'
 import memoize from 'micro-memoize'
-import { onResolveLock } from '../../serve'
+import path from 'path'
+import { COMMONJS_ANALYSIS_PATH, WEB_MODULES_PATH } from '../../constants'
 import { logger } from '../../logger'
+import { onResolveLock } from '../../serve'
+import { makeLegalIdentifier, osAgnosticPath, parse } from '../../utils'
 
 export interface OptimizeAnalysisResult {
     isCommonjs: { [name: string]: true }

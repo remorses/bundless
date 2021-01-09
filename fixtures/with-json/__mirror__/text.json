@@ -1,4 +1,8 @@
-export const text = "Hello World!";
-export default {
-	text: text
+var text = "Hello World!";
+var text_default = {
+  text
+};
+export {
+  text_default as default,
+  text
 };

@@ -9,7 +9,7 @@
   dependencies:
     "@babel/highlight" "^7.10.4"
 
-"@babel/core@^7.0.0", "@babel/core@^7.9.6":
+"@babel/core@^7.0.0", "@babel/core@^7.12.10", "@babel/core@^7.9.6":
   version "7.12.10"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.12.10.tgz#b79a2e1b9f70ed3d84bbfb6d8c4ef825f606bccd"
   integrity sha512-eTAlQKq65zHfkHZV0sIVODCPGVgoo1HdBlbSLi9CqOzuZanMv2ihzY+4paiKr1mH+XmYESMAmJ/dpZ68eN6d8w==
@@ -576,7 +576,7 @@
     debug "^4.3.1"
     posthtml "^0.15.1"
 
-"@esbuild-plugins/node-globals-polyfill@0.0.5", "@esbuild-plugins/node-globals-polyfill@^0.0.5":
+"@esbuild-plugins/node-globals-polyfill@0.0.5":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-globals-polyfill/-/node-globals-polyfill-0.0.5.tgz#3a9ab355befd394af77c5a4966d4706b9bedf415"
   integrity sha512-Xz66k/M8ZtkHghnuuGYrJt4E/68O0d/acYX5rU0PzDB1znLwZkm9m5dho27il63C2MIit1uNCpdBn2VfTw9/uQ==

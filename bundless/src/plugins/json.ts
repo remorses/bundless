@@ -1,5 +1,5 @@
 import { NodeResolvePlugin } from '@esbuild-plugins/all'
-import { dataToEsm } from '@rollup/pluginutils'
+import { transform } from 'esbuild'
 import { PluginHooks } from '../plugins-executor'
 import { readFile } from '../utils'
 
@@ -17,11 +17,12 @@ export function JSONPlugin({} = {}) {
             })
             onLoad({ filter: /\.json$/ }, async (args) => {
                 const json = await readFile(args.path)
-                // const id = hash_sum(args.path)
-                const contents = dataToEsm(JSON.parse(json), {
-                    namedExports: true,
-                    preferConst: true,
+                const transformed = await transform(json, {
+                    format: 'esm',
+                    loader: 'json',
+                    sourcefile: args.path,
                 })
+                const contents = transformed.code
                 return { contents }
             })
         },
