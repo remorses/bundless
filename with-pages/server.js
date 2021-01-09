@@ -1,4 +1,4 @@
-import { createServer } from '@bundless/plugin-react-paged'
+const { createServer } = require('@bundless/plugin-react-paged')
 
 console.log({ __dirname })
 

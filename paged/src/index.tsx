@@ -1,5 +1,6 @@
 import {
     build,
+    logger,
     Logger,
     Plugin as PluginType,
     PluginsExecutor,
@@ -151,7 +152,7 @@ export async function createServer({
     const ssrEntry = path.resolve(root, ROUTES_ENTRY)
 
     // TODO incremental ssr builds
-    const { bundleMap } = await build({
+    const { bundleMap, rebuild } = await build({
         ...baseConfig,
         logger: ssrLogger,
         plugins: [Plugin()],
@@ -160,7 +161,10 @@ export async function createServer({
         build: {
             outDir: ssrOutDir,
         },
+        incremental: true,
     })
+
+    console.log({rebuild})
 
     let outputPath = bundleMap[osAgnosticPath(ssrEntry, root)]
     if (!outputPath) {
@@ -197,15 +201,8 @@ export async function createServer({
         // TODO do incremental rebuilds
         // on dev rebuild on every refresh
         if (!isProduction) {
-            await build({
-                ...baseConfig,
-                logger: ssrLogger,
-                entries: [path.resolve(root, ROUTES_ENTRY)],
-                platform: 'node',
-                build: {
-                    outDir: ssrOutDir,
-                },
-            })
+            logger.log('rebuilding')
+            await rebuild!()
         }
 
         const { App } = tryRequire(outputPath)
@@ -257,11 +254,16 @@ export async function createServer({
 
     server.on('request', app.callback())
 
+    server.on('close', () => rebuild && rebuild.dispose())
+
     return server
 }
 
 function tryRequire(p: string) {
     try {
+        const cachePath = require.resolve(p)
+        delete require.cache[cachePath]
+
         return require(p)
     } catch (e) {
         throw new Error(`Cannot require '${p}': ${e}`)

@@ -11,5 +11,8 @@
         "koa-static": "^5.0.0",
         "react": "experimental",
         "react-dom": "experimental"
+    },
+    "devDependencies": {
+        "esbuild-register": "^1.2.1"
     }
 }

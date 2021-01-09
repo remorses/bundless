@@ -11,6 +11,7 @@ export default function Page() {
         <div>
             <p>About me:</p>
             <p>I Am Me</p>
+            <p>who?</p>
             <p>...</p>
             <p>cool</p>
             <br />

@@ -24,6 +24,7 @@ import { printStats } from '../prebundle/stats'
 
 interface OwnArgs {
     logger?: Logger
+    incremental?: boolean
 }
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
@@ -31,8 +32,13 @@ interface OwnArgs {
 // TODO esbuild creates too many chunks
 export async function build({
     logger = new Logger(),
+    incremental,
     ...config
-}: Config & OwnArgs): Promise<{ bundleMap; traversalGraph }> {
+}: Config & OwnArgs): Promise<{
+    bundleMap
+    traversalGraph
+    rebuild?: esbuild.BuildInvalidate
+}> {
     // if (!process.env.NODE_ENV) {
     //     logger.log(`setting env.NODE_ENV = 'production'`)
     //     process.env.NODE_ENV = 'production'
@@ -123,8 +129,9 @@ export async function build({
 
     logger.log(`building ${JSON.stringify(entryPoints, [], 4)}\n`)
 
-    const buildResult = await esbuild.build({
+    const { rebuild } = await esbuild.build({
         ...commonEsbuildOptions,
+        incremental,
         metafile,
         entryPoints,
         bundle: true,
@@ -176,7 +183,11 @@ export async function build({
 
     // no outputs?
     if (!Object.keys(bundleMap).length) {
-        return { bundleMap, traversalGraph }
+        return {
+            bundleMap,
+            traversalGraph,
+            rebuild: rebuild,
+        }
     }
 
     const cssToPreload: Record<string, string[]> = fromEntries(
@@ -388,6 +399,7 @@ export async function build({
 
     return {
         bundleMap,
+        rebuild,
         traversalGraph,
     }
 }
