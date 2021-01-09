@@ -1,36 +1,35 @@
-import { build, Plugin as PluginType } from '@bundless/cli'
-import { fileToImportPath, osAgnosticPath } from '@bundless/cli/dist/utils'
+import {
+    build,
+    Logger,
+    Plugin as PluginType,
+    PluginsExecutor,
+} from '@bundless/cli'
+import { defaultConfig } from '@bundless/cli/dist/config'
+import { ReactRefreshPlugin } from '@bundless/plugin-react-refresh'
+import { createDevApp } from '@bundless/cli/dist/serve'
+import { importPathToFile, osAgnosticPath } from '@bundless/cli/dist/utils'
 import escapeStringRegexp from 'escape-string-regexp'
 import glob from 'fast-glob'
+import { Server } from 'http'
+import Koa from 'koa'
+import mount from 'koa-mount'
+import koaStatic from 'koa-static'
 import memoize from 'micro-memoize'
+import path from 'path'
 import React from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { MahoContext } from './client'
-import path = require('path')
 
 const CLIENT_ENTRY = '_bundless_paged_entry_.jsx'
 const ROUTES_ENTRY = '_bundless_paged_routes_.jsx'
+const pageGlobs = ['**/*.{ts,tsx,js,jsx}']
 
-export function Plugin({
-    clientScriptSrc = '/' + CLIENT_ENTRY,
-} = {}): PluginType {
-    // in prod the html template uses the output bundle as script
-    const htmlTemplate = `
-    <!DOCTYPE html>
-    <html>
-        <body>
-            <script type="module" src="${clientScriptSrc}"></script>
-        </body>
-    </html>
-    `
-
+export function Plugin({} = {}): PluginType {
     return {
         name: 'paged-plugin',
-        setup({ onLoad, onResolve, onTransform, ctx: { root, config } }) {
+        setup({ onLoad, onResolve, ctx: { root } }) {
             const pagesDir = path.resolve(root, 'pages')
-
-            // NodeResolvePlugin({ namespace, extensions: ['.js'] }).setup({ onLoad() {}, onResolve })
 
             onResolve(
                 { filter: new RegExp(escapeStringRegexp(CLIENT_ENTRY)) },
@@ -46,12 +45,11 @@ export function Plugin({
                 (args) => {
                     return {
                         contents: clientEntryContent,
+                        resolveDir: root,
                         loader: 'jsx',
                     }
                 },
             )
-
-            const pageGlobs = ['**/*.{ts,tsx,js,jsx}']
 
             onResolve(
                 { filter: new RegExp(escapeStringRegexp(ROUTES_ENTRY)) },
@@ -62,70 +60,165 @@ export function Plugin({
                 },
             )
 
-            // resolve virtual html files
-            onResolve({ filter: /\.html/ }, async (args) => {
-                const routesPaths = await (await getRoutes()).map((x) =>
-                    path.posix.join(x.path, 'index.html'),
-                )
-                // TODO use react router utils instead
-                // import {
-                //     matchRoutes,
-                //     createRoutesFromArray,
-                //     generatePath,
-                // } from 'react-router-dom'
-                const indexPath = args.path.endsWith('.html')
-                    ? args.path
-                    : path.posix.join(args.path, 'index.html')
-                const relativeIndexPath = fileToImportPath(root, indexPath)
-                const route = routesPaths.find((x) => x === relativeIndexPath)
-                // console.log({relativeIndexPath, route, routesPaths })
-                if (route) {
+            // TODO memoise and invalidate on pages file changes
+            onLoad(
+                { filter: new RegExp(escapeStringRegexp(ROUTES_ENTRY)) },
+                async (args) => {
+                    const routes = await getRoutes({ pageGlobs, pagesDir })
                     return {
-                        path: indexPath,
+                        contents: makeRoutesContent({ root, routes }),
+                        loader: 'jsx',
                     }
-                }
+                },
+            )
+        },
+    }
+}
+
+const getRoutes = memoize(
+    async function getRoutes({ pageGlobs, pagesDir }) {
+        const files = new Set(
+            await glob(pageGlobs, {
+                cwd: pagesDir,
+            }),
+        )
+
+        const routes = [...files].map((file) => {
+            const filename = `/${file
+                .replace(/\.[a-z]+$/, '')
+                .replace(/^index$/, '')
+                .replace(/\/index$/, '')
+                .replace(/\[\.\.\.([^\]]+)\]/g, '*')
+                .replace(/\[([^\]]+)\]/g, ':$1')}`
+            return {
+                path: filename,
+                absolute: path.join(pagesDir, file),
+                relative: file,
+                name: file.replace(/[^a-zA-Z0-9]/g, '_'),
+            }
+        })
+        return routes
+    },
+    { isPromise: true },
+)
+
+export async function createServer({
+    isProduction = false,
+    root,
+    builtAssets = 'client_out',
+    ssrOutDir = 'ssr_out',
+}) {
+    const app = new Koa()
+    const pagesDir = path.resolve(root, 'pages')
+    let baseConfig = {
+        ...defaultConfig,
+        root,
+        plugins: [Plugin(), ...(!isProduction ? [ReactRefreshPlugin()] : [])],
+    }
+    const server = new Server()
+    let clientScriptSrc
+    let pluginsExecutor: PluginsExecutor
+
+    if (isProduction) {
+        const { bundleMap } = await build({
+            ...baseConfig,
+            build: {
+                outDir: builtAssets,
+            },
+            entries: [CLIENT_ENTRY],
+        })
+        clientScriptSrc = `/${path.relative(
+            builtAssets,
+            bundleMap[CLIENT_ENTRY],
+        )}`
+
+        app.use(koaStatic(builtAssets, { index: false }))
+    } else {
+        const {
+            app: devApp,
+            pluginsExecutor: devPluginsExecutor,
+        } = await createDevApp(server, {
+            ...baseConfig,
+            platform: 'browser',
+            entries: [CLIENT_ENTRY],
+        })
+        pluginsExecutor = devPluginsExecutor
+        app.use(mount('/', devApp))
+        clientScriptSrc = `/${CLIENT_ENTRY}?namespace=file`
+    }
+
+    const ssrLogger = new Logger({ silent: true })
+    const ssrEntry = path.resolve(root, ROUTES_ENTRY)
+
+    // TODO incremental ssr builds
+    const { bundleMap } = await build({
+        ...baseConfig,
+        logger: ssrLogger,
+        plugins: [Plugin()],
+        entries: [ssrEntry],
+        platform: 'node',
+        build: {
+            outDir: ssrOutDir,
+        },
+    })
+
+    let outputPath = bundleMap[osAgnosticPath(ssrEntry, root)]
+    if (!outputPath) {
+        throw new Error(
+            `Could not find ssr output for '${ssrEntry}', ${JSON.stringify(
+                Object.keys(bundleMap),
+            )}`,
+        )
+    }
+    outputPath = path.resolve(root, outputPath)
+
+    app.use(async (ctx, next) => {
+        if (ctx.method !== 'GET' && !ctx.is('html')) return next()
+
+        const routesPaths = await (
+            await getRoutes({ pageGlobs, pagesDir })
+        ).map((x) => path.posix.join(x.path, 'index.html'))
+        // TODO use react router utils instead
+        // import {
+        //     matchRoutes,
+        //     createRoutesFromArray,
+        //     generatePath,
+        // } from 'react-router-dom'
+        const indexPath = ctx.path.endsWith('.html')
+            ? ctx.path
+            : path.posix.join(ctx.path, 'index.html')
+
+        const routeFound = routesPaths.find((x) => x === indexPath)
+
+        if (!routeFound) {
+            return next()
+        }
+
+        // TODO do incremental rebuilds
+        // on dev rebuild on every refresh
+        if (!isProduction) {
+            await build({
+                ...baseConfig,
+                logger: ssrLogger,
+                entries: [path.resolve(root, ROUTES_ENTRY)],
+                platform: 'node',
+                build: {
+                    outDir: ssrOutDir,
+                },
             })
+        }
 
-            // load html paths with html template
-            onLoad({ filter: /\.html/ }, async (args) => {
-                return { contents: htmlTemplate, loader: 'html' as any }
-            })
-
-            onTransform({ filter: /\.html/ }, async (args) => {
-                // if (config.platform === 'node') {
-                //     return
-                // }
-                // build the entry for node using build(), run getStaticProps, run renderToString(<App location=req.location} />), inject html
-                const ssrOutDir = await path.resolve(root, 'node_dist')
-                const entry = path.resolve(root, ROUTES_ENTRY)
-                const { bundleMap } = await build({
-                    ...config,
-                    platform: 'node',
-                    entries: [entry],
-                    plugins: [Plugin()],
-                    build: {
-                        outDir: ssrOutDir,
-                    },
-                })
-
-                let outputPath = bundleMap[osAgnosticPath(entry, root)]
-                if (!outputPath) {
-                    throw new Error(
-                        `Could not find ssr output for '${entry}', ${JSON.stringify(
-                            Object.keys(bundleMap),
-                        )}`,
-                    )
-                }
-                outputPath = path.resolve(root, outputPath)
-
-                const { App } = tryRequire(outputPath)
-                const url = fileToImportPath(root, args.path)
-                const context = { url }
-                const prerenderedHtml = renderToString(
-                    <App Router={StaticRouter} context={context} />,
-                )
-                const html = renderToStaticMarkup(
-                    <MahoContext.Provider value={context}>
+        const { App } = tryRequire(outputPath)
+        const context = { url: ctx.req.url }
+        const prerenderedHtml = renderToString(
+            <App Router={StaticRouter} context={context} />,
+        )
+        const html = renderToStaticMarkup(
+            <MahoContext.Provider value={context}>
+                <html>
+                    <head></head>
+                    <body>
+                        <script type='module' src={clientScriptSrc}></script>
                         <script
                             dangerouslySetInnerHTML={{
                                 __html: `window.INITIAL_STATE=${JSON.stringify({
@@ -140,59 +233,31 @@ export function Plugin({
                                 __html: prerenderedHtml,
                             }}
                         ></div>
-                    </MahoContext.Provider>,
-                )
+                    </body>
+                </html>
+            </MahoContext.Provider>,
+        )
 
-                const contents = args.contents.replace(
-                    '<body>',
-                    `<body>\n${html}`,
-                )
-
-                return {
-                    contents,
-                }
+        let fullHtml = `<!DOCTYPE html>\n${html}`
+        // use plugins executor to process html and inject react refresh stuff ....
+        if (pluginsExecutor) {
+            const transformResult = await pluginsExecutor.transform({
+                contents: fullHtml,
+                path: importPathToFile(root, indexPath),
             })
+            if (transformResult) {
+                fullHtml = transformResult.contents || ''
+            }
+        }
+        ctx.body = fullHtml
+        ctx.status = 200
+        ctx.type = 'html'
+        return next()
+    })
 
-            const getRoutes = memoize(
-                async function getRoutes() {
-                    const files = new Set(
-                        await glob(pageGlobs, {
-                            cwd: pagesDir,
-                        }),
-                    )
+    server.on('request', app.callback())
 
-                    const routes = [...files].map((file) => {
-                        const filename = `/${file
-                            .replace(/\.[a-z]+$/, '')
-                            .replace(/^index$/, '')
-                            .replace(/\/index$/, '')
-                            .replace(/\[\.\.\.([^\]]+)\]/g, '*')
-                            .replace(/\[([^\]]+)\]/g, ':$1')}`
-                        return {
-                            path: filename,
-                            absolute: path.join(pagesDir, file),
-                            relative: file,
-                            name: file.replace(/[^a-zA-Z0-9]/g, '_'),
-                        }
-                    })
-                    return routes
-                },
-                { isPromise: true },
-            )
-
-            // TODO memoise and invalidate on pages file changes
-            onLoad(
-                { filter: new RegExp(escapeStringRegexp(ROUTES_ENTRY)) },
-                async (args) => {
-                    const routes = await getRoutes()
-                    return {
-                        contents: makeRoutesContent({ root, routes }),
-                        loader: 'jsx',
-                    }
-                },
-            )
-        },
-    }
+    return server
 }
 
 function tryRequire(p: string) {

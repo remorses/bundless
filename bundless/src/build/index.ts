@@ -7,7 +7,7 @@ import posthtml, { Node } from 'posthtml'
 import { BuildConfig, Config, getEntries } from '../config'
 import { MAIN_FIELDS } from '../constants'
 import { HmrGraph } from '../hmr-graph'
-import { logger } from '../logger'
+import { Logger, logger } from '../logger'
 import { PluginsExecutor } from '../plugins-executor'
 import * as plugins from '../plugins'
 import {
@@ -22,16 +22,22 @@ import { metaToTraversalResult } from '../prebundle/traverse'
 import { cleanUrl, partition, osAgnosticPath, computeDuration } from '../utils'
 import { printStats } from '../prebundle/stats'
 
+interface OwnArgs {
+    logger?: Logger
+}
+
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
 // TODO esbuild creates too many chunks
-export async function build(
-    config: Config,
-): Promise<{ bundleMap; traversalGraph }> {
+export async function build({
+    logger = new Logger(),
+    ...config
+}: Config & OwnArgs): Promise<{ bundleMap; traversalGraph }> {
     // if (!process.env.NODE_ENV) {
     //     logger.log(`setting env.NODE_ENV = 'production'`)
     //     process.env.NODE_ENV = 'production'
     // }
+
     const {
         minify = false,
         outDir = 'out',
@@ -140,7 +146,7 @@ export async function build(
         minify: Boolean(minify),
     })
 
-    if (config.profile) {
+    if (config.profile && !logger.silent) {
         console.info(pluginsExecutor.printProfilingResult())
     }
 
@@ -369,12 +375,14 @@ export async function build(
 
     logger.log(`Saved files to ./${osAgnosticPath(outDir, process.cwd())}`)
 
-    console.info(
-        printStats({
-            dependencyStats: metafileToStats({ meta, destLoc: outDir }),
-            destLoc: path.basename(outDir),
-        }),
-    )
+    if (!logger.silent) {
+        console.info(
+            printStats({
+                dependencyStats: metafileToStats({ meta, destLoc: outDir }),
+                destLoc: path.basename(outDir),
+            }),
+        )
+    }
 
     logger.log(`Built in ${computeDuration(startTime)}`)
 

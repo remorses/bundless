@@ -12,13 +12,13 @@ export async function getEntries(
 ) {
     const root = pluginsExecutor.ctx.root
     if (config.entries) {
-        for (let entry of config.entries) {
-            if (config.platform === 'browser' && !entry.endsWith('.html')) {
-                throw new Error(
-                    `When targeting browser config.entries can only contain html files: ${entry}`,
-                )
-            }
-        }
+        // for (let entry of config.entries) {
+        //     if (config.platform === 'browser' && !entry.endsWith('.html')) {
+        //         throw new Error(
+        //             `When targeting browser config.entries can only contain html files: ${entry}`,
+        //         )
+        //     }
+        // }
         return (
             await Promise.all(
                 config.entries.map((x) =>

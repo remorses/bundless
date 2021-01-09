@@ -17,6 +17,7 @@
             "bundless",
             "fixtures/*",
             "tests",
+            "with-pages",
             "plugins/*",
             "hmr-test-app",
             "paged",

@@ -191,7 +191,7 @@ export function parse(
 }
 
 export const jsTypeRegex = new RegExp(
-    '(' + [...JS_EXTENSIONS].map(escapeStringRegexp).join('|') + ')$',
+    '(' + [...JS_EXTENSIONS].map(escapeStringRegexp).join('|') + ')(\\?.*)?$',
 )
 
 export function appendQuery(url: string, query: string) {

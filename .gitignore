@@ -10,3 +10,7 @@ esm
 out
 temp
 fixtures/with-pages/node_dist
+*_out
+with-pages/web_modules
+with-pages/out
+*_dist

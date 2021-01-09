@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import net from 'net'
 import chokidar, { FSWatcher } from 'chokidar'
 import { createHash } from 'crypto'
 import deepmerge from 'deepmerge'
@@ -65,8 +66,12 @@ export type ServerMiddleware = (ctx: ServerPluginContext) => void
 
 export async function serve(config: Config) {
     config = deepmerge(defaultConfig, config)
-    const app = await createDevApp(config)
-    const server = createServer(app.callback())
+
+    let server = new Server()
+
+    const { app } = await createDevApp(server, config)
+    server.on('request', app.callback())
+
     const port = await getPort(config.server?.port || DEFAULT_PORT)
 
     if (config.server?.port && Number(port) !== Number(config.server?.port)) {
@@ -79,16 +84,9 @@ export async function serve(config: Config) {
     logger.log(
         `> listening on ${chalk.cyan.underline(`http://localhost:${port}`)}`,
     )
-
-    app.context.server = server
-    app.emit('listening')
-
-    app.context.port = port
-    config.server = { ...config.server, port }
     async function close() {
-        app.emit('close')
-        await once(app, 'closed')
         await server.close()
+        // await once(app, 'closed')
     }
     return {
         ...server,
@@ -98,7 +96,7 @@ export async function serve(config: Config) {
 
 export const onResolveLock = new Lock()
 
-export async function createDevApp(config: Config) {
+export async function createDevApp(server: net.Server, config: Config) {
     if (!config.root) {
         config.root = process.cwd()
     }
@@ -117,7 +115,9 @@ export async function createDevApp(config: Config) {
             // TODO resolve data: imports, rollup emits imports with data: ...
             plugins.HtmlResolverPlugin(),
             plugins.UrlResolverPlugin(), // resolves urls with queries
-            plugins.HmrClientPlugin({ getPort: () => app.context.port }),
+            plugins.HmrClientPlugin({
+                getPort: () => server.address()?.['port'],
+            }),
             // NodeResolvePlugin must be called first, to not skip prebundling
             plugins.NodeResolvePlugin({
                 name: 'node-resolve',
@@ -271,7 +271,7 @@ export async function createDevApp(config: Config) {
         //   ...chokidarWatchOptions
     })
 
-    app.once('close', async () => {
+    server.once('close', async () => {
         logger.debug('closing')
         await Promise.all([watcher.close(), pluginsExecutor.close()])
         app.emit('closed')
@@ -291,19 +291,20 @@ export async function createDevApp(config: Config) {
         context.sendHmrMessage({ type: 'overlay-error', err: prepareError(e) })
     })
 
+    server.once('listening', () => {
+        config.server = { ...config.server, port: server.address()?.['port'] }
+    })
+
     // start HMR ws server
-    app.once('listening', async () => {
+    server.once('listening', async () => {
         const wss = new WebSocket.Server({ noServer: true })
-        app.once('close', () => {
+        server.once('close', () => {
             wss.close(() => logger.debug('closing wss'))
             wss.clients.forEach((client) => {
                 client.close()
             })
         })
-        if (!app.context.server) {
-            throw new Error(`Cannot find server in context`)
-        }
-        app.context.server.on('upgrade', (req, socket, head) => {
+        server.on('upgrade', (req, socket, head) => {
             if (req.headers['sec-websocket-protocol'] === HMR_SERVER_NAME) {
                 wss.handleUpgrade(req, socket, head, (ws) => {
                     wss.emit('connection', ws, req)
@@ -375,7 +376,7 @@ export async function createDevApp(config: Config) {
         pluginExecutor: pluginsExecutor,
         sendHmrMessage: () => {
             // assigned in the hmr middleware
-            throw new Error(`hmr ws server has not started yet`)
+            logger.warn(`hmr ws server has not started yet`)
         },
         // port is exposed on the context for hmr client connection
         // in case the files are served under a different port
@@ -471,7 +472,7 @@ export async function createDevApp(config: Config) {
         )
     }
 
-    return app
+    return { app, pluginsExecutor }
 }
 
 function etagCache() {
@@ -530,7 +531,7 @@ export const rewriteScriptUrlsTransform = (tree: Node) => {
             }
             const { query } = parseWithQuery(importPath)
             if (query?.namespace != null) {
-                return importPath
+                return node
             }
             node.attrs['src'] = appendQuery(importPath, `namespace=file`)
         }

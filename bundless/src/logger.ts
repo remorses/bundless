@@ -6,11 +6,16 @@ const defaultPrefix = '[bundless] '
 const DEBUG = process.env.DEBUG_BUNDLESS
 export class Logger {
     prefix: string = ''
-    constructor({ prefix = defaultPrefix } = {}) {
+    silent: boolean
+    constructor({ prefix = defaultPrefix, silent = false } = {}) {
         this.prefix = prefix
+        this.silent = silent
     }
 
     private print(x) {
+        if (this.silent) {
+            return
+        }
         if (this.spinner) {
             this.spinner.info(x)
         } else {
@@ -27,6 +32,9 @@ export class Logger {
     private spinner?: Ora
 
     spinStart(text: string) {
+        if (this.silent) {
+            return
+        }
         this.spinner = ora(text).start()
     }
     spinSucceed(text: string) {

@@ -16,146 +16,146 @@
       "bytes": 0,
       "imports": []
     },
-    "../../node_modules/object-assign/index.js": {
+    "node_modules/object-assign/index.js": {
       "bytes": 2108,
       "imports": []
     },
-    "../../node_modules/react/cjs/react.development.js": {
+    "node_modules/react/cjs/react.development.js": {
       "bytes": 74538,
       "imports": [
         {
-          "path": "../../node_modules/object-assign/index.js"
+          "path": "node_modules/object-assign/index.js"
         }
       ]
     },
-    "../../node_modules/react/index.js": {
+    "node_modules/react/index.js": {
       "bytes": 190,
       "imports": [
         {
-          "path": "../../node_modules/react/cjs/react.development.js"
+          "path": "node_modules/react/cjs/react.development.js"
         }
       ]
     },
-    "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js": {
+    "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js": {
       "bytes": 18684,
       "imports": []
     },
-    "../../node_modules/scheduler/unstable_no_dom.js": {
+    "node_modules/scheduler/unstable_no_dom.js": {
       "bytes": 230,
       "imports": [
         {
-          "path": "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js"
+          "path": "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js"
         }
       ]
     },
-    "../../node_modules/scheduler/cjs/scheduler.development.js": {
+    "node_modules/scheduler/cjs/scheduler.development.js": {
       "bytes": 21831,
       "imports": []
     },
-    "../../node_modules/scheduler/index.js": {
+    "node_modules/scheduler/index.js": {
       "bytes": 331,
       "imports": [
         {
-          "path": "../../node_modules/scheduler/unstable_no_dom.js"
+          "path": "node_modules/scheduler/unstable_no_dom.js"
         },
         {
-          "path": "../../node_modules/scheduler/cjs/scheduler.development.js"
+          "path": "node_modules/scheduler/cjs/scheduler.development.js"
         }
       ]
     },
-    "../../node_modules/scheduler/cjs/scheduler-tracing.development.js": {
+    "node_modules/scheduler/cjs/scheduler-tracing.development.js": {
       "bytes": 9023,
       "imports": []
     },
-    "../../node_modules/scheduler/tracing.js": {
+    "node_modules/scheduler/tracing.js": {
       "bytes": 214,
       "imports": [
         {
-          "path": "../../node_modules/scheduler/cjs/scheduler-tracing.development.js"
+          "path": "node_modules/scheduler/cjs/scheduler-tracing.development.js"
         }
       ]
     },
-    "../../node_modules/react-dom/cjs/react-dom.development.js": {
+    "node_modules/react-dom/cjs/react-dom.development.js": {
       "bytes": 957314,
       "imports": [
         {
-          "path": "../../node_modules/react/index.js"
+          "path": "node_modules/react/index.js"
         },
         {
-          "path": "../../node_modules/object-assign/index.js"
+          "path": "node_modules/object-assign/index.js"
         },
         {
-          "path": "../../node_modules/scheduler/index.js"
+          "path": "node_modules/scheduler/index.js"
         },
         {
-          "path": "../../node_modules/scheduler/tracing.js"
+          "path": "node_modules/scheduler/tracing.js"
         }
       ]
     },
-    "../../node_modules/react-dom/index.js": {
+    "node_modules/react-dom/index.js": {
       "bytes": 1363,
       "imports": [
         {
-          "path": "../../node_modules/react-dom/cjs/react-dom.development.js"
+          "path": "node_modules/react-dom/cjs/react-dom.development.js"
         }
       ]
     }
   },
   "outputs": {
-    "web_modules/react/index.js": {
+    "fixtures/with-commonjs-transform/web_modules/react/index.js": {
       "imports": [
         {
-          "path": "web_modules/react/chunk.UGVOUZLI.js"
+          "path": "fixtures/with-commonjs-transform/web_modules/react/chunk.DMW4UNHQ.js"
         }
       ],
       "exports": [
         "default"
       ],
       "inputs": {
-        "../../node_modules/react/index.js": {
+        "node_modules/react/index.js": {
           "bytesInOutput": 0
         }
       },
       "bytes": 263
     },
-    "web_modules/react-dom/index.js": {
+    "fixtures/with-commonjs-transform/web_modules/react-dom/index.js": {
       "imports": [
         {
-          "path": "web_modules/react-dom/chunk.UGVOUZLI.js"
+          "path": "fixtures/with-commonjs-transform/web_modules/react-dom/chunk.DMW4UNHQ.js"
         }
       ],
       "exports": [
         "default"
       ],
       "inputs": {
-        "../../node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js": {
+        "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js": {
           "bytesInOutput": 19207
         },
-        "../../node_modules/scheduler/unstable_no_dom.js": {
+        "node_modules/scheduler/unstable_no_dom.js": {
           "bytesInOutput": 211
         },
-        "../../node_modules/scheduler/cjs/scheduler.development.js": {
+        "node_modules/scheduler/cjs/scheduler.development.js": {
           "bytesInOutput": 21000
         },
-        "../../node_modules/scheduler/index.js": {
+        "node_modules/scheduler/index.js": {
           "bytesInOutput": 323
         },
-        "../../node_modules/scheduler/cjs/scheduler-tracing.development.js": {
+        "node_modules/scheduler/cjs/scheduler-tracing.development.js": {
           "bytesInOutput": 9260
         },
-        "../../node_modules/scheduler/tracing.js": {
+        "node_modules/scheduler/tracing.js": {
           "bytesInOutput": 195
         },
-        "../../node_modules/react-dom/cjs/react-dom.development.js": {
+        "node_modules/react-dom/cjs/react-dom.development.js": {
           "bytesInOutput": 791801
         },
-        "../../node_modules/react-dom/index.js": {
+        "node_modules/react-dom/index.js": {
           "bytesInOutput": 205
         }
       },
-      "bytes": 2609404
+      "bytes": 2609356
     },
-    "web_modules/chunk.UGVOUZLI.js": {
+    "fixtures/with-commonjs-transform/web_modules/chunk.DMW4UNHQ.js": {
       "imports": [],
       "exports": [
         "__commonJS",
@@ -163,17 +163,17 @@
         "require_react"
       ],
       "inputs": {
-        "../../node_modules/object-assign/index.js": {
+        "node_modules/object-assign/index.js": {
           "bytesInOutput": 2017
         },
-        "../../node_modules/react/cjs/react.development.js": {
+        "node_modules/react/cjs/react.development.js": {
           "bytesInOutput": 62141
         },
-        "../../node_modules/react/index.js": {
+        "node_modules/react/index.js": {
           "bytesInOutput": 181
         }
       },
-      "bytes": 201862
+      "bytes": 201844
     }
   }
 }
