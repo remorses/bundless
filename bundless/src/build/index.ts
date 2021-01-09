@@ -64,7 +64,6 @@ export async function build({
     if (fs.existsSync(publicDir)) {
         await fs.copy(publicDir, outDir)
     }
-    const emptyGraph = new HmrGraph({ root })
 
     const mainFields = isBrowser ? MAIN_FIELDS : ['main', 'module']
     const allPlugins = [
@@ -110,7 +109,7 @@ export async function build({
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
         isProfiling: config.profile,
-        ctx: { config, isBuild: true, graph: emptyGraph, root },
+        ctx: { config, isBuild: true, root },
     })
 
     const initialEntries = await getEntries(pluginsExecutor, config)

@@ -14,7 +14,7 @@ import path from 'path'
 import { Node } from 'posthtml'
 import slash from 'slash'
 import { promisify } from 'util'
-import WebSocket from 'ws'
+
 import { HMRPayload } from './client/types'
 import { Config, defaultConfig, getEntries } from './config'
 import {
@@ -104,7 +104,7 @@ export async function createDevApp(server: net.Server, config: Config) {
 
     const app = new Koa<DefaultState, DefaultContext>()
 
-    const graph = new HmrGraph({ root })
+    const graph = new HmrGraph({ root, server })
 
     const watcher = chokidar.watch(root, {
         ignored: [
@@ -295,72 +295,11 @@ export async function createDevApp(server: net.Server, config: Config) {
         config.server = { ...config.server, port: server.address()?.['port'] }
     })
 
-    // start HMR ws server
-    server.once('listening', async () => {
-        const wss = new WebSocket.Server({ noServer: true })
-        server.once('close', () => {
-            wss.close(() => logger.debug('closing wss'))
-            wss.clients.forEach((client) => {
-                client.close()
-            })
-        })
-        server.on('upgrade', (req, socket, head) => {
-            if (req.headers['sec-websocket-protocol'] === HMR_SERVER_NAME) {
-                wss.handleUpgrade(req, socket, head, (ws) => {
-                    wss.emit('connection', ws, req)
-                })
-            }
-        })
-
-        wss.on('connection', (socket) => {
-            socket.send(JSON.stringify({ type: 'connected' }))
-            socket.on('message', (data) => {
-                const message: HMRPayload = JSON.parse(data.toString())
-                if (message.type === 'hotAccept') {
-                    graph.ensureEntry(importPathToFile(root, message.path), {
-                        hasHmrAccept: true,
-                        isHmrEnabled: true,
-                    })
-                }
-            })
-        })
-
-        wss.on('error', (e: Error & { code: string }) => {
-            if (e.code !== 'EADDRINUSE') {
-                console.error(chalk.red(`WebSocket server error:`))
-                console.error(e)
-            }
-        })
-
-        // TODO send should wait for clients to be available and resend error and reload messages
-        graph.sendHmrMessage = (payload: HMRPayload) => {
-            const stringified = JSON.stringify(payload, null, 4)
-            logger.debug(`hmr: ${stringified}`)
-            if (!wss.clients.size) {
-                logger.debug(`No clients listening for HMR message`)
-            }
-            let clientIndex = 1
-            for (let client of wss.clients.values()) {
-                if (client.readyState === WebSocket.OPEN) {
-                    client.send(stringified)
-                } else {
-                    logger.log(
-                        chalk.red(
-                            `Cannot send HMR message, hmr client ${clientIndex} is not open`,
-                        ),
-                    )
-                }
-                clientIndex += 1
-            }
-        }
-    })
-
     // changing anything inside root that is not ignored and that is not in graph will cause reload
     if (config.server?.hmr) {
         watcher.on('change', (filePath) => {
             graph.onFileChange({
                 filePath,
-                sendHmrMessage: graph.sendHmrMessage,
             })
             if (showGraph) {
                 logger.log(graph.toString())

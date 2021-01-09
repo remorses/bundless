@@ -1,12 +1,13 @@
-// importee and importers must be relative paths from root, they can be converted to requests just prepending /
-
 import path from 'path'
+import WebSocket from 'ws'
+import net from 'net'
 import chalk from 'chalk'
 import { osAgnosticPath } from './utils'
 import { fileToImportPath, importPathToFile } from './utils'
 import { HMRPayload } from './client/types'
 import { logger } from './logger'
 import {} from './utils'
+import { HMR_SERVER_NAME } from './constants'
 
 // examples are ./main.js and ../folder/main.js
 type OsAgnosticPath = string
@@ -25,13 +26,74 @@ export interface HmrNode {
 export class HmrGraph {
     // keys are always os agnostic paths and not public paths
     nodes: { [osAgnosticPath: string]: HmrNode } = {}
-    root = ''
-    constructor({ root }: { root: string }) {
+    root
+    wss: WebSocket.Server
+    server: net.Server
+
+    constructor({ root, server }: { root: string; server: net.Server }) {
         this.nodes = {}
         this.root = root
+        this.server = server
+
+        const wss = new WebSocket.Server({ noServer: true })
+        this.wss = wss
+        server.once('close', () => {
+            wss.close(() => logger.debug('closing wss'))
+            wss.clients.forEach((client) => {
+                client.close()
+            })
+        })
+        server.on('upgrade', (req, socket, head) => {
+            if (req.headers['sec-websocket-protocol'] === HMR_SERVER_NAME) {
+                wss.handleUpgrade(req, socket, head, (ws) => {
+                    wss.emit('connection', ws, req)
+                })
+            }
+        })
+
+        wss.on('connection', (socket) => {
+            socket.send(JSON.stringify({ type: 'connected' }))
+            socket.on('message', (data) => {
+                const message: HMRPayload = JSON.parse(data.toString())
+                if (message.type === 'hotAccept') {
+                    this.ensureEntry(importPathToFile(root, message.path), {
+                        hasHmrAccept: true,
+                        isHmrEnabled: true,
+                    })
+                }
+            })
+        })
+
+        wss.on('error', (e: Error & { code: string }) => {
+            if (e.code !== 'EADDRINUSE') {
+                console.error(chalk.red(`WebSocket server error:`))
+                console.error(e)
+            }
+        })
     }
-    sendHmrMessage(message: HMRPayload) {
-        throw new Error(`HMR Websocket server has not started yet`)
+
+    sendHmrMessage = (payload: HMRPayload) => {
+        if (!this.wss) {
+            throw new Error(`HMR Websocket server has not started yet`)
+        }
+        const stringified = JSON.stringify(payload, null, 4)
+        logger.debug(`hmr: ${stringified}`)
+        if (!this.wss.clients.size) {
+            logger.debug(`No clients listening for HMR message`)
+        }
+        let clientIndex = 1
+        for (let client of this.wss.clients.values()) {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(stringified)
+            } else {
+                logger.log(
+                    chalk.red(
+                        `Cannot send HMR message, hmr client ${clientIndex} is not open`,
+                    ),
+                )
+            }
+            clientIndex += 1
+        }
     }
 
     ensureEntry(path: string, newNode?: Partial<HmrNode>): HmrNode {
@@ -95,13 +157,7 @@ export class HmrGraph {
 
     // TODO maybe rewrite should happen before to prune the graph from removed imports? in case old imports remain in the graph what could happen? the hmr algo only depend on the importers, this means that the worst thing could be that a non importer could be updated, but this is impossible because the only changed imports can only be the ones in the updated file, this means that only the current file imports could be invalid, which means that changed files importers will always be valid
     // TODO to make this work for vue and vite, i need to support virtual files, vite files will be rewritten as js files with imports of virtual css files, the current implementation will see the change in the vite file, but it cannot know about changed virtual files, maybe i can put a property in the result of onTransform or onLoad to say `computedFiles: [virtualFile]`, save this info in graph (taken during rewrite) and in onChange i can send an update to these dependent modules too
-    async onFileChange({
-        filePath,
-        sendHmrMessage,
-    }: {
-        filePath: string
-        sendHmrMessage: (x: HMRPayload) => any
-    }) {
+    async onFileChange({ filePath }: { filePath: string }) {
         const graph = this
 
         const root = this.root
@@ -125,7 +181,7 @@ export class HmrGraph {
                 logger.log(
                     `node for '${relativePath}' not found in graph, reloading`,
                 )
-                sendHmrMessage({ type: 'reload' })
+                this.sendHmrMessage({ type: 'reload' })
                 continue
             }
             // trigger an update if the module is able to handle it
@@ -145,7 +201,7 @@ export class HmrGraph {
             // reached another boundary, reload
             if (!importers.size) {
                 logger.log(`reached top boundary '${relativePath}', reloading`)
-                sendHmrMessage({ type: 'reload' })
+                this.sendHmrMessage({ type: 'reload' })
                 continue
             }
             for (let importer of importers) {
@@ -155,6 +211,6 @@ export class HmrGraph {
             }
             toVisit.push(...importers)
         }
-        messages.forEach(sendHmrMessage)
+        messages.forEach((m) => this.sendHmrMessage(m))
     }
 }
