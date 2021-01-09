@@ -29,9 +29,12 @@ export function RewritePlugin({} = {}) {
         setup: ({
             onTransform,
             pluginsExecutor,
-            ctx: { graph, config, root },
+            ctx: { graph, config, root, isBuild },
         }: PluginHooks) => {
             if (config.platform !== 'browser') {
+                return
+            }
+            if (isBuild || !graph) {
                 return
             }
             onTransform({ filter: jsTypeRegex }, async (args) => {

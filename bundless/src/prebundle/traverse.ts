@@ -92,7 +92,6 @@ export async function traverseWithEsbuild({
         ctx: {
             isBuild: true,
             config: { root, plugins: userPlugins },
-            graph: new HmrGraph({ root }),
             root,
         },
     })

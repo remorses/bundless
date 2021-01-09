@@ -34,7 +34,7 @@ type OnCloseCallback = () => void | Promise<void>
 export interface PluginsExecutorCtx {
     config: Config
     root: string
-    graph: HmrGraph
+    graph?: HmrGraph
     isBuild: boolean
     watcher?: FSWatcher
 }

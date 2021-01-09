@@ -137,7 +137,6 @@ export async function bundleWithEsBuild({
             ctx: {
                 config: { root },
                 isBuild: true,
-                graph: new HmrGraph({ root }),
                 root,
             },
             plugins: [
