@@ -125,45 +125,27 @@ const Page = () => {
                         heading='10x faster than other bundlers'
                         subheading='Most productive way to experiment, showcase your components'
                     />
-                    {/* <Benchmark
+                    <Benchmark
                         spacing='14'
                         benchmarks={[
                             { name: 'Bundless', value: 2.3 },
                             { name: 'Webpack', value: 20 },
                             { name: 'Parcel', value: 24 },
                         ]}
-                    /> */}
+                    />
                 </Stack>
 
                 <Feature
                     flip
                     heading='Fastest dev server'
                     subheading='Bundless uses esbuild under the hook, making it the fastest application bundler available'
-                    image={
-                        <Benchmark
-                            benchmarks={[
-                                { name: 'Bundless', value: 2.3 },
-                                { name: 'Webpack', value: 20 },
-                                { name: 'Parcel', value: 24 },
-                            ]}
-                        />
-                    }
+                    image={null}
                 />
 
                 <Feature
                     heading='Fastest build speed'
                     subheading='Bundless uses esbuild under the hook, making it the fastest application bundler available'
-                    image={
-                        <Benchmark
-                            primaryColor='teal'
-                            flip
-                            benchmarks={[
-                                { name: 'Bundless', value: 2.3 },
-                                { name: 'Webpack', value: 20 },
-                                { name: 'Parcel', value: 24 },
-                            ]}
-                        />
-                    }
+                    image={null}
                 />
 
                 {/* <Section degree={0} zIndex={1} bg='white'>
