@@ -72,17 +72,18 @@ export async function serve(config: Config) {
     const { app } = await createDevApp(server, config)
     server.on('request', app.callback())
 
-    const port = await getPort(config.server?.port || DEFAULT_PORT)
+    const preferredServerPort = config.server?.port || DEFAULT_PORT
+    const port = await getPort(preferredServerPort)
 
-    if (config.server?.port && Number(port) !== Number(config.server?.port)) {
+    if (Number(preferredServerPort) !== Number(port)) {
         logger.warn(
-            `Using port ${port} because ${config.server?.port} is already in use`,
+            `Using port ${port} because ${preferredServerPort} is already in use`,
         )
     }
     await promisify(server.listen.bind(server) as any)(port)
-
+    logger.log()
     logger.log(
-        `> listening on ${chalk.cyan.underline(`http://localhost:${port}`)}`,
+        `Listening on ${chalk.cyan.underline(`http://localhost:${port}`)}`,
     )
     return server
 }
