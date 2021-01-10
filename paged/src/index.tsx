@@ -1,11 +1,13 @@
 import {
     build,
-    logger,
     Logger,
     Plugin as PluginType,
     PluginsExecutor,
 } from '@bundless/cli'
-import { defaultConfig } from '@bundless/cli/dist/config'
+import koaBody from 'koa-body'
+import { matchPath, generatePath } from 'react-router-dom/'
+import * as uuid from 'uuid'
+import { Config, defaultConfig } from '@bundless/cli/dist/config'
 import { ReactRefreshPlugin } from '@bundless/plugin-react-refresh'
 import { createDevApp } from '@bundless/cli/dist/serve'
 import { importPathToFile, osAgnosticPath } from '@bundless/cli/dist/utils'
@@ -19,21 +21,32 @@ import memoize from 'micro-memoize'
 import path from 'path'
 import React from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
+import { resolveAsync } from '@esbuild-plugins/all'
 import { StaticRouter } from 'react-router-dom'
 import { MahoContext } from './client'
 import picomatch from 'picomatch'
+import { file } from '@babel/types'
 
 const CLIENT_ENTRY = '_bundless_paged_entry_.jsx'
 const ROUTES_ENTRY = '_bundless_paged_routes_.jsx'
-const pageGlobs = '**/*.{ts,tsx,js,jsx}'
-const isPage = picomatch(pageGlobs)
+const jsGlob = '**/*.{ts,tsx,js,jsx}'
+const isJsPage = picomatch(jsGlob)
+
+const logger = new Logger({ prefix: '[paged] ' })
 
 export function Plugin({} = {}): PluginType {
+    const originalRpcFiles = {}
     return {
         name: 'paged-plugin',
-        setup({ onLoad, onResolve, ctx: { root, watcher, isBuild } }) {
+        setup({
+            onLoad,
+            onResolve,
+            onTransform,
+            ctx: { root, watcher, isBuild, config },
+        }) {
             const pagesDir = path.resolve(root, 'pages')
-
+            const rpcDir = path.resolve(root, 'rpc')
+            const isClient = config.platform === 'browser'
             onResolve(
                 { filter: new RegExp(escapeStringRegexp(CLIENT_ENTRY)) },
                 (args) => {
@@ -42,6 +55,60 @@ export function Plugin({} = {}): PluginType {
                     }
                 },
             )
+
+            if (isClient) {
+                // TODO more robust regex for virtual rpc files
+                const rpcPrefix = '__rpc__'
+
+                onResolve({ filter: new RegExp(rpcPrefix) }, (args) => {
+                    logger.log(`resolving rpc ${args.path}`)
+                    return {
+                        path: path.resolve(root, 'original_rpc', args.path),
+                    }
+                })
+
+                onLoad({ filter: new RegExp(rpcPrefix) }, (args) => {
+                    logger.log(`loading rpc ${args.path}`)
+                    const basename = path.basename(args.path)
+                    const originalCode = originalRpcFiles[basename]
+                    if (!originalCode) {
+                        return
+                    }
+                    return {
+                        contents: originalCode,
+                        loader: 'default',
+                    }
+                })
+
+                onTransform({ filter: /rpc/ }, async (args) => {
+                    const isRpcFile = !path
+                        .relative(rpcDir, args.path)
+                        .startsWith('..')
+
+                    if (!isRpcFile) {
+                        return
+                    }
+                    const originalCodeFilename =
+                        rpcPrefix + uuid.v4() + path.extname(args.path)
+                    originalRpcFiles[originalCodeFilename] = args.contents
+                    logger.log(
+                        `transforming ${args.path} and importing original code from ${originalCodeFilename}`,
+                    )
+                    // TODO pass right path for rpc function
+                    const contents = rpcFunctionTemplate({
+                        originalCodeFilename,
+                        root,
+                        rpcPublicPath: rpcPathForFile({
+                            filePath: args.path,
+                            root,
+                        }),
+                    })
+                    return {
+                        contents,
+                        loader: 'js',
+                    }
+                })
+            }
 
             onLoad(
                 { filter: new RegExp(escapeStringRegexp(CLIENT_ENTRY)) },
@@ -69,10 +136,18 @@ export function Plugin({} = {}): PluginType {
                     const isInsidePages = !path
                         .relative(pagesDir, filePath)
                         .startsWith('..')
-                    if (isInsidePages && isPage(filePath)) {
+                    if (isInsidePages && isJsPage(filePath)) {
                         // invalidate routes cache keys
-                        getRoutes.cache.keys.length = 0
-                        getRoutes.cache.values.length = 0
+                        getPagesRoutes.cache.keys.length = 0
+                        getPagesRoutes.cache.values.length = 0
+                    }
+                    const isInsideRpc = !path
+                        .relative(rpcDir, filePath)
+                        .startsWith('..')
+                    if (isInsideRpc && isJsPage(filePath)) {
+                        // invalidate routes cache keys
+                        getRpcRoutes.cache.keys.length = 0
+                        getRpcRoutes.cache.values.length = 0
                     }
                 }
                 // TODO reserach what chokidar events means, i should probably add add, remove, ...
@@ -82,9 +157,12 @@ export function Plugin({} = {}): PluginType {
             onLoad(
                 { filter: new RegExp(escapeStringRegexp(ROUTES_ENTRY)) },
                 async (args) => {
-                    const routes = await getRoutes({ pageGlobs, pagesDir })
+                    const routes = await getPagesRoutes({
+                        pagesDir,
+                    })
                     return {
                         contents: makeRoutesContent({ root, routes }),
+                        resolveDir: root,
                         loader: 'jsx',
                     }
                 },
@@ -93,10 +171,48 @@ export function Plugin({} = {}): PluginType {
     }
 }
 
-const getRoutes = memoize(
-    async function getRoutes({ pageGlobs, pagesDir }) {
+function rpcFunctionTemplate({ root, originalCodeFilename, rpcPublicPath }) {
+    return `
+import rpcFunction from '${originalCodeFilename}'
+
+export default async function wrapper(arg) {
+    const res = await fetch('${rpcPublicPath}', {
+        method: 'POST',
+        body: JSON.stringify(arg),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    const json = await res.json()
+    return json
+}
+`
+}
+
+const getRpcRoutes = memoize(
+    async function getRpcRoutes({
+        rpcDir,
+    }): Promise<{ relative: string; absolute: string }[]> {
         const files = new Set(
-            await glob(pageGlobs, {
+            await glob(jsGlob, {
+                cwd: rpcDir,
+            }),
+        )
+
+        return [...files].map((relative) => {
+            return {
+                relative,
+                absolute: path.resolve(rpcDir, relative),
+            }
+        })
+    },
+    { isPromise: true },
+)
+
+const getPagesRoutes = memoize(
+    async function getRoutes({ pagesDir }) {
+        const files = new Set(
+            await glob(jsGlob, {
                 cwd: pagesDir,
             }),
         )
@@ -125,11 +241,17 @@ export async function createServer({
     root,
     builtAssets = 'client_out',
     ssrOutDir = 'ssr_out',
+    rpcOutDir = 'rpc_out',
 }) {
     const app = new Koa()
+    app.use(koaBody({}))
     const pagesDir = path.resolve(root, 'pages')
-    let baseConfig = {
+    const rpcDir = path.resolve(root, 'rpc')
+    let baseConfig: Config = {
         ...defaultConfig,
+        server: {
+            forcePrebundle: true, // TODO remove this after finish prototyping
+        },
         root,
         plugins: [Plugin(), ...(!isProduction ? [ReactRefreshPlugin()] : [])],
     }
@@ -171,8 +293,12 @@ export async function createServer({
     const { bundleMap, rebuild } = await build({
         ...baseConfig,
         logger: ssrLogger,
+        // TODO resolve react and react dom to the user's installed react and react dom
         plugins: [Plugin()],
-        entries: [ssrEntry],
+        entries: [
+            ssrEntry, // TODO rebuild cannot add new entries, this means that to add a new rpc file you need to reload the server
+            ...(await getRpcRoutes({ rpcDir })).map((x) => x.absolute),
+        ],
         platform: 'node',
         build: {
             outDir: ssrOutDir,
@@ -180,30 +306,55 @@ export async function createServer({
         incremental: true,
     })
 
-    console.log({ rebuild })
+    app.use(async (ctx, next) => {
+        const rpcRoutes = await getRpcRoutes({
+            rpcDir: path.resolve(root, 'rpc'),
+        })
 
-    let outputPath = bundleMap[osAgnosticPath(ssrEntry, root)]
-    if (!outputPath) {
-        throw new Error(
-            `Could not find ssr output for '${ssrEntry}', ${JSON.stringify(
-                Object.keys(bundleMap),
-            )}`,
-        )
-    }
-    outputPath = path.resolve(root, outputPath)
+        const foundRoute = rpcRoutes.find((route) => {
+            const match = matchPath(ctx.path, {
+                path: rpcPathForFile({ filePath: route.absolute, root }),
+                exact: true,
+                strict: false,
+            })
+            return match
+        })
+
+        if (!foundRoute) {
+            return next()
+        }
+
+        if (!isProduction) {
+            logger.log('rebuilding')
+            await rebuild!()
+        }
+
+        const rpcBundle = bundleMap[osAgnosticPath(foundRoute.absolute, root)]
+        if (!rpcBundle) {
+            throw new Error(`Cannot find bundle for ${foundRoute.relative}`)
+        }
+
+        const imports = tryRequire(path.resolve(root, rpcBundle))
+
+        const rpcFunction = imports.default
+        const args = ctx.request.body
+        logger.log(`Running rpc function ${foundRoute.absolute}`)
+        logger.log(`with arguments ${JSON.stringify(args, null, 4)}`)
+        const result = await rpcFunction(args)
+        console.log({ result })
+        ctx.body = JSON.stringify(result)
+        ctx.status = 200
+        ctx.type = 'application/json'
+    })
 
     app.use(async (ctx, next) => {
         if (ctx.method !== 'GET' && !ctx.is('html')) return next()
 
         const routesPaths = await (
-            await getRoutes({ pageGlobs, pagesDir })
+            await getPagesRoutes({ pagesDir })
         ).map((x) => path.posix.join(x.path, 'index.html'))
         // TODO use react router utils instead of appending index.html
-        // import {
-        //     matchRoutes,
-        //     createRoutesFromArray,
-        //     generatePath,
-        // } from 'react-router-dom'
+
         const indexPath = ctx.path.endsWith('.html')
             ? ctx.path
             : path.posix.join(ctx.path, 'index.html')
@@ -219,6 +370,16 @@ export async function createServer({
             logger.log('rebuilding')
             await rebuild!()
         }
+
+        let outputPath = bundleMap[osAgnosticPath(ssrEntry, root)]
+        if (!outputPath) {
+            throw new Error(
+                `Could not find ssr output for '${ssrEntry}', ${JSON.stringify(
+                    Object.keys(bundleMap),
+                )}`,
+            )
+        }
+        outputPath = path.resolve(root, outputPath)
 
         const { App } = tryRequire(outputPath)
         const context = { url: ctx.req.url }
@@ -404,3 +565,11 @@ export const App = ({ context, Router }) => {
     </MahoContext.Provider>
 }
 `
+
+function rpcPathForFile({ filePath, root }) {
+    if (!path.isAbsolute(filePath)) {
+        throw new Error(`rpcPathForFile needs absolute paths`)
+    }
+    const relative = path.posix.relative(root, filePath).replace(/\..+$/, '')
+    return '/' + relative
+}

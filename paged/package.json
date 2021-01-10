@@ -21,19 +21,23 @@
     "devDependencies": {
         "@babel/types": "^7.12.7",
         "@bundless/cli": "*",
-        "@types/node": "^14.14.13"
+        "@types/node": "^14.14.13",
+        "@types/react-router-dom": "^5.1.7",
+        "@types/uuid": "^8.3.0"
     },
     "dependencies": {
         "escape-string-regexp": "^4.0.0",
         "fast-glob": "^3.2.4",
         "fs-extra": "^9.0.1",
+        "koa-body": "^4.2.0",
         "micro-memoize": "^4.0.9",
         "picomatch": "^2.2.2",
         "react-helmet": "^6.1.0",
         "react-refresh": "^0.8.2",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
-        "swr": "^0.3.11"
+        "swr": "^0.3.11",
+        "uuid": "^8.3.2"
     },
     "peerDependencies": {
         "@bundless/cli": "*"

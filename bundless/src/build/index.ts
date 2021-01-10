@@ -82,10 +82,7 @@ export async function build({
                 }
                 // needed for linked workspaces
                 const isOutside = path.relative(root, p).startsWith('..')
-                if (
-                    p.endsWith('.js') &&
-                    (p.includes('node_modules') || isOutside)
-                ) {
+                if (p.endsWith('.js') && p.includes('node_modules')) {
                     return {
                         path: p,
                         external: true,
