@@ -54,7 +54,7 @@ const Page = () => {
                     as={GradientBgImg}
                 />
                 <Hero
-                    // bullet='Introducing Vitro 1.0'
+                    bullet='Bundless 0.0'
                     heading={
                         <Heading>
                             Next gen <br />
@@ -197,7 +197,7 @@ const Page = () => {
 export function MyFooter({ ...rest }) {
     return (
         <Footer
-            businessName='Vitro'
+            businessName='Bundless'
             columns={{
                 Resources: [
                     <Link href={GITHUB_LINK}>Github</Link>,
