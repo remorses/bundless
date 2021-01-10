@@ -54,7 +54,7 @@ const Page = () => {
                     as={GradientBgImg}
                 />
                 <Hero
-                    bullet='Bundless 0.0'
+                    bullet='Bundless v0.0'
                     heading={
                         <Heading>
                             Next gen <br />

@@ -17,6 +17,7 @@ export default function App(props) {
             </Head>
             <ChakraProvider resetCSS>
                 <DokzProvider
+                    initialColorMode='dark'
                     docsRootPath='pages/docs'
                     headerLogo={
                         <a href='/'>
