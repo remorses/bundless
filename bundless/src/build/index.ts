@@ -1,15 +1,14 @@
-import { assertNumberTypeAnnotation } from '@babel/types'
+import deepmerge from 'deepmerge'
 import * as esbuild from 'esbuild'
 import fromEntries from 'fromentries'
 import fs from 'fs-extra'
 import path from 'path'
 import posthtml, { Node } from 'posthtml'
-import { BuildConfig, Config, defaultConfig, getEntries } from '../config'
+import { Config, defaultConfig, getEntries } from '../config'
 import { MAIN_FIELDS } from '../constants'
-import { HmrGraph } from '../hmr-graph'
-import { Logger, logger } from '../logger'
-import { PluginsExecutor } from '../plugins-executor'
+import { Logger } from '../logger'
 import * as plugins from '../plugins'
+import { PluginsExecutor } from '../plugins-executor'
 import {
     commonEsbuildOptions,
     generateDefineObject,
@@ -17,11 +16,10 @@ import {
     metafileToStats,
     resolvableExtensions,
 } from '../prebundle/esbuild'
+import { printStats } from '../prebundle/stats'
 import { isUrl, runFunctionOnPaths, stripColon } from '../prebundle/support'
 import { metaToTraversalResult } from '../prebundle/traverse'
-import { cleanUrl, partition, osAgnosticPath, computeDuration } from '../utils'
-import { printStats } from '../prebundle/stats'
-import deepmerge from 'deepmerge'
+import { cleanUrl, computeDuration, osAgnosticPath, partition } from '../utils'
 
 interface OwnArgs {
     logger?: Logger

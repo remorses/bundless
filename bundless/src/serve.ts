@@ -1,26 +1,23 @@
 import chalk from 'chalk'
-import net from 'net'
 import chokidar, { FSWatcher } from 'chokidar'
 import { createHash } from 'crypto'
 import deepmerge from 'deepmerge'
-import { once } from 'events'
 import findUp from 'find-up'
 import fs from 'fs-extra'
 import { getPort } from 'get-port-please'
-import { createServer, Server } from 'http'
-import Koa, { DefaultContext, DefaultState, Middleware } from 'koa'
+import { Server } from 'http'
+import Koa, { DefaultContext, DefaultState } from 'koa'
 import etagMiddleware from 'koa-etag'
+import net from 'net'
 import path from 'path'
 import { Node } from 'posthtml'
 import slash from 'slash'
 import { promisify } from 'util'
-
 import { HMRPayload } from './client/types'
 import { Config, defaultConfig, getEntries } from './config'
 import {
     BUNDLE_MAP_PATH,
     DEFAULT_PORT,
-    HMR_SERVER_NAME,
     importableAssets,
     JS_EXTENSIONS,
     MAIN_FIELDS,
@@ -37,17 +34,14 @@ import { BundleMap } from './prebundle/esbuild'
 import { isUrl } from './prebundle/support'
 import {
     appendQuery,
-    dotdotEncoding,
-    importPathToFile,
     isEmpty,
     Lock,
     needsPrebundle,
     parseWithQuery,
     prepareError,
 } from './utils'
-import { genSourceMapString } from './utils/sourcemaps'
 
-process.env.NODE_ENV = 'development'
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 export interface ServerPluginContext {
     root: string
@@ -369,7 +363,7 @@ export const rewriteScriptUrlsTransform = (tree: Node) => {
                 logger.warn(
                     `<script src="${importPath}"> is missing type="module". Only module scripts are handled by Bundless`,
                 )
-                return
+                return node
             }
             const { query } = parseWithQuery(importPath)
             if (query?.namespace != null) {
