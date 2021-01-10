@@ -36,7 +36,7 @@ const serveCommand: CommandModule = {
                 port: argv.port,
                 forcePrebundle: argv.force,
             },
-            profile: argv.profile,
+            printStats: argv.stats,
         }
         let config: Config = deepMerge(loadedConfig, configFromArgv)
         return await serve(config)
@@ -52,11 +52,6 @@ const buildCommand: CommandModule = {
             required: false,
             description: 'The output directory',
         })
-        argv.option('profile', {
-            type: 'boolean',
-            required: false,
-            description: 'Show profiling stats',
-        })
 
         return argv
     },
@@ -66,7 +61,7 @@ const buildCommand: CommandModule = {
             build: {
                 outDir: argv.outDir,
             },
-            profile: argv.profile,
+            printStats: argv.stats,
         }
         config = deepMerge(config, configFromArgv)
         return await build({
@@ -87,6 +82,11 @@ yargs
     .option('debug', {
         type: 'boolean',
         description: `Enables debug logging`,
+    })
+    .option('stats', {
+        type: 'boolean',
+        required: false,
+        description: 'Show profiling stats',
     })
     .command(serveCommand)
     .command(buildCommand)

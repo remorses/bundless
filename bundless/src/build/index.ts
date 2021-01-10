@@ -106,7 +106,7 @@ export async function build({
 
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
-        isProfiling: config.profile,
+        isProfiling: config.printStats,
         ctx: { config, isBuild: true, root },
     })
 
@@ -150,7 +150,7 @@ export async function build({
         minify: Boolean(minify),
     })
 
-    if (config.profile && !logger.silent) {
+    if (config.printStats && !logger.silent) {
         console.info(pluginsExecutor.printProfilingResult())
     }
 

@@ -121,7 +121,7 @@ export async function createDevApp(server: net.Server, config: Config) {
     // most of the logic is in plugins
     const pluginsExecutor = new PluginsExecutor({
         ctx: executorCtx,
-        isProfiling: config.profile,
+        isProfiling: config.printStats,
         plugins: [
             // TODO resolve data: imports, rollup emits imports with data: ...
             plugins.HtmlResolverPlugin(),
@@ -274,7 +274,7 @@ export async function createDevApp(server: net.Server, config: Config) {
         app.emit('closed')
     })
 
-    if (config.profile) {
+    if (config.printStats) {
         process.on('SIGINT', () => {
             console.info()
             console.info(pluginsExecutor.printProfilingResult())

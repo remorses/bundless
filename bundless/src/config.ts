@@ -58,7 +58,7 @@ export type Platform = 'node' | 'browser'
 export interface Config {
     server?: ServerConfig
     build?: BuildConfig
-    profile?: boolean
+    printStats?: boolean
     platform?: Platform
     root?: string
     env?: Record<string, string>
