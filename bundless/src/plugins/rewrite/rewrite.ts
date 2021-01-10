@@ -227,7 +227,7 @@ export async function rewriteImports({
                                 end + 1,
                                 `import('${resolvedImportPath}').then(m=>${generateNamespaceExport(
                                     'm',
-                                )})`, // TODO how to handle requirejs conversion for dynamic imports?
+                                )})`,
                             )
                         }
                     } else {
