@@ -225,7 +225,7 @@ export function Benchmark({
     primaryColor = 'pink',
     spacing = '8',
     flip = false,
-    secondaryColor = 'blue',
+    secondaryColor = 'gray',
 }) {
     const max = Math.max(...benchmarks.map((x) => x.value))
     return (
@@ -252,7 +252,7 @@ export function Benchmark({
 
                             <Progress
                                 transform={flip ? 'scaleX(-1)' : 'none'}
-                                bg='transparent'
+                                // bg='transparent'
                                 width='100%'
                                 max={max}
                                 min={0}
@@ -261,6 +261,7 @@ export function Benchmark({
                                 colorScheme={
                                     i === 0 ? primaryColor : secondaryColor
                                 }
+                                opacity={i === 0 ? 1 : 0.7}
                                 borderRadius='4px'
                                 value={x.value}
                             />
