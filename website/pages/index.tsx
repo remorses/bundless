@@ -125,26 +125,43 @@ const Page = () => {
                         heading='10x faster than other bundlers'
                         subheading='Most productive way to experiment, showcase your components'
                     />
-                    <Benchmark
+                    {/* <Benchmark
+                        spacing='14'
                         benchmarks={[
                             { name: 'Bundless', value: 2.3 },
                             { name: 'Webpack', value: 20 },
                             { name: 'Parcel', value: 24 },
                         ]}
-                    />
+                    /> */}
                 </Stack>
 
                 <Feature
                     flip
+                    heading='Fastest dev server'
+                    subheading='Bundless uses esbuild under the hook, making it the fastest application bundler available'
+                    image={
+                        <Benchmark
+                            benchmarks={[
+                                { name: 'Bundless', value: 2.3 },
+                                { name: 'Webpack', value: 20 },
+                                { name: 'Parcel', value: 24 },
+                            ]}
+                        />
+                    }
+                />
+
+                <Feature
                     heading='Fastest build speed'
                     subheading='Bundless uses esbuild under the hook, making it the fastest application bundler available'
                     image={
-                        <Image
-                            src='/build-addons.png'
-                            borderRadius='md'
-                            shadow='xl'
-                            height='340px'
-                            alignSelf='start'
+                        <Benchmark
+                            primaryColor='teal'
+                            flip
+                            benchmarks={[
+                                { name: 'Bundless', value: 2.3 },
+                                { name: 'Webpack', value: 20 },
+                                { name: 'Parcel', value: 24 },
+                            ]}
                         />
                     }
                 />
@@ -206,15 +223,20 @@ export function MyFooter({ ...rest }) {
 export function Benchmark({
     benchmarks,
     primaryColor = 'pink',
+    spacing = '8',
+    flip = false,
     secondaryColor = 'blue',
 }) {
     const max = Math.max(...benchmarks.map((x) => x.value))
     return (
         <PageContainer pageWidth='570px'>
-            <Stack spacing='10'>
+            <Stack spacing={spacing}>
                 {benchmarks.map((x, i) => {
                     return (
-                        <Stack spacing='2'>
+                        <Stack
+                            align={flip ? 'flex-end' : 'flex-start'}
+                            spacing='2'
+                        >
                             <Box
                                 // color={
                                 //     i === 0
@@ -227,21 +249,22 @@ export function Benchmark({
                             >
                                 {x.name}
                             </Box>
-                            <HStack>
-                                <Progress
-                                    bg='transparent'
-                                    width='100%'
-                                    max={max}
-                                    min={0}
-                                    hasStripe
-                                    isAnimated
-                                    colorScheme={
-                                        i === 0 ? primaryColor : secondaryColor
-                                    }
-                                    borderRadius='4px'
-                                    value={x.value}
-                                />
-                            </HStack>
+
+                            <Progress
+                                transform={flip ? 'scaleX(-1)' : 'none'}
+                                bg='transparent'
+                                width='100%'
+                                max={max}
+                                min={0}
+                                hasStripe
+                                isAnimated
+                                colorScheme={
+                                    i === 0 ? primaryColor : secondaryColor
+                                }
+                                borderRadius='4px'
+                                value={x.value}
+                            />
+
                             <Box color={'gray.400'} fontWeight='medium'>
                                 {x.value.toFixed(1)} seconds
                             </Box>
