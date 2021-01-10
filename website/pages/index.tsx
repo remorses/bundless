@@ -39,7 +39,7 @@ const Page = () => {
                 // minH='100%'
                 minH='100%'
                 black='#333'
-                primary='#812959'
+                primary='#9e0057'
                 // color='#444'
             >
                 <MyNavbar />
