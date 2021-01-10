@@ -7,7 +7,7 @@ const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0
 
 exports[`rewrite commonjs imports 1 "import * as React from 'react'" 1`] = `
 "import react_cjsImport0 from \\"react\\";
-const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0;"
+const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0 : ({...react_cjsImport0, ...(react_cjsImport0.default instanceof Object && react_cjsImport0.default.constructor === Object && m.default)});"
 `;
 
 exports[`rewrite commonjs imports 2 "import React, { useState } from 'react'" 1`] = `

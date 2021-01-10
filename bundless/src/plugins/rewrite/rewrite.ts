@@ -19,7 +19,11 @@ import {
     jsTypeRegex,
     parseWithQuery,
 } from '../../utils'
-import { isOptimizedCjs, transformCjsImport } from './commonjs'
+import {
+    generateNamespaceExport,
+    isOptimizedCjs,
+    transformCjsImport,
+} from './commonjs'
 
 const rewriteCache = new LRUCache({ max: 1024 })
 
@@ -221,9 +225,9 @@ export async function rewriteImports({
                             magicString.overwrite(
                                 dynamicIndex,
                                 end + 1,
-                                `import('${resolvedImportPath}').then(m=>({...(${renderIsObjectExpression(
-                                    'm.default',
-                                )} && m.default), ...m}))`, // TODO how to handle requirejs conversion for dynamic imports?
+                                `import('${resolvedImportPath}').then(m=>${generateNamespaceExport(
+                                    'm',
+                                )})`, // TODO how to handle requirejs conversion for dynamic imports?
                             )
                         }
                     } else {

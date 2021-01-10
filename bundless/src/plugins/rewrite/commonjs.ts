@@ -112,9 +112,17 @@ function generateCjsImport(
     const cjsModuleName = makeLegalIdentifier(`${id}_cjsImport${importIndex}`)
     const lines: string[] = [`import ${cjsModuleName} from "${resolvedPath}";`]
     importNames.forEach(({ importedName, localName }) => {
-        if (importedName === '*' || importedName === 'default') {
+        // __esModule means the module has been compiled from ESM: ESM -> commonjs -> ESM
+        // we consider commonjs all modules with only a default export, but if the module has been compiled from ESM, it will contain double default export: default.default
+        if (importedName === 'default') {
             lines.push(
                 `const ${localName} = ${cjsModuleName} && ${cjsModuleName}.__esModule ? ${cjsModuleName}.default : ${cjsModuleName};`,
+            )
+        } else if (importedName === '*') {
+            lines.push(
+                `const ${localName} = ${cjsModuleName} && ${cjsModuleName}.__esModule ? ${cjsModuleName} : ${generateNamespaceExport(
+                    cjsModuleName,
+                )};`,
             )
         } else {
             lines.push(
@@ -123,4 +131,10 @@ function generateCjsImport(
         }
     })
     return lines.join('\n')
+}
+
+// adds the default export to the namespace in case this is an iterable object, this is to support the case `import * as namespace from 'mod'; namespace.default()`
+// TODO namespace imports can be polluted in case default import is an object and user is doing import * on a ES module with only a default export, this can be solved adding isCommonjs to esbuild metafile
+export function generateNamespaceExport(mId: string) {
+    return `({...${mId}, ...(${mId}.default instanceof Object && ${mId}.default.constructor === Object && m.default)})`
 }
