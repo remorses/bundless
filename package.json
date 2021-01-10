@@ -15,6 +15,7 @@
         ],
         "packages": [
             "bundless",
+            "website",
             "fixtures/*",
             "tests",
             "with-pages",
