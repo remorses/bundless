@@ -105,6 +105,8 @@ export async function rewriteImports({
 
         const magicString = new MagicString(source)
 
+
+        // TODO add the client script in html, this way i can make the page reload also when there is an error during rewrite
         if (isHmrEnabled) {
             magicString.prepend(hmrPreamble)
         } else {
