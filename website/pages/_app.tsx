@@ -9,6 +9,7 @@ export default function App(props) {
     return (
         <Fragment>
             <Head>
+                <title>Bundless</title>
                 <link
                     href='https://fonts.googleapis.com/css?family=Fira+Code'
                     rel='stylesheet'
