@@ -17,13 +17,11 @@ const serveCommand: CommandModule = {
         argv.option('port', {
             alias: 'p',
             type: 'number',
-            required: false,
             description: 'The port for the dev server',
         })
         argv.option('force', {
             alias: 'f',
             type: 'boolean',
-            required: false,
             description:
                 'Force prebundling even if dependencies did not change',
         })
@@ -49,7 +47,6 @@ const buildCommand: CommandModule = {
         argv.option('outDir', {
             alias: 'o',
             type: 'string',
-            required: false,
             description: 'The output directory',
         })
 
@@ -76,7 +73,6 @@ yargs
         alias: 'c',
         type: 'string',
         default: CONFIG_NAME,
-        required: false,
         description: `The config path to use`,
     })
     .option('debug', {
@@ -85,7 +81,6 @@ yargs
     })
     .option('stats', {
         type: 'boolean',
-        required: false,
         description: 'Show profiling stats',
     })
     .command(serveCommand)
