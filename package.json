@@ -15,6 +15,7 @@
         ],
         "packages": [
             "bundless",
+            "examples/*",
             "website",
             "fixtures/*",
             "tests",

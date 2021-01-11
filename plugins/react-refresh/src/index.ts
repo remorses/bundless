@@ -162,7 +162,7 @@ function getNonComponentExports(ast: BabelAST) {
 }
 
 function isComponentishName(name: string) {
-    return typeof name === 'string' && name[0] >= 'A' && name[0] <= 'Z'
+    return name === 'default' || typeof name === 'string' && name[0] >= 'A' && name[0] <= 'Z'
 }
 
 function debounce(fn: () => void, delay: number) {
