@@ -64,9 +64,14 @@ export function generateDefineObject({
     return {
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'dev'),
         ...generateEnvReplacements(env),
+        global: 'window',
+        __filename: '""',
+        __dirname: '""',
+        ...define,
+
+        // TODO remove defines and use inject instead
         'process.env': '{}',
         'process.browser': 'true',
-        global: 'window',
         'process.version': '""',
         'process.argv': '[]',
         process: '{}',
@@ -76,9 +81,6 @@ export function generateDefineObject({
         'process.chdir': noop,
         clearImmediate: noop,
         setImmediate: noop,
-        __filename: '""',
-        __dirname: '""',
-        ...define,
     }
 }
 
