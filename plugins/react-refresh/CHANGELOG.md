@@ -1,5 +1,11 @@
 # @bundless/plugin-react-refresh
 
+## 1.0.3
+
+### Patch Changes
+
+-   9931159: Don't use babelrc file
+
 ## 1.0.2
 
 ### Patch Changes
