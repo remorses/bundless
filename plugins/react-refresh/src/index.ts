@@ -91,6 +91,7 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                     ],
                     ast: true,
                     babelrc: false,
+                    configFile: false,
                     sourceType: 'module',
                     filename: args.path,
                     sourceMaps: true,
