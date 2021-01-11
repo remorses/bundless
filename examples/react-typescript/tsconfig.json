@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "noEmit": true,
+        "jsx": "react",
+        "moduleResolution": "Node"
+    }
+}
