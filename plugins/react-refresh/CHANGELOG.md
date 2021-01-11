@@ -1,5 +1,11 @@
 # @bundless/plugin-react-refresh
 
+## 1.0.4
+
+### Patch Changes
+
+-   c2e66aa: configFile: false for babel
+
 ## 1.0.3
 
 ### Patch Changes
