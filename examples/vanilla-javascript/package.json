@@ -1,0 +1,15 @@
+{
+    "name": "example-vanilla-javascript",
+    "private": true,
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "bundless dev",
+        "build": "bundless build"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@bundless/cli": "^0.1.5",
+        "@bundless/plugin-react-refresh": "^1.0.4"
+    },
+    "license": "MIT"
+}

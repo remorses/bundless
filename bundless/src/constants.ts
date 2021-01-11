@@ -9,7 +9,11 @@ export const BUNDLE_MAP_PATH = 'bundleMap.json'
 export const HMR_SERVER_NAME = 'esm-hmr'
 export const CONFIG_NAME = 'bundless.config.js'
 
-export const EXAMPLES_FOLDERS = ['react-typescript', 'react-javascript']
+export const EXAMPLES_FOLDERS = [
+    'react-typescript',
+    'react-javascript',
+    'vanilla-javascript',
+]
 
 export let isRunningWithYarnPnp: boolean = false
 try {
