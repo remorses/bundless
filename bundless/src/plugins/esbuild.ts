@@ -89,6 +89,7 @@ export const transform = async ({
         define: generateDefineObject({}),
         loader: path.extname(filePath).slice(1) as Loader,
         sourcemap: true,
+        format: 'esm',
         // ensure source file name contains full query
         sourcefile: filePath,
         target: 'es2020',
