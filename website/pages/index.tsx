@@ -236,6 +236,7 @@ export function Benchmark({
                                 transform={flip ? 'scaleX(-1)' : 'none'}
                                 bg='transparent'
                                 width='100%'
+                                size='sm'
                                 max={max}
                                 min={0}
                                 hasStripe
