@@ -32,9 +32,6 @@ export const JS_EXTENSIONS = new Set([
     '.js',
     '.jsx',
     '.cjs',
-    // '.vue',
-    // '.scss',
-    // '.css',
 ])
 
 export const importableAssets = [
