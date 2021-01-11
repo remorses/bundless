@@ -24,7 +24,7 @@ import GradientBgImg from '../public/gradient-bg.svg'
 const heroCode = `
 
 npm i -g @bundless/cli
-bundless dev
+bundless quickstart ./my-app
 
 `
 
