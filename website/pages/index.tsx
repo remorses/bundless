@@ -234,7 +234,7 @@ export function Benchmark({
 
                             <Progress
                                 transform={flip ? 'scaleX(-1)' : 'none'}
-                                // bg='transparent'
+                                bg='transparent'
                                 width='100%'
                                 max={max}
                                 min={0}
