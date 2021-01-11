@@ -292,6 +292,7 @@ export const Features = ({ ...rest }) => {
             <Flex
                 as={Faded}
                 cascade={true}
+                damping={0.6}
                 width='100%'
                 // spacing='10'
                 fontWeight='600'
