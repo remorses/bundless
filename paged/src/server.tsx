@@ -18,8 +18,6 @@ import { CLIENT_ENTRY, ROUTES_ENTRY } from './constants'
 import { Plugin } from './plugin'
 import { getPagesRoutes, getRpcRoutes, rpcPathForFile } from './routes'
 
-
-
 export async function createServer({
     isProduction = false,
     root,
@@ -108,7 +106,6 @@ export async function createServer({
             return next()
         }
 
-
         // TODO add watchIgnore option, ignore files in dist directories or rebuild will trigger a reload in dev
         // if (!isProduction) {
         //     logger.log('rebuilding')
@@ -133,6 +130,7 @@ export async function createServer({
         ctx.type = 'application/json'
     })
 
+    // handle html pages
     app.use(async (ctx, next) => {
         if (ctx.method !== 'GET' && !ctx.is('html')) return next()
 

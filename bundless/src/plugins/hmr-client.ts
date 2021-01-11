@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { CLIENT_PUBLIC_PATH } from '../constants'
 import { PluginHooks } from '../plugins-executor'
 
 export const clientFilePath = require.resolve('../../esm/client/template.js')
@@ -8,7 +9,17 @@ export const hmrClientNamespace = 'hmr-client'
 export function HmrClientPlugin({ getPort }) {
     return {
         name: 'hmr-client',
-        setup: ({ onLoad, ctx: { config } }: PluginHooks) => {
+        setup: ({ onLoad, onTransform, ctx: { config } }: PluginHooks) => {
+            onTransform({ filter: /\.html$/ }, (args) => {
+                const contents = args.contents.replace(
+                    /<body.*?>/,
+                    `$&\n<script type="module" src="${CLIENT_PUBLIC_PATH}"></script>`,
+                )
+                return {
+                    contents,
+                }
+            })
+
             onLoad(
                 { filter: /.*/, namespace: hmrClientNamespace },
                 async (args) => {

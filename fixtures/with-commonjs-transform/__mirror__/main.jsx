@@ -5,7 +5,7 @@ import react_cjsImport1 from "/web_modules/react/index.js?namespace=file";
 const ReactNamespace = react_cjsImport1 && react_cjsImport1.__esModule ? react_cjsImport1 : ({...react_cjsImport1, ...(react_cjsImport1.default instanceof Object && react_cjsImport1.default.constructor === Object && m.default)});;
 import react_cjsImport2 from "/web_modules/react/index.js?namespace=file";
 const useState = react_cjsImport2["useState"];;
-console.log("useState", String(useState)); 
+console.log("useState", String(useState));
 console.log({ReactAll: ReactNamespace, Fragment: ReactNamespace.Fragment});
 var node = document.createElement("pre");
 var textnode = document.createTextNode(String(useState));
