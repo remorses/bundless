@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.1.5
+
+### Patch Changes
+
+-   2e6022f: Small improvements
+
 ## 0.1.4
 
 ### Patch Changes
