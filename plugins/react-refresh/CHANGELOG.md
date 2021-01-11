@@ -1,5 +1,11 @@
 # @bundless/plugin-react-refresh
 
+## 1.0.2
+
+### Patch Changes
+
+-   fa99696: Small improvs
+
 ## 1.0.1
 
 ### Patch Changes
