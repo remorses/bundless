@@ -77,7 +77,7 @@ const quickstartCommand: CommandModule = {
         argv.positional('outDir', { type: 'string' })
         return argv
     },
-    handler: async (argv: any) => {
+    handler: prettyPrintErrors(async (argv: any) => {
         const exampleDir = await prompts({
             type: 'select',
             name: 'value',
@@ -93,11 +93,10 @@ const quickstartCommand: CommandModule = {
             logger.log(`Nothing done`)
             return
         }
-        logger.log(`Downloading ${exampleDir} example to ${argv.outDir}`)
+        logger.log(`Downloading ${exampleDir.value} example to ${argv.outDir}`)
         const emitter = degit(
             path.posix.join('remorses/bundless/examples', exampleDir.value),
             {
-                force: true,
                 verbose: true,
             },
         )
@@ -108,7 +107,7 @@ const quickstartCommand: CommandModule = {
 
         await emitter.clone(argv.outDir)
         logger.log(`Downloaded example to ./${path.normalize(argv.outDir)}`)
-    },
+    }),
 }
 
 yargs
@@ -132,3 +131,14 @@ yargs
     .command(quickstartCommand)
     .version()
     .help('help', 'h').argv
+
+function prettyPrintErrors(fn) {
+    return async (...args) => {
+        try {
+            return await fn(...args)
+        } catch (e) {
+            logger.error(e.message)
+            logger.error(e.stack)
+        }
+    }
+}

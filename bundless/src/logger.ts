@@ -28,6 +28,9 @@ export class Logger {
     warn(...x) {
         this.print(chalk.yellow(x.join(' ')))
     }
+    error(...x) {
+        this.print(chalk.red(x.join(' ')))
+    }
 
     private spinner?: Ora
 
