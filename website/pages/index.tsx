@@ -290,6 +290,7 @@ export const Features = ({ ...rest }) => {
         <PageContainer>
             <Flex
                 as={Faded}
+                cascade={true}
                 width='100%'
                 // spacing='10'
                 fontWeight='600'
