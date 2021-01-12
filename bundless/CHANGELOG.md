@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.1.6
+
+### Patch Changes
+
+-   3541033: Added includeWorkspacePackages option
+
 ## 0.1.5
 
 ### Patch Changes
