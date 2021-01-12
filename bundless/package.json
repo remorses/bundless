@@ -43,7 +43,7 @@
         "qs": "^6.9.4"
     },
     "dependencies": {
-        "@babel/parser": "^7.12.10",
+        "@babel/parser": "^7.12.11",
         "@babel/types": "^7.12.10",
         "@esbuild-plugins/all": "^0.0.15",
         "@koa/cors": "^3.1.0",

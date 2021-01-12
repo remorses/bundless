@@ -19,12 +19,12 @@
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
     "devDependencies": {
-        "@babel/types": "^7.12.7",
-        "@bundless/cli": "*",
+        "@babel/types": "^7.12.10",
+        "@bundless/cli": "^0.1.6",
         "@types/node": "^14.14.13"
     },
     "dependencies": {
-        "@babel/core": "^7.9.6",
+        "@babel/core": "^7.12.10",
         "@babel/parser": "^7.12.11",
         "react-refresh": "^0.8.2"
     },
