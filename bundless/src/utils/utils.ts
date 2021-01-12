@@ -1,4 +1,5 @@
 import { parse as _parse } from '@babel/parser'
+import picomatch from 'picomatch'
 import { ParserOptions } from '@babel/core'
 import strip from 'strip-ansi'
 import { Statement } from '@babel/types'
@@ -156,10 +157,23 @@ export function flatten<T>(arr: T[][]): T[] {
 }
 
 export function needsPrebundle(config: Config, p: string) {
-    if (config.needsPrebundle && config.needsPrebundle(p)) {
+    if (p.includes('node_modules') && !p.includes('web_modules')) {
         return true
     }
-    return p.includes('node_modules') && !p.includes('web_modules')
+    const includeWorkspacePackages = config.prebundle?.includeWorkspacePackages
+    if (includeWorkspacePackages != null) {
+        if (Array.isArray(includeWorkspacePackages)) {
+            const matchers = includeWorkspacePackages.map((g) => picomatch(g))
+            return matchers.some((fn) => fn(p))
+        }
+        if (includeWorkspacePackages === true) {
+            const isOutside = path.relative(config.root!, p).startsWith('..')
+            if (isOutside) {
+                return true
+            }
+        }
+    }
+    return false
 }
 
 export const babelParserOpts: ParserOptions = {

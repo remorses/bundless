@@ -34,9 +34,9 @@ const serveCommand: CommandModule = {
     handler: async (argv: any) => {
         const loadedConfig = loadConfig(process.cwd(), argv.config)
         const configFromArgv: Config = {
+            prebundle: { force: argv.force },
             server: {
                 port: argv.port,
-                forcePrebundle: argv.force,
             },
             printStats: argv.stats,
         }

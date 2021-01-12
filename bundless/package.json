@@ -69,6 +69,7 @@
         "merge-source-map": "^1.1.0",
         "micro-memoize": "^4.0.9",
         "ora": "^5.2.0",
+        "picomatch": "^2.2.2",
         "posthtml": "^0.15.1",
         "prompts": "^2.4.0",
         "qs": "^6.9.4",

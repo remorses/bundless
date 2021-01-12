@@ -30,8 +30,8 @@ export async function createServer({
     const rpcDir = path.resolve(root, 'rpc')
     let baseConfig: Config = {
         ...defaultConfig,
-        server: {
-            forcePrebundle: true, // TODO remove this after finish prototyping
+        prebundle: {
+            force: true, // TODO remove this after finish prototyping
         },
         root,
         plugins: [Plugin(), ...(!isProduction ? [ReactRefreshPlugin()] : [])],

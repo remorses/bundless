@@ -5,7 +5,6 @@ import * as esbuild from 'esbuild'
 import { Plugin, PluginsExecutor } from './plugins-executor'
 import path from 'path'
 
-
 export async function getEntries(
     pluginsExecutor: PluginsExecutor,
     config: Config,
@@ -57,6 +56,7 @@ export type Platform = 'node' | 'browser'
 
 export interface Config {
     server?: ServerConfig
+    prebundle?: PrebundlingConfig
     build?: BuildConfig
     printStats?: boolean
     platform?: Platform
@@ -64,8 +64,6 @@ export interface Config {
     env?: Record<string, string>
     entries?: string[]
     plugins?: Plugin[]
-    // TODO replace needsPrebundle with something less generic, like bundle workspaces, do not bundle node_modules, ....
-    needsPrebundle?: (p: string) => boolean
     jsx?:
         | 'vue'
         | 'preact'
@@ -76,10 +74,14 @@ export interface Config {
           }
 }
 
+export interface PrebundlingConfig {
+    force?: boolean
+    includeWorkspacePackages?: string[] | boolean
+}
+
 export interface ServerConfig {
     openBrowser?: boolean
     cors?: boolean
-    forcePrebundle?: boolean
     port?: number | string
     hmr?: HmrConfig | boolean
 }

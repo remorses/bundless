@@ -161,7 +161,7 @@ export async function createDevApp(server: net.Server, config: Config) {
         .then((x) => x.toString().trim())
     const isHashDifferent = !depsHash || !prevHash || prevHash !== depsHash
 
-    if (config.server?.forcePrebundle || isHashDifferent) {
+    if (config.prebundle?.force || isHashDifferent) {
         if (isHashDifferent) {
             logger.log(`Dependencies changed, removing ${WEB_MODULES_PATH}`)
             logger.debug('isHashDifferent', isHashDifferent, prevHash, depsHash)
