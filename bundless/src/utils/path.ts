@@ -1,11 +1,16 @@
 import path from 'path'
+import defaultPathImpl from 'path'
 import slash from 'slash'
 import { cleanUrl } from './utils'
 
 export const dotdotEncoding = '__..__'
 
 // maybe keep track of namespace query here?
-export function importPathToFile(root: string, request: string) {
+export function importPathToFile(
+    root: string,
+    request: string,
+    pathImpl = defaultPathImpl,
+) {
     if (!request) {
         return ''
     }
@@ -13,14 +18,19 @@ export function importPathToFile(root: string, request: string) {
     request = cleanUrl(request)
     request = request.startsWith('/') ? request.slice(1) : request
     request = request.replace(/__\.\.__/g, '..')
-    request = path.resolve(root, request)
+    request = pathImpl.resolve(root, request)
     return request
 }
 
-export function fileToImportPath(root: string, filePath: string) {
-    filePath = path.resolve(root, filePath)
-    filePath = path.relative(root, filePath)
-    filePath = filePath.replace(/\.\./g, dotdotEncoding)
+export function fileToImportPath(
+    root: string,
+    filePath: string,
+    pathImpl = defaultPathImpl,
+) {
+    filePath = pathImpl.resolve(root, filePath)
+    const relative = pathImpl.relative(root, filePath)
+    filePath = slash(relative)
+    filePath = filePath.replace(/\.\.(\/|\\)/g, dotdotEncoding + '$1')
     filePath = '/' + filePath
     return filePath
 }
