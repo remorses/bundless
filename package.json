@@ -5,7 +5,7 @@
         "test:hmr": "cross-env HRM_TESTS=1 yarn jest hmr-test-app",
         "watch": "ultra -r watch",
         "cli": "ultra -r cli",
-        "build": "ultra --build -r --filter '!(example-)' build",
+        "build": "ultra --build -r --filter '@bundless/*' build",
         "fix-mismatches": "syncpack fix-mismatches --indent '    '",
         "release": "yarn build && changeset publish"
     },
