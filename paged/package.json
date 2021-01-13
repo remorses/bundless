@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "escape-string-regexp": "^4.0.0",
+        "@bundless/plugin-react-refresh": "^1.0.4",
         "fast-glob": "^3.2.4",
         "fs-extra": "^9.0.1",
         "koa-body": "^4.2.0",
