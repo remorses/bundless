@@ -264,7 +264,7 @@ export function prepareError(err: Error) {
 export const sleep = (t) => new Promise((r) => setTimeout(() => r, t))
 
 export function isEmpty(map) {
-    return Object.keys(map).length === 0
+    return !map || Object.keys(map).length === 0
 }
 
 export function computeDuration(
