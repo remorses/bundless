@@ -43,8 +43,8 @@ describe('snapshots', () => {
             const server = await serve({
                 ...config,
                 root,
+                prebundle: { force: true },
                 server: {
-                    forcePrebundle: true,
                     port: PORT,
                 },
             })

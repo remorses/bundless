@@ -3,7 +3,7 @@ import { Metadata } from 'esbuild'
 import fromEntries from 'fromentries'
 import fs from 'fs-extra'
 import path from 'path'
-import toUnixPath from 'slash'
+import slash from 'slash'
 import tmpfile from 'tmpfile'
 import { Platform } from '../config'
 import { osAgnosticPath } from '../utils'
@@ -302,7 +302,7 @@ export function metafileToStats(_options: {
     })
 
     function makeStatObject(value) {
-        const relativePath = toUnixPath(path.relative(destLoc, value.path))
+        const relativePath = slash(path.relative(destLoc, value.path))
         return {
             [relativePath]: {
                 size: value.bytes,

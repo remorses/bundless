@@ -4,6 +4,7 @@ import fromEntries from 'fromentries'
 import fs from 'fs-extra'
 import path from 'path'
 import posthtml, { Node } from 'posthtml'
+import slash from 'slash'
 import { Config, defaultConfig, getEntries } from '../config'
 import { MAIN_FIELDS } from '../constants'
 import { Logger } from '../logger'
@@ -81,7 +82,8 @@ export async function build({
                     return
                 }
                 // needed for linked workspaces
-                const isOutside = path.relative(root, p).startsWith('..')
+                // const isOutside = path.relative(root, p).startsWith('..')
+                // TODO should i bundle linked dependencies?
                 if (p.endsWith('.js') && p.includes('node_modules')) {
                     return {
                         path: p,
@@ -275,7 +277,7 @@ export async function build({
                         })
                         // add new output files back to html
                         tree.match({ tag: 'body' }, (node) => {
-                            const jsSrc = '/' + path.relative(outDir, outputJs)
+                            const jsSrc = '/' + slash(path.relative(outDir, outputJs))
                             node.content = [
                                 MyNode({
                                     tag: 'script',
@@ -319,7 +321,7 @@ export async function build({
                             node.content = [
                                 // TODO maybe include imported fonts as links?
                                 ...cssPreloadHrefs.map((href) => {
-                                    href = '/' + path.relative(outDir, href)
+                                    href = '/' + slash(path.relative(outDir, href))
                                     return MyNode({
                                         tag: 'link',
                                         attrs: {
@@ -330,7 +332,7 @@ export async function build({
                                     })
                                 }),
                                 ...cssToInject.map((href) => {
-                                    href = '/' + path.relative(outDir, href)
+                                    href = '/' + slash(path.relative(outDir, href))
                                     return MyNode({
                                         tag: 'link',
                                         attrs: {
@@ -358,7 +360,7 @@ export async function build({
             )
             // remove `public` from entry path
             if (outputDirname.startsWith('public')) {
-                outputDirname = outputDirname.replace(/public\/?/, '')
+                outputDirname = outputDirname.replace(/public(\/|\\)?/, '')
             }
 
             const outputHtmlPath = path.resolve(

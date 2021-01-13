@@ -1,4 +1,5 @@
 import { build, logger, Logger, PluginsExecutor } from '@bundless/cli'
+import slash from 'slash'
 import { Config, defaultConfig } from '@bundless/cli/dist/config'
 import { createDevApp } from '@bundless/cli/dist/serve'
 import { importPathToFile, osAgnosticPath } from '@bundless/cli/dist/utils'
@@ -48,9 +49,8 @@ export async function createServer({
             },
             entries: [CLIENT_ENTRY],
         })
-        clientScriptSrc = `/${path.relative(
-            builtAssets,
-            bundleMap[CLIENT_ENTRY],
+        clientScriptSrc = `/${slash(
+            path.relative(builtAssets, bundleMap[CLIENT_ENTRY]),
         )}`
 
         app.use(koaStatic(builtAssets, { index: false }))

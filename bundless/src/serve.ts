@@ -305,7 +305,7 @@ export async function createDevApp(server: net.Server, config: Config) {
     app.use(middlewares.historyFallbackMiddleware({ root, pluginsExecutor }))
     app.use(middlewares.staticServeMiddleware({ root }))
     app.use(
-        middlewares.staticServeMiddleware({ root: path.join(root, 'public') }),
+        middlewares.staticServeMiddleware({ root: path.resolve(root, 'public') }),
     )
 
     app.use(etagMiddleware())

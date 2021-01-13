@@ -47,7 +47,7 @@ export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
 
         logger.spinSucceed('\nFinish')
 
-        const analysisFile = path.join(dest, COMMONJS_ANALYSIS_PATH)
+        const analysisFile = path.resolve(dest, COMMONJS_ANALYSIS_PATH)
         await fs.createFile(analysisFile)
 
         await fs.writeFile(analysisFile, JSON.stringify(analysis, null, 4))

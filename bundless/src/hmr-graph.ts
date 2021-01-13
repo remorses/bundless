@@ -8,11 +8,12 @@ import { HMRPayload } from './client/types'
 import { logger } from './logger'
 import {} from './utils'
 import { HMR_SERVER_NAME } from './constants'
+import slash from 'slash'
 
 // examples are ./main.js and ../folder/main.js
 type OsAgnosticPath = string
 
-// examples are /path/file.js or /.../file.js
+// examples are /path/file.js or /__..__/file.js
 type ImportPath = string
 export interface HmrNode {
     importers(): Set<OsAgnosticPath> // returns osAgnosticPaths
@@ -127,7 +128,7 @@ export class HmrGraph {
         const content = Object.keys(this.nodes)
             .map((k) => {
                 const node = this.nodes[k]
-                let key = path.relative(process.cwd(), k)
+                let key = slash(path.relative(process.cwd(), k))
 
                 if (node.hasHmrAccept) {
                     key = chalk.redBright(chalk.underline(key))

@@ -3,6 +3,7 @@ import posthtml, { Node, Plugin as PosthtmlPlugin } from 'posthtml'
 import path from 'path'
 import { Plugin } from '../plugins-executor'
 import { cleanUrl } from '../utils'
+import slash from 'slash'
 const NAME = 'html-ingest'
 
 interface Options {
@@ -30,9 +31,8 @@ export function HtmlIngestPlugin({
                     const jsUrls = await getHtmlScriptsUrls(html)
 
                     // const folder = path.relative(root, path.dirname(args.path))
-                    const pathToRoot = path.relative(
-                        path.dirname(args.path),
-                        root,
+                    const pathToRoot = slash(
+                        path.relative(path.dirname(args.path), root),
                     )
 
                     const contents = jsUrls
@@ -56,7 +56,7 @@ export function HtmlIngestPlugin({
                         )
                         .map((importPath) => `export * from '${importPath}'`)
                         .join('\n')
-                    
+
                     return {
                         loader: 'js',
                         contents,

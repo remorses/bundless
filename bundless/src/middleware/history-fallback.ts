@@ -1,5 +1,6 @@
 import { Middleware } from 'koa'
 import path from 'path'
+import slash from 'slash'
 import { logger } from '../logger'
 import { PluginsExecutor } from '../plugins-executor'
 import { cleanUrl, importPathToFile } from '../utils'
@@ -54,7 +55,7 @@ export function historyFallbackMiddleware({
             send(
                 ctx,
                 resolvedHtml,
-                '/' + path.relative(root, resolveHtmlPath || ''),
+                '/' + slash(path.relative(root, resolveHtmlPath || '')),
             )
             return next()
         }
