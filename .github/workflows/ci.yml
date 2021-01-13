@@ -7,7 +7,12 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - windows-latest
     steps:
       - uses: actions/checkout@master
         with:
