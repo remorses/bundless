@@ -1,5 +1,5 @@
 import path from 'path'
-import { fileToImportPath } from './path'
+import { fileToImportPath, importPathToFile } from './path'
 
 const root = __dirname
 
@@ -26,9 +26,15 @@ describe('fileToImportPath posix', () => {
             if (!testCase.onlyWin) {
                 const res1 = fileToImportPath(root, testCase.path, path.posix)
                 expect(res1).toBe(testCase.expected)
+                expect(importPathToFile(root, res1, path.posix)).toBe(
+                    path.posix.resolve(root, testCase.path),
+                )
             }
             const res2 = fileToImportPath(root, testCase.path, path.win32)
             expect(res2).toBe(testCase.expected)
+            expect(importPathToFile(root, res2, path.win32)).toBe(
+                path.win32.resolve(root, testCase.path),
+            )
         })
     }
 })
