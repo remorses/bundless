@@ -2,7 +2,7 @@ import path from 'path'
 import slash from 'slash'
 import { cleanUrl } from './utils'
 
-export const dotdotEncoding = '...'
+export const dotdotEncoding = '__..__'
 
 // maybe keep track of namespace query here?
 export function importPathToFile(root: string, request: string) {
@@ -12,7 +12,7 @@ export function importPathToFile(root: string, request: string) {
     request = decodeURIComponent(request)
     request = cleanUrl(request)
     request = request.startsWith('/') ? request.slice(1) : request
-    request = request.replace(/\.\.\./g, '..')
+    request = request.replace(/__\.\.__/g, '..')
     request = path.resolve(root, request)
     return request
 }

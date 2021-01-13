@@ -1,5 +1,5 @@
 import '/_hmr_client.js?namespace=hmr-client';
-import text from '/.../outsider.js?namespace=file'
+import text from '/__..__/outsider.js?namespace=file'
 
 console.log(text)
 
