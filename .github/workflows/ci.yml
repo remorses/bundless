@@ -40,7 +40,7 @@ jobs:
             ${{ runner.os }}-npm-
       # scripts
       - run: yarn
-      - run: yarn build
+      - run: yarn ultra --rebuild -r --filter '@bundless/*' build
       - run: yarn test
       - name: Create Release
         id: changesets
