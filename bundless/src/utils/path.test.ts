@@ -11,7 +11,7 @@ describe('fileToImportPath posix', () => {
             expected: '/__..__/cosa/index.ts',
         },
         {
-            path: '..\\cosa\\index.ts',
+            path: `..${path.win32.sep}cosa${path.win32.sep}index.ts`,
             expected: '/__..__/cosa/index.ts',
             onlyWin: true,
         },
