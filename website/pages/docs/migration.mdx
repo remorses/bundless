@@ -9,3 +9,4 @@
 -   Instead of using the package.json `homepage` option you should pass `basePath` to `bundless.config.js` in the `build.basePath` options
 -   If using a workspace all your linked packages must expose valid ESM code (no `require` calls) (if this is not the case, add `prebundleWorkspacePackages` option)
 -   Replace eventual webpack plugins with esbuild alternatives (notice that the most popular webpack plugins are built in in bundless so you probably don't need any additional plugins, see [features]() to see if there is something missing)
+-   Replace `%PUBLIC%` occurrences in your index.html file with just /, bundless will remap those paths to use `config.build.basePath` automatically

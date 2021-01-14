@@ -1,1 +1,50 @@
 # Config
+
+The default bundless configuration is the following
+
+```js
+/** @type { import('@bundless/cli').Config } */
+module.exports = {
+    entries: ['index.html'], // entry files
+    platform: 'browser', // target platform, browser or node
+    jsx: 'react', // jsx preset
+    plugins: [],
+    server: {
+        port: 3000,
+        hmr: true,
+        openBrowser: false, // opens browser on server start
+    },
+    prebundle: {
+        includeWorkspacePackages: [], // linked packages to prebundle, can be a boolean
+        force: false, // forces prebundling dependencies on server start
+    },
+    build: {
+        basePath: '/',
+        jsTarget: 'es2018', // target es version
+        minify: true, // run esbuild minification
+        outDir: './out', // output directory
+    },
+}
+```
+
+## entries
+
+In the prebundle phase entries are used as starting point to traverse the import graph and gather dependencies.
+
+In the build phase they are passes to esbuild to be bundled and outputted in outDir.
+
+## platform
+
+Can be `browser` or `node`.
+
+When platform is `node` the output files will use commonjs modules and won't bundle dependencies (files in node_modules are marked as external).
+
+## prebundle.includeWorkspacePackages
+
+By default bundless does not prebundle your workspace packages, this means that you can import files from your monorepo dependencies and have them reflect changes thanks to HMR.
+
+However this won't work if your liked dependencies contains commonjs code that uses `require` and `module.exports`, in this case you should put these packages in `prebundle.includeWorkspacePackages` or use `prebundle.includeWorkspacePackages: true`
+
+## build.basePath
+
+If you are deploying your website to an url like `http://mysite.com/path`, then you should pass `/path` to `build.basePath`, all the `script` and `link` tags in the html files will fetch files from base path, the same for dynamic imports.

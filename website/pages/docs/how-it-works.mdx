@@ -1,0 +1,19 @@
+# How does bundless work?
+
+Bundless works differently in development and build
+
+In development bundless is a web server that serves your modules to the browser.
+
+It also has does some built in transformations to your files
+
+-   import paths are rewritten to path on root, `import './file'` becomes `import '/path/to/file.js'`
+
+-   import paths are resolved to their path
+s
+-   plugins `onLoad` and `onTransform` methods are called on the module contents
+
+When building the entries are passed to `esbuild` to be bundles
+
+Html files are converted to js files that import their scripts src urls (only those that are inside your root directory)
+
+

@@ -1,12 +1,26 @@
+---
+name: Getting started
+---
+
 ## Getting Started
 
-Bundless is an application development server and bundler
+Bundless is an experimental application development server and bundler.
 
-It is a replacement for tools like webpack and parcel
+It is a replacement for tools like webpack and parcel, with the main aim being development and build speed with as less as possible compromises.
 
-The difference with those tools is mainly speed, bundless has a much faster dev server load time and build time, see the [benchmarks](/benchmarks) to read more
+To try out an example application run the following commands to setup an example application
 
 ```sh
 npm i -g @bundless/cli
-bundless quickstart ./my-app # will guide you on creating an example project
+bundless quickstart ./my-app # will download an example app inside my-app
+cd my-app
+npm run dev
 ```
+
+## How is bundless faster than my favorite build tool?
+
+Bundless is different than traditional bundlers, it doesn't build your files to one large bundle, it instead serve your files directly to the browser
+
+This means that bundless doesn't need to parse your files, which is the most costly operation done by tools like webpack
+
+This means that when you make a change to a file only the changed module is fetched, this makes the hmr implementation much simpler compared to tools like webpack that need instead runtime logic to handle code replacement.

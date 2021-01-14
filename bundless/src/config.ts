@@ -87,13 +87,24 @@ export interface ServerConfig {
 }
 
 export const defaultConfig: Config = {
+    entries: ['index.html'], // entry files
     server: {
-        openBrowser: false,
-        port: DEFAULT_PORT,
+        port: 3000,
         hmr: true,
+        openBrowser: false, // opens browser on server start
     },
-    platform: 'browser',
-    jsx: 'react',
+    prebundle: {
+        includeWorkspacePackages: [], // linked packages to prebundle
+        force: false, // forces prebundling dependencies on server start
+    },
+    build: {
+        basePath: '/',
+        jsTarget: 'es2018', // target es version
+        minify: true, // run esbuild minification
+        outDir: './out', // output directory
+    },
+    platform: 'browser', // target platform, browser or node
+    jsx: 'react', // jsx preset
     plugins: [],
 }
 
