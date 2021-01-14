@@ -1,6 +1,19 @@
 # How does bundless work?
 
-Bundless works differently in development and build
+Bundless works differently when in development and in build, to share as much logic as possible bundless encapsulates as much logic as possible in plugins.
+
+The bundless Plugin interface is a superset of [esbuild's plugin interface](https://esbuild.github.io/plugins/), this means that the same plugins can be used both when running in development and in build phase.
+
+Esbuild is not only used in the build phase, it is also used to traverse the module graph in the `prebundle` phase and to bundle dependencies.
+
+The prebundle phase consists in
+
+-   traverse the module import graph
+-   gather all imports to files in node_modules
+-   bundle these files in valid ES modules
+-   store them in the `web_modules` directory
+
+The prebundle phase is necessary to make commonjs code work in the browser and reduce the number of network requests to fetch modules.
 
 In development bundless is a web server that serves your modules to the browser.
 
@@ -15,5 +28,3 @@ s
 When building the entries are passed to `esbuild` to be bundles
 
 Html files are converted to js files that import their scripts src urls (only those that are inside your root directory)
-
-

@@ -87,14 +87,14 @@ export interface ServerConfig {
 }
 
 export const defaultConfig: Config = {
-    entries: ['index.html'], // entry files
+    // entries: ['index.html'], // entry files
     server: {
         port: 3000,
         hmr: true,
         openBrowser: false, // opens browser on server start
     },
     prebundle: {
-        includeWorkspacePackages: [], // linked packages to prebundle
+        includeWorkspacePackages: false, // linked packages to prebundle
         force: false, // forces prebundling dependencies on server start
     },
     build: {

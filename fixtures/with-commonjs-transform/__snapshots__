@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-commonjs-transform: build 1`] = `
 Array [
-  "chunk.AII2ZRKM.js",
+  "chunk.EPDINXVE.js",
   "fixtures/with-commonjs-transform/index.js",
   "index.html",
   "metafile.json",
