@@ -1,4 +1,5 @@
+-   more tests for hmr, using puppeteer
+-   test basepath feature
+-   test sourcemaps are correct, throwing errors and checking the browser error line
 -   test the html entries resolution (public, name.html, html paths in entries, ...)
--   prebundleWorkspacePackages option (can be glob[], glob or boolean)
 -   implement postcss processing to enable sass, tailwind, ...
--   implement build.basePath changing esbuild publicPath and other plugins like paged that inject virtual files at root
