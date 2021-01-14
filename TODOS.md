@@ -1,3 +1,4 @@
+-   use basePath to change the index.html page relative urls, this way there is no need to %PUBLIC_URL%, / -> /base-path/
 -   more tests for hmr, using puppeteer
 -   test basepath feature
 -   test sourcemaps are correct, throwing errors and checking the browser error line
