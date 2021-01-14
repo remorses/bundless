@@ -12,7 +12,6 @@ import {
 
 
 
-// TODO virtual files should be output on basepath?
 export function Plugin({} = {}): PluginType {
     const originalRpcFiles = {}
     return {

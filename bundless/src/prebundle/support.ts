@@ -59,7 +59,7 @@ export function runFunctionOnPaths(
         x.inputs[input] = {
             ...v,
             imports: v.imports
-                ? v.imports.map((x) => ({ path: func(x.path) }))
+                ? v.imports.map((x) => ({ ...x, path: func(x.path) }))
                 : [],
         }
     }
@@ -68,7 +68,7 @@ export function runFunctionOnPaths(
         x.outputs[output] = {
             ...v,
             imports: v.imports
-                ? v.imports.map((x) => ({ path: func(x.path) }))
+                ? v.imports.map((x) => ({ ...x, path: func(x.path) }))
                 : [],
         }
     }

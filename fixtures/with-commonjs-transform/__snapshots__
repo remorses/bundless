@@ -15,7 +15,7 @@ Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.jsx?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/web_modules/chunk.DMW4UNHQ.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/chunk.DDLMJHU6.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/react-dom/index.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file": "application/javascript; charset=utf-8",
 }
@@ -26,7 +26,7 @@ Array [
   "_hmr_client.js",
   "index.html",
   "main.jsx",
-  "web_modules/chunk.DMW4UNHQ.js",
+  "web_modules/chunk.DDLMJHU6.js",
   "web_modules/react-dom/index.js",
   "web_modules/react/index.js",
 ]
@@ -70,24 +70,24 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/main.jsx?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.DMW4UNHQ.js?namespace=file",
+    "importPath": "/web_modules/chunk.DDLMJHU6.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/react-dom/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.DMW4UNHQ.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.DDLMJHU6.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.DMW4UNHQ.js?namespace=file",
+    "importPath": "/web_modules/chunk.DDLMJHU6.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.DMW4UNHQ.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.DDLMJHU6.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.DMW4UNHQ.js?namespace=file",
+    "importPath": "/web_modules/chunk.DDLMJHU6.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.DMW4UNHQ.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.DDLMJHU6.js?namespace=file",
   },
   Object {
-    "importPath": "/web_modules/chunk.DMW4UNHQ.js?namespace=file",
+    "importPath": "/web_modules/chunk.DDLMJHU6.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.DMW4UNHQ.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.DDLMJHU6.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/react-dom/index.js?namespace=file",

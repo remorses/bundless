@@ -13,8 +13,8 @@ Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/chunk.6IPMULKA.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/web_modules/chunk.UKA52XQJ.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/web_modules/node_modules/react/index.js?namespace=file": "application/javascript; charset=utf-8",
@@ -27,8 +27,8 @@ Array [
   "_hmr_client.js",
   "index.html",
   "main.js",
+  "web_modules/chunk.6IPMULKA.js",
   "web_modules/chunk.RGTLKSWD.js",
-  "web_modules/chunk.UKA52XQJ.js",
   "web_modules/fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js",
   "web_modules/node_modules/react-dom/index.js",
   "web_modules/node_modules/react/index.js",
@@ -50,12 +50,12 @@ Array [
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/web_modules/chunk.UKA52XQJ.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/chunk.6IPMULKA.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/web_modules/chunk.UKA52XQJ.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/chunk.6IPMULKA.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
@@ -79,13 +79,23 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
   },
   Object {
+    "importPath": "/web_modules/chunk.6IPMULKA.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.6IPMULKA.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.6IPMULKA.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.6IPMULKA.js?namespace=file",
+  },
+  Object {
     "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/chunk.UKA52XQJ.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/chunk.6IPMULKA.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/chunk.UKA52XQJ.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/chunk.6IPMULKA.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
   },
   Object {
@@ -102,16 +112,6 @@ Array [
     "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
     "importer": "http://127.0.0.1:9000/web_modules/node_modules/slash/index.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.UKA52XQJ.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react-dom/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UKA52XQJ.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.UKA52XQJ.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/node_modules/react/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.UKA52XQJ.js?namespace=file",
   },
   Object {
     "importPath": "/web_modules/fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js?namespace=file",

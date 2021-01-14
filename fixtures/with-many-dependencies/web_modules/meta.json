@@ -28,7 +28,8 @@
       "bytes": 74538,
       "imports": [
         {
-          "path": "node_modules/object-assign/index.js"
+          "path": "node_modules/object-assign/index.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -36,7 +37,8 @@
       "bytes": 190,
       "imports": [
         {
-          "path": "node_modules/react/cjs/react.development.js"
+          "path": "node_modules/react/cjs/react.development.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -48,7 +50,8 @@
       "bytes": 2641,
       "imports": [
         {
-          "path": "fixtures/with-many-dependencies/node_modules/preact/dist/preact.module.js"
+          "path": "fixtures/with-many-dependencies/node_modules/preact/dist/preact.module.js",
+          "kind": "import-statement"
         }
       ]
     },
@@ -60,7 +63,8 @@
       "bytes": 230,
       "imports": [
         {
-          "path": "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js"
+          "path": "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -72,10 +76,12 @@
       "bytes": 331,
       "imports": [
         {
-          "path": "node_modules/scheduler/unstable_no_dom.js"
+          "path": "node_modules/scheduler/unstable_no_dom.js",
+          "kind": "require-call"
         },
         {
-          "path": "node_modules/scheduler/cjs/scheduler.development.js"
+          "path": "node_modules/scheduler/cjs/scheduler.development.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -87,7 +93,8 @@
       "bytes": 214,
       "imports": [
         {
-          "path": "node_modules/scheduler/cjs/scheduler-tracing.development.js"
+          "path": "node_modules/scheduler/cjs/scheduler-tracing.development.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -95,16 +102,20 @@
       "bytes": 957314,
       "imports": [
         {
-          "path": "node_modules/react/index.js"
+          "path": "node_modules/react/index.js",
+          "kind": "require-call"
         },
         {
-          "path": "node_modules/object-assign/index.js"
+          "path": "node_modules/object-assign/index.js",
+          "kind": "require-call"
         },
         {
-          "path": "node_modules/scheduler/index.js"
+          "path": "node_modules/scheduler/index.js",
+          "kind": "require-call"
         },
         {
-          "path": "node_modules/scheduler/tracing.js"
+          "path": "node_modules/scheduler/tracing.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -112,7 +123,8 @@
       "bytes": 1363,
       "imports": [
         {
-          "path": "node_modules/react-dom/cjs/react-dom.development.js"
+          "path": "node_modules/react-dom/cjs/react-dom.development.js",
+          "kind": "require-call"
         }
       ]
     }
@@ -121,7 +133,8 @@
     "fixtures/with-many-dependencies/web_modules/node_modules/slash/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-many-dependencies/web_modules/node_modules/slash/chunk.RGTLKSWD.js"
+          "path": "fixtures/with-many-dependencies/web_modules/chunk.RGTLKSWD.js",
+          "kind": "import-statement"
         }
       ],
       "exports": [
@@ -132,15 +145,17 @@
           "bytesInOutput": 332
         }
       },
-      "bytes": 1315
+      "bytes": 1319
     },
     "fixtures/with-many-dependencies/web_modules/node_modules/react/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-many-dependencies/web_modules/node_modules/react/chunk.UKA52XQJ.js"
+          "path": "fixtures/with-many-dependencies/web_modules/chunk.6IPMULKA.js",
+          "kind": "import-statement"
         },
         {
-          "path": "fixtures/with-many-dependencies/web_modules/node_modules/react/chunk.RGTLKSWD.js"
+          "path": "fixtures/with-many-dependencies/web_modules/chunk.RGTLKSWD.js",
+          "kind": "import-statement"
         }
       ],
       "exports": [
@@ -176,15 +191,17 @@
           "bytesInOutput": 3538
         }
       },
-      "bytes": 119203
+      "bytes": 120811
     },
     "fixtures/with-many-dependencies/web_modules/node_modules/react-dom/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-many-dependencies/web_modules/node_modules/react-dom/chunk.UKA52XQJ.js"
+          "path": "fixtures/with-many-dependencies/web_modules/chunk.6IPMULKA.js",
+          "kind": "import-statement"
         },
         {
-          "path": "fixtures/with-many-dependencies/web_modules/node_modules/react-dom/chunk.RGTLKSWD.js"
+          "path": "fixtures/with-many-dependencies/web_modules/chunk.RGTLKSWD.js",
+          "kind": "import-statement"
         }
       ],
       "exports": [
@@ -216,12 +233,13 @@
           "bytesInOutput": 205
         }
       },
-      "bytes": 2609437
+      "bytes": 2645865
     },
-    "fixtures/with-many-dependencies/web_modules/chunk.UKA52XQJ.js": {
+    "fixtures/with-many-dependencies/web_modules/chunk.6IPMULKA.js": {
       "imports": [
         {
-          "path": "fixtures/with-many-dependencies/web_modules/chunk.RGTLKSWD.js"
+          "path": "fixtures/with-many-dependencies/web_modules/chunk.RGTLKSWD.js",
+          "kind": "import-statement"
         }
       ],
       "exports": [
@@ -239,7 +257,7 @@
           "bytesInOutput": 181
         }
       },
-      "bytes": 201716
+      "bytes": 204684
     },
     "fixtures/with-many-dependencies/web_modules/chunk.RGTLKSWD.js": {
       "imports": [],

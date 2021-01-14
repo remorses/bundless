@@ -24,7 +24,8 @@
       "bytes": 74538,
       "imports": [
         {
-          "path": "node_modules/object-assign/index.js"
+          "path": "node_modules/object-assign/index.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -32,7 +33,8 @@
       "bytes": 190,
       "imports": [
         {
-          "path": "node_modules/react/cjs/react.development.js"
+          "path": "node_modules/react/cjs/react.development.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -44,7 +46,8 @@
       "bytes": 230,
       "imports": [
         {
-          "path": "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js"
+          "path": "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -56,10 +59,12 @@
       "bytes": 331,
       "imports": [
         {
-          "path": "node_modules/scheduler/unstable_no_dom.js"
+          "path": "node_modules/scheduler/unstable_no_dom.js",
+          "kind": "require-call"
         },
         {
-          "path": "node_modules/scheduler/cjs/scheduler.development.js"
+          "path": "node_modules/scheduler/cjs/scheduler.development.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -71,7 +76,8 @@
       "bytes": 214,
       "imports": [
         {
-          "path": "node_modules/scheduler/cjs/scheduler-tracing.development.js"
+          "path": "node_modules/scheduler/cjs/scheduler-tracing.development.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -79,16 +85,20 @@
       "bytes": 957314,
       "imports": [
         {
-          "path": "node_modules/react/index.js"
+          "path": "node_modules/react/index.js",
+          "kind": "require-call"
         },
         {
-          "path": "node_modules/object-assign/index.js"
+          "path": "node_modules/object-assign/index.js",
+          "kind": "require-call"
         },
         {
-          "path": "node_modules/scheduler/index.js"
+          "path": "node_modules/scheduler/index.js",
+          "kind": "require-call"
         },
         {
-          "path": "node_modules/scheduler/tracing.js"
+          "path": "node_modules/scheduler/tracing.js",
+          "kind": "require-call"
         }
       ]
     },
@@ -96,7 +106,8 @@
       "bytes": 1363,
       "imports": [
         {
-          "path": "node_modules/react-dom/cjs/react-dom.development.js"
+          "path": "node_modules/react-dom/cjs/react-dom.development.js",
+          "kind": "require-call"
         }
       ]
     }
@@ -105,7 +116,8 @@
     "fixtures/with-commonjs-transform/web_modules/react/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-commonjs-transform/web_modules/react/chunk.DMW4UNHQ.js"
+          "path": "fixtures/with-commonjs-transform/web_modules/chunk.DDLMJHU6.js",
+          "kind": "import-statement"
         }
       ],
       "exports": [
@@ -121,7 +133,8 @@
     "fixtures/with-commonjs-transform/web_modules/react-dom/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-commonjs-transform/web_modules/react-dom/chunk.DMW4UNHQ.js"
+          "path": "fixtures/with-commonjs-transform/web_modules/chunk.DDLMJHU6.js",
+          "kind": "import-statement"
         }
       ],
       "exports": [
@@ -153,9 +166,9 @@
           "bytesInOutput": 205
         }
       },
-      "bytes": 2609356
+      "bytes": 2645784
     },
-    "fixtures/with-commonjs-transform/web_modules/chunk.DMW4UNHQ.js": {
+    "fixtures/with-commonjs-transform/web_modules/chunk.DDLMJHU6.js": {
       "imports": [],
       "exports": [
         "__commonJS",
@@ -173,7 +186,7 @@
           "bytesInOutput": 181
         }
       },
-      "bytes": 201844
+      "bytes": 204816
     }
   }
 }
