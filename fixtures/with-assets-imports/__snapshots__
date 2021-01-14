@@ -2,7 +2,9 @@
 
 exports[`snapshots fixtures/with-assets-imports: build 1`] = `
 Array [
+  "dynamic-import.js",
   "image.WYWSOB4S.png",
+  "index.css",
   "index.html",
   "index.js",
   "metafile.json",
@@ -12,6 +14,8 @@ Array [
 exports[`snapshots fixtures/with-assets-imports: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/dynamic-import.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.css?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/image.png?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
@@ -21,6 +25,8 @@ Object {
 exports[`snapshots fixtures/with-assets-imports: mirror 1`] = `
 Array [
   "_hmr_client.js",
+  "dynamic-import.js",
+  "file.css",
   "image.png",
   "index.html",
   "main.js",
@@ -31,6 +37,11 @@ exports[`snapshots fixtures/with-assets-imports: traverse result 1`] = `
 Array [
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/file.css?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
     "importer": "http://127.0.0.1:9000/index.html",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
@@ -38,6 +49,16 @@ Array [
     "importPath": "/_hmr_client.js?namespace=hmr-client",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/dynamic-import.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/dynamic-import.js?namespace=file",
+  },
+  Object {
+    "importPath": "/file.css?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.css?namespace=file",
   },
   Object {
     "importPath": "/image.png?namespace=file",

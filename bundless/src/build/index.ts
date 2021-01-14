@@ -20,7 +20,13 @@ import {
 import { printStats } from '../prebundle/stats'
 import { isUrl, runFunctionOnPaths, stripColon } from '../prebundle/support'
 import { metaToTraversalResult } from '../prebundle/traverse'
-import { cleanUrl, computeDuration, osAgnosticPath, partition } from '../utils'
+import {
+    cleanUrl,
+    computeDuration,
+    osAgnosticPath,
+    partition,
+    removeLeadingSlash,
+} from '../utils'
 
 interface OwnArgs {
     logger?: Logger
@@ -43,17 +49,19 @@ export async function build({
 
     const {
         minify = false,
-        outDir = 'out',
+        outDir: chosenOutDir = 'out',
         jsTarget = 'es2018',
         basePath = '/',
     } = config.build || {}
+
+    const outDir = path.resolve(chosenOutDir, removeLeadingSlash(basePath))
 
     const startTime = Date.now()
 
     const { env = {}, platform = 'browser', root = '' } = config
     const isBrowser = platform === 'browser'
     const userPlugins = config.plugins || []
-    await fs.remove(outDir)
+    await fs.remove(chosenOutDir)
     await fs.ensureDir(outDir)
     const publicDir = path.resolve(root, 'public')
     const metafile = path.resolve(outDir, 'metafile.json')
@@ -277,7 +285,10 @@ export async function build({
                         })
                         // add new output files back to html
                         tree.match({ tag: 'body' }, (node) => {
-                            const jsSrc = '/' + slash(path.relative(outDir, outputJs))
+                            const jsSrc = path.posix.join(
+                                basePath,
+                                slash(path.relative(outDir, outputJs)),
+                            )
                             node.content = [
                                 MyNode({
                                     tag: 'script',
@@ -321,7 +332,11 @@ export async function build({
                             node.content = [
                                 // TODO maybe include imported fonts as links?
                                 ...cssPreloadHrefs.map((href) => {
-                                    href = '/' + slash(path.relative(outDir, href))
+                                    href = path.posix.join(
+                                        basePath,
+                                        slash(path.relative(outDir, href)),
+                                    )
+
                                     return MyNode({
                                         tag: 'link',
                                         attrs: {
@@ -332,7 +347,10 @@ export async function build({
                                     })
                                 }),
                                 ...cssToInject.map((href) => {
-                                    href = '/' + slash(path.relative(outDir, href))
+                                    href = path.posix.join(
+                                        basePath,
+                                        slash(path.relative(outDir, href)),
+                                    )
                                     return MyNode({
                                         tag: 'link',
                                         attrs: {
@@ -355,17 +373,20 @@ export async function build({
                     `Cannot process html with posthtml: ${e}\n${html}`,
                 )
             })
-            let outputDirname = path.normalize(
+            let htmlOutputDirname = path.normalize(
                 path.dirname(path.relative(root, entry)),
             )
             // remove `public` from entry path
-            if (outputDirname.startsWith('public')) {
-                outputDirname = outputDirname.replace(/public(\/|\\)?/, '')
+            if (htmlOutputDirname.startsWith('public')) {
+                htmlOutputDirname = htmlOutputDirname.replace(
+                    /public(\/|\\)?/,
+                    '',
+                )
             }
 
             const outputHtmlPath = path.resolve(
                 outDir,
-                outputDirname,
+                htmlOutputDirname,
                 path.basename(entry),
             )
             await fs.ensureDir(path.dirname(outputHtmlPath))

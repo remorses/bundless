@@ -16,7 +16,7 @@ export function importPathToFile(
     }
     request = decodeURIComponent(request)
     request = cleanUrl(request)
-    request = request.startsWith('/') ? request.slice(1) : request
+    request = removeLeadingSlash(request)
     request = request.replace(/__\.\.__/g, '..')
     request = pathImpl.resolve(root, request)
     return request
@@ -48,4 +48,9 @@ export function osAgnosticPath(absPath: string | undefined, root: string) {
         absPath = path.resolve(root, absPath)
     }
     return slash(path.relative(root, absPath))
+}
+
+
+export function removeLeadingSlash(p: string) {
+    return p.startsWith('/') ? p.slice(1) : p
 }

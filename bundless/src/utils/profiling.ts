@@ -17,10 +17,6 @@ interface FolderStats {
     timeConsume: number
 }
 
-interface AnsiChartConfig<T, U = keyof T> {
-    path: U
-    timeConsume: U
-}
 function bg(text: string, fn = 'cyan') {
     return chalk.bgBlack[fn](text)
 }
