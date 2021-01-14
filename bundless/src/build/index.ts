@@ -49,19 +49,17 @@ export async function build({
 
     const {
         minify = false,
-        outDir: chosenOutDir = 'out',
+        outDir = 'out',
         jsTarget = 'es2018',
         basePath = '/',
     } = config.build || {}
-
-    const outDir = path.resolve(chosenOutDir, removeLeadingSlash(basePath))
 
     const startTime = Date.now()
 
     const { env = {}, platform = 'browser', root = '' } = config
     const isBrowser = platform === 'browser'
     const userPlugins = config.plugins || []
-    await fs.remove(chosenOutDir)
+    await fs.remove(outDir)
     await fs.ensureDir(outDir)
     const publicDir = path.resolve(root, 'public')
     const metafile = path.resolve(outDir, 'metafile.json')
