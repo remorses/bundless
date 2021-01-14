@@ -1,5 +1,12 @@
 # @bundless/cli
 
+## 0.1.7
+
+### Patch Changes
+
+-   325516d: rename dotdot encondig to **..**
+-   f7684e8: Added basepath support
+
 ## 0.1.6
 
 ### Patch Changes
