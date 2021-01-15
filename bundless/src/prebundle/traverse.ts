@@ -54,6 +54,7 @@ export async function traverseWithEsbuild({
     logger.debug(`Traversing entrypoints ${JSON.stringify(entryPoints, [], 4)}`)
 
     const allPlugins = [
+        // TODO esbuild does not let overriding plugins, this means that if user is using plugin to alias a package to a file it will skip ExternalButInMetafile and break everything
         ...(userPlugins || []),
         ExternalButInMetafile(),
         plugins.NodeModulesPolyfillPlugin(),

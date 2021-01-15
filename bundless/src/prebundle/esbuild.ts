@@ -142,7 +142,6 @@ export async function bundleWithEsBuild({
                 root,
             },
             plugins: [
-                // HtmlIngestPlugin(),
                 ...(userPlugins || []),
                 plugins.NodeModulesPolyfillPlugin(),
                 plugins.NodeResolvePlugin({
