@@ -7,7 +7,7 @@ describe('fileToImportPath posix', () => {
     const cases: { path: string; expected: string; onlyWin?: boolean }[] = [
         { path: '../cosa/index.ts', expected: '/__..__/cosa/index.ts' },
         {
-            path: path.posix.resolve(root, '../cosa/index.ts'),
+            path: path.resolve(root, '../cosa/index.ts'),
             expected: '/__..__/cosa/index.ts',
         },
         {
