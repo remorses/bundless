@@ -19,6 +19,7 @@ export default function App(props) {
             <ChakraProvider resetCSS>
                 <DokzProvider
                     initialColorMode='dark'
+                    githubUrl='https://github.com/remorses/bundless'
                     docsRootPath='pages/docs'
                     headerLogo={
                         <a href='/'>
