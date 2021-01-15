@@ -1,3 +1,4 @@
+import os from 'os'
 import path from 'path'
 import { fileToImportPath, importPathToFile } from './path'
 
@@ -46,7 +47,7 @@ describe('fileToImportPath and importPathToFile', () => {
     ]
     for (let [i, testCase] of cases.entries()) {
         test(i + ' ' + testCase.path, () => {
-            if (!testCase.onlyWin) {
+            if (!testCase.onlyWin && os.platform() !== 'win32') {
                 const res1 = fileToImportPath(root, testCase.path, path.posix)
                 expect(res1).toBe(testCase.expected)
                 expect(importPathToFile(root, res1, path.posix)).toBe(
