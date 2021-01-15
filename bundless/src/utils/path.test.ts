@@ -1,9 +1,9 @@
 import path from 'path'
 import { fileToImportPath, importPathToFile } from './path'
 
-const root = __dirname
+const root = path.resolve(__dirname)
 
-describe('fileToImportPath posix', () => {
+describe('fileToImportPath and importPathToFile', () => {
     const cases: {
         path: string
         expected: string
@@ -39,7 +39,7 @@ describe('fileToImportPath posix', () => {
             onlyWin: true,
         },
         {
-            path: path.win32.resolve(root, '../cosa/index.ts'),
+            path: path.win32.resolve(root, '..\\cosa\\index.ts'),
             expected: '/__..__/cosa/index.ts',
             onlyWin: true,
         },
