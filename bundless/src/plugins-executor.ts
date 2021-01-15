@@ -68,15 +68,6 @@ export interface OnTransformResult {
 
 type Maybe<x> = x | undefined | null
 
-// export interface PluginsExecutor {
-//     load(args: esbuild.OnLoadArgs): Promise<Maybe<esbuild.OnLoadResult>>
-//     transform(args: OnTransformArgs): Promise<Maybe<OnTransformResult>>
-//     resolve(
-//         args: esbuild.OnResolveArgs,
-//     ): Promise<Maybe<esbuild.OnResolveResult>>
-//     close({}): Promise<void>
-// }
-
 type PluginInternalObject<CB> = {
     name: string
     options: { filter: RegExp; namespace?: string }
