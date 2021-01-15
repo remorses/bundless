@@ -48,41 +48,41 @@ const config: Config = {
 const testCases: Array<TestCase | TestCase[]> = [
     {
         path: 'src/main.jsx',
-        replacer: defaultReplacer,
+        replacer: defaultJsReplacer,
     },
     {
         path: 'src/file.jsx',
-        replacer: defaultReplacer,
+        replacer: defaultJsReplacer,
     },
     {
         path: 'src/file.css',
-        replacer: defaultReplacer,
+        replacer: defaultCssReplacer,
     },
     {
         path: 'src/file.module.css',
-        replacer: defaultReplacer,
+        replacer: defaultCssReplacer,
     },
     {
         path: 'src/file.json',
-        replacer: defaultReplacer,
+        replacer: (x) => '{"x": 9}\n',
     },
     {
         path: 'src/file2.js',
-        replacer: defaultReplacer,
+        replacer: defaultJsReplacer,
     },
     {
         path: 'src/imported-many-times.js',
-        replacer: defaultReplacer,
+        replacer: defaultJsReplacer,
     },
     // test 2 consecutive updates that resets the ?timestamp query and could cause a stale fetch
     [
         {
             path: 'src/file2.js',
-            replacer: defaultReplacer,
+            replacer: defaultJsReplacer,
         },
         {
             path: 'src/file.jsx', // imports the first file, should use the last used timestamp query to not get the stale module
-            replacer: defaultReplacer,
+            replacer: defaultJsReplacer,
         },
     ],
     // TODO test hmr when removing an import
@@ -344,6 +344,10 @@ const normalizeHmrMessage = (message) => {
     return Object.assign({}, ...validKeys.map((k) => ({ [k]: message[k] })))
 }
 
-function defaultReplacer(x) {
-    return x + '\n\n'
+function defaultJsReplacer(x) {
+    return x + '\n\n"some text"\n'
+}
+
+function defaultCssReplacer(x) {
+    return x + '\n\nbody {\ncolor: black;\n}\n'
 }
