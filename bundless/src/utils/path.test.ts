@@ -53,11 +53,17 @@ describe('fileToImportPath and importPathToFile', () => {
                     path.posix.resolve(root, testCase.path),
                 )
             }
-            const res2 = fileToImportPath(root, testCase.path, path.win32)
-            expect(res2).toBe(testCase.expected)
-            expect(importPathToFile(root, res2, path.win32)).toBe(
-                path.win32.resolve(root, testCase.path),
-            )
+            if (!testCase.onlyUnix) {
+                const res2 = fileToImportPath(
+                    root,
+                    testCase.path.replace(/\//g, '\\'),
+                    path.win32,
+                )
+                expect(res2).toBe(testCase.expected)
+                expect(importPathToFile(root, res2, path.win32)).toBe(
+                    path.win32.resolve(root, testCase.path),
+                )
+            }
         })
     }
 })
