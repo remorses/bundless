@@ -42,6 +42,7 @@ jobs:
       - run: yarn
       - run: yarn ultra --rebuild -r --filter '@bundless/*' build
       - run: yarn test tests && yarn test bundless
+      - run: git diff
       - name: Create Release
         id: changesets
         uses: changesets/action@master
