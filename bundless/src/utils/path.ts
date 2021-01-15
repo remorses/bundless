@@ -1,3 +1,4 @@
+import { file } from '@babel/types'
 import path from 'path'
 import defaultPathImpl from 'path'
 import slash from 'slash'
@@ -27,6 +28,7 @@ export function fileToImportPath(
     filePath: string,
     pathImpl = defaultPathImpl,
 ) {
+    filePath = filePath.replace(/\//g, pathImpl.sep)
     filePath = pathImpl.resolve(root, filePath)
     const relative = pathImpl.relative(root, filePath)
     filePath = slash(relative)
@@ -49,7 +51,6 @@ export function osAgnosticPath(absPath: string | undefined, root: string) {
     }
     return slash(path.relative(root, absPath))
 }
-
 
 export function removeLeadingSlash(p: string) {
     return p.startsWith('/') ? p.slice(1) : p
