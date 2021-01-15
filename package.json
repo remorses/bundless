@@ -1,7 +1,7 @@
 {
     "name": "root",
     "scripts": {
-        "test": "cross-env NODE_ENV=test jest",
+        "test": "cross-env NODE_ENV=test jest --colors",
         "test:hmr": "cross-env HRM_TESTS=1 yarn jest hmr-test-app",
         "watch": "ultra -r watch",
         "cli": "ultra -r cli",
