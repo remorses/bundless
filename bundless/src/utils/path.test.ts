@@ -29,7 +29,7 @@ describe('fileToImportPath posix', () => {
             onlyUnix: true,
         },
         {
-            path: path.win32.resolve(root, '../cosa/index.ts'),
+            path: path.win32.resolve(root, '..\\cosa\\index.ts'),
             expected: '/__..__/cosa/index.ts',
             onlyWin: true,
         },
