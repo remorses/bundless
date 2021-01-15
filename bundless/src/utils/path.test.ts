@@ -4,14 +4,37 @@ import { fileToImportPath, importPathToFile } from './path'
 const root = __dirname
 
 describe('fileToImportPath posix', () => {
-    const cases: { path: string; expected: string; onlyWin?: boolean }[] = [
+    const cases: {
+        path: string
+        expected: string
+        onlyWin?: boolean
+        onlyUnix?: true
+    }[] = [
         { path: '../cosa/index.ts', expected: '/__..__/cosa/index.ts' },
         {
-            path: path.resolve(root, '../cosa/index.ts'),
-            expected: '/__..__/cosa/index.ts',
+            path: '../cosa/folder/index.ts',
+            expected: '/__..__/cosa/folder/index.ts',
         },
         {
-            path: `..${path.win32.sep}cosa${path.win32.sep}index.ts`,
+            path: 'cosa/folder/../index.ts',
+            expected: '/cosa/index.ts',
+        },
+        {
+            path: 'cosa/folder/../../../../index.ts',
+            expected: '/__..__/__..__/index.ts',
+        },
+        {
+            path: path.posix.resolve(root, '../cosa/index.ts'),
+            expected: '/__..__/cosa/index.ts',
+            onlyUnix: true,
+        },
+        {
+            path: path.win32.resolve(root, '../cosa/index.ts'),
+            expected: '/__..__/cosa/index.ts',
+            onlyWin: true,
+        },
+        {
+            path: `..\\cosa\\index.ts`,
             expected: '/__..__/cosa/index.ts',
             onlyWin: true,
         },
