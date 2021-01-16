@@ -9,9 +9,9 @@
 
 ## What's the difference with traditional tools like Webpack?
 
--   Faster dev server times and faster build speed (thanks to [esbuild](https://esbuild.github.io))
+-   Faster dev server times and faster build speeds (thanks to [esbuild](https://esbuild.github.io))
 -   Bundless serves native ES modules to the browser, removing the overhead of parsing each module before serving
--   Uses a superset of [esbuild plugin system](https://esbuild.github.io/plugins/)
+-   Bundless uses a superset of [esbuild plugin system](https://esbuild.github.io/plugins/)
 
 ## What's the difference with tools like vite?
 
