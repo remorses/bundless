@@ -144,6 +144,26 @@ async function runModuleDispose(id) {
     disposeCallbacks.map((callback) => callback());
     return true;
 }
+function getErrorMessageMappedSource(message) {
+    if (typeof sourceMapSupport !== 'undefined') {
+        return (sourceMapSupport.getErrorSource({
+            message,
+            name: '',
+            stack: '',
+        }) || message);
+    }
+    return '';
+}
+function getErrorStackMappedSource(stack) {
+    if (typeof sourceMapSupport !== 'undefined') {
+        return (sourceMapSupport.getErrorSource({
+            stack,
+            message: '',
+            name: '',
+        }) || stack);
+    }
+    return '';
+}
 socket.addEventListener('message', ({ data: _data }) => {
     if (!_data) {
         return;
@@ -216,11 +236,6 @@ if (isWindowDefined) {
     window.addEventListener('error', function (event) {
         const err = {
             message: `${event.message}`,
-            loc: {
-                file: event.filename,
-                column: event.colno,
-                line: event.lineno,
-            },
             stack: event.error ? event.error.stack : '',
         };
         ErrorOverlay.show(err);
@@ -370,6 +385,7 @@ class CommonOverlay extends HTMLElement {
         (_a = this.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(this);
     }
     displayText(selector, text, linkFiles = false) {
+        var _a;
         const el = this.root.querySelector(selector);
         if (!linkFiles) {
             el.textContent = text;
@@ -382,11 +398,12 @@ class CommonOverlay extends HTMLElement {
                 link.textContent = matched;
                 link.className = 'file-link';
                 const isUrl = /https?:\/\//.test(matched);
-                let path = isUrl ? new URL(matched).pathname.slice(1) : matched;
-                // if (isUrl) {
-                //     const lineNumAndCol = /(:\d+:\d+)$/.exec(matched)?.[1] || ''
-                //     path += lineNumAndCol
-                // }
+                let path = isUrl ? new URL(matched).pathname : matched;
+                const fileLocationRegex = /(:\d+:\d+)$/;
+                if (!fileLocationRegex.test(path)) {
+                    const lineNumAndCol = ((_a = fileLocationRegex.exec(matched)) === null || _a === void 0 ? void 0 : _a[1]) || '';
+                    path += lineNumAndCol;
+                }
                 link.onclick = () => {
                     console.info(`Opening ${path} in editor`);
                     fetch('/__open-in-editor?file=' + encodeURIComponent(path));
@@ -414,32 +431,30 @@ function getAllMatches(text, regex) {
 }
 export class ErrorOverlay extends CommonOverlay {
     constructor(err) {
-        var _a;
         super();
         this.root = this.attachShadow({ mode: 'open' });
         this.root.innerHTML = template({
             mainColor: '--red',
             tip: `Click outside or fix the code to dismiss.<br>`,
         });
-        const hasFrame = err.frame && codeframeRE.test(err.frame);
-        const message = hasFrame
-            ? err.message.replace(codeframeRE, '')
-            : err.message;
         if (err.plugin) {
             this.displayText('.plugin', `[plugin:${err.plugin}] `);
         }
+        const message = getErrorMessageMappedSource(err.message);
         this.displayText('.message-body', message.trim());
-        const [file] = (((_a = err.loc) === null || _a === void 0 ? void 0 : _a.file) || err.id || 'unknown file').split(`?`);
-        if (err.loc) {
-            this.displayText('.file', `${file}:${err.loc.line}:${err.loc.column}`, true);
-        }
-        else if (err.id) {
-            this.displayText('.file', file);
-        }
-        if (hasFrame) {
-            this.displayText('.frame', err.frame.trim());
-        }
-        this.displayText('.stack', err.stack.replace(codeframeRE, '').trim(), true);
+        // const [file] = (err.loc?.file || err.id || 'unknown file').split(`?`)
+        // if (err.loc) {
+        //     this.displayText(
+        //         '.file',
+        //         `${file}:${err.loc.line}:${err.loc.column}`,
+        //         true,
+        //     )
+        // } else if (err.id) {
+        //     this.displayText('.file', file)
+        // }
+        const stack = getErrorStackMappedSource(err.stack);
+        console.log({ stack }, err.stack);
+        this.displayText('.stack', stack.trim(), true);
         this.root.querySelector('.window').addEventListener('click', (e) => {
             e.stopPropagation();
         });
