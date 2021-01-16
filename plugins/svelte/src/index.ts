@@ -40,7 +40,10 @@ export function SveltePlugin(options: PluginOptions = {}): Plugin {
                 ctx: { isBuild, graph, config, root },
             } = build
 
-            NodeResolvePlugin({ extensions: ['.svelte'] }).setup({
+            NodeResolvePlugin({
+                extensions: ['.svelte'],
+                isExtensionRequiredInImportPath: true,
+            }).setup({
                 onResolve,
                 onLoad() {},
             })
