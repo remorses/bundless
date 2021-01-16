@@ -78,6 +78,11 @@ export function transformCjsImport(
     importIndex: number,
 ): string {
     const ast = parse(exp)[0] as ImportDeclaration
+    const importNames = getImportNames(ast)
+    return generateCjsImport(importNames, id, resolvedPath, importIndex)
+}
+
+function getImportNames(ast: ImportDeclaration) {
     const importNames: ImportNameSpecifier[] = []
 
     ast.specifiers.forEach((obj) => {
@@ -97,8 +102,7 @@ export function transformCjsImport(
             importNames.push({ importedName: '*', localName: obj.local.name })
         }
     })
-
-    return generateCjsImport(importNames, id, resolvedPath, importIndex)
+    return importNames
 }
 
 function generateCjsImport(
@@ -130,7 +134,7 @@ function generateCjsImport(
             )
         }
     })
-    return lines.join('\n')
+    return lines.join(' ')
 }
 
 // adds the default export to the namespace in case this is an iterable object, this is to support the case `import * as namespace from 'mod'; namespace.default()`

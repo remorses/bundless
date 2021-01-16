@@ -1,56 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`rewrite commonjs imports 0 "import React from 'react'" 1`] = `
-"import react_cjsImport0 from \\"react\\";
-const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0;"
-`;
+exports[`rewrite commonjs imports 0 "import React from 'react'" 1`] = `"import react_cjsImport0 from \\"react\\"; const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0;"`;
 
-exports[`rewrite commonjs imports 1 "import * as React from 'react'" 1`] = `
-"import react_cjsImport0 from \\"react\\";
-const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0 : ({...react_cjsImport0, ...(react_cjsImport0.default instanceof Object && react_cjsImport0.default.constructor === Object && m.default)});"
-`;
+exports[`rewrite commonjs imports 1 "import * as React from 'react'" 1`] = `"import react_cjsImport0 from \\"react\\"; const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0 : ({...react_cjsImport0, ...(react_cjsImport0.default instanceof Object && react_cjsImport0.default.constructor === Object && m.default)});"`;
 
-exports[`rewrite commonjs imports 2 "import React, { useState } from 'react'" 1`] = `
-"import react_cjsImport0 from \\"react\\";
-const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0;
-const useState = react_cjsImport0[\\"useState\\"];"
-`;
+exports[`rewrite commonjs imports 2 "import React, { useState } from 'react'" 1`] = `"import react_cjsImport0 from \\"react\\"; const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0; const useState = react_cjsImport0[\\"useState\\"];"`;
 
-exports[`rewrite commonjs imports 3 "import { useState } from 'react'" 1`] = `
-"import react_cjsImport0 from \\"react\\";
-const useState = react_cjsImport0[\\"useState\\"];"
-`;
+exports[`rewrite commonjs imports 3 "import { useState } from 'react'" 1`] = `"import react_cjsImport0 from \\"react\\"; const useState = react_cjsImport0[\\"useState\\"];"`;
 
-exports[`rewrite commonjs imports 4 "import { useState, useEffect } from 'react'" 1`] = `
-"import react_cjsImport0 from \\"react\\";
-const useState = react_cjsImport0[\\"useState\\"];
-const useEffect = react_cjsImport0[\\"useEffect\\"];"
-`;
+exports[`rewrite commonjs imports 4 "import { useState, useEffect } from 'react'" 1`] = `"import react_cjsImport0 from \\"react\\"; const useState = react_cjsImport0[\\"useState\\"]; const useEffect = react_cjsImport0[\\"useEffect\\"];"`;
 
-exports[`rewrite commonjs imports 5 "import { useState as something } from 'react'" 1`] = `
-"import react_cjsImport0 from \\"react\\";
-const something = react_cjsImport0[\\"useState\\"];"
-`;
+exports[`rewrite commonjs imports 5 "import { useState as something } from 'react'" 1`] = `"import react_cjsImport0 from \\"react\\"; const something = react_cjsImport0[\\"useState\\"];"`;
 
-exports[`rewrite commonjs imports 6 "import { useState as something, useEffect } from 'react'" 1`] = `
-"import react_cjsImport0 from \\"react\\";
-const something = react_cjsImport0[\\"useState\\"];
-const useEffect = react_cjsImport0[\\"useEffect\\"];"
-`;
+exports[`rewrite commonjs imports 6 "import { useState as something, useEffect } from 'react'" 1`] = `"import react_cjsImport0 from \\"react\\"; const something = react_cjsImport0[\\"useState\\"]; const useEffect = react_cjsImport0[\\"useEffect\\"];"`;
 
-exports[`rewrite commonjs imports 7 "import { useState as something, useEffect as alias } from 'react'" 1`] = `
-"import react_cjsImport0 from \\"react\\";
-const something = react_cjsImport0[\\"useState\\"];
-const alias = react_cjsImport0[\\"useEffect\\"];"
-`;
+exports[`rewrite commonjs imports 7 "import { useState as something, useEffect as alias } from 'react'" 1`] = `"import react_cjsImport0 from \\"react\\"; const something = react_cjsImport0[\\"useState\\"]; const alias = react_cjsImport0[\\"useEffect\\"];"`;
 
-exports[`rewrite commonjs imports 8 "import { default as Default } from 'react'" 1`] = `
-"import react_cjsImport0 from \\"react\\";
-const Default = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0;"
-`;
+exports[`rewrite commonjs imports 8 "import { default as Default } from 'react'" 1`] = `"import react_cjsImport0 from \\"react\\"; const Default = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0;"`;
 
-exports[`rewrite commonjs imports 9 "import { default as Default, useEffect } from 'react'" 1`] = `
-"import react_cjsImport0 from \\"react\\";
-const Default = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0;
-const useEffect = react_cjsImport0[\\"useEffect\\"];"
-`;
+exports[`rewrite commonjs imports 9 "import { default as Default, useEffect } from 'react'" 1`] = `"import react_cjsImport0 from \\"react\\"; const Default = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0; const useEffect = react_cjsImport0[\\"useEffect\\"];"`;

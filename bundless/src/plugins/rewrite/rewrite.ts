@@ -80,9 +80,7 @@ export async function rewriteImports({
     }
     graph.ensureEntry(importerFilePath)
     try {
-        if (!onResolveLock.isReady) {
-            throw new Error(`Cannot run rewrite when onResolveLock is locked!`)
-        }
+        await onResolveLock.wait()
         let imports: ImportSpecifier[] = []
         try {
             imports = parseImports(source)[0]
@@ -105,12 +103,9 @@ export async function rewriteImports({
 
         const magicString = new MagicString(source)
 
-
         // TODO add the client script in html, this way i can make the page reload also when there is an error during rewrite
         if (isHmrEnabled) {
             magicString.prepend(hmrPreamble)
-        } else {
-            magicString.prepend(`import '${CLIENT_PUBLIC_PATH}';\n`)
         }
         const currentNode = graph.ensureEntry(importerFilePath, {
             isHmrEnabled,
@@ -126,7 +121,7 @@ export async function rewriteImports({
                 se: expEnd,
             } = imports[i]
             let id = source.substring(start, end)
-            const hasViteIgnore = /\/\*\s*@vite-ignore\s*\*\//.test(id)
+            const hasIgnore = /\/\*\s*@bundless-ignore\s*\*\//.test(id)
             let hasLiteralDynamicId = false
             const isDynamicImport = dynamicIndex >= 0
             if (isDynamicImport) {
@@ -252,7 +247,7 @@ export async function rewriteImports({
                     currentNode.importees.add(cleanImportee)
                     // logger.log(`${importerFilePath} imports ${cleanImportee}`)
                 }
-            } else if (id !== 'import.meta' && !hasViteIgnore) {
+            } else if (id !== 'import.meta' && !hasIgnore) {
                 logger.log(
                     chalk.yellow(
                         `Cannot rewrite dynamic import(${id}) in ${importerFilePath}.`,
@@ -260,34 +255,6 @@ export async function rewriteImports({
                 )
             }
         }
-
-        // if (hasHMR) {
-        //     debugHmr(`rewriting ${importer} for HMR.`)
-        //     rewriteFileWithHMR(root, source, importer, resolver, s)
-        //     hasReplaced = true
-        // }
-
-        // if (hasEnv) {
-        //     debug(`    injecting import.meta.env for ${importer}`)
-        //     s.prepend(
-        //         `import __VITE_ENV__ from "${envPublicPath}"; ` +
-        //             `import.meta.env = __VITE_ENV__; `,
-        //     )
-        //     hasReplaced = true
-        // }
-
-        // since the importees may have changed due to edits,
-        // check if we need to remove this importer from certain importees
-        // if (prevImportees) {
-        //     prevImportees.forEach((importee) => {
-        //         if (!currentImportees.has(importee)) {
-        //             const importers = importerMap.get(importee)
-        //             if (importers) {
-        //                 importers.delete(importer)
-        //             }
-        //         }
-        //     })
-        // }
 
         return {
             contents: magicString.toString(),
@@ -298,18 +265,4 @@ export async function rewriteImports({
             `Error: module imports rewrite failed for ${importerFilePath}\n` + e
         throw e
     }
-}
-
-function removeUnRelatedHmrQuery(url: string) {
-    const { path, query } = parseWithQuery(url)
-    delete query.t
-    delete query.import
-    if (Object.keys(query).length) {
-        return path + '?' + qs.stringify(query)
-    }
-    return path
-}
-
-function renderIsObjectExpression(x) {
-    return `(${x} instanceof Object && ${x}.constructor === Object)`
 }

@@ -1,3 +1,4 @@
+import { parse } from '../../utils'
 import { transformCjsImport } from './commonjs'
 
 describe('rewrite commonjs imports', () => {
@@ -16,6 +17,8 @@ describe('rewrite commonjs imports', () => {
     for (let [i, testCase] of cases.entries()) {
         test(`${i} "${testCase}"`, () => {
             const res = transformCjsImport(testCase, 'react', 'react', 0)
+            expect(res).not.toContain('\n')
+            parse(res) // check that it's valid code
             expect(res).toMatchSnapshot()
         })
     }
