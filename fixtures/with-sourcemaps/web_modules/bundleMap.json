@@ -1,3 +1,4 @@
 {
-    "../../node_modules/react/index.js": "web_modules/index.js"
+    "../../node_modules/react/index.js": "web_modules/react/index.js",
+    "../../node_modules/source-map-support/source-map-support.js": "web_modules/source-map-support/source-map-support.js"
 }

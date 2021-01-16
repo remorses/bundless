@@ -136,11 +136,13 @@ export async function createDevApp(server: net.Server, config: Config) {
             plugins.CssPlugin(),
             plugins.JSONPlugin(),
             plugins.ResolveSourcemapPlugin(),
-            ...(config.plugins || []), // TODO where should i put user plugins? i should let user override onResolve, but i should also run rewrite on user outputs
-            plugins.RewritePlugin(),
             plugins.HtmlTransformUrlsPlugin({
+                // must come before rewrite to not warn about the client script not having type=module
                 transforms: [rewriteScriptUrlsTransform],
             }),
+            plugins.SourceMapSupportPlugin(), // adds source map to errors traces, must be after hmr client plugin
+            ...(config.plugins || []), // TODO where should i put user plugins? i should let user override onResolve, but i should also run rewrite on user outputs
+            plugins.RewritePlugin(),
         ].map((plugin) => ({
             ...plugin,
             name: 'serve-' + plugin.name,
@@ -305,7 +307,9 @@ export async function createDevApp(server: net.Server, config: Config) {
     app.use(middlewares.historyFallbackMiddleware({ root, pluginsExecutor }))
     app.use(middlewares.staticServeMiddleware({ root }))
     app.use(
-        middlewares.staticServeMiddleware({ root: path.resolve(root, 'public') }),
+        middlewares.staticServeMiddleware({
+            root: path.resolve(root, 'public'),
+        }),
     )
 
     app.use(etagMiddleware())
@@ -363,7 +367,6 @@ export const rewriteScriptUrlsTransform = (tree: Node) => {
                 logger.warn(
                     `<script src="${importPath}"> is missing type="module". Only module scripts are handled by Bundless`,
                 )
-                return node
             }
             const { query } = parseWithQuery(importPath)
             if (query?.namespace != null) {

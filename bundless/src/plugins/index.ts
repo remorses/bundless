@@ -9,6 +9,7 @@ export { UrlResolverPlugin } from './url-resolver'
 export { HtmlTransformUrlsPlugin } from './html-transform'
 export { HtmlResolverPlugin } from './html-resolver'
 export { HtmlIngestPlugin } from './html-ingest'
+export { SourceMapSupportPlugin } from './source-map-support'
 export {
     NodeModulesPolyfillPlugin,
     NodeResolvePlugin,
