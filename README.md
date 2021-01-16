@@ -13,7 +13,7 @@
 -   Bundless serves native ES modules to the browser, removing the overhead of parsing each module before serving
 -   Bundless uses a superset of [esbuild plugin system](https://esbuild.github.io/plugins/) to let users enrich its capabilities
 
-## What's the difference with tools like vite?
+## What's the difference with tools like vite?
 
 Bundless is very similar to vite, both serve native es modules to the browser and build a bundles version for production.
 
