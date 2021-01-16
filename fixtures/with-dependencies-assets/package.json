@@ -4,6 +4,6 @@
     "main": "main.js",
     "private": true,
     "dependencies": {
-        "tailwindcss": "1.7.2"
+        "tailwindcss": "^1.7.2"
     }
 }
