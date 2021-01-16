@@ -2,8 +2,6 @@
     let count: number = 0
     let increment = () => count++
     let decrement = () => count--
-
-    
 </script>
 
 <div>counts: {count}</div>
@@ -15,4 +13,3 @@
         background-color: red;
     }
 </style>
-
