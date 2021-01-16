@@ -442,18 +442,7 @@ export class ErrorOverlay extends CommonOverlay {
         }
         const message = getErrorMessageMappedSource(err.message);
         this.displayText('.message-body', message.trim());
-        // const [file] = (err.loc?.file || err.id || 'unknown file').split(`?`)
-        // if (err.loc) {
-        //     this.displayText(
-        //         '.file',
-        //         `${file}:${err.loc.line}:${err.loc.column}`,
-        //         true,
-        //     )
-        // } else if (err.id) {
-        //     this.displayText('.file', file)
-        // }
         const stack = getErrorStackMappedSource(err.stack);
-        console.log({ stack }, err.stack);
         this.displayText('.stack', stack.trim(), true);
         this.root.querySelector('.window').addEventListener('click', (e) => {
             e.stopPropagation();
