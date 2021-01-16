@@ -7,13 +7,20 @@
     <br/>
 </div>
 
-## What's the difference with traditional tools like Webpack?
+# Features
+
+-   10x faster than traditional bundlers
+-   Error panel with sourcemap support
+-   jsx, typescript out of the box
+-   import assets, import css
+
+### What's the difference with traditional tools like Webpack?
 
 -   Faster dev server times and faster build speeds (thanks to [esbuild](https://esbuild.github.io))
 -   Bundless serves native ES modules to the browser, removing the overhead of parsing each module before serving
 -   Bundless uses a superset of [esbuild plugin system](https://esbuild.github.io/plugins/) to let users enrich its capabilities
 
-## What's the difference with tools like vite?
+### What's the difference with tools like vite?
 
 Bundless is very similar to vite, both serve native es modules to the browser and build a bundles version for production.
 

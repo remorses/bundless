@@ -1,0 +1,9 @@
+{
+    "name": "fixtures-with-svelte",
+    "version": "0.0.0",
+    "main": "main.js",
+    "private": true,
+    "dependencies": {
+        "svelte": "^3.31.2"
+    }
+}

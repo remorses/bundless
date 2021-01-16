@@ -33,9 +33,6 @@ interface HotAcceptPayload {
 interface ConnectPayload {
     type: 'connected'
 }
-interface PingPayload {
-    type: 'ping'
-}
 
 export interface OverlayErrorPayload {
     type: 'overlay-error'
@@ -47,11 +44,6 @@ export interface OverlayErrorPayload {
         frame?: string
         plugin?: string
         pluginCode?: string
-        loc?: {
-            file?: string
-            line: number
-            column: number
-        }
     }
 }
 

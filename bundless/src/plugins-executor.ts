@@ -381,7 +381,7 @@ export class PluginsExecutor {
 
     private wrapPluginForEsbuild(plugin: Plugin): esbuild.Plugin {
         const pluginsExecutor: PluginsExecutor = this
-
+        const ctx = this.ctx
         return {
             name: plugin.name,
             setup({ onLoad, onResolve }) {
@@ -390,7 +390,7 @@ export class PluginsExecutor {
                     // the plugin transform is already inside pluginsExecutor
                     onTransform() {},
                     onClose() {},
-                    ctx: pluginsExecutor.ctx,
+                    ctx,
                     pluginsExecutor,
 
                     // wrap onLoad to execute other plugins transforms

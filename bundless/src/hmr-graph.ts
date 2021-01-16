@@ -22,6 +22,7 @@ export interface HmrNode {
     lastUsedTimestamp: number
     isHmrEnabled?: boolean
     hasHmrAccept?: boolean
+    computedModules?: Set<OsAgnosticPath>
 }
 
 export class HmrGraph {
@@ -193,6 +194,19 @@ export class HmrGraph {
                     path: importPath,
                     updateID: ++node.lastUsedTimestamp,
                 })
+                // computed nodes are virtual nodes whose code depends on another node
+                if (node.computedModules) {
+                    for (let computed of node.computedModules) {
+                        const node = graph.nodes[computed]
+                        node.dirtyImportersCount++
+                        messages.push({
+                            type: 'update',
+                            namespace: 'file', // TODO do not hard code namespace for computed nodes
+                            path: fileToImportPath(root, computed),
+                            updateID: ++node.lastUsedTimestamp,
+                        })
+                    }
+                }
             }
             // reached a boundary, stop hmr propagation
             if (node.hasHmrAccept) {

@@ -1,15 +1,11 @@
 import chalk from 'chalk'
 import { ImportSpecifier, parse as parseImports } from 'es-module-lexer'
-import LRUCache from 'lru-cache'
 import MagicString from 'magic-string'
-import { SourceMap } from 'module'
 import path from 'path'
-import qs from 'qs'
 import { CLIENT_PUBLIC_PATH, hmrPreamble } from '../../constants'
 import { HmrGraph } from '../../hmr-graph'
 import { logger } from '../../logger'
 import { PluginHooks, PluginsExecutor } from '../../plugins-executor'
-import { osAgnosticPath } from '../../utils'
 import { onResolveLock } from '../../serve'
 import {
     appendQuery,
@@ -17,7 +13,7 @@ import {
     fileToImportPath,
     isExternalUrl,
     jsTypeRegex,
-    parseWithQuery,
+    osAgnosticPath,
 } from '../../utils'
 import {
     generateNamespaceExport,
@@ -25,9 +21,7 @@ import {
     transformCjsImport,
 } from './commonjs'
 
-const rewriteCache = new LRUCache({ max: 1024 })
-
-export function RewritePlugin({} = {}) {
+export function RewritePlugin({ filter = jsTypeRegex } = {}) {
     return {
         name: 'rewrite',
         setup: ({
@@ -41,7 +35,7 @@ export function RewritePlugin({} = {}) {
             if (isBuild || !graph) {
                 return
             }
-            onTransform({ filter: jsTypeRegex }, async (args) => {
+            onTransform({ filter }, async (args) => {
                 const { contents, map } = await rewriteImports({
                     graph,
                     namespace: args.namespace || 'file',

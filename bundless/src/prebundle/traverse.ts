@@ -36,7 +36,6 @@ export async function traverseWithEsbuild({
     esbuildCwd,
     root,
     plugins: userPlugins,
-    esbuildOptions = {},
     stopTraversing,
 }: Args): Promise<string[]> {
     const destLoc = await fsp.realpath(
@@ -92,7 +91,7 @@ export async function traverseWithEsbuild({
         plugins: allPlugins,
         ctx: {
             isBuild: true,
-            config: { root, plugins: userPlugins },
+            config: { root },
             root,
         },
     })
@@ -101,19 +100,14 @@ export async function traverseWithEsbuild({
         const metafile = path.join(destLoc, 'meta.json')
         // logger.log(`Running esbuild in cwd '${process.cwd()}'`)
 
-        await build(
-            deepmerge(
-                {
-                    ...commonEsbuildOptions,
-                    define: generateDefineObject({}),
-                    entryPoints,
-                    outdir: destLoc,
-                    metafile,
-                    plugins: pluginsExecutor.esbuildPlugins(),
-                } as BuildOptions,
-                esbuildOptions,
-            ),
-        )
+        await build({
+            ...commonEsbuildOptions,
+            define: generateDefineObject({}),
+            entryPoints,
+            outdir: destLoc,
+            metafile,
+            plugins: pluginsExecutor.esbuildPlugins(),
+        })
         let meta: Metadata = JSON.parse(
             await (await fsp.readFile(metafile)).toString(),
         )

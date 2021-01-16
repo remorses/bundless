@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/with-svelte: build 1`] = `
+Array [
+  "index.css",
+  "index.html",
+  "index.js",
+  "metafile.json",
+]
+`;
+
+exports[`snapshots fixtures/with-svelte: content-type headers 1`] = `
+Object {
+  "http://127.0.0.1:9000/App.svelte.css?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/App.svelte?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
+  "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/chunk.R5HXGNJP.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/svelte-hmr/runtime/hot-api-esm.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/svelte-hmr/runtime/proxy-adapter-dom.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/web_modules/svelte/internal/index.js?namespace=file": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/with-svelte: mirror 1`] = `
+Array [
+  "_hmr_client.js",
+  "App.svelte",
+  "App.svelte.css",
+  "index.html",
+  "main.js",
+  "web_modules/chunk.R5HXGNJP.js",
+  "web_modules/svelte-hmr/runtime/hot-api-esm.js",
+  "web_modules/svelte-hmr/runtime/proxy-adapter-dom.js",
+  "web_modules/svelte/internal/index.js",
+]
+`;
+
+exports[`snapshots fixtures/with-svelte: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/App.svelte.css?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/App.svelte?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/App.svelte?namespace=file",
+  },
+  Object {
+    "importPath": "/App.svelte.css?namespace=file",
+    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/App.svelte.css?namespace=file",
+  },
+  Object {
+    "importPath": "/main.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.R5HXGNJP.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/svelte-hmr/runtime/hot-api-esm.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.R5HXGNJP.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/chunk.R5HXGNJP.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/web_modules/svelte/internal/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.R5HXGNJP.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/svelte-hmr/runtime/hot-api-esm.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/svelte-hmr/runtime/hot-api-esm.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/svelte-hmr/runtime/proxy-adapter-dom.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/svelte-hmr/runtime/proxy-adapter-dom.js?namespace=file",
+  },
+  Object {
+    "importPath": "/web_modules/svelte/internal/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/svelte/internal/index.js?namespace=file",
+  },
+]
+`;

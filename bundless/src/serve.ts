@@ -225,10 +225,7 @@ export async function createDevApp(server: net.Server, config: Config) {
                 entryPoints,
                 filter: (p) => needsPrebundle(config, p),
                 dest: path.resolve(root, WEB_MODULES_PATH),
-                plugins: new PluginsExecutor({
-                    ctx: executorCtx,
-                    plugins: config.plugins || [],
-                }).esbuildPlugins(),
+                plugins: config.plugins || [],
                 root,
             }).catch((e) => {
                 graph.sendHmrMessage({
