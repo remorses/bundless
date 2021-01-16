@@ -213,7 +213,10 @@ socket.addEventListener('message', ({ data: _data }) => {
         return
     }
     if (data.type === 'update') {
-        // TODO reload if error overly is open
+        if (ErrorOverlay.isOpen()) {
+            log(`error overlay is open: reloading`)
+            return reload()
+        }
         log('message: update', data)
         runModuleAccept(data)
             .then((ok) => {
@@ -387,11 +390,18 @@ class CommonOverlay extends HTMLElement {
     root?: ShadowRoot
     static overlayId: string = 'overlay'
 
+    static isOpen() {
+        const elements = document.querySelectorAll(this.overlayId)
+        return elements.length > 0
+    }
+
     static show(arg) {
         if (!enableOverlay) return
         this.clear()
+
         // @ts-ignore
-        document.body.appendChild(new this(arg))
+        const instance = new this(arg)
+        document.body.appendChild(instance)
     }
 
     static clear() {
