@@ -43,7 +43,7 @@
       ]
     },
     "fixtures/with-many-dependencies/node_modules/preact/dist/preact.module.js": {
-      "bytes": 10206,
+      "bytes": 10290,
       "imports": []
     },
     "fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js": {
@@ -185,13 +185,13 @@
       ],
       "inputs": {
         "fixtures/with-many-dependencies/node_modules/preact/dist/preact.module.js": {
-          "bytesInOutput": 12596
+          "bytesInOutput": 12714
         },
         "fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js": {
-          "bytesInOutput": 3538
+          "bytesInOutput": 3539
         }
       },
-      "bytes": 121263
+      "bytes": 124402
     },
     "fixtures/with-linked-workspace/web_modules/node_modules/react-dom/index.js": {
       "imports": [

@@ -1,4 +1,3 @@
-import '/_hmr_client.js?namespace=hmr-client';
 import image from '/image.png?namespace=file'
 import '/file.css?namespace=file'
 

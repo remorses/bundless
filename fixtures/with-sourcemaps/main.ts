@@ -16,5 +16,10 @@ function Comp() {
 
 Comp
 
+
 console.log(new Error('I should be on line 20'))
-console.log({ ...new Error('I should be on line 20') })
+
+
+if (import.meta.hot) {
+    import.meta.hot.accept()
+}

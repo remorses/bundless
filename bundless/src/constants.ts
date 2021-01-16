@@ -49,7 +49,4 @@ export const importableAssets = [
     '.ttf',
 ]
 
-export const hmrPreamble = `
-import * as  __HMR__ from '${CLIENT_PUBLIC_PATH}';
-import.meta.hot = __HMR__.createHotContext(import.meta.url);
-`
+export const hmrPreamble = `import * as  __HMR__ from '${CLIENT_PUBLIC_PATH}'; import.meta.hot = __HMR__.createHotContext(import.meta.url); `
