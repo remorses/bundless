@@ -20,7 +20,7 @@ export function EsbuildTransformPlugin({} = {}) {
                 return transform({
                     src: args.contents,
                     filePath: args.path,
-                    jsxOption: config.jsx,
+                    config,
                 })
             })
             onClose({}, () => {
@@ -76,24 +76,24 @@ export const stopService = async () => {
 export const transform = async ({
     src,
     filePath,
-    jsxOption,
+    config,
 }: {
     src: string
     filePath: string
-    jsxOption?: Config['jsx']
+    config?: Config
     exitOnFailure?: boolean
 }): Promise<OnTransformResult> => {
     const service = await ensureService()
 
     const options: TransformOptions = {
-        define: generateDefineObject({}),
+        define: generateDefineObject({ config }), // TODO in transform defines are injected via window so errors are easier to understand
         loader: path.extname(filePath).slice(1) as Loader,
         sourcemap: true,
         format: 'esm',
         // ensure source file name contains full query
         sourcefile: filePath,
         target: 'es2020',
-        ...resolveJsxOptions(jsxOption),
+        ...resolveJsxOptions(config?.jsx),
     }
     try {
         const result = await service.transform(src, options)
@@ -113,7 +113,7 @@ export const transform = async ({
             //         `\nimport { jsx } from '${vueJsxPublicPath}'` +
             //         `\nimport { Fragment } from 'vue'`
             // }
-            if (jsxOption === 'preact') {
+            if (config?.jsx === 'preact') {
                 contents += `\nimport { h, Fragment } from 'preact'`
             }
         }

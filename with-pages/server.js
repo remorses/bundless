@@ -1,9 +1,18 @@
 const { createServer } = require('@bundless/plugin-react-paged')
-
-console.log({ __dirname })
+const { once } = require('events')
 
 const isProduction = false
 
-createServer({ isProduction, root: __dirname }).then((app) =>
-    app.listen(8080, () => console.log(`Listening at http://localhost:8080`)),
-)
+async function start({ port = 8080 }) {
+    const app = await createServer({ isProduction, root: __dirname })
+    const server = app.listen(port, () =>
+        console.log(`Listening at http://localhost:${port}`),
+    )
+    await once(server, 'listening')
+}
+
+if (require.main === module) {
+    start({})
+}
+
+exports.start = start

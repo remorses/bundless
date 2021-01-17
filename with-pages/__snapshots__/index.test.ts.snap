@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages paths return html /: / 1`] = `
+"<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <script type=\\"module\\">
+      import RefreshRuntime from \\"/_react-refresh-runtime_.js?namespace=react-refresh-runtime\\";
+      RefreshRuntime.injectIntoGlobalHook(window);
+      window.$RefreshReg$ = () => {};
+      window.$RefreshSig$ = () => (type) => type;
+      window.__bundless_plugin_react_preamble_installed__ = true;
+    </script>
+    <script src=\\"/__source-map-support.js?namespace=source-map-support\\"></script>
+    <script>
+      window.sourceMapSupport = sourceMapSupport;
+      sourceMapSupport.install();
+    </script>
+
+    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
+    <script
+      type=\\"module\\"
+      src=\\"/_bundless_paged_entry_.jsx?namespace=file\\"
+    ></script>
+    <script>
+      window.INITIAL_STATE = { statusCode: 200, routeData: {} };
+    </script>
+    <div id=\\"_maho\\">
+      <div>
+        <p>Ciao</p>
+        <p></p>
+        <a href=\\"/about\\">/about with a</a><br /><a href=\\"/about\\"
+          >/about with Link</a
+        >
+        <p>hello</p>
+      </div>
+    </div>
+  </body>
+</html>
+"
+`;
+
+exports[`pages paths return html /about: /about 1`] = `
+"<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <script type=\\"module\\">
+      import RefreshRuntime from \\"/_react-refresh-runtime_.js?namespace=react-refresh-runtime\\";
+      RefreshRuntime.injectIntoGlobalHook(window);
+      window.$RefreshReg$ = () => {};
+      window.$RefreshSig$ = () => (type) => type;
+      window.__bundless_plugin_react_preamble_installed__ = true;
+    </script>
+    <script src=\\"/__source-map-support.js?namespace=source-map-support\\"></script>
+    <script>
+      window.sourceMapSupport = sourceMapSupport;
+      sourceMapSupport.install();
+    </script>
+
+    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
+    <script
+      type=\\"module\\"
+      src=\\"/_bundless_paged_entry_.jsx?namespace=file\\"
+    ></script>
+    <script>
+      window.INITIAL_STATE = { statusCode: 200, routeData: {} };
+    </script>
+    <div id=\\"_maho\\">
+      <div>
+        <p>About me:</p>
+        <p>I Am Me</p>
+        <p>who?</p>
+        <p>...</p>
+        <p>cool</p>
+        <br />
+        <p></p>
+      </div>
+    </div>
+  </body>
+</html>
+"
+`;
+
+exports[`pages paths return html /slugs/all/something/else: /slugs/all/something/else 1`] = `
+"<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <script type=\\"module\\">
+      import RefreshRuntime from \\"/_react-refresh-runtime_.js?namespace=react-refresh-runtime\\";
+      RefreshRuntime.injectIntoGlobalHook(window);
+      window.$RefreshReg$ = () => {};
+      window.$RefreshSig$ = () => (type) => type;
+      window.__bundless_plugin_react_preamble_installed__ = true;
+    </script>
+    <script src=\\"/__source-map-support.js?namespace=source-map-support\\"></script>
+    <script>
+      window.sourceMapSupport = sourceMapSupport;
+      sourceMapSupport.install();
+    </script>
+
+    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
+    <script
+      type=\\"module\\"
+      src=\\"/_bundless_paged_entry_.jsx?namespace=file\\"
+    ></script>
+    <script>
+      window.INITIAL_STATE = { statusCode: 200, routeData: {} };
+    </script>
+    <div id=\\"_maho\\">
+      <div><p>Catch all:</p></div>
+    </div>
+  </body>
+</html>
+"
+`;
+
+exports[`pages paths return html /slugs/slug-name: /slugs/slug-name 1`] = `
+"<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <script type=\\"module\\">
+      import RefreshRuntime from \\"/_react-refresh-runtime_.js?namespace=react-refresh-runtime\\";
+      RefreshRuntime.injectIntoGlobalHook(window);
+      window.$RefreshReg$ = () => {};
+      window.$RefreshSig$ = () => (type) => type;
+      window.__bundless_plugin_react_preamble_installed__ = true;
+    </script>
+    <script src=\\"/__source-map-support.js?namespace=source-map-support\\"></script>
+    <script>
+      window.sourceMapSupport = sourceMapSupport;
+      sourceMapSupport.install();
+    </script>
+
+    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
+    <script
+      type=\\"module\\"
+      src=\\"/_bundless_paged_entry_.jsx?namespace=file\\"
+    ></script>
+    <script>
+      window.INITIAL_STATE = { statusCode: 200, routeData: {} };
+    </script>
+    <div id=\\"_maho\\">
+      <div><p>Slug:</p></div>
+    </div>
+  </body>
+</html>
+"
+`;

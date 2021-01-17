@@ -30,7 +30,7 @@ import * as middlewares from './middleware'
 import * as plugins from './plugins'
 import { PluginsExecutor, PluginsExecutorCtx } from './plugins-executor'
 import { prebundle } from './prebundle'
-import { BundleMap } from './prebundle/esbuild'
+import { BundleMap, generateDefineObject } from './prebundle/esbuild'
 import { isUrl } from './prebundle/support'
 import {
     appendQuery,
@@ -186,6 +186,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             filter: (p) => needsPrebundle(config, p),
             dest: path.resolve(root, WEB_MODULES_PATH),
             plugins: config.plugins || [],
+            define: generateDefineObject({ config }),
             root,
         })
         await updateHash(hashPath, depsHash)
@@ -225,6 +226,7 @@ export async function createDevApp(server: net.Server, config: Config) {
                 entryPoints,
                 filter: (p) => needsPrebundle(config, p),
                 dest: path.resolve(root, WEB_MODULES_PATH),
+                define: generateDefineObject({ config }),
                 plugins: config.plugins || [],
                 root,
             }).catch((e) => {
@@ -337,10 +339,7 @@ async function getDepsHash(root: string) {
         return ''
     }
     const content = await (await fs.readFile(lockfileLoc, 'utf-8')).toString()
-    return createHash('sha1')
-        .update(content)
-        .digest('base64')
-        .trim()
+    return createHash('sha1').update(content).digest('base64').trim()
 }
 
 async function updateHash(hashPath: string, newHash: string) {

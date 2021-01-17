@@ -47,28 +47,26 @@ export const commonEsbuildOptions: esbuild.BuildOptions = {
             })),
         ),
     },
-    define: generateDefineObject({}),
+    define: generateDefineObject({ config: {} }),
 }
 
 export function generateDefineObject({
-    env = {},
+    config,
     platform = 'browser' as Platform,
-    define = {},
 }) {
     if (platform === 'node') {
         return {
-            ...define, // TODO mock browser stuff like fetch? this allows me to target other platform like cloudflare workers ...
+            'process.browser': 'false',
+            ...config.define, // TODO mock browser stuff like fetch? this allows me to target other platform like cloudflare workers ...
         }
     }
     const noop = 'String'
     return {
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'dev'),
-        ...generateEnvReplacements(env),
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+        ...generateEnvReplacements(config.env || {}),
         global: 'window',
         __filename: '""',
         __dirname: '""',
-        ...define,
-
         // TODO remove defines and use inject instead
         'process.env': '{}',
         'process.browser': 'true',
@@ -81,6 +79,7 @@ export function generateDefineObject({
         'process.chdir': noop,
         clearImmediate: noop,
         setImmediate: noop,
+        ...config.define,
     }
 }
 
@@ -103,10 +102,10 @@ export async function bundleWithEsBuild({
     root,
     plugins: userPlugins,
     dest: destLoc,
+    define,
     ...options
 }) {
     const {
-        env = {},
         alias = {},
         externalPackages = [],
         minify = false,
@@ -134,7 +133,7 @@ export async function bundleWithEsBuild({
         entryPoints,
         outdir: destLoc,
         metafile,
-        define: generateDefineObject({ env }),
+        define,
         plugins: new PluginsExecutor({
             ctx: {
                 config: { root },

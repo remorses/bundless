@@ -27,6 +27,7 @@ type Args = {
     entryPoints: string[]
     plugins: Plugin[]
     esbuildOptions?: Partial<BuildOptions>
+    define: Record<string, string>
     // resolver?: (cwd: string, id: string) => string
     stopTraversing?: (resolvedPath: string) => boolean
 }
@@ -36,6 +37,7 @@ export async function traverseWithEsbuild({
     esbuildCwd,
     root,
     plugins: userPlugins,
+    define,
     stopTraversing,
 }: Args): Promise<string[]> {
     const destLoc = await fsp.realpath(
@@ -102,7 +104,7 @@ export async function traverseWithEsbuild({
 
         await build({
             ...commonEsbuildOptions,
-            define: generateDefineObject({}),
+            define,
             entryPoints,
             outdir: destLoc,
             metafile,

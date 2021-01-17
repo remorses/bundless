@@ -20,4 +20,3 @@ export default function Page() {
     )
 }
 
-console.log('loaded')

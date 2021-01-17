@@ -17,7 +17,7 @@ import { matchPath } from 'react-router-dom/'
 import { MahoContext } from './client'
 import { CLIENT_ENTRY, ROUTES_ENTRY } from './constants'
 import { Plugin } from './plugin'
-import { getPagesRoutes, getRpcRoutes, rpcPathForFile } from './routes'
+import { getPagesRoutes, getRpcRoutes } from './routes'
 
 export async function createServer({
     isProduction = false,
@@ -34,6 +34,9 @@ export async function createServer({
         prebundle: {
             force: true, // TODO remove this after finish prototyping
         },
+        define: {
+            'process.browser': 'true',
+        },
         root,
         plugins: [Plugin(), ...(!isProduction ? [ReactRefreshPlugin()] : [])],
     }
@@ -46,6 +49,9 @@ export async function createServer({
             ...baseConfig,
             build: {
                 outDir: builtAssets,
+            },
+            define: {
+                'process.browser': 'true',
             },
             entries: [CLIENT_ENTRY],
         })
@@ -61,6 +67,9 @@ export async function createServer({
         } = await createDevApp(server, {
             ...baseConfig,
             platform: 'browser',
+            define: {
+                'process.browser': 'true',
+            },
             entries: [CLIENT_ENTRY],
         })
         pluginsExecutor = devPluginsExecutor
@@ -74,12 +83,16 @@ export async function createServer({
     const { bundleMap, rebuild } = await build({
         ...baseConfig,
         logger: ssrLogger,
+        define: {
+            'process.browser': 'false',
+        },
         // TODO resolve react and react dom to the user's installed react and react dom
         plugins: [Plugin()],
         entries: [
             ssrEntry, // TODO rebuild cannot add new entries, this means that to add a new rpc file you need to reload the server
             ...(await getRpcRoutes({ rpcDir })).map((x) => x.absolute),
         ],
+
         platform: 'node',
         build: {
             outDir: ssrOutDir,
@@ -95,10 +108,11 @@ export async function createServer({
 
         const foundRoute = rpcRoutes.find((route) => {
             const match = matchPath(ctx.path, {
-                path: rpcPathForFile({ filePath: route.absolute, root }),
+                path: route.path,
                 exact: true,
-                strict: false,
+                strict: true,
             })
+
             return match
         })
 
@@ -134,18 +148,21 @@ export async function createServer({
     app.use(async (ctx, next) => {
         if (ctx.method !== 'GET' && !ctx.is('html')) return next()
 
-        const routesPaths = await (
-            await getPagesRoutes({ pagesDir })
-        ).map((x) => path.posix.join(x.path, 'index.html'))
-        // TODO use react router utils instead of appending index.html
+        const pagesRoutes = await getPagesRoutes({ pagesDir })
 
-        const indexPath = ctx.path.endsWith('.html')
-            ? ctx.path
-            : path.posix.join(ctx.path, 'index.html')
+        const foundRoute = pagesRoutes.find((route) => {
+            const match = matchPath(ctx.path, {
+                path: route.path,
+                exact: true,
+                strict: true,
+            })
+            if (match) {
+                logger.log(`${ctx.path} matched ${route.path}`)
+            }
+            return match
+        })
 
-        const routeFound = routesPaths.find((x) => x === indexPath)
-
-        if (!routeFound) {
+        if (!foundRoute) {
             return next()
         }
 
@@ -200,7 +217,7 @@ export async function createServer({
         if (pluginsExecutor) {
             const transformResult = await pluginsExecutor.transform({
                 contents: fullHtml,
-                path: importPathToFile(root, indexPath),
+                path: foundRoute.absolute + '.html',
             })
             if (transformResult) {
                 fullHtml = transformResult.contents || ''

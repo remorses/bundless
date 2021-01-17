@@ -1,16 +1,10 @@
 import { logger, Plugin as PluginType } from '@bundless/cli'
+import { fileToImportPath } from '@bundless/cli/dist/utils'
 import escapeStringRegexp from 'escape-string-regexp'
 import path from 'path'
 import * as uuid from 'uuid'
 import { CLIENT_ENTRY, isJsPage, ROUTES_ENTRY } from './constants'
-import {
-    getPagesRoutes,
-    getRpcRoutes,
-    invalidateCache,
-    rpcPathForFile,
-} from './routes'
-
-
+import { getPagesRoutes, getRpcRoutes, invalidateCache } from './routes'
 
 export function Plugin({} = {}): PluginType {
     const originalRpcFiles = {}
@@ -76,10 +70,10 @@ export function Plugin({} = {}): PluginType {
                     const contents = rpcFunctionTemplate({
                         originalCodeFilename,
                         root,
-                        rpcPublicPath: rpcPathForFile({
-                            filePath: args.path,
+                        rpcPublicPath: fileToImportPath(
                             root,
-                        }),
+                            args.path,
+                        ).replace(/\..*$/, ''), // TODO do rpc routes support slugs? no right?
                     })
                     return {
                         contents,
@@ -239,16 +233,16 @@ export const Routes = () => {
             state.revalidateOnMount = true
         }, [location.pathname])
     }
-    return <Switch>
-        ${routes
-            .map((route) => {
-                return `<Route path="${route.path}"
-                    component={Route_${route.name}}
-                />`
-            })
-            .join('\n')}
-        <Route path="*" component={NotFound} />
-    </Switch>
+    return (
+        <Switch>
+            ${routes
+                .map((route) => {
+                    return `<Route path="${route.path}" component={Route_${route.name}} exact />`
+                })
+                .join('\n')}
+            <Route path="*" component={NotFound} />
+        </Switch>
+    )
 }
 
 class ErrorBoundary extends React.Component {

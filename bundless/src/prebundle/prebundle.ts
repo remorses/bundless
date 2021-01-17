@@ -12,12 +12,13 @@ import { printStats } from './stats'
 import { isEmpty, osAgnosticPath } from '../utils'
 import { traverseWithEsbuild } from './traverse'
 
-export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
+export async function prebundle({ entryPoints, plugins, filter, root, dest, define }) {
     try {
         const traversalResult = await traverseWithEsbuild({
             entryPoints,
             root,
             plugins,
+            define,
             stopTraversing: filter,
             esbuildCwd: process.cwd(),
         })
@@ -42,6 +43,7 @@ export async function prebundle({ entryPoints, plugins, filter, root, dest }) {
             dest,
             root,
             plugins,
+            define,
             entryPoints: dependenciesPaths.map((x) => path.resolve(root, x)),
         })
 

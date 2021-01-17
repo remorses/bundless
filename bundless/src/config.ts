@@ -56,6 +56,7 @@ export type Platform = 'node' | 'browser'
 
 export interface Config {
     server?: ServerConfig
+    define?: Record<string, string>
     prebundle?: PrebundlingConfig
     build?: BuildConfig
     printStats?: boolean

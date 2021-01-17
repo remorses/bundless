@@ -8,6 +8,7 @@ test('traverseWithEsbuild', async () => {
         entryPoints: [entry],
         esbuildCwd: process.cwd(),
         plugins: [],
+        define: {},
         stopTraversing: (x) => x.includes('node_module'),
         root: path.dirname(entry),
     })

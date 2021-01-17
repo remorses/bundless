@@ -56,7 +56,7 @@ export async function build({
 
     const startTime = Date.now()
 
-    const { env = {}, platform = 'browser', root = '' } = config
+    const { platform = 'browser', root = '' } = config
     const isBrowser = platform === 'browser'
     const userPlugins = config.plugins || []
     await fs.remove(outDir)
@@ -144,7 +144,7 @@ export async function build({
         minifySyntax: Boolean(minify),
         minifyWhitespace: Boolean(minify),
         mainFields,
-        define: generateDefineObject({ env, platform }),
+        define: generateDefineObject({ config, platform }),
         plugins: pluginsExecutor.esbuildPlugins(),
         // tsconfig: tsconfigTempFile,
         format: isBrowser ? 'esm' : 'cjs',
