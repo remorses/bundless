@@ -4,11 +4,17 @@ import url from 'url'
 import { format } from 'prettier'
 
 const pages = ['/', '/about', '/slugs/slug-name', '/slugs/all/something/else']
-const PORT = '9090'
+const PORT = '9097'
 
+let stop
 beforeAll(async () => {
     const { start } = require('./server')
-    await start({ port: PORT })
+    const server = await start({ port: PORT })
+    stop = () => server.close()
+})
+
+afterAll(() => {
+    stop && stop()
 })
 
 describe('pages paths return html', () => {

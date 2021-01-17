@@ -9,6 +9,7 @@ async function start({ port = 8080 }) {
         console.log(`Listening at http://localhost:${port}`),
     )
     await once(server, 'listening')
+    return server
 }
 
 if (require.main === module) {
