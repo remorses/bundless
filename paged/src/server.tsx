@@ -22,7 +22,7 @@ import { getPagesRoutes, getRpcRoutes } from './routes'
 export async function createServer({
     isProduction = false,
     root,
-    builtAssets = 'client_out',
+    builtAssets: clientOutDir = 'client_out',
     ssrOutDir = 'ssr_out',
 }) {
     const app = new Koa()
@@ -48,7 +48,7 @@ export async function createServer({
         const { bundleMap } = await build({
             ...baseConfig,
             build: {
-                outDir: builtAssets,
+                outDir: clientOutDir,
             },
             define: {
                 'process.browser': 'true',
@@ -56,10 +56,10 @@ export async function createServer({
             entries: [CLIENT_ENTRY],
         })
         clientScriptSrc = `/${slash(
-            path.relative(builtAssets, bundleMap[CLIENT_ENTRY]),
+            path.relative(clientOutDir, bundleMap[CLIENT_ENTRY]),
         )}`
 
-        app.use(koaStatic(builtAssets, { index: false }))
+        app.use(koaStatic(clientOutDir, { index: false }))
     } else {
         const {
             app: devApp,
@@ -188,28 +188,7 @@ export async function createServer({
             <App Router={StaticRouter} context={context} />,
         )
         const html = renderToStaticMarkup(
-            <MahoContext.Provider value={context}>
-                <html>
-                    <head></head>
-                    <body>
-                        <script type='module' src={clientScriptSrc}></script>
-                        <script
-                            dangerouslySetInnerHTML={{
-                                __html: `window.INITIAL_STATE=${JSON.stringify({
-                                    statusCode: 200,
-                                    routeData: {},
-                                })}`,
-                            }}
-                        ></script>
-                        <div
-                            id='_maho'
-                            dangerouslySetInnerHTML={{
-                                __html: prerenderedHtml,
-                            }}
-                        ></div>
-                    </body>
-                </html>
-            </MahoContext.Provider>,
+            <MainHtml {...{ context, clientScriptSrc, prerenderedHtml }} />,
         )
 
         let fullHtml = `<!DOCTYPE html>\n${html}`
@@ -219,9 +198,8 @@ export async function createServer({
                 contents: fullHtml,
                 path: foundRoute.absolute + '.html',
             })
-            if (transformResult) {
-                fullHtml = transformResult.contents || ''
-            }
+
+            fullHtml = transformResult.contents || ''
         }
         ctx.body = fullHtml
         ctx.status = 200
@@ -236,7 +214,34 @@ export async function createServer({
     return server
 }
 
-function tryRequire(p: string) {
+export function MainHtml({ prerenderedHtml, clientScriptSrc, context }) {
+    return (
+        <MahoContext.Provider value={context}>
+            <html>
+                <head></head>
+                <body>
+                    <script type='module' src={clientScriptSrc}></script>
+                    <script
+                        dangerouslySetInnerHTML={{
+                            __html: `window.INITIAL_STATE=${JSON.stringify({
+                                statusCode: 200,
+                                routeData: {},
+                            })}`,
+                        }}
+                    ></script>
+                    <div
+                        id='_maho'
+                        dangerouslySetInnerHTML={{
+                            __html: prerenderedHtml,
+                        }}
+                    ></div>
+                </body>
+            </html>
+        </MahoContext.Provider>
+    )
+}
+
+export function tryRequire(p: string) {
     try {
         const cachePath = require.resolve(p)
         delete require.cache[cachePath]

@@ -180,15 +180,17 @@ import { useMahoContext, MahoContext } from '@bundless/plugin-react-paged/src/cl
 
 const Suspense = process.browser ? React.Suspense : ({children}) => children
 
+export const routes = {}
+
+export const getStaticPaths = {}
+
 ${routes
     .map((route) => {
         return `
-        let Route_${route.name}
-        let load_${route.name}
         if (process.browser) {
-            Route_${
-                route.name
-            } = React.lazy(() => import("./${path.posix.relative(
+            routes["${
+                route.path
+            }"] = React.lazy(() => import("./${path.posix.relative(
             root,
             route.absolute,
         )}"))
@@ -197,8 +199,10 @@ ${routes
                 root,
                 route.absolute,
             )}")
-            Route_${route.name} = res.default
-            load_${route.name} = res.load
+            routes["${route.path}"] = res.default
+            if (res.getStaticPaths) {
+                getStaticPaths["${route.path}"] = res.getStaticPaths
+            }
         }
         `
     })
@@ -214,16 +218,6 @@ const NotFound = () => {
     return <div>404</div>
 }
 
-export const loadFunctions = process.browser ? undefined : [
-    ${routes
-        .map((route) => {
-            return `{
-            path: "${route.path}",
-            load: load_${route.name}
-        }`
-        })
-        .join(',\n')}
-]
 
 export const Routes = () => {
     if (process.browser) {
@@ -237,7 +231,7 @@ export const Routes = () => {
         <Switch>
             ${routes
                 .map((route) => {
-                    return `<Route path="${route.path}" component={Route_${route.name}} exact />`
+                    return `<Route path="${route.path}" component={routes["${route.path}"]} exact />`
                 })
                 .join('\n')}
             <Route path="*" component={NotFound} />

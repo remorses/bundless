@@ -8,3 +8,8 @@ export default function Page() {
     )
 }
 
+export function getStaticPaths() {
+    return {
+        paths: [{ params: { slug: 'hello1' } }, { params: { slug: 'hello2' } }],
+    }
+}

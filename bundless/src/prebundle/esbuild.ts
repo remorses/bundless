@@ -230,6 +230,7 @@ export function metafileToBundleMap(_options: {
             const inputs = Object.keys(meta.outputs[output].inputs).map((x) =>
                 path.resolve(esbuildCwd, x),
             )
+            // TODO if a file imports other entry points it has not itself in inputs in metafile
             const input = inputs.find((x) => inputEntrypoints.has(x))
             if (!input) {
                 return

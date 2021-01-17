@@ -64,16 +64,30 @@ function getRouteFromPath(relativePath: string) {
         relativePath = path.normalize(relativePath)
     }
 
-    const routePath = `/${relativePath
-        .replace(/\.[a-z]+$/, '') // remove extension
-        .replace(/^index$/, '')
-        .replace(/\/index$/, '')
+    const routePath = `${relativePathToPublicPath(relativePath)
         .replace(/\[\.\.\.([^\]]+)\]/g, '*') // [...slug] becomes *
         .replace(/\[([^\]]+)\]/g, ':$1')}` // [slug] becomes :slug
     return routePath
 }
 
+export function relativePathToPublicPath(relativePath: string) {
+    const p =
+        '/' +
+        relativePath
+            .replace(/\.[a-z]+$/, '') // remove extension
+            .replace(/^index$/, '')
+            .replace(/\/index$/, '')
+    return p
+}
+
 export function invalidateCache(memoFunction) {
     memoFunction.cache.keys.length = 0
     memoFunction.cache.values.length = 0
+}
+
+export function isDynamicRoute(route: Route) {
+    return (
+        /\[\.\.\.([^\]]+)\]/g.test(route.relative) ||
+        /\[([^\]]+)\]/.test(route.relative)
+    )
 }

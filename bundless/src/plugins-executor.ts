@@ -61,7 +61,7 @@ export interface OnTransformArgs {
 }
 
 export interface OnTransformResult {
-    contents?: string
+    contents: string
     map?: any
     loader?: esbuild.Loader
 }
@@ -158,7 +158,7 @@ export class PluginsExecutor {
             return { ...result, namespace: result.namespace || 'file' }
         }
     }
-    async transform(arg: OnTransformArgs): Promise<Maybe<OnTransformResult>> {
+    async transform(arg: OnTransformArgs): Promise<OnTransformResult> {
         let result: OnTransformResult = { contents: arg.contents }
         for (let { callback, options, name } of this.transforms) {
             if (this.matches(options, arg)) {
