@@ -1,0 +1,289 @@
+{
+  "inputs": {
+    "<define:module>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "<define:process>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "<define:process.argv>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "<define:process.env>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "node_modules/object-assign/index.js": {
+      "bytes": 2108,
+      "imports": []
+    },
+    "node_modules/react/cjs/react.development.js": {
+      "bytes": 74538,
+      "imports": [
+        {
+          "path": "node_modules/object-assign/index.js",
+          "kind": "require-call"
+        }
+      ]
+    },
+    "node_modules/react/index.js": {
+      "bytes": 190,
+      "imports": [
+        {
+          "path": "node_modules/react/cjs/react.development.js",
+          "kind": "require-call"
+        }
+      ]
+    },
+    "node_modules/source-map/lib/base64.js": {
+      "bytes": 1540,
+      "imports": []
+    },
+    "node_modules/source-map/lib/base64-vlq.js": {
+      "bytes": 4714,
+      "imports": [
+        {
+          "path": "node_modules/source-map/lib/base64.js",
+          "kind": "require-call"
+        }
+      ]
+    },
+    "node_modules/source-map/lib/util.js": {
+      "bytes": 12950,
+      "imports": []
+    },
+    "node_modules/source-map/lib/array-set.js": {
+      "bytes": 3197,
+      "imports": [
+        {
+          "path": "node_modules/source-map/lib/util.js",
+          "kind": "require-call"
+        }
+      ]
+    },
+    "node_modules/source-map/lib/mapping-list.js": {
+      "bytes": 2339,
+      "imports": [
+        {
+          "path": "node_modules/source-map/lib/util.js",
+          "kind": "require-call"
+        }
+      ]
+    },
+    "node_modules/source-map/lib/source-map-generator.js": {
+      "bytes": 14356,
+      "imports": [
+        {
+          "path": "node_modules/source-map/lib/base64-vlq.js",
+          "kind": "require-call"
+        },
+        {
+          "path": "node_modules/source-map/lib/util.js",
+          "kind": "require-call"
+        },
+        {
+          "path": "node_modules/source-map/lib/array-set.js",
+          "kind": "require-call"
+        },
+        {
+          "path": "node_modules/source-map/lib/mapping-list.js",
+          "kind": "require-call"
+        }
+      ]
+    },
+    "node_modules/source-map/lib/binary-search.js": {
+      "bytes": 4249,
+      "imports": []
+    },
+    "node_modules/source-map/lib/quick-sort.js": {
+      "bytes": 3616,
+      "imports": []
+    },
+    "node_modules/source-map/lib/source-map-consumer.js": {
+      "bytes": 40562,
+      "imports": [
+        {
+          "path": "node_modules/source-map/lib/util.js",
+          "kind": "require-call"
+        },
+        {
+          "path": "node_modules/source-map/lib/binary-search.js",
+          "kind": "require-call"
+        },
+        {
+          "path": "node_modules/source-map/lib/array-set.js",
+          "kind": "require-call"
+        },
+        {
+          "path": "node_modules/source-map/lib/base64-vlq.js",
+          "kind": "require-call"
+        },
+        {
+          "path": "node_modules/source-map/lib/quick-sort.js",
+          "kind": "require-call"
+        }
+      ]
+    },
+    "node_modules/source-map/lib/source-node.js": {
+      "bytes": 13808,
+      "imports": [
+        {
+          "path": "node_modules/source-map/lib/source-map-generator.js",
+          "kind": "require-call"
+        },
+        {
+          "path": "node_modules/source-map/lib/util.js",
+          "kind": "require-call"
+        }
+      ]
+    },
+    "node_modules/source-map/source-map.js": {
+      "bytes": 405,
+      "imports": [
+        {
+          "path": "node_modules/source-map/lib/source-map-generator.js",
+          "kind": "require-call"
+        },
+        {
+          "path": "node_modules/source-map/lib/source-map-consumer.js",
+          "kind": "require-call"
+        },
+        {
+          "path": "node_modules/source-map/lib/source-node.js",
+          "kind": "require-call"
+        }
+      ]
+    },
+    "node-modules-polyfills:path": {
+      "bytes": 6356,
+      "imports": []
+    },
+    "node-modules-polyfills:fs": {
+      "bytes": 19,
+      "imports": []
+    },
+    "node_modules/buffer-from/index.js": {
+      "bytes": 1595,
+      "imports": []
+    },
+    "node_modules/source-map-support/source-map-support.js": {
+      "bytes": 19729,
+      "imports": [
+        {
+          "path": "node_modules/source-map/source-map.js",
+          "kind": "require-call"
+        },
+        {
+          "path": "node-modules-polyfills:path",
+          "kind": "require-call"
+        },
+        {
+          "path": "node-modules-polyfills:fs",
+          "kind": "require-call"
+        },
+        {
+          "path": "node_modules/buffer-from/index.js",
+          "kind": "require-call"
+        }
+      ]
+    }
+  },
+  "outputs": {
+    "fixtures/with-sourcemaps/.bundless/web_modules/react/index.js": {
+      "imports": [
+        {
+          "path": "fixtures/with-sourcemaps/.bundless/web_modules/chunk.RGTLKSWD.js",
+          "kind": "import-statement"
+        }
+      ],
+      "exports": [
+        "default"
+      ],
+      "inputs": {
+        "node_modules/object-assign/index.js": {
+          "bytesInOutput": 2017
+        },
+        "node_modules/react/cjs/react.development.js": {
+          "bytesInOutput": 62141
+        },
+        "node_modules/react/index.js": {
+          "bytesInOutput": 181
+        }
+      },
+      "bytes": 204687
+    },
+    "fixtures/with-sourcemaps/.bundless/web_modules/source-map-support/source-map-support.js": {
+      "imports": [
+        {
+          "path": "fixtures/with-sourcemaps/.bundless/web_modules/chunk.RGTLKSWD.js",
+          "kind": "import-statement"
+        }
+      ],
+      "exports": [
+        "default"
+      ],
+      "inputs": {
+        "node_modules/source-map/lib/base64.js": {
+          "bytesInOutput": 1021
+        },
+        "node_modules/source-map/lib/base64-vlq.js": {
+          "bytesInOutput": 1560
+        },
+        "node_modules/source-map/lib/util.js": {
+          "bytesInOutput": 8147
+        },
+        "node_modules/source-map/lib/array-set.js": {
+          "bytesInOutput": 2086
+        },
+        "node_modules/source-map/lib/mapping-list.js": {
+          "bytesInOutput": 1259
+        },
+        "node_modules/source-map/lib/source-map-generator.js": {
+          "bytesInOutput": 10247
+        },
+        "node_modules/source-map/lib/binary-search.js": {
+          "bytesInOutput": 1378
+        },
+        "node_modules/source-map/lib/quick-sort.js": {
+          "bytesInOutput": 849
+        },
+        "node_modules/source-map/lib/source-map-consumer.js": {
+          "bytesInOutput": 22976
+        },
+        "node_modules/source-map/lib/source-node.js": {
+          "bytesInOutput": 9151
+        },
+        "node_modules/source-map/source-map.js": {
+          "bytesInOutput": 273
+        },
+        "node-modules-polyfills:path": {
+          "bytesInOutput": 4599
+        },
+        "node-modules-polyfills:fs": {
+          "bytesInOutput": 128
+        },
+        "node_modules/buffer-from/index.js": {
+          "bytesInOutput": 1706
+        },
+        "node_modules/source-map-support/source-map-support.js": {
+          "bytesInOutput": 14898
+        },
+        "<define:process>": {
+          "bytesInOutput": 33
+        }
+      },
+      "bytes": 316275
+    },
+    "fixtures/with-sourcemaps/.bundless/web_modules/chunk.RGTLKSWD.js": {
+      "imports": [],
+      "exports": [
+        "__commonJS"
+      ],
+      "inputs": {},
+      "bytes": 363
+    }
+  }
+}

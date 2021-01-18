@@ -1,0 +1,4 @@
+{
+    "../../node_modules/react/index.js": ".bundless/web_modules/react/index.js",
+    "../../node_modules/source-map-support/source-map-support.js": ".bundless/web_modules/source-map-support/source-map-support.js"
+}

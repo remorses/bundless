@@ -1,0 +1,5 @@
+{
+    "../../node_modules/svelte/internal/index.mjs": ".bundless/web_modules/svelte/internal/index.js",
+    "../../node_modules/svelte-hmr/runtime/hot-api-esm.js": ".bundless/web_modules/svelte-hmr/runtime/hot-api-esm.js",
+    "../../node_modules/svelte-hmr/runtime/proxy-adapter-dom.js": ".bundless/web_modules/svelte-hmr/runtime/proxy-adapter-dom.js"
+}

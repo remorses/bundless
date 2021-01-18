@@ -1,0 +1,6 @@
+{
+    "isCommonjs": {
+        ".bundless/web_modules/react/index.js": true,
+        ".bundless/web_modules/source-map-support/source-map-support.js": true
+    }
+}

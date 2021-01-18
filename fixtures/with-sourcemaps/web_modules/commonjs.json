@@ -1,6 +1,0 @@
-{
-    "isCommonjs": {
-        "web_modules/react/index.js": true,
-        "web_modules/source-map-support/source-map-support.js": true
-    }
-}

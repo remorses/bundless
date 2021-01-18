@@ -12,7 +12,14 @@ import { printStats } from './stats'
 import { isEmpty, osAgnosticPath } from '../utils'
 import { traverseWithEsbuild } from './traverse'
 
-export async function prebundle({ entryPoints, plugins, filter, root, dest, define }) {
+export async function prebundle({
+    entryPoints,
+    plugins,
+    filter,
+    root,
+    dest,
+    define,
+}) {
     try {
         const traversalResult = await traverseWithEsbuild({
             entryPoints,
@@ -49,19 +56,15 @@ export async function prebundle({ entryPoints, plugins, filter, root, dest, defi
 
         logger.spinSucceed('\nFinish')
 
-        const analysisFile = path.resolve(dest, COMMONJS_ANALYSIS_PATH)
+        const analysisFile = path.resolve(root, COMMONJS_ANALYSIS_PATH)
         await fs.createFile(analysisFile)
 
         await fs.writeFile(analysisFile, JSON.stringify(analysis, null, 4))
         console.info(
-            printStats({ dependencyStats: stats, destLoc: 'web_modules/' }),
+            printStats({ dependencyStats: stats, destLoc: WEB_MODULES_PATH }),
         )
         if (!isEmpty(bundleMap)) {
-            const bundleMapCachePath = path.resolve(
-                root,
-                WEB_MODULES_PATH,
-                BUNDLE_MAP_PATH,
-            )
+            const bundleMapCachePath = path.resolve(root, BUNDLE_MAP_PATH)
             await fs.writeJSON(bundleMapCachePath, bundleMap, { spaces: 4 })
         }
         return bundleMap

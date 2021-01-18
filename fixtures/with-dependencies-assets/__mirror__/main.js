@@ -1,4 +1,4 @@
-import '/web_modules/base.css?namespace=file'
+import '/.bundless/web_modules/base.css?namespace=file'
 
 console.log('Hello world!!!!!')
 

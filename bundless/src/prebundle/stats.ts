@@ -14,7 +14,7 @@ export function printStats(_args: {
     dependencyStats: DependencyStatsOutput
     destLoc: string
 }): string {
-    const { dependencyStats, destLoc = 'web_modules/' } = _args
+    const { dependencyStats, destLoc } = _args
     let output = ''
     const { direct, common } = dependencyStats
     const allDirect = Object.entries(direct).sort(entriesSort)

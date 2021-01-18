@@ -10,10 +10,10 @@ Array [
 
 exports[`snapshots fixtures/with-dependencies: content-type headers 1`] = `
 Object {
+  "http://127.0.0.1:9000/.bundless/web_modules/index.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/web_modules/index.js?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -22,7 +22,6 @@ Array [
   "_hmr_client.js",
   "index.html",
   "main.js",
-  "web_modules/index.js",
 ]
 `;
 
@@ -34,14 +33,14 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
+    "importPath": "/.bundless/web_modules/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index.js?namespace=file",
+  },
+  Object {
     "importPath": "/main.js?namespace=file",
     "importer": "http://127.0.0.1:9000/index.html",
     "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/index.js?namespace=file",
   },
 ]
 `;

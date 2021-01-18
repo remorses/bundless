@@ -1,0 +1,7 @@
+{
+    "isCommonjs": {
+        ".bundless/web_modules/node_modules/slash/index.js": true,
+        ".bundless/web_modules/node_modules/react/index.js": true,
+        ".bundless/web_modules/node_modules/react-dom/index.js": true
+    }
+}

@@ -1,5 +1,0 @@
-{
-    "isCommonjs": {
-        "web_modules/svelte-hmr/runtime/proxy-adapter-dom.js": true
-    }
-}

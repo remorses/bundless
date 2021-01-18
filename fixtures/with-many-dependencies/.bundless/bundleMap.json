@@ -1,0 +1,6 @@
+{
+    "../../node_modules/slash/index.js": ".bundless/web_modules/node_modules/slash/index.js",
+    "../../node_modules/react/index.js": ".bundless/web_modules/node_modules/react/index.js",
+    "node_modules/preact/hooks/dist/hooks.module.js": ".bundless/web_modules/fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js",
+    "../../node_modules/react-dom/index.js": ".bundless/web_modules/node_modules/react-dom/index.js"
+}

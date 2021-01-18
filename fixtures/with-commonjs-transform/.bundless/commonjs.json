@@ -1,0 +1,6 @@
+{
+    "isCommonjs": {
+        ".bundless/web_modules/react/index.js": true,
+        ".bundless/web_modules/react-dom/index.js": true
+    }
+}

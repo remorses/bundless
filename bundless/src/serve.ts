@@ -149,11 +149,7 @@ export async function createDevApp(server: net.Server, config: Config) {
         })),
     })
 
-    const bundleMapCachePath = path.resolve(
-        root,
-        WEB_MODULES_PATH,
-        BUNDLE_MAP_PATH,
-    )
+    const bundleMapCachePath = path.resolve(root, BUNDLE_MAP_PATH)
     const hashPath = path.resolve(root, WEB_MODULES_PATH, 'deps_hash')
 
     const depsHash = await getDepsHash(root)
@@ -168,7 +164,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             logger.log(`Dependencies changed, removing ${WEB_MODULES_PATH}`)
             logger.debug('isHashDifferent', isHashDifferent, prevHash, depsHash)
         }
-        await fs.remove(path.resolve(root, WEB_MODULES_PATH))
+        await fs.remove(path.resolve(root, '.bundless'))
     }
 
     let bundleMap: BundleMap = await fs

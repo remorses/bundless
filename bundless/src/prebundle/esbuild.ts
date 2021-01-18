@@ -62,7 +62,9 @@ export function generateDefineObject({
     }
     const noop = 'String'
     return {
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+        'process.env.NODE_ENV': JSON.stringify(
+            process.env.NODE_ENV || 'development',
+        ),
         ...generateEnvReplacements(config.env || {}),
         global: 'window',
         __filename: '""',
@@ -105,11 +107,7 @@ export async function bundleWithEsBuild({
     define,
     ...options
 }) {
-    const {
-        alias = {},
-        externalPackages = [],
-        minify = false,
-    } = options
+    const { alias = {}, externalPackages = [], minify = false } = options
 
     const metafile = path.join(destLoc, './meta.json')
 
@@ -161,7 +159,8 @@ export async function bundleWithEsBuild({
     // TODO use esbuild write to not load files in memory after https://github.com/yarnpkg/berry/issues/2259 gets fixed or we have onEmit in plugins
     for (let outputFile of buildResult.outputFiles || []) {
         const filePath = outputFile.path.replace('$$virtual', 'virtual')
-        await fs.ensureDir(path.dirname(filePath))
+        console.log(filePath)
+        await fs.createFile(filePath)
         await fs.writeFile(filePath, outputFile.contents)
     }
 

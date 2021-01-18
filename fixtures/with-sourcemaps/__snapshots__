@@ -10,14 +10,14 @@ Array [
 
 exports[`snapshots fixtures/with-sourcemaps: content-type headers 1`] = `
 Object {
+  "http://127.0.0.1:9000/.bundless/web_modules/chunk.RGTLKSWD.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/react/index.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/source-map-support/source-map-support.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/js.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/main.ts?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/text.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/web_modules/source-map-support/source-map-support.js?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -28,9 +28,6 @@ Array [
   "js.js",
   "main.ts",
   "text.js",
-  "web_modules/chunk.RGTLKSWD.js",
-  "web_modules/react/index.js",
-  "web_modules/source-map-support/source-map-support.js",
 ]
 `;
 
@@ -52,6 +49,46 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
+    "importPath": "/.bundless/web_modules/chunk.RGTLKSWD.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunk.RGTLKSWD.js?namespace=file",
+  },
+  Object {
+    "importPath": "/.bundless/web_modules/chunk.RGTLKSWD.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/react/index.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunk.RGTLKSWD.js?namespace=file",
+  },
+  Object {
+    "importPath": "/.bundless/web_modules/chunk.RGTLKSWD.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/source-map-support/source-map-support.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunk.RGTLKSWD.js?namespace=file",
+  },
+  Object {
+    "importPath": "/.bundless/web_modules/react/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/js.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/react/index.js?namespace=file",
+  },
+  Object {
+    "importPath": "/.bundless/web_modules/react/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/js.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/react/index.js?namespace=file",
+  },
+  Object {
+    "importPath": "/.bundless/web_modules/react/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/react/index.js?namespace=file",
+  },
+  Object {
+    "importPath": "/.bundless/web_modules/react/index.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/react/index.js?namespace=file",
+  },
+  Object {
+    "importPath": "/.bundless/web_modules/source-map-support/source-map-support.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/source-map-support/source-map-support.js?namespace=file",
+  },
+  Object {
     "importPath": "/js.js?namespace=file",
     "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/js.js?namespace=file",
@@ -70,46 +107,6 @@ Array [
     "importPath": "/text.js?namespace=file",
     "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/text.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/chunk.RGTLKSWD.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/web_modules/source-map-support/source-map-support.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/chunk.RGTLKSWD.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/react/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/js.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/react/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/js.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/react/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/react/index.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/react/index.js?namespace=file",
-  },
-  Object {
-    "importPath": "/web_modules/source-map-support/source-map-support.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/web_modules/source-map-support/source-map-support.js?namespace=file",
   },
 ]
 `;

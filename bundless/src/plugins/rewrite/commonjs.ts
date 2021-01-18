@@ -22,14 +22,11 @@ export const getAnalysis = memoize(function getAnalysis(
 ): OptimizeAnalysisResult | null {
     let analysis: OptimizeAnalysisResult | null
     try {
-        analysis = fs.readJsonSync(
-            path.resolve(root, WEB_MODULES_PATH, COMMONJS_ANALYSIS_PATH),
-        )
+        analysis = fs.readJsonSync(path.resolve(root, COMMONJS_ANALYSIS_PATH))
     } catch (error) {
         logger.debug(
             `Cannot find commonjs analysis at ${path.resolve(
                 root,
-                WEB_MODULES_PATH,
                 COMMONJS_ANALYSIS_PATH,
             )}`,
         )

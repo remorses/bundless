@@ -1,0 +1,38 @@
+{
+  "inputs": {
+    "<define:module>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "<define:process>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "<define:process.argv>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "<define:process.env>": {
+      "bytes": 0,
+      "imports": []
+    },
+    "node_modules/slash/index.js": {
+      "bytes": 289,
+      "imports": []
+    }
+  },
+  "outputs": {
+    "fixtures/with-dependencies/.bundless/web_modules/index.js": {
+      "imports": [],
+      "exports": [
+        "default"
+      ],
+      "inputs": {
+        "node_modules/slash/index.js": {
+          "bytesInOutput": 332
+        }
+      },
+      "bytes": 1429
+    }
+  }
+}
