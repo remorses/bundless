@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.1.8
+
+### Patch Changes
+
+-   bbbd527: Bump
+
 ## 0.1.7
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
     "name": "@bundless/plugin-svelte",
-    "version": "1.0.4",
+    "version": "0.0.1",
     "description": "",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -19,7 +19,7 @@
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
     "devDependencies": {
-        "@bundless/cli": "^0.1.6",
+        "@bundless/cli": "^0.1.8",
         "@types/node": "^14.14.13",
         "svelte": "^3.31.2"
     },
