@@ -1,3 +1,4 @@
+-   put everything inside .bundless, make this directory path configurable, this way tools like vitro can use .vitro
 -   use basePath to change the index.html page relative urls, this way there is no need to %PUBLIC_URL% need, / -> /base-path/
 -   more tests for hmr, using puppeteer
 -   test basepath feature
