@@ -151,8 +151,8 @@ async function runModuleAccept({ path, namespace, updateID }: UpdatePayload) {
             import(
                 appendQuery(path, `namespace=${encodedNamespace}&t=${updateID}`)
             ),
-            ...deps.map((d) =>
-                import(appendQuery(d, `t=${Date.now()}&namespace=file`)),
+            ...deps.map(
+                (d) => import(appendQuery(d, `t=${Date.now()}&namespace=file`)),
             ), // TODO deps should have the namespace and their update ids too, how?
         ])
         acceptCallback({ module, deps: depModules })
@@ -210,10 +210,11 @@ socket.addEventListener('message', ({ data: _data }) => {
         connected = true
         SOCKET_MESSAGE_QUEUE.forEach(_sendSocketMessage)
         SOCKET_MESSAGE_QUEUE = []
-        setInterval(
-            () => socket.send(JSON.stringify({ type: 'ping' })),
-            __HMR_TIMEOUT__,
-        )
+        setInterval(() => {
+            try {
+                socket.send(JSON.stringify({ type: 'ping' }))
+            } catch {}
+        }, __HMR_TIMEOUT__)
         return
     }
     if (data.type === 'reload') {
@@ -273,7 +274,7 @@ log('listening for file changes...')
 
 /** Runtime error reporting: If a runtime error occurs, show it in an overlay. */
 if (isWindowDefined) {
-    window.addEventListener('error', function(event) {
+    window.addEventListener('error', function (event) {
         const err: OverlayErrorPayload['err'] = {
             message: `${event.message}`,
             stack: event.error ? event.error.stack : '',
@@ -397,11 +398,13 @@ code {
   <pre class="file"></pre>
   <pre class="frame"></pre>
   <pre class="stack"></pre>
-  ${tip &&
+  ${
+      tip &&
       `<div class="tip">
         ${tip}
         </div>
-  `}
+  `
+  }
 </div>
 `
 
