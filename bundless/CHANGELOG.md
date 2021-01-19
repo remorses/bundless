@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.1.9
+
+### Patch Changes
+
+-   0c5c9b2: Store web_modules inside .bundless
+
 ## 0.1.8
 
 ### Patch Changes
