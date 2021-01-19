@@ -12,6 +12,7 @@ export const EXAMPLES_FOLDERS = [
     'react-typescript',
     'react-javascript',
     'vanilla-javascript',
+    'svelte',
 ]
 
 export let isRunningWithYarnPnp: boolean = false
