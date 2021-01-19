@@ -16,7 +16,7 @@ import { logger } from './logger'
 import path from 'path'
 
 const serveCommand: CommandModule = {
-    command: ['serve', '*'],
+    command: ['dev', '*'],
     builder: (argv) => {
         argv.option('port', {
             alias: 'p',
