@@ -1,3 +1,8 @@
+-   investigate dynamic imports with ssr interoperability
+-   remove require warnings from paged (only use require when platform is node)
+-   investigate if using new extensions in a plugins require you to add a resolver, maybe add a universal resolver that resolves all extensions (if they are present in the import path)
+-   think about core feature for bundless for promotion in twitter (esbuild plugins, benchmarks, ssr, meta framework, build speed, monorepo support, hmr fixes, )
+-   make tests for esbuild plugins interoperability, tests fixture contain the plugins in the config
 -   makes bundless internal stuff paths start with .bundless, makes easier to analyze network requests
 -   ~~put everything inside .bundless, make this directory path configurable, this way tools like vitro can use .vitro~~
 -   use basePath to change the index.html page relative urls, this way there is no need to %PUBLIC_URL% need, / -> /base-path/
