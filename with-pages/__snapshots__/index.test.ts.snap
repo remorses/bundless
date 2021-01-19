@@ -30,9 +30,9 @@ exports[`pages paths return html /: / 1`] = `
       <div>
         <p>Ciao</p>
         <p></p>
-        <a href=\\"/about\\">/about with a</a><br /><a href=\\"/about\\"
-          >/about with Link</a
-        >
+        <a href=\\"/about\\">/about with a</a><br /><a href=\\"/dynamic-import\\"
+          >/dynamic-import</a
+        ><br /><a href=\\"/about\\">/about with Link</a>
         <p>hello</p>
       </div>
     </div>

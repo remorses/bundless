@@ -173,7 +173,12 @@ socket.addEventListener('message', ({ data: _data }) => {
         connected = true;
         SOCKET_MESSAGE_QUEUE.forEach(_sendSocketMessage);
         SOCKET_MESSAGE_QUEUE = [];
-        setInterval(() => socket.send(JSON.stringify({ type: 'ping' })), 30000);
+        setInterval(() => {
+            try {
+                socket.send(JSON.stringify({ type: 'ping' }));
+            }
+            catch { }
+        }, 30000);
         return;
     }
     if (data.type === 'reload') {
