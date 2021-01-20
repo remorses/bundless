@@ -1,5 +1,8 @@
-import { Box, DarkMode, Flex, HStack, Image, Progress } from '@chakra-ui/react'
+import { Box, DarkMode, Flex, HStack, Progress } from '@chakra-ui/react'
 import { Faded } from 'baby-i-am-faded'
+import devServerImage from '../public/dev_server_feature_image.png'
+import buildSpeedImage from '../public/build_speed_feature_image.png'
+import benchSpeedImage from '../public/benchmark_charts_image.png'
 import {
     Button,
     CodeSnippet,
@@ -15,7 +18,9 @@ import {
     PatternBackground,
     SectionTitle,
     Stack,
+    Image as ChakraImage,
 } from 'landing-blocks/src'
+import Image from 'next/image'
 import codeTheme from 'prism-react-renderer/themes/vsDark'
 import { FiMaximize, FiPackage, FiSmile, FiZap } from 'react-icons/fi'
 import { GITHUB_LINK } from '../constants'
@@ -43,15 +48,15 @@ const Page = () => {
                 // color='#444'
             >
                 <MyNavbar />
-                <Box
-                    opacity={0.7}
+                <ChakraImage
+                    // opacity={0.7}
                     mt='0px !important'
                     position='absolute'
                     // width='100vw'
                     alignSelf='center'
                     top='0px'
                     zIndex={0}
-                    as={GradientBgImg}
+                    src={GradientBgImg}
                 />
                 <Hero
                     bullet='Bundless v0.0'
@@ -109,44 +114,67 @@ const Page = () => {
                 // <Box size='90px' as={OtherIcon} />,
             ]}
         /> */}
-                <Stack spacing='20' position='relative' align='stretch'>
-                    <Box
-                        opacity={0.3}
+
+                <Feature
+                    flip
+                    heading='Fastest dev server'
+                    image={
+                        <ChakraImage
+                            src={devServerImage}
+                            maxWidth='500px'
+                            minWidth={['300px', null, '300px']}
+                        />
+                    }
+                    subheading='Bundless uses esbuild under the hood, making it the fastest application dev server available'
+                />
+
+                <Feature
+                    heading='Fastest build speed'
+                    image={
+                        <ChakraImage
+                            alignSelf='flex-end'
+                            src={buildSpeedImage}
+                            minWidth={['300px', null, '500px']}
+                        />
+                    }
+                    subheading='Bundless builds your web application 20 times faster in average compared to other bundlers like Webpack'
+                />
+                <Stack spacing='10' position='relative' align='stretch'>
+                    <ChakraImage
+                        // opacity={0.6}
                         mt='0px !important'
                         position='absolute'
                         width='100%'
                         bottom='0px'
-                        zIndex={-1}
+                        // zIndex={-1}
                         transform='scaleY(-1) scaleX(-1)'
-                        as={GradientBgImg}
+                        src={GradientBgImg}
                     />
 
                     <SectionTitle
                         heading='10x faster than other bundlers'
                         subheading='Most productive way to experiment, showcase your components'
                     />
-                    <Benchmark
-                        spacing='14'
-                        benchmarks={[
-                            { name: 'Bundless', value: 2.3 },
-                            { name: 'Webpack', value: 20 },
-                            { name: 'Parcel', value: 24 },
-                        ]}
+                    <ChakraImage
+                        position='relative'
+                        alignSelf='center'
+                        src={benchSpeedImage}
+                        minWidth={['300px', null, '500px']}
+                    />
+                    <SectionTitle
+                        subheading={
+                            <Box fontSize='18px'>
+                                Benchmarks available on{' '}
+                                <Link
+                                    target='_blank'
+                                    href='https://github.com/remorses/bundless-benchmark'
+                                >
+                                    github
+                                </Link>
+                            </Box>
+                        }
                     />
                 </Stack>
-
-                <Feature
-                    flip
-                    heading='Fastest dev server'
-                    subheading='Bundless uses esbuild under the hook, making it the fastest application bundler available'
-                    image={null}
-                />
-
-                <Feature
-                    heading='Fastest build speed'
-                    subheading='Bundless uses esbuild under the hook, making it the fastest application bundler available'
-                    image={null}
-                />
 
                 {/* <Section degree={0} zIndex={1} bg='white'>
             <Banner

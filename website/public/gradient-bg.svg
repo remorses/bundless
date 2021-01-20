@@ -2,11 +2,11 @@
   <defs>
     <linearGradient id="gradient-bg-a" x1="-3.555%" x2="113.386%" y1="47.884%" y2="44.716%">
       <stop offset="0%" stop-color="#FF87CA" stop-opacity=".5"/>
-      <stop offset="100%" stop-color="#8E74FF" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#8E74FF" stop-opacity="0.2"/>
     </linearGradient>
     <linearGradient id="gradient-bg-b" x1="40.946%" x2="40.946%" y1="-23.071%" y2="104.634%">
-      <stop offset="0%" stop-color="#0086ED"/>
-      <stop offset="100%" stop-color="#FFF" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#0086ED" />
+      <stop offset="88%" stop-color="#FFF" stop-opacity="0"/>
     </linearGradient>
   </defs>
   <g fill="none" fill-rule="evenodd" transform="translate(-1 -153)">
