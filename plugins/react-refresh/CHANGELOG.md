@@ -1,5 +1,11 @@
 # @bundless/plugin-react-refresh
 
+## 1.0.6
+
+### Patch Changes
+
+-   d42ff9d: Fix npm files
+
 ## 1.0.5
 
 ### Patch Changes
