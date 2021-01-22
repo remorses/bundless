@@ -1,4 +1,6 @@
 -   investigate dynamic imports with ssr interoperability
+-   add warning for multiple node modules paths for same package when this package is peer of something
+-   add .bundless folder to watch ignore, watch ignore should be more strict, no regex
 -   remove require warnings from paged (only use require when platform is node)
 -   investigate if using new extensions in a plugins require you to add a resolver, maybe add a universal resolver that resolves all extensions (if they are present in the import path)
 -   think about core feature for bundless for promotion in twitter (esbuild plugins, benchmarks, ssr, meta framework, build speed, monorepo support, hmr fixes, multiple entrypoints,)

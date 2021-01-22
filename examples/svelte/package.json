@@ -1,6 +1,7 @@
 {
     "name": "svelte-example",
     "version": "1.0.0",
+    "private": true,
     "scripts": {
         "build": "bundless build",
         "dev": "bundless dev"

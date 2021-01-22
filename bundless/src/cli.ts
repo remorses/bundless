@@ -111,6 +111,7 @@ const quickstartCommand: CommandModule = {
 }
 
 yargs
+    .scriptName('bundless')
     .locale('en')
     .option('config', {
         alias: 'c',

@@ -133,6 +133,7 @@ export function ReactRefreshPlugin({} = {}): Plugin {
 
 function getNonComponentExports(ast: BabelAST) {
     // Every export must be a React component.
+    // TODO check that default export is a named function
     return flatten(
         ast.program.body.map((node) => {
             if (node.type !== 'ExportNamedDeclaration') {
@@ -144,7 +145,7 @@ function getNonComponentExports(ast: BabelAST) {
                     .filter(
                         (x) =>
                             x.id.type === 'Identifier' &&
-                            !isComponentishName(x.id.name),
+                            !isComponentLikeName(x.id.name),
                     )
                     .map((x) => (x.id.type === 'Identifier' ? x.id?.name : ''))
             }
@@ -152,7 +153,7 @@ function getNonComponentExports(ast: BabelAST) {
                 .filter(
                     ({ exported }) =>
                         exported.type === 'Identifier' &&
-                        !isComponentishName(exported.name),
+                        !isComponentLikeName(exported.name),
                 )
                 .map((x) =>
                     x.exported.type === 'Identifier' ? x.exported.name : '',
@@ -161,8 +162,12 @@ function getNonComponentExports(ast: BabelAST) {
     )
 }
 
-function isComponentishName(name: string) {
-    return name === 'default' || typeof name === 'string' && name[0] >= 'A' && name[0] <= 'Z'
+function isComponentLikeName(name: string) {
+    return (
+        name === 'default' ||
+        (typeof name === 'string' &&
+            (name[0] === '_' || (name[0] >= 'A' && name[0] <= 'Z')))
+    )
 }
 
 function debounce(fn: () => void, delay: number) {
@@ -188,7 +193,7 @@ function transformHtml(contents) {
 }
 
 export function flatten<T>(arr: T[][]): T[] {
-    return arr.reduce(function(flat, toFlatten) {
+    return arr.reduce(function (flat, toFlatten) {
         return flat.concat(
             Array.isArray(toFlatten) ? flatten(toFlatten as any) : toFlatten,
         )
