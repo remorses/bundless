@@ -135,7 +135,7 @@ const Page = () => {
                             <ChakraImage
                                 shadow='lg'
                                 borderRadius='md'
-                                height={['370px']}
+                                maxHeight={['370px']}
                                 src={devServerImage}
                             />
                         </PatternBackground>
@@ -150,12 +150,12 @@ const Page = () => {
                         <PatternBackground
                             pattern='diagonalLinesSm'
                             color='#888'
-                            scatter={-50}
+                            scatter={-40}
                         >
                             <ChakraImage
                                 shadow='lg'
                                 borderRadius='md'
-                                height={['400px']}
+                                maxHeight={['400px']}
                                 src={buildSpeedImage}
                             />
                         </PatternBackground>
@@ -189,7 +189,7 @@ const Page = () => {
                         position='relative'
                         alignSelf='center'
                         src={benchSpeedImage}
-                        height={['500px']}
+                        maxHeight={[ '500px']}
                     />
                     <SectionTitle
                         subheading={
