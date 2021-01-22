@@ -1,8 +1,15 @@
-import { Box, DarkMode, Flex, HStack, Progress } from '@chakra-ui/react'
+import {
+    AspectRatio,
+    Box,
+    DarkMode,
+    Flex,
+    HStack,
+    Progress,
+} from '@chakra-ui/react'
 import { Faded } from 'baby-i-am-faded'
-import devServerImage from '../public/dev_server_feature_image.png'
-import buildSpeedImage from '../public/build_speed_feature_image.png'
-import benchSpeedImage from '../public/benchmark_charts_image.png'
+import devServerImage from '../public/browser_image.jpg'
+import buildSpeedImage from '../public/vscode_image.jpg'
+import benchSpeedImage from '../public/benchmarks_cli.png'
 import {
     Button,
     CodeSnippet,
@@ -118,24 +125,40 @@ const Page = () => {
                 <Feature
                     flip
                     heading='Fastest dev server'
+                    cta={<Link href='/docs'>Read the docs</Link>}
                     image={
-                        <ChakraImage
-                            src={devServerImage}
-                            maxWidth='500px'
-                            minWidth={['300px', null, '300px']}
-                        />
+                        <PatternBackground
+                            pattern='diagonalLinesSm'
+                            color='#888'
+                            scatter={-30}
+                        >
+                            <ChakraImage
+                                shadow='lg'
+                                borderRadius='md'
+                                height={['370px']}
+                                src={devServerImage}
+                            />
+                        </PatternBackground>
                     }
                     subheading='Bundless uses esbuild under the hood, making it the fastest application dev server available'
                 />
 
                 <Feature
                     heading='Fastest build speed'
+                    cta={<Link href='/docs'>Read the docs</Link>}
                     image={
-                        <ChakraImage
-                            alignSelf='flex-end'
-                            src={buildSpeedImage}
-                            minWidth={['300px', null, '500px']}
-                        />
+                        <PatternBackground
+                            pattern='diagonalLinesSm'
+                            color='#888'
+                            scatter={-50}
+                        >
+                            <ChakraImage
+                                shadow='lg'
+                                borderRadius='md'
+                                height={['400px']}
+                                src={buildSpeedImage}
+                            />
+                        </PatternBackground>
                     }
                     subheading='Bundless builds your web application 20 times faster in average compared to other bundlers like Webpack'
                 />
@@ -155,11 +178,18 @@ const Page = () => {
                         heading='10x faster than other bundlers'
                         subheading='Most productive way to experiment, showcase your components'
                     />
+                    {/* <Benchmark
+                        benchmarks={[
+                            { name: 'Bundless', value: 1.2 },
+                            { name: 'Webpack', value: 20.3 },
+                            { name: 'Parcel', value: 24.5 },
+                        ]}
+                    /> */}
                     <ChakraImage
                         position='relative'
                         alignSelf='center'
                         src={benchSpeedImage}
-                        minWidth={['300px', null, '500px']}
+                        height={['500px']}
                     />
                     <SectionTitle
                         subheading={

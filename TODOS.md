@@ -1,3 +1,5 @@
+-   dynamic imports should not reorder exports
+-   when there is an error and using HMR, do not refresh, instead try to run react refresh and see if it works
 -   investigate dynamic imports with ssr interoperability
 -   add warning for multiple node modules paths for same package when this package is peer of something
 -   add .bundless folder to watch ignore, watch ignore should be more strict, no regex
