@@ -1,5 +1,11 @@
 # @bundless/plugin-react-refresh
 
+## 1.0.7
+
+### Patch Changes
+
+-   aa73425: Changed isComponentLikeName to support names with \_
+
 ## 1.0.6
 
 ### Patch Changes
