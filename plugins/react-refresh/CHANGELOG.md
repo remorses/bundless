@@ -1,5 +1,11 @@
 # @bundless/plugin-react-refresh
 
+## 1.0.5
+
+### Patch Changes
+
+-   0b2d857: Do not warn on default export
+
 ## 1.0.4
 
 ### Patch Changes
