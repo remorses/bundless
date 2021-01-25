@@ -178,22 +178,32 @@ const Page = () => {
                         heading='10x faster than other bundlers'
                         subheading='Most productive way to experiment, showcase your components'
                     />
-                    {/* <Benchmark
-                        benchmarks={[
-                            { name: 'Bundless', value: 1.2 },
-                            { name: 'Webpack', value: 20.3 },
-                            { name: 'Parcel', value: 24.5 },
-                        ]}
-                    /> */}
-                    <ChakraImage
-                        position='relative'
+                    <Box m='6' />
+                    <PatternBackground
+                        pattern='diagonalLinesSm'
+                        color='#888'
+                        scatter={-30}
                         alignSelf='center'
-                        src={benchSpeedImage}
-                        maxHeight={[ '500px']}
-                    />
-                    <SectionTitle
-                        subheading={
-                            <Box fontSize='18px'>
+                        maxWidth='600px'
+                        minWidth={['400px', null, null, '600px']}
+                        position='relative'
+                    >
+                        <Stack
+                            p='12'
+                            pb='6'
+                            bg='#111'
+                            overflow='hidden'
+                            borderRadius='md'
+                        >
+                            <Benchmark
+                                benchmarks={[
+                                    { name: 'Bundless', value: 1.2 },
+                                    { name: 'Webpack', value: 20.3 },
+                                    { name: 'Parcel', value: 24.5 },
+                                ]}
+                            />
+                            <Box m='6' />
+                            <Box alignSelf='center' fontSize='18px'>
                                 Benchmarks available on{' '}
                                 <Link
                                     target='_blank'
@@ -202,8 +212,14 @@ const Page = () => {
                                     github
                                 </Link>
                             </Box>
-                        }
-                    />
+                        </Stack>
+                    </PatternBackground>
+                    {/* <ChakraImage
+                        position='relative'
+                        alignSelf='center'
+                        src={benchSpeedImage}
+                        maxHeight={['500px']}
+                    /> */}
                 </Stack>
 
                 {/* <Section degree={0} zIndex={1} bg='white'>

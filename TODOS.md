@@ -1,6 +1,7 @@
+-   instead of using source-map-support for the error panel use source-map package directly, this way there is not need for sync xhr
 -   dynamic imports should not reorder exports
 -   when there is an error and using HMR, do not refresh, instead try to run react refresh and see if it works
--   investigate dynamic imports with ssr interoperability
+-   investigate dynamic imports with ssr interoperability, now dynamic imports are fetched only on client
 -   add warning for multiple node modules paths for same package when this package is peer of something
 -   add .bundless folder to watch ignore, watch ignore should be more strict, no regex
 -   remove require warnings from paged (only use require when platform is node)
