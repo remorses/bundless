@@ -144,12 +144,14 @@ export async function readFile(p: string) {
     try {
         return await (await fs.promises.readFile(p)).toString()
     } catch (e) {
-        throw new Error(`cannot read ${p}, ${e}`)
+        // maintains error.code property
+        e.message = `cannot read ${p}, ${e.message}`
+        throw e
     }
 }
 
 export function flatten<T>(arr: T[][]): T[] {
-    return arr.reduce(function(flat, toFlatten) {
+    return arr.reduce(function (flat, toFlatten) {
         return flat.concat(
             Array.isArray(toFlatten) ? flatten(toFlatten as any) : toFlatten,
         )
