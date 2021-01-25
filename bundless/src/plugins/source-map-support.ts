@@ -13,6 +13,8 @@ export function SourceMapSupportPlugin({} = {}) {
             onTransform,
             ctx: { config, root },
         }: PluginHooks) => {
+            // TODO reenable source map support
+            return
             onTransform({ filter: /\.html$/ }, (args) => {
                 const contents = args.contents.replace(
                     /<body.*?>/,

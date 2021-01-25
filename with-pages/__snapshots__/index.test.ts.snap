@@ -12,12 +12,6 @@ exports[`pages paths return html /: / 1`] = `
       window.$RefreshSig$ = () => (type) => type;
       window.__bundless_plugin_react_preamble_installed__ = true;
     </script>
-    <script src=\\"/__source-map-support.js?namespace=source-map-support\\"></script>
-    <script>
-      window.sourceMapSupport = sourceMapSupport;
-      sourceMapSupport.install();
-    </script>
-
     <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
     <script
       type=\\"module\\"
@@ -53,12 +47,6 @@ exports[`pages paths return html /about: /about 1`] = `
       window.$RefreshSig$ = () => (type) => type;
       window.__bundless_plugin_react_preamble_installed__ = true;
     </script>
-    <script src=\\"/__source-map-support.js?namespace=source-map-support\\"></script>
-    <script>
-      window.sourceMapSupport = sourceMapSupport;
-      sourceMapSupport.install();
-    </script>
-
     <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
     <script
       type=\\"module\\"
@@ -95,12 +83,6 @@ exports[`pages paths return html /slugs/all/something/else: /slugs/all/something
       window.$RefreshSig$ = () => (type) => type;
       window.__bundless_plugin_react_preamble_installed__ = true;
     </script>
-    <script src=\\"/__source-map-support.js?namespace=source-map-support\\"></script>
-    <script>
-      window.sourceMapSupport = sourceMapSupport;
-      sourceMapSupport.install();
-    </script>
-
     <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
     <script
       type=\\"module\\"
@@ -129,12 +111,6 @@ exports[`pages paths return html /slugs/slug-name: /slugs/slug-name 1`] = `
       window.$RefreshSig$ = () => (type) => type;
       window.__bundless_plugin_react_preamble_installed__ = true;
     </script>
-    <script src=\\"/__source-map-support.js?namespace=source-map-support\\"></script>
-    <script>
-      window.sourceMapSupport = sourceMapSupport;
-      sourceMapSupport.install();
-    </script>
-
     <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
     <script
       type=\\"module\\"

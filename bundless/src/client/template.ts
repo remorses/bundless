@@ -186,7 +186,7 @@ function getErrorMessageMappedSource(message) {
             }) || message
         )
     }
-    return ''
+    return message
 }
 function getErrorStackMappedSource(stack) {
     if (typeof sourceMapSupport !== 'undefined') {
@@ -198,7 +198,7 @@ function getErrorStackMappedSource(stack) {
             }) || stack
         )
     }
-    return ''
+    return stack
 }
 
 socket.addEventListener('message', ({ data: _data }) => {

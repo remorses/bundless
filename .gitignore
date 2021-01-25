@@ -14,3 +14,4 @@ fixtures/with-pages/node_dist
 with-pages/web_modules
 with-pages/out
 *_dist
+_hmr_client.js

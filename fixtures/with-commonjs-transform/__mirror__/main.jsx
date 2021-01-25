@@ -1,5 +1,5 @@
 import react_cjsImport0 from "/.bundless/web_modules/react/index.js?namespace=file"; const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0;;
-import react_cjsImport1 from "/.bundless/web_modules/react/index.js?namespace=file"; const ReactNamespace = react_cjsImport1 && react_cjsImport1.__esModule ? react_cjsImport1 : ({...react_cjsImport1, ...(react_cjsImport1.default instanceof Object && react_cjsImport1.default.constructor === Object && m.default)});;
+import react_cjsImport1 from "/.bundless/web_modules/react/index.js?namespace=file"; const ReactNamespace = {default: react_cjsImport1, ...(typeof react_cjsImport1 === 'object' && react_cjsImport1)};;
 import react_cjsImport2 from "/.bundless/web_modules/react/index.js?namespace=file"; const useState = react_cjsImport2["useState"];;
 console.log("useState", String(useState));
 console.log({ReactAll: ReactNamespace, Fragment: ReactNamespace.Fragment});

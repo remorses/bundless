@@ -121,9 +121,7 @@ function generateCjsImport(
             )
         } else if (importedName === '*') {
             lines.push(
-                `const ${localName} = ${cjsModuleName} && ${cjsModuleName}.__esModule ? ${cjsModuleName} : ${generateNamespaceExport(
-                    cjsModuleName,
-                )};`,
+                `const ${localName} = {default: ${cjsModuleName}, ...(typeof ${cjsModuleName} === 'object' && ${cjsModuleName})};`,
             )
         } else {
             lines.push(
