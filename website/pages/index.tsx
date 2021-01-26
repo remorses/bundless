@@ -293,6 +293,7 @@ export function Benchmark({
                         <Stack
                             align={flip ? 'flex-end' : 'flex-start'}
                             spacing='2'
+                            key={i}
                         >
                             <Box
                                 // color={
@@ -383,8 +384,9 @@ export const Features = ({ ...rest }) => {
                     { heading: 'fast', icon: FiZap },
                     { heading: 'small', icon: FiPackage },
                     { heading: 'just works', icon: FiSmile },
-                ].map((x) => (
+                ].map((x, i) => (
                     <Stack
+                        key={i}
                         w={['100%', null, 'auto']}
                         mx={'10'}
                         my='12'
