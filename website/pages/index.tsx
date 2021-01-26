@@ -31,7 +31,8 @@ import Image from 'next/image'
 import codeTheme from 'prism-react-renderer/themes/vsDark'
 import { FiMaximize, FiPackage, FiSmile, FiZap } from 'react-icons/fi'
 import { GITHUB_LINK } from '../constants'
-import GradientBgImg from '../public/gradient-bg.svg'
+import { GradientBg } from '../components/GradientBg'
+// import GradientBgImg from '../public/gradient-bg.svg'
 
 const heroCode = `
 
@@ -55,7 +56,7 @@ const Page = () => {
                 // color='#444'
             >
                 <MyNavbar />
-                <ChakraImage
+                <Box
                     // opacity={0.7}
                     mt='0px !important'
                     position='absolute'
@@ -63,7 +64,7 @@ const Page = () => {
                     alignSelf='center'
                     top='0px'
                     zIndex={0}
-                    src={GradientBgImg}
+                    as={GradientBg}
                 />
                 <Hero
                     bullet='Bundless v0.0'
@@ -163,7 +164,7 @@ const Page = () => {
                     subheading='Bundless builds your web application 20 times faster in average compared to other bundlers like Webpack'
                 />
                 <Stack spacing='10' position='relative' align='stretch'>
-                    <ChakraImage
+                    <Box
                         // opacity={0.6}
                         mt='0px !important'
                         position='absolute'
@@ -171,7 +172,7 @@ const Page = () => {
                         bottom='0px'
                         // zIndex={-1}
                         transform='scaleY(-1) scaleX(-1)'
-                        src={GradientBgImg}
+                        as={GradientBg}
                     />
 
                     <SectionTitle
