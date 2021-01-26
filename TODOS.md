@@ -1,6 +1,6 @@
 -   instead of using source-map-support for the error panel use source-map package directly, this way there is not need for sync xhr
 -   only use sourcemaps on user packages, npm packages seem to not publish src directory
--   dynamic imports should not reorder exports
+-   ~~dynamic imports should not reorder exports, depend on esbuild~~
 -   when there is an error and using HMR, do not refresh, instead try to run react refresh and see if it works
 -   investigate dynamic imports with ssr interoperability, now dynamic imports are fetched only on client
 -   add warning for multiple node modules paths for same package when this package is peer of something

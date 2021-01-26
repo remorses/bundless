@@ -89,7 +89,7 @@ export const transform = async ({
         define: generateDefineObject({ config }), // TODO in transform defines are injected via window so errors are easier to understand
         loader: path.extname(filePath).slice(1) as Loader,
         sourcemap: true,
-        format: 'esm',
+        // format: 'esm', // passing format reorders exports https://github.com/evanw/esbuild/issues/710
         // ensure source file name contains full query
         sourcefile: filePath,
         target: 'es2020',
