@@ -16,7 +16,10 @@ const runtimePath = `_react-refresh-runtime_.js`
 
 export default ReactRefreshPlugin
 
-export function ReactRefreshPlugin({} = {}): Plugin {
+export function ReactRefreshPlugin({
+    babelPlugins = [] as any[],
+    filter = /\.(t|j)sx$/,
+} = {}): Plugin {
     return {
         name: 'react-refresh',
         setup({ onTransform, onResolve, onLoad, ctx: { root, isBuild } }) {
@@ -65,7 +68,7 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                 },
             )
 
-            onTransform({ filter: /\.(t|j)sx$/ }, async (args) => {
+            onTransform({ filter }, async (args) => {
                 if (args.path.includes('node_modules')) {
                     return
                 }
@@ -83,11 +86,12 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                                     // Insert at the beginning a string "Hello World" --> not valid JS code
                                     path.unshiftContainer(
                                         'body',
-                                        makeHeader(args.path),
+                                        makeHeader(args.path) as any,
                                     )
                                 },
                             },
                         },
+                        ...(babelPlugins || []),
                     ],
                     ast: true,
                     babelrc: false,
@@ -108,7 +112,7 @@ export function ReactRefreshPlugin({} = {}): Plugin {
                 }
 
                 const nonComponentExports = result.ast
-                    ? getNonComponentExports(result.ast)
+                    ? getNonComponentExports(result.ast as any)
                     : []
                 const hmrDisabledMessage = `${
                     args.path
@@ -165,8 +169,8 @@ function getNonComponentExports(ast: BabelAST) {
 function isComponentLikeName(name: string) {
     return (
         name === 'default' ||
-        (typeof name === 'string' &&
-            (name[0] === '_' || (name[0] >= 'A' && name[0] <= 'Z')))
+        name.startsWith('__') || // probably some generated code
+        (typeof name === 'string' && name[0] >= 'A' && name[0] <= 'Z')
     )
 }
 

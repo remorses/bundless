@@ -1,3 +1,4 @@
+-   use data url for loading svgs
 -   instead of using source-map-support for the error panel use source-map package directly, this way there is not need for sync xhr
 -   only use sourcemaps on user packages, npm packages seem to not publish src directory
 -   ~~dynamic imports should not reorder exports, depend on esbuild~~
