@@ -1,5 +1,11 @@
 # @bundless/plugin-react-refresh
 
+## 1.0.8
+
+### Patch Changes
+
+-   a398d28: add babelPlugins option
+
 ## 1.0.7
 
 ### Patch Changes
