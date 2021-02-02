@@ -50,6 +50,7 @@ export function HmrClientPlugin({ getPort }) {
                             `__DEFINES__`,
                             '{\n' +
                                 Object.keys(defines)
+                                    .sort((a, b) => a.length - b.length)
                                     .map(
                                         (k) =>
                                             `  ${JSON.stringify(k)}: ${
