@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.2.1
+
+### Patch Changes
+
+-   ca42b40: Fix define runtime error in client code
+
 ## 0.2.0
 
 ### Minor Changes
