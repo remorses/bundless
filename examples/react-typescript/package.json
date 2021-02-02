@@ -11,8 +11,8 @@
         "react-dom": "experimental"
     },
     "devDependencies": {
-        "@bundless/cli": "^0.1.9",
-        "@bundless/plugin-react-refresh": "1.0.8"
+        "@bundless/cli": "^0.2.0",
+        "@bundless/plugin-react-refresh": "2.0.0"
     },
     "license": "MIT"
 }

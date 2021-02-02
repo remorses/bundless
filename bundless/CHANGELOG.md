@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.2.0
+
+### Minor Changes
+
+-   9a0b4e5: Do not use esbuild when loader is js, inject defines in window
+
 ## 0.1.9
 
 ### Patch Changes
