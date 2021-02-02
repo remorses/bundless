@@ -1,13 +1,12 @@
-import { resolveAsync } from '@esbuild-plugins/all'
-
 import fs from 'fs-extra'
-import path from 'path'
-import { CLIENT_PUBLIC_PATH } from '../constants'
+import { CLIENT_PUBLIC_PATH, hmrClientNamespace } from '../constants'
 import { PluginHooks } from '../plugins-executor'
+import { generateDefineObject } from '../prebundle/esbuild'
+
 
 export const clientFilePath = require.resolve('../../esm/client/template.js')
 
-export const hmrClientNamespace = 'hmr-client'
+
 export const sourceMapSupportPath =
     '__source-map-support.js?namespace=source-map-support'
 
@@ -49,7 +48,10 @@ export function HmrClientPlugin({ getPort }) {
                     const clientCode = fs
                         .readFileSync(clientFilePath, 'utf-8')
                         .replace(`__MODE__`, JSON.stringify('development'))
-                        .replace(`__DEFINES__`, JSON.stringify({}))
+                        .replace(
+                            `__DEFINES__`,
+                            generateDefineObject({ config }),
+                        )
                         .replace(`//# sourceMappingURL=`, '//')
 
                     let socketPort: number | string = getPort()

@@ -1,6 +1,6 @@
+console.log(require.resolve('@bundless/cli'))
 import { traverseEsModules, urlResolver } from 'es-module-traversal'
 import { build, serve, loadConfig } from '@bundless/cli'
-import { jsTypeRegex } from '@bundless/cli/dist/utils'
 import fs from 'fs-extra'
 import glob from 'glob'
 import mime from 'mime-types'
@@ -15,12 +15,7 @@ import * as failFast from 'jasmine-fail-fast'
 const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
 
-it('works', async () => {
-    const currentFile = path.resolve(__dirname, __filename)
-    const res = await traverseEsModules({
-        entryPoints: [currentFile],
-    })
-})
+
 describe('snapshots', () => {
     const casesPath = 'fixtures'
     const cases = fs

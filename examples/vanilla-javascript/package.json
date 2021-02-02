@@ -8,8 +8,8 @@
     },
     "dependencies": {},
     "devDependencies": {
-        "@bundless/cli": "^0.1.6",
-        "@bundless/plugin-react-refresh": "^1.0.4"
+        "@bundless/cli": "^0.1.9",
+        "@bundless/plugin-react-refresh": "1.0.8"
     },
     "license": "MIT"
 }

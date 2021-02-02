@@ -55,7 +55,7 @@ export interface PluginHooks {
 
 export interface OnTransformArgs {
     path: string
-    loader?: esbuild.Loader
+    loader: esbuild.Loader
     namespace?: string
     contents: string
 }
@@ -405,7 +405,7 @@ export class PluginsExecutor {
                                 {
                                     path: args.path,
                                     contents: String(result?.contents),
-                                    loader: result.loader,
+                                    loader: result.loader || 'default',
                                 },
                             )
                             if (!transformed) {

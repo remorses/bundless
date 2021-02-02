@@ -1,3 +1,4 @@
+
 import { parse as _parse } from '@babel/parser'
 import picomatch from 'picomatch'
 import { ParserOptions } from '@babel/core'
@@ -12,17 +13,15 @@ import qs, { ParsedQs } from 'qs'
 import slash from 'slash'
 import { Readable } from 'stream'
 import { Config } from '../config'
+import { cleanUrl, queryRE } from './path'
 import { JS_EXTENSIONS } from '../constants'
+
 
 const imageRE = /\.(png|jpe?g|gif|svg|ico|webp)(\?.*)?$/
 const mediaRE = /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/
 const fontsRE = /\.(woff2?|eot|ttf|otf)(\?.*)?$/i
 
-export const queryRE = /\?.*$/
-export const hashRE = /#.*$/
 
-export const cleanUrl = (url: string) =>
-    url.replace(hashRE, '').replace(queryRE, '')
 
 export const isStaticAsset = (file: string) => {
     // TODO adds configurable assets extensions

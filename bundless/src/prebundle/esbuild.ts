@@ -140,7 +140,7 @@ export async function bundleWithEsBuild({
             },
             plugins: [
                 ...(userPlugins || []),
-                plugins.NodeModulesPolyfillPlugin(),
+                plugins.NodeModulesPolyfillPlugin({namespace: 'node-modules-polyfills'}),
                 plugins.NodeResolvePlugin({
                     name: 'prebundle-node-resolve',
                     mainFields: MAIN_FIELDS,

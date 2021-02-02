@@ -1,5 +1,5 @@
 import { logger } from './logger'
-import { hmrClientNamespace } from './plugins/hmr-client'
+export const hmrClientNamespace = 'hmr-client'
 export const DEFAULT_PORT = 3000
 export const CLIENT_PUBLIC_PATH = `/_hmr_client.js?namespace=${hmrClientNamespace}`
 export const COMMONJS_ANALYSIS_PATH = '.bundless/commonjs.json'
@@ -15,6 +15,8 @@ export const EXAMPLES_FOLDERS = [
     'svelte',
 ]
 
+
+
 export let isRunningWithYarnPnp: boolean = false
 try {
     isRunningWithYarnPnp = Boolean(require('pnpapi'))
@@ -25,14 +27,8 @@ export const MAIN_FIELDS = ['browser:module', 'browser', 'module', 'main']
 
 export const showGraph = process.env.SHOW_HMR_GRAPH
 
-export const JS_EXTENSIONS = new Set([
-    '.ts',
-    '.tsx',
-    '.mjs',
-    '.js',
-    '.jsx',
-    '.cjs',
-])
+export const JS_EXTENSIONS = ['.ts', '.tsx', '.mjs', '.js', '.jsx', '.cjs']
+
 
 export const importableAssets = [
     '.jpg',

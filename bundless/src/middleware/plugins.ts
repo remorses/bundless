@@ -51,7 +51,7 @@ export function pluginsMiddleware({
         }
         const transformed = await pluginsExecutor.transform({
             path: resolvedPath,
-            loader: loaded.loader,
+            loader: loaded.loader || 'default',
             namespace,
             contents: String(loaded.contents),
         })

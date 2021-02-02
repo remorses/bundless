@@ -11,7 +11,7 @@ Array [
 
 exports[`snapshots fixtures/with-svelte: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/web_modules/chunk.LJL6PTCM.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/chunk.4J37Q2I4.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/web_modules/svelte-hmr/runtime/hot-api-esm.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/web_modules/svelte-hmr/runtime/proxy-adapter-dom.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/web_modules/svelte/internal/index.js?namespace=file": "application/javascript; charset=utf-8",
@@ -51,14 +51,14 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunk.LJL6PTCM.js?namespace=file",
+    "importPath": "/.bundless/web_modules/chunk.4J37Q2I4.js?namespace=file",
     "importer": "http://127.0.0.1:9000/.bundless/web_modules/svelte-hmr/runtime/hot-api-esm.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunk.LJL6PTCM.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunk.4J37Q2I4.js?namespace=file",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunk.LJL6PTCM.js?namespace=file",
+    "importPath": "/.bundless/web_modules/chunk.4J37Q2I4.js?namespace=file",
     "importer": "http://127.0.0.1:9000/.bundless/web_modules/svelte/internal/index.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunk.LJL6PTCM.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunk.4J37Q2I4.js?namespace=file",
   },
   Object {
     "importPath": "/.bundless/web_modules/svelte-hmr/runtime/hot-api-esm.js?namespace=file",

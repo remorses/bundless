@@ -197,6 +197,7 @@ export async function createServer({
             const transformResult = await pluginsExecutor.transform({
                 contents: fullHtml,
                 path: foundRoute.absolute + '.html',
+                loader: 'default'
             })
 
             fullHtml = transformResult.contents || ''

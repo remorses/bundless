@@ -4,6 +4,6 @@
     "main": "main.js",
     "private": true,
     "dependencies": {
-        "svelte": "^3.31.2"
+        "svelte": "^3.32.1"
     }
 }

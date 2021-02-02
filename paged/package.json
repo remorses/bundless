@@ -20,14 +20,14 @@
     "license": "ISC",
     "devDependencies": {
         "@babel/types": "^7.12.10",
-        "@bundless/cli": "^0.1.6",
+        "@bundless/cli": "^0.1.9",
         "@types/node": "^14.14.13",
         "@types/react-router-dom": "^5.1.7",
         "@types/uuid": "^8.3.0"
     },
     "dependencies": {
         "escape-string-regexp": "^4.0.0",
-        "@bundless/plugin-react-refresh": "^1.0.4",
+        "@bundless/plugin-react-refresh": "1.0.8",
         "fast-glob": "^3.2.4",
         "fs-extra": "^9.0.1",
         "koa-body": "^4.2.0",

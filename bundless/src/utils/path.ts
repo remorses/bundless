@@ -1,8 +1,6 @@
-import { file } from '@babel/types'
 import path from 'path'
 import defaultPathImpl from 'path'
 import slash from 'slash'
-import { cleanUrl } from './utils'
 
 export const dotdotEncoding = '__..__'
 
@@ -55,3 +53,9 @@ export function osAgnosticPath(absPath: string | undefined, root: string) {
 export function removeLeadingSlash(p: string) {
     return p.startsWith('/') ? p.slice(1) : p
 }
+
+export const queryRE = /\?.*$/
+export const hashRE = /#.*$/
+
+export const cleanUrl = (url: string) =>
+    url.replace(hashRE, '').replace(queryRE, '')

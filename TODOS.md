@@ -1,4 +1,10 @@
 -   use data url for loading svgs
+-   do not rely on the node resolve package for anything, add an additional plugin and add node-resolve only when in yarn pnp
+-   replace external but in meta with a dummy plugin that registers imports
+-   add support for multiple errors in error panel
+-   do not run esbuild transform if loader is already js
+-   run all user plugins first, make react refresh use the js loader as output
+-   check that inline sourcemaps are used by esbuild transformer
 -   instead of using source-map-support for the error panel use source-map package directly, this way there is not need for sync xhr
 -   only use sourcemaps on user packages, npm packages seem to not publish src directory
 -   ~~dynamic imports should not reorder exports, depend on esbuild~~

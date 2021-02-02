@@ -38,6 +38,7 @@ export async function exportPage({
         const transformResult = await pluginsExecutor.transform({
             contents: fullHtml,
             path: 'index.html',
+            loader: 'default'
         })
 
         fullHtml = transformResult.contents || ''

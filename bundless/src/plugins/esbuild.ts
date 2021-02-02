@@ -17,6 +17,10 @@ export function EsbuildTransformPlugin({} = {}) {
         name: 'esbuild-transform',
         setup: ({ onTransform, onClose, ctx: { config } }: PluginHooks) => {
             onTransform({ filter: /\.(tsx?|jsx)$/ }, async (args) => {
+                // do not transpile again if already transpiled
+                if (args.loader === 'js') {
+                    return
+                }
                 return transform({
                     src: args.contents,
                     filePath: args.path,
@@ -86,7 +90,6 @@ export const transform = async ({
     const service = await ensureService()
 
     const options: TransformOptions = {
-        define: generateDefineObject({ config }), // TODO in transform defines are injected via window so errors are easier to understand
         loader: path.extname(filePath).slice(1) as Loader,
         sourcemap: true,
         // format: 'esm', // passing format reorders exports https://github.com/evanw/esbuild/issues/710
