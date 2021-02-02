@@ -1,6 +1,6 @@
 import * as esbuild from 'esbuild'
 
-import { PreprocessorGroup } from 'svelte/types/compiler/preprocess'
+import { PreprocessorGroup } from 'svelte/types/compiler/preprocess/types'
 
 export let typescriptPreprocessor: PreprocessorGroup = {
     async script({ content, filename, attributes }) {

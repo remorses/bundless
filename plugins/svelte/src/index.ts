@@ -11,7 +11,7 @@ import {
     CompileOptions,
     Warning as SvelteWarning,
 } from 'svelte/types/compiler/interfaces'
-import { PreprocessorGroup } from 'svelte/types/compiler/preprocess'
+import { PreprocessorGroup } from 'svelte/types/compiler/preprocess/types'
 import { typescriptPreprocessor } from './typescript'
 
 let makeHot = (...args) => {
