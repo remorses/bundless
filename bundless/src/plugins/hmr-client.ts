@@ -46,10 +46,9 @@ export function HmrClientPlugin({ getPort }) {
                     const defines = generateDefineObject({ config })
                     const clientCode = fs
                         .readFileSync(clientFilePath, 'utf-8')
-                        .replace(`__MODE__`, JSON.stringify('development'))
                         .replace(
                             `__DEFINES__`,
-                            '{' +
+                            '{\n' +
                                 Object.keys(defines)
                                     .map(
                                         (k) =>

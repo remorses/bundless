@@ -6,12 +6,9 @@ declare const __HMR_PROTOCOL__: string
 declare const __HMR_HOSTNAME__: string
 declare const __HMR_PORT__: string
 declare const __HMR_TIMEOUT__: number
-declare const __MODE__: string
+
 declare const __HMR_ENABLE_OVERLAY__: boolean
 declare const __DEFINES__: Record<string, any>
-;(window as any).process = (window as any).process || {}
-;(window as any).process.env = (window as any).process.env || {}
-;(window as any).process.env.NODE_ENV = __MODE__
 
 const defines = __DEFINES__
 Object.keys(defines).forEach((key) => {
