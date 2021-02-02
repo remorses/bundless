@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.2.2
+
+### Patch Changes
+
+-   709ef96: Fix define assignments in client template
+
 ## 0.2.1
 
 ### Patch Changes
