@@ -33,6 +33,10 @@ export function SveltePlugin(options: PluginOptions = {}): Plugin {
 
     return {
         name: 'svelte',
+        modulesToPrebundle: [
+            'svelte-hmr/runtime/hot-api-esm',
+            'svelte-hmr/runtime/proxy-adapter-dom',
+        ],
         setup(build) {
             const {
                 onLoad,
@@ -115,12 +119,6 @@ export function SveltePlugin(options: PluginOptions = {}): Plugin {
                             originalCode: source,
                             compileOptions: finalCompileOptions,
                         })
-                    } else {
-                        // needed to prebundle the hmr packages
-                        // TODO if a node module is injected by a plugin only in dev, traversal can't detect it and will fail, add options with prebundleModules: []
-                        js.code =
-                            js.code +
-                            `\nimport 'svelte-hmr/runtime/hot-api-esm'\n import 'svelte-hmr/runtime/proxy-adapter-dom'`
                     }
 
                     return {

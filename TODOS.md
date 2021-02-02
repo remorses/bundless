@@ -1,4 +1,5 @@
 -   use data url for loading svgs
+-   add a way to order plugins after or before the builtin plugins
 -   do not rely on the node resolve package for anything, add an additional plugin and add node-resolve only when in yarn pnp
 -   replace external but in meta with a dummy plugin that registers imports
 -   add support for multiple errors in error panel

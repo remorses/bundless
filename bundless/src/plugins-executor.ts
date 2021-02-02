@@ -5,7 +5,7 @@ import { Config } from './config'
 import url from 'url'
 import { HmrGraph } from './hmr-graph'
 import { logger } from './logger'
-import { osAgnosticPath } from './utils'
+import { flatten, osAgnosticPath } from './utils'
 import qs from 'qs'
 import { mergeSourceMap } from './utils/sourcemaps'
 import path from 'path'
@@ -14,6 +14,7 @@ import { FSWatcher } from 'chokidar'
 
 export interface Plugin {
     name: string
+    modulesToPrebundle?: string[]
     setup: (build: PluginHooks) => void
 }
 
@@ -117,6 +118,10 @@ export class PluginsExecutor {
                 },
             })
         }
+    }
+
+    modulesToPrebundle() {
+        return flatten(this.plugins.map((p) => p.modulesToPrebundle || []))
     }
 
     private matches(

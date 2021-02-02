@@ -3,9 +3,7 @@ import { CLIENT_PUBLIC_PATH, hmrClientNamespace } from '../constants'
 import { PluginHooks } from '../plugins-executor'
 import { generateDefineObject } from '../prebundle/esbuild'
 
-
 export const clientFilePath = require.resolve('../../esm/client/template.js')
-
 
 export const sourceMapSupportPath =
     '__source-map-support.js?namespace=source-map-support'
@@ -45,12 +43,22 @@ export function HmrClientPlugin({ getPort }) {
             onLoad(
                 { filter: /.*/, namespace: hmrClientNamespace },
                 async (args) => {
+                    const defines = generateDefineObject({ config })
                     const clientCode = fs
                         .readFileSync(clientFilePath, 'utf-8')
                         .replace(`__MODE__`, JSON.stringify('development'))
                         .replace(
                             `__DEFINES__`,
-                            generateDefineObject({ config }),
+                            '{' +
+                                Object.keys(defines)
+                                    .map(
+                                        (k) =>
+                                            `  ${JSON.stringify(k)}: ${
+                                                defines[k]
+                                            },`,
+                                    )
+                                    .join('\n') +
+                                '\n}',
                         )
                         .replace(`//# sourceMappingURL=`, '//')
 

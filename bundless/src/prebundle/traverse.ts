@@ -18,8 +18,9 @@ import {
     resolvableExtensions,
 } from './esbuild'
 
-import { runFunctionOnPaths, stripColon } from './support'
+import { runFunctionOnPaths, stripColon, unique } from './support'
 import { rewriteScriptUrlsTransform } from '../serve'
+import { resolveAsync } from '@esbuild-plugins/all'
 
 type Args = {
     esbuildCwd: string
@@ -123,7 +124,17 @@ export async function traverseWithEsbuild({
             esbuildCwd,
         })
 
-        return Object.keys(res)
+        let knownModules = pluginsExecutor.modulesToPrebundle()
+        knownModules = await Promise.all(
+            knownModules.map((x) =>
+                resolveAsync(x, {
+                    basedir: root,
+                    mainFields: MAIN_FIELDS,
+                }).then((x) => x || ''),
+            ),
+        )
+        knownModules = knownModules.filter(Boolean)
+        return unique([...Object.keys(res), ...knownModules])
     } finally {
         await fsx.remove(destLoc)
     }
