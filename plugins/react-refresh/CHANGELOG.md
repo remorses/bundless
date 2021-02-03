@@ -1,5 +1,11 @@
 # @bundless/plugin-react-refresh
 
+## 2.0.1
+
+### Patch Changes
+
+-   73eb17a: try to always enable react refresh, even when non react components exports exist, fix message when non react components are exported
+
 ## 2.0.0
 
 ### Patch Changes

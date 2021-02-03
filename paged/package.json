@@ -1,6 +1,6 @@
 {
     "name": "@bundless/plugin-react-paged",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "private": true,
     "description": "",
     "main": "dist/index.js",
@@ -27,7 +27,7 @@
     },
     "dependencies": {
         "escape-string-regexp": "^4.0.0",
-        "@bundless/plugin-react-refresh": "2.0.0",
+        "@bundless/plugin-react-refresh": "2.0.1",
         "fast-glob": "^3.2.4",
         "fs-extra": "^9.0.1",
         "koa-body": "^4.2.0",
