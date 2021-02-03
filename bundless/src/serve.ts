@@ -212,7 +212,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             graph.sendHmrMessage({
                 type: 'overlay-info-open',
                 info: {
-                    message: `Prebundling dependencies`,
+                    message: `Prebundling dependencies, please wait`,
                     showSpinner: true,
                 },
             })
