@@ -116,14 +116,14 @@ export function ReactRefreshPlugin({
                     : []
                 const hmrDisabledMessage = `${
                     args.path
-                } disabled react refresh because it has react components as exports! Exported names are ${JSON.stringify(
+                } disabled react-refresh because it has non react components as exports! Exports are ${JSON.stringify(
                     nonComponentExports,
                 )}`
                 if (nonComponentExports.length) {
                     logger.warn(hmrDisabledMessage)
                 }
 
-                const footer = makeFooter(nonComponentExports.length === 0)
+                const footer = makeFooter(true)
 
                 return {
                     loader: 'jsx',
