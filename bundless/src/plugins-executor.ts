@@ -15,6 +15,7 @@ import { FSWatcher } from 'chokidar'
 export interface Plugin {
     name: string
     modulesToPrebundle?: string[]
+    enforce?: 'pre' | 'post'
     setup: (build: PluginHooks) => void
 }
 
@@ -205,6 +206,7 @@ export class PluginsExecutor {
                 const newResult = await callback({
                     importer: '',
                     namespace: 'file',
+                    pluginData: {},
                     resolveDir: '',
                     path: '',
                     ...arg,
@@ -270,6 +272,7 @@ export class PluginsExecutor {
         const loaded = await this.load({
             namespace: resolved.namespace || 'file',
             path: resolved.path,
+            pluginData: {},
         })
         if (!loaded) {
             return {}
@@ -431,3 +434,20 @@ export class PluginsExecutor {
 }
 
 const sum = (a, b): number => a + b
+
+export function sortPlugins(plugins?: Plugin[]): [Plugin[], Plugin[]] {
+    if (!plugins) {
+        return [[], []]
+    }
+    const [pre, post]: Plugin[][] = [[], []]
+    for (let plugin of plugins) {
+        if (plugin.enforce === 'pre') {
+            pre.push(plugin)
+        } else if (plugin.enforce === 'post') {
+            post.push(plugin)
+        } else {
+            post.push(plugin)
+        }
+    }
+    return [pre, post]
+}

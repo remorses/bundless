@@ -83,7 +83,7 @@
     "fixtures/with-svelte/.bundless/web_modules/svelte/internal/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-svelte/.bundless/web_modules/chunk.4J37Q2I4.js",
+          "path": "fixtures/with-svelte/.bundless/web_modules/chunk.WRDMUK2Z.js",
           "kind": "import-statement"
         }
       ],
@@ -254,7 +254,7 @@
     "fixtures/with-svelte/.bundless/web_modules/svelte-hmr/runtime/hot-api-esm.js": {
       "imports": [
         {
-          "path": "fixtures/with-svelte/.bundless/web_modules/chunk.4J37Q2I4.js",
+          "path": "fixtures/with-svelte/.bundless/web_modules/chunk.WRDMUK2Z.js",
           "kind": "import-statement"
         }
       ],
@@ -280,7 +280,7 @@
       },
       "bytes": 53619
     },
-    "fixtures/with-svelte/.bundless/web_modules/chunk.4J37Q2I4.js": {
+    "fixtures/with-svelte/.bundless/web_modules/chunk.WRDMUK2Z.js": {
       "imports": [],
       "exports": [
         "HtmlTag",

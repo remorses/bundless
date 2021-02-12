@@ -14,7 +14,7 @@ import { Node } from 'posthtml'
 import slash from 'slash'
 import { promisify } from 'util'
 import { HMRPayload } from './client/types'
-import { Config, defaultConfig, getEntries } from './config'
+import { Config, defaultConfig, getEntries, normalizeConfig } from './config'
 import {
     BUNDLE_MAP_PATH,
     DEFAULT_PORT,
@@ -28,7 +28,11 @@ import { HmrGraph } from './hmr-graph'
 import { logger } from './logger'
 import * as middlewares from './middleware'
 import * as plugins from './plugins'
-import { PluginsExecutor, PluginsExecutorCtx } from './plugins-executor'
+import {
+    PluginsExecutor,
+    PluginsExecutorCtx,
+    sortPlugins,
+} from './plugins-executor'
 import { prebundle } from './prebundle'
 import { BundleMap, generateDefineObject } from './prebundle/esbuild'
 import { isUrl } from './prebundle/support'
@@ -59,7 +63,7 @@ export interface ServerPluginContext {
 export type ServerMiddleware = (ctx: ServerPluginContext) => void
 
 export async function serve(config: Config) {
-    config = deepmerge(defaultConfig, config)
+    config = normalizeConfig(config)
 
     let server = new Server()
 
@@ -85,7 +89,7 @@ export async function serve(config: Config) {
 export const onResolveLock = new Lock()
 
 export async function createDevApp(server: net.Server, config: Config) {
-    config = deepmerge(defaultConfig, config)
+    config = normalizeConfig(config)
     if (!config.root) {
         config.root = process.cwd()
     }
@@ -112,11 +116,13 @@ export async function createDevApp(server: net.Server, config: Config) {
         watcher,
     }
 
+    const [prePlugins, postPlugins] = sortPlugins(config.plugins)
     // most of the logic is in plugins
     const pluginsExecutor = new PluginsExecutor({
         ctx: executorCtx,
         isProfiling: config.printStats,
         plugins: [
+            ...prePlugins,
             // TODO resolve data: imports, rollup emits imports with data: ...
             plugins.HtmlResolverPlugin(),
             plugins.UrlResolverPlugin(), // resolves urls with queries
@@ -141,7 +147,7 @@ export async function createDevApp(server: net.Server, config: Config) {
                 transforms: [rewriteScriptUrlsTransform],
             }),
             plugins.SourceMapSupportPlugin(), // adds source map to errors traces, must be after hmr client plugin
-            ...(config.plugins || []), // TODO where should i put user plugins? i should let user override onResolve, but i should also run rewrite on user outputs
+            ...postPlugins,
             plugins.RewritePlugin(),
         ].map((plugin) => ({
             ...plugin,

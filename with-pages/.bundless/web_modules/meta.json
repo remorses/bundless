@@ -572,7 +572,7 @@
           "kind": "import-statement"
         },
         {
-          "path": "with-pages/.bundless/web_modules/chunk.YL6YMLLH.js",
+          "path": "with-pages/.bundless/web_modules/chunk.6AS6N73H.js",
           "kind": "import-statement"
         },
         {
@@ -644,12 +644,12 @@
           "bytesInOutput": 9280
         }
       },
-      "bytes": 298844
+      "bytes": 298812
     },
     "with-pages/.bundless/web_modules/swr/esm/index.js": {
       "imports": [
         {
-          "path": "with-pages/.bundless/web_modules/chunk.YL6YMLLH.js",
+          "path": "with-pages/.bundless/web_modules/chunk.6AS6N73H.js",
           "kind": "import-statement"
         },
         {
@@ -694,7 +694,7 @@
           "bytesInOutput": 8468
         }
       },
-      "bytes": 131565
+      "bytes": 131561
     },
     "with-pages/.bundless/web_modules/@loadable/component/dist/loadable.esm.js": {
       "imports": [
@@ -703,7 +703,7 @@
           "kind": "import-statement"
         },
         {
-          "path": "with-pages/.bundless/web_modules/chunk.YL6YMLLH.js",
+          "path": "with-pages/.bundless/web_modules/chunk.6AS6N73H.js",
           "kind": "import-statement"
         },
         {
@@ -763,13 +763,13 @@
       },
       "bytes": 33739
     },
-    "with-pages/.bundless/web_modules/chunk.YL6YMLLH.js": {
+    "with-pages/.bundless/web_modules/chunk.6AS6N73H.js": {
       "imports": [],
       "exports": [
         "__toModule"
       ],
       "inputs": {},
-      "bytes": 1199
+      "bytes": 1189
     },
     "with-pages/.bundless/web_modules/chunk.DDLMJHU6.js": {
       "imports": [],

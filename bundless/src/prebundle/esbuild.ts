@@ -159,7 +159,6 @@ export async function bundleWithEsBuild({
     // TODO use esbuild write to not load files in memory after https://github.com/yarnpkg/berry/issues/2259 gets fixed or we have onEmit in plugins
     for (let outputFile of buildResult.outputFiles || []) {
         const filePath = outputFile.path.replace('$$virtual', 'virtual')
-        console.log(filePath)
         await fs.createFile(filePath)
         await fs.writeFile(filePath, outputFile.contents)
     }

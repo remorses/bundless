@@ -5,7 +5,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import posthtml, { Node } from 'posthtml'
 import slash from 'slash'
-import { Config, defaultConfig, getEntries } from '../config'
+import { Config, defaultConfig, getEntries, normalizeConfig } from '../config'
 import { MAIN_FIELDS } from '../constants'
 import { Logger } from '../logger'
 import * as plugins from '../plugins'
@@ -45,7 +45,7 @@ export async function build({
     traversalGraph
     rebuild?: esbuild.BuildInvalidate
 }> {
-    config = deepmerge(defaultConfig, config)
+    config = normalizeConfig(config)
 
     const {
         minify = false,
@@ -233,7 +233,7 @@ export async function build({
 
     // needed to run the onTransform on html entries
     const htmlPluginsExecutor = new PluginsExecutor({
-        plugins: [...userPlugins, plugins.HtmlResolverPlugin()],
+        plugins: [plugins.HtmlResolverPlugin(), ...userPlugins],
         ctx: pluginsExecutor.ctx,
     })
 

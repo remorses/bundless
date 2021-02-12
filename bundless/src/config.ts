@@ -4,6 +4,7 @@ import fs from 'fs'
 import * as esbuild from 'esbuild'
 import { Plugin, PluginsExecutor } from './plugins-executor'
 import path from 'path'
+import deepmerge from 'deepmerge'
 
 export async function getEntries(
     pluginsExecutor: PluginsExecutor,
@@ -53,6 +54,14 @@ export async function getEntries(
 }
 
 export type Platform = 'node' | 'browser'
+
+export function normalizeConfig(config: Config) {
+    config = deepmerge(defaultConfig, config)
+    config.plugins = (config.plugins || [])
+        .filter(Boolean)
+        .map((x) => ({ ...x, enforce: x.enforce || 'post' }))
+    return config
+}
 
 export interface Config {
     server?: ServerConfig

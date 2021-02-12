@@ -260,10 +260,10 @@
           "bytesInOutput": 273
         },
         "node-modules-polyfills:path": {
-          "bytesInOutput": 4599
+          "bytesInOutput": 4626
         },
         "node-modules-polyfills:fs": {
-          "bytesInOutput": 128
+          "bytesInOutput": 155
         },
         "node_modules/buffer-from/index.js": {
           "bytesInOutput": 1706
@@ -275,7 +275,7 @@
           "bytesInOutput": 33
         }
       },
-      "bytes": 316275
+      "bytes": 316315
     },
     "fixtures/with-sourcemaps/.bundless/web_modules/chunk.RGTLKSWD.js": {
       "imports": [],
