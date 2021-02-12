@@ -1,5 +1,13 @@
 # @bundless/plugin-react-refresh
 
+## 2.0.2
+
+### Patch Changes
+
+-   55d7241: Run in pre mode
+-   Updated dependencies [bd7ed34]
+    -   @bundless/cli@0.2.3
+
 ## 2.0.1
 
 ### Patch Changes

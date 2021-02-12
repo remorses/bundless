@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.2.3
+
+### Patch Changes
+
+-   bd7ed34: Added enforce option to plugins
+
 ## 0.2.2
 
 ### Patch Changes
