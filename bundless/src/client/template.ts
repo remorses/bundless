@@ -405,8 +405,6 @@ code {
 </div>
 `
 
-const codeframeRE = /^(?:>?\s+\d+\s+\|.*|\s+\|\s*\^.*)\r?\n/gm
-
 class CommonOverlay extends HTMLElement {
     root?: ShadowRoot
     static overlayId: string = 'overlay'
