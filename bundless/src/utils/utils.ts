@@ -179,6 +179,7 @@ export function needsPrebundle(config: Config, p: string) {
 
 export const babelParserOpts: ParserOptions = {
     sourceType: 'module',
+    allowAwaitOutsideFunction: true,
     plugins: [
         // required for import.meta.hot
         'importMeta',

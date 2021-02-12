@@ -5,7 +5,7 @@ import {
     Statement,
 } from '@babel/types'
 import fs from 'fs'
-import { parse as _parse } from '@babel/parser'
+import { parse as _parse, ParserPlugin } from '@babel/parser'
 import { Plugin, logger } from '@bundless/cli'
 import { babelParserOpts } from '@bundless/cli/dist/utils'
 import { transform } from '@babel/core'
@@ -22,6 +22,7 @@ export function ReactRefreshPlugin({
 } = {}): Plugin {
     return {
         name: 'react-refresh',
+        enforce: 'pre',
         setup({ onTransform, onResolve, onLoad, ctx: { root, isBuild } }) {
             if (process.env.NODE_ENV === 'production' || isBuild) {
                 return
@@ -73,13 +74,32 @@ export function ReactRefreshPlugin({
                     return
                 }
 
+                // TODO maybe also process js files if they import react, this would enable react refresh for workspaces? but this way they certainly would have non react components as export and break everything
+
+                const parserPlugins: ParserPlugin[] = [
+                    'jsx',
+                    'importMeta',
+                    'topLevelAwait',
+                    'classProperties',
+                    'classPrivateProperties',
+                    'classPrivateMethods',
+                ]
+                if (/\.tsx?$/.test(args.path)) {
+                    parserPlugins.push('typescript', 'decorators-legacy')
+                }
                 const result = await transform(args.contents, {
                     parserOpts: {
                         ...babelParserOpts,
+                        plugins: parserPlugins,
                         sourceFilename: args.path,
                     },
                     plugins: [
-                        require('react-refresh/babel'),
+                        // require('@babel/plugin-transform-react-jsx-self'), // TODO add react source plugin for line numbers?
+                        // require('@babel/plugin-transform-react-jsx-source'),
+                        [
+                            require('react-refresh/babel'),
+                            { skipEnvCheck: true },
+                        ],
                         {
                             visitor: {
                                 Program(path) {

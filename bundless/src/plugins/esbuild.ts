@@ -123,7 +123,7 @@ export const transform = async ({
 
         return {
             contents,
-            map: result.map,
+            map: JSON.parse(result.map),
         }
     } catch (e) {
         if (e.errors) {

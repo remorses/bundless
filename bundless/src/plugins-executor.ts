@@ -206,7 +206,7 @@ export class PluginsExecutor {
                 const newResult = await callback({
                     importer: '',
                     namespace: 'file',
-                    pluginData: {},
+                    pluginData: undefined,
                     resolveDir: '',
                     path: '',
                     ...arg,
@@ -272,7 +272,7 @@ export class PluginsExecutor {
         const loaded = await this.load({
             namespace: resolved.namespace || 'file',
             path: resolved.path,
-            pluginData: {},
+            pluginData: undefined,
         })
         if (!loaded) {
             return {}

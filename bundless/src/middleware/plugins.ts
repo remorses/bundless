@@ -44,6 +44,7 @@ export function pluginsMiddleware({
         const namespace = ctx.query.namespace || 'file'
         const loaded = await pluginsExecutor.load({
             path: resolvedPath,
+            pluginData: undefined,
             namespace,
         })
         if (loaded == null || loaded.contents == null) {

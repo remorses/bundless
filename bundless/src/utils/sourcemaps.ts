@@ -10,6 +10,7 @@ export function mergeSourceMap(
     }
     // merge-source-map will overwrite original sources if newMap also has
     // sourcesContent
+
     newMap.sourcesContent = []
     return merge(oldMap, newMap) as RawSourceMap
 }

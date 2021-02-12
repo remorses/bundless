@@ -5,6 +5,8 @@ exports[`pages paths return html /: / 1`] = `
 <html>
   <head></head>
   <body>
+    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
+
     <script type=\\"module\\">
       import RefreshRuntime from \\"/_react-refresh-runtime_.js?namespace=react-refresh-runtime\\";
       RefreshRuntime.injectIntoGlobalHook(window);
@@ -12,7 +14,6 @@ exports[`pages paths return html /: / 1`] = `
       window.$RefreshSig$ = () => (type) => type;
       window.__bundless_plugin_react_preamble_installed__ = true;
     </script>
-    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
     <script
       type=\\"module\\"
       src=\\"/_bundless_paged_entry_.jsx?namespace=file\\"
@@ -40,6 +41,8 @@ exports[`pages paths return html /about: /about 1`] = `
 <html>
   <head></head>
   <body>
+    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
+
     <script type=\\"module\\">
       import RefreshRuntime from \\"/_react-refresh-runtime_.js?namespace=react-refresh-runtime\\";
       RefreshRuntime.injectIntoGlobalHook(window);
@@ -47,7 +50,6 @@ exports[`pages paths return html /about: /about 1`] = `
       window.$RefreshSig$ = () => (type) => type;
       window.__bundless_plugin_react_preamble_installed__ = true;
     </script>
-    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
     <script
       type=\\"module\\"
       src=\\"/_bundless_paged_entry_.jsx?namespace=file\\"
@@ -76,6 +78,8 @@ exports[`pages paths return html /slugs/all/something/else: /slugs/all/something
 <html>
   <head></head>
   <body>
+    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
+
     <script type=\\"module\\">
       import RefreshRuntime from \\"/_react-refresh-runtime_.js?namespace=react-refresh-runtime\\";
       RefreshRuntime.injectIntoGlobalHook(window);
@@ -83,7 +87,6 @@ exports[`pages paths return html /slugs/all/something/else: /slugs/all/something
       window.$RefreshSig$ = () => (type) => type;
       window.__bundless_plugin_react_preamble_installed__ = true;
     </script>
-    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
     <script
       type=\\"module\\"
       src=\\"/_bundless_paged_entry_.jsx?namespace=file\\"
@@ -104,6 +107,8 @@ exports[`pages paths return html /slugs/slug-name: /slugs/slug-name 1`] = `
 <html>
   <head></head>
   <body>
+    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
+
     <script type=\\"module\\">
       import RefreshRuntime from \\"/_react-refresh-runtime_.js?namespace=react-refresh-runtime\\";
       RefreshRuntime.injectIntoGlobalHook(window);
@@ -111,7 +116,6 @@ exports[`pages paths return html /slugs/slug-name: /slugs/slug-name 1`] = `
       window.$RefreshSig$ = () => (type) => type;
       window.__bundless_plugin_react_preamble_installed__ = true;
     </script>
-    <script type=\\"module\\" src=\\"/_hmr_client.js?namespace=hmr-client\\"></script>
     <script
       type=\\"module\\"
       src=\\"/_bundless_paged_entry_.jsx?namespace=file\\"
