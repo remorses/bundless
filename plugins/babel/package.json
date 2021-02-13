@@ -1,0 +1,33 @@
+{
+    "name": "@bundless/plugin-babel",
+    "version": "0.0.1",
+    "description": "",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "repository": "https://github.com/remorses/bundless.git",
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc -w",
+        "local": "yarn publish --force --registry http://localhost:4873 --access restricted --no-git-tag-version --patch --message 'Local registry publish'"
+    },
+    "files": [
+        "dist",
+        "src"
+    ],
+    "bin": "cli.js",
+    "keywords": [],
+    "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/types": "^7.12.10",
+        "@bundless/cli": "0.2.3",
+        "@types/node": "^14.14.13"
+    },
+    "dependencies": {
+        "@babel/core": "^7.12.10",
+        "@babel/parser": "^7.12.11"
+    },
+    "peerDependencies": {
+        "@bundless/cli": "*"
+    }
+}
