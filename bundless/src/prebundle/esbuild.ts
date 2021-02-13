@@ -40,6 +40,7 @@ export const commonEsbuildOptions: esbuild.BuildOptions = {
     loader: {
         '.js': 'jsx',
         '.cjs': 'js',
+        // '.svg': 'dataurl', // TODO enable svg as data uri in development and in build
         ...Object.assign(
             {},
             ...importableImagesExtensions.map((k) => ({
