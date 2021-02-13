@@ -1,4 +1,3 @@
-console.log(require.resolve('@bundless/cli'))
 import { traverseEsModules, urlResolver } from 'es-module-traversal'
 import { build, serve, loadConfig } from '@bundless/cli'
 import fs from 'fs-extra'
@@ -12,9 +11,9 @@ import { isUrl, osAgnosticResult } from './utils'
 import 'jest-specific-snapshot'
 
 import * as failFast from 'jasmine-fail-fast'
+import { cleanUrl } from '@bundless/cli/dist/utils'
 const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
-
 
 describe('snapshots', () => {
     const casesPath = 'fixtures'
@@ -67,12 +66,9 @@ describe('snapshots', () => {
                             const res = await fetch(url, {
                                 headers: {
                                     ...(importer ? { Referer: importer } : {}),
-                                    Accept:
-                                        mime.contentType(
-                                            path.extname(
-                                                url.split('/').reverse()[0],
-                                            ),
-                                        ) || '*/*',
+                                    Accept: cleanUrl(url).endsWith('.html')
+                                        ? 'text/html'
+                                        : '*/*',
                                 },
                             })
                             if (!res.ok) {
