@@ -6,7 +6,6 @@ import { babelParserOpts } from '@bundless/cli/dist/utils'
 export default BabelPlugin
 
 export function BabelPlugin({
-    plugins = [] as any[],
     babelOptions = {} as TransformOptions,
     filter = /\.(t|j)sx?$/,
 } = {}): Plugin {
@@ -32,7 +31,7 @@ export function BabelPlugin({
                         plugins: parserPlugins,
                         sourceFilename: args.path,
                     },
-                    plugins,
+                    plugins: [],
                     ast: false,
                     babelrc: false,
                     configFile: false,
