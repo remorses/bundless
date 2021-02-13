@@ -146,7 +146,6 @@ export function ReactRefreshPlugin({
                 const footer = makeFooter(true)
 
                 return {
-                    loader: 'jsx',
                     contents: `${result.code}${footer}`,
                     map: result.map,
                 }

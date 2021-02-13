@@ -1,10 +1,10 @@
 -   use data url for loading svgs
--   add a way to order plugins after or before the builtin plugins
+-   ~~add a way to order plugins after or before the builtin plugins~~
 -   do not rely on the node resolve package for anything, add an additional plugin and add node-resolve only when in yarn pnp
 -   replace external but in meta with a dummy plugin that registers imports
 -   add support for multiple errors in error panel
--   do not run esbuild transform if loader is already js
--   run all user plugins first, make react refresh use the js loader as output
+-   ~~do not run esbuild transform if loader is already js~~
+-   ~~run all user plugins first, make react refresh use the js loader as output~~
 -   check that inline sourcemaps are used by esbuild transformer
 -   instead of using source-map-support for the error panel use source-map package directly, this way there is not need for sync xhr
 -   only use sourcemaps on user packages, npm packages seem to not publish src directory
@@ -12,7 +12,7 @@
 -   when there is an error and using HMR, do not refresh, instead try to run react refresh and see if it works
 -   investigate dynamic imports with ssr interoperability, now dynamic imports are fetched only on client
 -   add warning for multiple node modules paths for same package when this package is peer of something
--   add .bundless folder to watch ignore, watch ignore should be more strict, no regex
+-   watch ignore should be more strict, no regex
 -   remove require warnings from paged (only use require when platform is node)
 -   investigate if using new extensions in a plugins require you to add a resolver, maybe add a universal resolver that resolves all extensions (if they are present in the import path)
 -   think about core feature for bundless for promotion in twitter (esbuild plugins, benchmarks, ssr, meta framework, build speed, monorepo support, hmr fixes, multiple entrypoints,)
