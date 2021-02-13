@@ -15,6 +15,7 @@ export function pluginsMiddleware({
     return async function pluginsMiddleware(ctx, next) {
         if (
             ctx.query.namespace == null &&
+            ctx.req.headers['accept'] !== '*/*' &&
             ctx.req.headers['sec-fetch-dest'] !== 'script'
         ) {
             return next()
