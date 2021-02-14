@@ -79,7 +79,7 @@ export async function serve(config: Config) {
         )
     }
     await promisify(server.listen.bind(server) as any)(port)
-    logger.log()
+    console.info()
     logger.log(
         `Listening on ${chalk.cyan.underline(`http://localhost:${port}`)}`,
     )
