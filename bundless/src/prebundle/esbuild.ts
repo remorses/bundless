@@ -72,6 +72,7 @@ export function generateDefineObject({
         __dirname: '""',
         // TODO remove defines and use inject instead
         process: '{}',
+        global: 'window',
         'process.env': '{}',
         'process.browser': 'true',
         'process.version': '""',
