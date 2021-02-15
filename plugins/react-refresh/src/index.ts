@@ -5,11 +5,12 @@ import {
     Statement,
 } from '@babel/types'
 import fs from 'fs'
+import slash from 'slash'
 import { parse as _parse, ParserPlugin } from '@babel/parser'
 import { Plugin, logger } from '@bundless/cli'
 import { babelParserOpts } from '@bundless/cli/dist/utils'
 import { transform } from '@babel/core'
-import path from 'path'
+import path, { relative } from 'path'
 
 const runtimeNamespace = 'react-refresh-runtime'
 const runtimePath = `_react-refresh-runtime_.js`
@@ -106,7 +107,9 @@ export function ReactRefreshPlugin({
                                     // Insert at the beginning a string "Hello World" --> not valid JS code
                                     path.unshiftContainer(
                                         'body',
-                                        makeHeader(args.path) as any,
+                                        makeHeader(
+                                            slash(relative(root, args.path)),
+                                        ) as any,
                                     )
                                 },
                             },

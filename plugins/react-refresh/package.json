@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@babel/core": "^7.12.10",
+        "slash": "^3.0.0",
         "@babel/parser": "^7.12.11",
         "react-refresh": "^0.8.2"
     },

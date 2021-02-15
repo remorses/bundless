@@ -1,4 +1,7 @@
 -   use data url for loading svgs
+-   includeWorkspacePackages prebundles html files
+-   put the onResolve function in the plugins executor, this way it does not depend on the presence of node-resolve plugin
+-   replace node-resolve in the traversal with bare imports plugin
 -   ~~add a way to order plugins after or before the builtin plugins~~
 -   do not rely on the node resolve package for anything, add an additional plugin and add node-resolve only when in yarn pnp
 -   replace external but in meta with a dummy plugin that registers imports
