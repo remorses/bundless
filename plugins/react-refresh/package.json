@@ -14,7 +14,6 @@
         "dist",
         "src"
     ],
-    "bin": "cli.js",
     "keywords": [],
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
