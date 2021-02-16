@@ -1,5 +1,13 @@
 # @bundless/plugin-react-paged
 
+## 2.0.3
+
+### Patch Changes
+
+-   Updated dependencies [717a68e]
+    -   @bundless/cli@0.2.4
+    -   @bundless/plugin-react-refresh@2.0.3
+
 ## 2.0.2
 
 ### Patch Changes

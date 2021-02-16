@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.2.4
+
+### Patch Changes
+
+-   717a68e: Fix npm release, removed bin
+
 ## 0.2.3
 
 ### Patch Changes

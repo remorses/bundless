@@ -1,5 +1,13 @@
 # @bundless/plugin-react-refresh
 
+## 2.0.3
+
+### Patch Changes
+
+-   717a68e: Fix npm release, removed bin
+-   Updated dependencies [717a68e]
+    -   @bundless/cli@0.2.4
+
 ## 2.0.2
 
 ### Patch Changes
