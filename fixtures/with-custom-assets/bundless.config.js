@@ -1,3 +1,3 @@
 module.exports = {
-    importableAssetsExtensions: ['.dat'],
+    importableAssetsExtensions: ['.dat', '.DAC'],
 }
