@@ -1,4 +1,3 @@
-
 import { parse as _parse } from '@babel/parser'
 import picomatch from 'picomatch'
 import { ParserOptions } from '@babel/core'
@@ -16,12 +15,9 @@ import { Config } from '../config'
 import { cleanUrl, queryRE } from './path'
 import { JS_EXTENSIONS } from '../constants'
 
-
 const imageRE = /\.(png|jpe?g|gif|svg|ico|webp)(\?.*)?$/
 const mediaRE = /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/
 const fontsRE = /\.(woff2?|eot|ttf|otf)(\?.*)?$/i
-
-
 
 export const isStaticAsset = (file: string) => {
     // TODO adds configurable assets extensions
@@ -168,6 +164,10 @@ export function needsPrebundle(config: Config, p: string) {
             return matchers.some((fn) => fn(p))
         }
         if (includeWorkspacePackages === true) {
+            // for yarn berry
+            if (p.includes('/.yarn/') || p.includes('\\.yarn\\')) {
+                return true
+            }
             const isOutside = path.relative(config.root!, p).startsWith('..')
             if (isOutside) {
                 return true

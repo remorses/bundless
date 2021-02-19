@@ -87,7 +87,7 @@ export interface Config {
 
 export interface PrebundlingConfig {
     force?: boolean
-    includeWorkspacePackages?: string[] | boolean
+    includeWorkspacePackages?: string[] | boolean // TODO if bundless is called on root this won't work, every path won't ever be outside root
 }
 
 export interface ServerConfig {
