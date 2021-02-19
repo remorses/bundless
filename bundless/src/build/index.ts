@@ -15,7 +15,7 @@ import {
     generateDefineObject,
     metafileToBundleMap,
     metafileToStats,
-    resolvableExtensions,
+    defaultResolvableExtensions,
 } from '../prebundle/esbuild'
 import { printStats } from '../prebundle/stats'
 import { isUrl, runFunctionOnPaths, stripColon } from '../prebundle/support'
@@ -98,7 +98,10 @@ export async function build({
                 }
             },
             mainFields,
-            extensions: resolvableExtensions,
+            extensions: [
+                ...defaultResolvableExtensions,
+                ...(config.importableAssetsExtensions || []),
+            ],
         }),
         ...(isBrowser ? [plugins.NodeModulesPolyfillPlugin()] : []),
         // html ingest should override other html plugins in build, this is because html is transformed to js
@@ -130,7 +133,7 @@ export async function build({
     logger.log(`building ${JSON.stringify(entryPoints, [], 4)}\n`)
 
     const { rebuild } = await esbuild.build({
-        ...commonEsbuildOptions,
+        ...commonEsbuildOptions(config),
         incremental,
         metafile,
         entryPoints,

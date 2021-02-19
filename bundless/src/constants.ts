@@ -30,7 +30,7 @@ export const showGraph = process.env.SHOW_HMR_GRAPH
 export const JS_EXTENSIONS = ['.ts', '.tsx', '.mjs', '.js', '.jsx', '.cjs']
 
 
-export const importableAssets = [
+export const defaultImportableAssets = [
     '.jpg',
     '.jpeg',
     '.png',

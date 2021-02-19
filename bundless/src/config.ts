@@ -74,6 +74,7 @@ export interface Config {
     env?: Record<string, string>
     entries?: string[]
     plugins?: Plugin[]
+    importableAssetsExtensions?: string[]
     jsx?:
         | 'vue'
         | 'preact'

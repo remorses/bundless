@@ -7,9 +7,7 @@ test('traverseWithEsbuild', async () => {
     const deps = await traverseWithEsbuild({
         entryPoints: [entry],
         esbuildCwd: process.cwd(),
-        plugins: [],
-        define: {},
-        stopTraversing: (x) => x.includes('node_module'),
+        config: {},
         root: path.dirname(entry),
     })
     expect(deps).toMatchSnapshot()

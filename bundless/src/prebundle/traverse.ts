@@ -11,24 +11,24 @@ import { HmrGraph } from '../hmr-graph'
 import { logger } from '../logger'
 import { PluginsExecutor } from '../plugins-executor'
 import * as plugins from '../plugins'
-import { flatten, osAgnosticPath } from '../utils'
+import { flatten, needsPrebundle, osAgnosticPath } from '../utils'
 import {
     commonEsbuildOptions,
     generateDefineObject,
-    resolvableExtensions,
+    defaultResolvableExtensions,
 } from './esbuild'
 
 import { runFunctionOnPaths, stripColon, unique } from './support'
 import { rewriteScriptUrlsTransform } from '../serve'
 import { resolveAsync } from '@esbuild-plugins/all'
+import { Config } from '../config'
 
 type Args = {
     esbuildCwd: string
     root: string
     entryPoints: string[]
-    plugins: Plugin[]
+    config: Config
     esbuildOptions?: Partial<BuildOptions>
-    define: Record<string, string>
     // resolver?: (cwd: string, id: string) => string
     stopTraversing?: (resolvedPath: string) => boolean
 }
@@ -37,10 +37,12 @@ export async function traverseWithEsbuild({
     entryPoints,
     esbuildCwd,
     root,
-    plugins: userPlugins,
-    define,
-    stopTraversing,
+    config,
 }: Args): Promise<string[]> {
+
+    const define = generateDefineObject({ config })
+    const stopTraversing = p => needsPrebundle(config, p)
+    const userPlugins = config.plugins || []
     const destLoc = await fsp.realpath(
         path.resolve(await fsp.mkdtemp(path.join(os.tmpdir(), 'dest'))),
     )
@@ -68,7 +70,7 @@ export async function traverseWithEsbuild({
         plugins.NodeResolvePlugin({
             name: 'traverse-node-resolve',
             mainFields: MAIN_FIELDS,
-            extensions: resolvableExtensions,
+            extensions: [...defaultResolvableExtensions, ...(config.importableAssetsExtensions || [])],
             onResolved: function external(resolved) {
                 if (stopTraversing && stopTraversing(resolved)) {
                     return {
@@ -104,7 +106,7 @@ export async function traverseWithEsbuild({
         // logger.log(`Running esbuild in cwd '${process.cwd()}'`)
 
         await build({
-            ...commonEsbuildOptions,
+            ...commonEsbuildOptions(config),
             define,
             entryPoints,
             outdir: destLoc,

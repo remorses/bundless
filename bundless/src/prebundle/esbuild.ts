@@ -5,11 +5,11 @@ import fs from 'fs-extra'
 import path from 'path'
 import slash from 'slash'
 import tmpfile from 'tmpfile'
-import { Platform } from '../config'
+import { Config, Platform } from '../config'
 import { osAgnosticPath } from '../utils'
 import * as plugins from '../plugins'
 import {
-    importableAssets as importableImagesExtensions,
+    defaultImportableAssets as defaultImportableAssets,
     isRunningWithYarnPnp,
     JS_EXTENSIONS,
     MAIN_FIELDS,
@@ -24,7 +24,9 @@ import {
 import { PluginsExecutor } from '../plugins-executor'
 import { HmrGraph } from '../hmr-graph'
 
-export const commonEsbuildOptions: esbuild.BuildOptions = {
+export const commonEsbuildOptions = (
+    config: Config = {},
+): esbuild.BuildOptions => ({
     target: 'es2020',
     minify: false,
     minifyIdentifiers: false,
@@ -43,13 +45,16 @@ export const commonEsbuildOptions: esbuild.BuildOptions = {
         // '.svg': 'dataurl', // TODO enable svg as data uri in development and in build
         ...Object.assign(
             {},
-            ...importableImagesExtensions.map((k) => ({
+            ...[
+                ...defaultImportableAssets,
+                ...(config.importableAssetsExtensions || []),
+            ].map((k) => ({
                 [k]: 'file',
             })),
         ),
     },
-    define: generateDefineObject({ config: {} }),
-}
+    define: generateDefineObject({ config }),
+})
 
 export function generateDefineObject({
     config,
@@ -94,9 +99,9 @@ function generateEnvReplacements(env: Object): { [key: string]: string } {
     }, {})
 }
 
-export const resolvableExtensions = [
+export const defaultResolvableExtensions = [
     ...JS_EXTENSIONS,
-    ...importableImagesExtensions,
+    ...defaultImportableAssets,
     '.json',
     '.css',
 ]
@@ -104,13 +109,12 @@ export const resolvableExtensions = [
 export async function bundleWithEsBuild({
     entryPoints,
     root,
-    plugins: userPlugins,
     dest: destLoc,
-    define,
+    config,
     ...options
 }) {
     const { alias = {}, externalPackages = [], minify = false } = options
-
+    const define = generateDefineObject({ config })
     const metafile = path.join(destLoc, './meta.json')
 
     const tsconfigTempFile = tmpfile('.json')
@@ -118,7 +122,7 @@ export async function bundleWithEsBuild({
 
     // rimraf.sync(destLoc) // do not delete or on flight imports will return 404
     const buildResult = await esbuild.build({
-        ...commonEsbuildOptions,
+        ...commonEsbuildOptions(config),
         splitting: true, // needed to dedupe modules
         external: externalPackages,
         minify: Boolean(minify),
@@ -141,12 +145,17 @@ export async function bundleWithEsBuild({
                 root,
             },
             plugins: [
-                ...(userPlugins || []),
-                plugins.NodeModulesPolyfillPlugin({namespace: 'node-modules-polyfills'}),
+                ...(config.plugins || []),
+                plugins.NodeModulesPolyfillPlugin({
+                    namespace: 'node-modules-polyfills',
+                }),
                 plugins.NodeResolvePlugin({
                     name: 'prebundle-node-resolve',
                     mainFields: MAIN_FIELDS,
-                    extensions: resolvableExtensions,
+                    extensions: [
+                        ...defaultResolvableExtensions,
+                        ...(config.importableAssetsExtensions || []),
+                    ],
                     onNonResolved: (p, importer) => {
                         logger.warn(
                             `Cannot resolve '${p}' from '${importer}' during traversal, using yarn pnp: ${isRunningWithYarnPnp}`,

@@ -7,30 +7,24 @@ import {
 } from '../constants'
 import { logger } from '../logger'
 import { clearCommonjsAnalysisCache } from '../plugins/rewrite/commonjs'
-import { bundleWithEsBuild } from './esbuild'
+import { bundleWithEsBuild, generateDefineObject } from './esbuild'
 import { printStats } from './stats'
-import { isEmpty, osAgnosticPath } from '../utils'
+import { isEmpty, needsPrebundle, osAgnosticPath } from '../utils'
 import { traverseWithEsbuild } from './traverse'
 
-export async function prebundle({
-    entryPoints,
-    plugins,
-    filter,
-    root,
-    dest,
-    define,
-}) {
+export async function prebundle({ entryPoints, config, root, dest }) {
     try {
         const traversalResult = await traverseWithEsbuild({
             entryPoints,
             root,
-            plugins,
-            define,
-            stopTraversing: filter,
+            config,
+
             esbuildCwd: process.cwd(),
         })
 
-        const dependenciesPaths = traversalResult.filter(filter)
+        const dependenciesPaths = traversalResult.filter((p) =>
+            needsPrebundle(config, p),
+        )
 
         await fs.remove(dest)
 
@@ -49,8 +43,7 @@ export async function prebundle({
         const { bundleMap, analysis, stats } = await bundleWithEsBuild({
             dest,
             root,
-            plugins,
-            define,
+            config,
             entryPoints: dependenciesPaths.map((x) => path.resolve(root, x)),
         })
 

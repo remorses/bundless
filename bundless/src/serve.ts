@@ -18,7 +18,7 @@ import { Config, defaultConfig, getEntries, normalizeConfig } from './config'
 import {
     BUNDLE_MAP_PATH,
     DEFAULT_PORT,
-    importableAssets,
+    defaultImportableAssets,
     JS_EXTENSIONS,
     MAIN_FIELDS,
     showGraph,
@@ -136,7 +136,12 @@ export async function createDevApp(server: net.Server, config: Config) {
                 extensions: [...JS_EXTENSIONS],
                 onResolved,
             }),
-            plugins.AssetsPlugin({ extensions: importableAssets }),
+            plugins.AssetsPlugin({
+                extensions: [
+                    ...defaultImportableAssets,
+                    ...(config.importableAssetsExtensions || []),
+                ],
+            }),
             plugins.NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
             plugins.EsbuildTransformPlugin(),
             plugins.CssPlugin(),
@@ -185,10 +190,8 @@ export async function createDevApp(server: net.Server, config: Config) {
         )
         bundleMap = await prebundle({
             entryPoints: await getEntries(pluginsExecutor, config),
-            filter: (p) => needsPrebundle(config, p),
+            config,
             dest: path.resolve(root, WEB_MODULES_PATH),
-            plugins: config.plugins || [],
-            define: generateDefineObject({ config }),
             root,
         })
         await updateHash(hashPath, depsHash)
@@ -226,10 +229,8 @@ export async function createDevApp(server: net.Server, config: Config) {
             const entryPoints = await getEntries(pluginsExecutor, config)
             bundleMap = await prebundle({
                 entryPoints,
-                filter: (p) => needsPrebundle(config, p),
                 dest: path.resolve(root, WEB_MODULES_PATH),
-                define: generateDefineObject({ config }),
-                plugins: config.plugins || [],
+                config,
                 root,
             }).catch((e) => {
                 graph.sendHmrMessage({
