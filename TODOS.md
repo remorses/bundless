@@ -1,4 +1,5 @@
 -   use data url for loading svgs
+-   make a config for assetExtensions, to let user import any file and return its path
 -   includeWorkspacePackages prebundles html files
 -   put the onResolve function in the plugins executor, this way it does not depend on the presence of node-resolve plugin
 -   replace node-resolve in the traversal with bare imports plugin
