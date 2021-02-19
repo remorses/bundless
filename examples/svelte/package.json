@@ -7,7 +7,7 @@
         "dev": "bundless dev"
     },
     "devDependencies": {
-        "@bundless/cli": "0.2.4",
+        "@bundless/cli": "0.2.5",
         "@bundless/plugin-svelte": "^0.0.1",
         "svelte": "^3.32.1"
     }

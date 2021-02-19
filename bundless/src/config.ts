@@ -115,6 +115,7 @@ export const defaultConfig: Config = {
         outDir: './out', // output directory
     },
     platform: 'browser', // target platform, browser or node
+    importableAssetsExtensions: [], // extension that return their path when imported
     jsx: 'react', // jsx preset
     plugins: [],
 }

@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.2.5
+
+### Patch Changes
+
+-   Added support for importableAssetsExtensions
+
 ## 0.2.4
 
 ### Patch Changes
