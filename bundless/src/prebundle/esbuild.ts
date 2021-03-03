@@ -233,20 +233,12 @@ export function metafileToBundleMap(_options: {
     const maps: Array<[string, string]> = Object.keys(meta.outputs)
         .map((output): [string, string] | undefined => {
             // chunks cannot be entrypoints
-            if (path.basename(output).startsWith('chunk.')) {
+            const entry = meta.outputs[output].entryPoint
+            if (!entry) {
                 return
             }
-            const inputs = Object.keys(meta.outputs[output].inputs).map((x) =>
-                path.resolve(esbuildCwd, x),
-            )
-            // TODO if a file imports other entry points it has not itself in inputs in metafile
-            const input = inputs.find((x) => inputEntrypoints.has(x))
-            if (!input) {
-                return
-            }
-            // const specifier = inputFilesToSpecifiers[input]
             return [
-                osAgnosticPath(input, root),
+                osAgnosticPath(path.resolve(esbuildCwd, entry), root),
                 osAgnosticPath(path.resolve(esbuildCwd, output), root),
             ]
         })
