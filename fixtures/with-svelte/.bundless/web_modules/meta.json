@@ -83,7 +83,7 @@
     "fixtures/with-svelte/.bundless/web_modules/svelte/internal/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-svelte/.bundless/web_modules/chunk.4J37Q2I4.js",
+          "path": "fixtures/with-svelte/.bundless/web_modules/chunk.IRUUOHNI.js",
           "kind": "import-statement"
         }
       ],
@@ -244,6 +244,7 @@
         "validate_store",
         "xlink_attr"
       ],
+      "entryPoint": "node_modules/svelte/internal/index.mjs",
       "inputs": {
         "node_modules/svelte/internal/index.mjs": {
           "bytesInOutput": 0
@@ -254,13 +255,14 @@
     "fixtures/with-svelte/.bundless/web_modules/svelte-hmr/runtime/hot-api-esm.js": {
       "imports": [
         {
-          "path": "fixtures/with-svelte/.bundless/web_modules/chunk.4J37Q2I4.js",
+          "path": "fixtures/with-svelte/.bundless/web_modules/chunk.IRUUOHNI.js",
           "kind": "import-statement"
         }
       ],
       "exports": [
         "applyHmr"
       ],
+      "entryPoint": "node_modules/svelte-hmr/runtime/hot-api-esm.js",
       "inputs": {
         "node_modules/svelte-hmr/runtime/svelte-hooks.js": {
           "bytesInOutput": 3254
@@ -278,9 +280,9 @@
           "bytesInOutput": 88
         }
       },
-      "bytes": 53619
+      "bytes": 54383
     },
-    "fixtures/with-svelte/.bundless/web_modules/chunk.4J37Q2I4.js": {
+    "fixtures/with-svelte/.bundless/web_modules/chunk.IRUUOHNI.js": {
       "imports": [],
       "exports": [
         "HtmlTag",
@@ -444,13 +446,14 @@
           "bytesInOutput": 42822
         }
       },
-      "bytes": 154751
+      "bytes": 157543
     },
     "fixtures/with-svelte/.bundless/web_modules/svelte-hmr/runtime/proxy-adapter-dom.js": {
       "imports": [],
       "exports": [
         "default"
       ],
+      "entryPoint": "node_modules/svelte-hmr/runtime/proxy-adapter-dom.js",
       "inputs": {
         "node_modules/svelte-hmr/runtime/overlay.js": {
           "bytesInOutput": 2906
@@ -459,7 +462,7 @@
           "bytesInOutput": 1970
         }
       },
-      "bytes": 16369
+      "bytes": 16609
     }
   }
 }

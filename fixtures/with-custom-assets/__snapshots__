@@ -6,6 +6,8 @@ Array [
   "index.html",
   "index.js",
   "metafile.json",
+  "x.3I42H3S6.DAC",
+  "x.js",
 ]
 `;
 
@@ -16,6 +18,7 @@ Object {
   "http://127.0.0.1:9000/file.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/x.DAC?namespace=file": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -26,6 +29,7 @@ Array [
   "file.js",
   "index.html",
   "main.js",
+  "x.DAC",
 ]
 `;
 
@@ -55,6 +59,11 @@ Array [
     "importPath": "/main.js?namespace=file",
     "importer": "http://127.0.0.1:9000/index.html",
     "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
+  },
+  Object {
+    "importPath": "/x.DAC?namespace=file",
+    "importer": "http://127.0.0.1:9000/file.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/x.DAC?namespace=file",
   },
 ]
 `;

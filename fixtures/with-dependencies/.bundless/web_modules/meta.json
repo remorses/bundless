@@ -27,12 +27,13 @@
       "exports": [
         "default"
       ],
+      "entryPoint": "node_modules/slash/index.js",
       "inputs": {
         "node_modules/slash/index.js": {
           "bytesInOutput": 332
         }
       },
-      "bytes": 1429
+      "bytes": 1441
     }
   }
 }

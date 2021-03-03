@@ -140,17 +140,18 @@
       "exports": [
         "default"
       ],
+      "entryPoint": "node_modules/slash/index.js",
       "inputs": {
         "node_modules/slash/index.js": {
           "bytesInOutput": 332
         }
       },
-      "bytes": 1323
+      "bytes": 1339
     },
     "fixtures/with-many-dependencies/.bundless/web_modules/node_modules/react/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-many-dependencies/.bundless/web_modules/chunk.VM6KXB7F.js",
+          "path": "fixtures/with-many-dependencies/.bundless/web_modules/chunk.RCCYACX6.js",
           "kind": "import-statement"
         },
         {
@@ -161,6 +162,7 @@
       "exports": [
         "default"
       ],
+      "entryPoint": "node_modules/react/index.js",
       "inputs": {
         "node_modules/react/index.js": {
           "bytesInOutput": 0
@@ -183,6 +185,7 @@
         "useRef",
         "useState"
       ],
+      "entryPoint": "fixtures/with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js",
       "inputs": {
         "fixtures/with-many-dependencies/node_modules/preact/dist/preact.module.js": {
           "bytesInOutput": 12714
@@ -191,12 +194,12 @@
           "bytesInOutput": 3539
         }
       },
-      "bytes": 124006
+      "bytes": 124654
     },
     "fixtures/with-many-dependencies/.bundless/web_modules/node_modules/react-dom/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-many-dependencies/.bundless/web_modules/chunk.VM6KXB7F.js",
+          "path": "fixtures/with-many-dependencies/.bundless/web_modules/chunk.RCCYACX6.js",
           "kind": "import-statement"
         },
         {
@@ -207,6 +210,7 @@
       "exports": [
         "default"
       ],
+      "entryPoint": "node_modules/react-dom/index.js",
       "inputs": {
         "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js": {
           "bytesInOutput": 19207
@@ -233,9 +237,9 @@
           "bytesInOutput": 205
         }
       },
-      "bytes": 2645897
+      "bytes": 2678165
     },
-    "fixtures/with-many-dependencies/.bundless/web_modules/chunk.VM6KXB7F.js": {
+    "fixtures/with-many-dependencies/.bundless/web_modules/chunk.RCCYACX6.js": {
       "imports": [
         {
           "path": "fixtures/with-many-dependencies/.bundless/web_modules/chunk.RGTLKSWD.js",
@@ -257,7 +261,7 @@
           "bytesInOutput": 181
         }
       },
-      "bytes": 204696
+      "bytes": 207240
     },
     "fixtures/with-many-dependencies/.bundless/web_modules/chunk.RGTLKSWD.js": {
       "imports": [],

@@ -40,7 +40,7 @@ export interface PluginsExecutorCtx {
     isBuild: boolean
     watcher?: FSWatcher
 }
-export interface PluginHooks {
+export interface PluginHooks extends esbuild.PluginBuild {
     ctx: PluginsExecutorCtx
     pluginsExecutor: PluginsExecutor
     onResolve(

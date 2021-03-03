@@ -116,13 +116,14 @@
     "fixtures/with-commonjs-transform/.bundless/web_modules/react/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-commonjs-transform/.bundless/web_modules/chunk.Q5VHGWFQ.js",
+          "path": "fixtures/with-commonjs-transform/.bundless/web_modules/chunk.2X7V4BBC.js",
           "kind": "import-statement"
         }
       ],
       "exports": [
         "default"
       ],
+      "entryPoint": "node_modules/react/index.js",
       "inputs": {
         "node_modules/react/index.js": {
           "bytesInOutput": 0
@@ -133,13 +134,14 @@
     "fixtures/with-commonjs-transform/.bundless/web_modules/react-dom/index.js": {
       "imports": [
         {
-          "path": "fixtures/with-commonjs-transform/.bundless/web_modules/chunk.Q5VHGWFQ.js",
+          "path": "fixtures/with-commonjs-transform/.bundless/web_modules/chunk.2X7V4BBC.js",
           "kind": "import-statement"
         }
       ],
       "exports": [
         "default"
       ],
+      "entryPoint": "node_modules/react-dom/index.js",
       "inputs": {
         "node_modules/scheduler/cjs/scheduler-unstable_no_dom.development.js": {
           "bytesInOutput": 19207
@@ -166,9 +168,9 @@
           "bytesInOutput": 205
         }
       },
-      "bytes": 2645816
+      "bytes": 2678084
     },
-    "fixtures/with-commonjs-transform/.bundless/web_modules/chunk.Q5VHGWFQ.js": {
+    "fixtures/with-commonjs-transform/.bundless/web_modules/chunk.2X7V4BBC.js": {
       "imports": [],
       "exports": [
         "__commonJS",
@@ -186,7 +188,7 @@
           "bytesInOutput": 181
         }
       },
-      "bytes": 204828
+      "bytes": 207368
     }
   }
 }

@@ -8,12 +8,13 @@
   "outputs": {
     "fixtures/with-dependencies-assets/.bundless/web_modules/base.css": {
       "imports": [],
+      "entryPoint": "node_modules/tailwindcss/dist/base.css",
       "inputs": {
         "node_modules/tailwindcss/dist/base.css": {
-          "bytesInOutput": 3766
+          "bytesInOutput": 3842
         }
       },
-      "bytes": 3811
+      "bytes": 3887
     }
   }
 }

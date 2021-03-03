@@ -202,6 +202,7 @@
       "exports": [
         "default"
       ],
+      "entryPoint": "node_modules/react/index.js",
       "inputs": {
         "node_modules/object-assign/index.js": {
           "bytesInOutput": 2017
@@ -213,7 +214,7 @@
           "bytesInOutput": 181
         }
       },
-      "bytes": 204687
+      "bytes": 207231
     },
     "fixtures/with-sourcemaps/.bundless/web_modules/source-map-support/source-map-support.js": {
       "imports": [
@@ -225,6 +226,7 @@
       "exports": [
         "default"
       ],
+      "entryPoint": "node_modules/source-map-support/source-map-support.js",
       "inputs": {
         "node_modules/source-map/lib/base64.js": {
           "bytesInOutput": 1021
@@ -275,7 +277,7 @@
           "bytesInOutput": 33
         }
       },
-      "bytes": 316315
+      "bytes": 320255
     },
     "fixtures/with-sourcemaps/.bundless/web_modules/chunk.RGTLKSWD.js": {
       "imports": [],
