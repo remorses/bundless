@@ -147,19 +147,25 @@ export class PluginsExecutor {
         let result
         for (let { callback, options, name } of this.loaders) {
             if (this.matches(options, arg)) {
-                logger.debug(
-                    `loading '${osAgnosticPath(
-                        arg.path,
-                        this.ctx.root,
-                    )}' with '${name}'`,
-                )
-                const newResult = await callback(arg)
-                if (newResult) {
-                    result = newResult
-                    break
+                try {
+                    logger.debug(
+                        `loading '${osAgnosticPath(
+                            arg.path,
+                            this.ctx.root,
+                        )}' with '${name}'`,
+                    )
+                    const newResult = await callback(arg)
+                    if (newResult) {
+                        result = newResult
+                        break
+                    }
+                } catch (e) {
+                    e.message = `plugin ${name}: ${e.message}`
+                    throw e
                 }
             }
         }
+
         if (result) {
             return { ...result, namespace: result.namespace || 'file' }
         }
@@ -167,25 +173,33 @@ export class PluginsExecutor {
     async transform(arg: OnTransformArgs): Promise<OnTransformResult> {
         let result: OnTransformResult = { contents: arg.contents }
         for (let { callback, options, name } of this.transforms) {
-            if (this.matches(options, arg)) {
-                logger.debug(`transforming '${arg.path}' with '${name}'`)
-                const newResult = await callback(arg)
-                if (newResult?.contents != null) {
-                    arg.contents = newResult.contents
-                    result.contents = newResult.contents
-                }
-                if (newResult?.loader) {
-                    arg.loader = newResult.loader
-                    result.loader = newResult.loader
-                }
-                // merge with previous source maps
-                if (newResult?.map) {
-                    if (result.map) {
-                        result.map = mergeSourceMap(result.map, newResult.map)
-                    } else {
-                        result.map = newResult.map
+            try {
+                if (this.matches(options, arg)) {
+                    logger.debug(`transforming '${arg.path}' with '${name}'`)
+                    const newResult = await callback(arg)
+                    if (newResult?.contents != null) {
+                        arg.contents = newResult.contents
+                        result.contents = newResult.contents
+                    }
+                    if (newResult?.loader) {
+                        arg.loader = newResult.loader
+                        result.loader = newResult.loader
+                    }
+                    // merge with previous source maps
+                    if (newResult?.map) {
+                        if (result.map) {
+                            result.map = mergeSourceMap(
+                                result.map,
+                                newResult.map,
+                            )
+                        } else {
+                            result.map = newResult.map
+                        }
                     }
                 }
+            } catch (e) {
+                e.message = `plugin ${name}: ${e.message}`
+                throw e
             }
         }
         return result
@@ -209,6 +223,7 @@ export class PluginsExecutor {
                     pluginData: undefined,
                     resolveDir: '',
                     path: '',
+                    kind: 'import-statement', // TODO fix this
                     ...arg,
                 })
                 if (newResult && newResult.path) {
