@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.2.6
+
+### Patch Changes
+
+-   Updated esbuild
+
 ## 0.2.5
 
 ### Patch Changes
