@@ -72,6 +72,7 @@ export function generateDefineObject({
             process.env.NODE_ENV || 'development',
         ),
         ...generateEnvReplacements(config.env || {}),
+        'process.pid': '0',
         // global: 'window',
         __filename: '""',
         __dirname: '""',
