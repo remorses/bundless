@@ -212,12 +212,12 @@ export async function createDevApp(server: net.Server, config: Config) {
                 const webBundle = bundleMap[relativePath]
                 return path.resolve(root, webBundle!)
             }
-
             onResolveLock.lock()
+            // TODO do not rerun prebundle if file extension is an asset like css
             logger.log(
-                `Found still not bundled module, running prebundle phase:`,
+                `Found still not bundled module '${relativePath}' imported by '${importer}', running prebundle phase:`,
             )
-            logger.log(`'${relativePath}' imported by '${importer}'`)
+            logger.debug(resolvedPath)
             graph.sendHmrMessage({
                 type: 'overlay-info-open',
                 info: {
