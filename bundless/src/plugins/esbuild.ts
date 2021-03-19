@@ -1,11 +1,6 @@
 import chalk from 'chalk'
-import {
-    Loader,
-    Message,
-    Service,
-    startService,
-    TransformOptions,
-} from 'esbuild'
+import * as esbuild from 'esbuild'
+import { Loader, Message, TransformOptions } from 'esbuild'
 import path from 'path'
 import { Config } from '../config'
 import { OnTransformResult, PluginHooks } from '../plugins-executor'
@@ -26,9 +21,6 @@ export function EsbuildTransformPlugin({} = {}) {
                     filePath: args.path,
                     config,
                 })
-            })
-            onClose({}, () => {
-                return stopService()
             })
         },
     }
@@ -58,24 +50,6 @@ export function resolveJsxOptions(options: Config['jsx'] = 'react') {
     }
 }
 
-// lazy start the service
-let _servicePromise: Promise<Service> | undefined
-
-const ensureService = async () => {
-    if (!_servicePromise) {
-        _servicePromise = startService()
-    }
-    return _servicePromise
-}
-
-export const stopService = async () => {
-    if (_servicePromise) {
-        const service = await _servicePromise
-        service.stop()
-        _servicePromise = undefined
-    }
-}
-
 // transform used in server plugins with a more friendly API
 export const transform = async ({
     src,
@@ -87,19 +61,18 @@ export const transform = async ({
     config?: Config
     exitOnFailure?: boolean
 }): Promise<OnTransformResult> => {
-    const service = await ensureService()
-
     const options: TransformOptions = {
         loader: path.extname(filePath).slice(1) as Loader,
         sourcemap: true,
         // format: 'esm', // passing format reorders exports https://github.com/evanw/esbuild/issues/710
         // ensure source file name contains full query
         sourcefile: filePath,
+        // TODO use define object here? this way it works the same as in build, but this way it won't work when using another transformer
         target: 'es2020',
         ...resolveJsxOptions(config?.jsx),
     }
     try {
-        const result = await service.transform(src, options)
+        const result = await esbuild.transform(src, options)
         if (result.warnings.length) {
             console.error(
                 `warnings while transforming ${filePath} with esbuild:`,

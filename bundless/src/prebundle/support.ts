@@ -1,4 +1,4 @@
-import { Metadata } from 'esbuild'
+import { Metafile } from 'esbuild'
 import { forOwn, isPlainObject } from 'lodash'
 
 export function isUrl(req: string) {
@@ -14,7 +14,7 @@ export interface OptimizeAnalysisResult {
 
 export function unique<T>(array: T[], key = (x: T): any => x): T[] {
     const cache: Record<any, boolean> = {}
-    return array.filter(function(a) {
+    return array.filter(function (a) {
         const keyed = key(a)
         if (!cache[keyed]) {
             cache[keyed] = true
@@ -50,9 +50,9 @@ function convertKeys<T>(obj: T, cb: (k: string) => string): T {
 }
 
 export function runFunctionOnPaths(
-    x: Metadata,
+    x: Metafile,
     func: (x: string) => string = stripColon,
-): Metadata {
+): Metafile {
     x = convertKeys(x, func)
     for (const input in x.inputs) {
         const v = x.inputs[input]

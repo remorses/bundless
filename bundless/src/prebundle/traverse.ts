@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge'
-import { build, BuildOptions, Metadata, Plugin } from 'esbuild'
+import { build, BuildOptions, Metafile, Plugin } from 'esbuild'
 import fromEntries from 'fromentries'
 import { promises as fsp } from 'fs'
 
@@ -39,9 +39,8 @@ export async function traverseWithEsbuild({
     root,
     config,
 }: Args): Promise<string[]> {
-
     const define = generateDefineObject({ config })
-    const stopTraversing = p => needsPrebundle(config, p)
+    const stopTraversing = (p) => needsPrebundle(config, p)
     const userPlugins = config.plugins || []
     const destLoc = await fsp.realpath(
         path.resolve(await fsp.mkdtemp(path.join(os.tmpdir(), 'dest'))),
@@ -70,7 +69,10 @@ export async function traverseWithEsbuild({
         plugins.NodeResolvePlugin({
             name: 'traverse-node-resolve',
             mainFields: MAIN_FIELDS,
-            extensions: [...defaultResolvableExtensions, ...(config.importableAssetsExtensions || [])],
+            extensions: [
+                ...defaultResolvableExtensions,
+                ...(config.importableAssetsExtensions || []),
+            ],
             onResolved: function external(resolved) {
                 if (stopTraversing && stopTraversing(resolved)) {
                     return {
@@ -102,22 +104,18 @@ export async function traverseWithEsbuild({
     })
 
     try {
-        const metafile = path.join(destLoc, 'meta.json')
         // logger.log(`Running esbuild in cwd '${process.cwd()}'`)
 
-        await build({
+        let { metafile: meta } = await build({
             ...commonEsbuildOptions(config),
             define,
             entryPoints,
             outdir: destLoc,
-            metafile,
             plugins: pluginsExecutor.esbuildPlugins(),
         })
-        let meta: Metadata = JSON.parse(
-            await (await fsp.readFile(metafile)).toString(),
-        )
+
         // console.log(JSON.stringify(meta, null, 4))
-        meta = runFunctionOnPaths(meta, stripColon)
+        meta = runFunctionOnPaths(meta!, stripColon)
 
         const res = metaToTraversalResult({
             meta,
@@ -191,7 +189,7 @@ export function metaToTraversalResult({
     esbuildCwd,
     root,
 }: {
-    meta: Metadata
+    meta: Metafile
     esbuildCwd: string
     root: string
     entryPoints: string[]

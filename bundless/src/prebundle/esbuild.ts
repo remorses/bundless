@@ -1,5 +1,5 @@
 import * as esbuild from 'esbuild'
-import { Metadata } from 'esbuild'
+import { Metafile } from 'esbuild'
 import fromEntries from 'fromentries'
 import fs from 'fs-extra'
 import path from 'path'
@@ -28,9 +28,12 @@ export const commonEsbuildOptions = (
     config: Config = {},
 ): esbuild.BuildOptions => ({
     target: 'es2020',
+    entryNames: '[name]-[hash]',
+    chunkNames: 'chunks/[name]-[hash]',
     minify: false,
     minifyIdentifiers: false,
     minifySyntax: false,
+    metafile: true,
     minifyWhitespace: false,
     mainFields: MAIN_FIELDS,
     sourcemap: false,
@@ -116,7 +119,6 @@ export async function bundleWithEsBuild({
 }) {
     const { alias = {}, externalPackages = [], minify = false } = options
     const define = generateDefineObject({ config })
-    const metafile = path.join(destLoc, './meta.json')
 
     const tsconfigTempFile = tmpfile('.json')
     await fs.promises.writeFile(tsconfigTempFile, makeTsConfig({ alias }))
@@ -137,7 +139,7 @@ export async function bundleWithEsBuild({
         write: false,
         entryPoints,
         outdir: destLoc,
-        metafile,
+        metafile: true,
         define,
         plugins: new PluginsExecutor({
             ctx: {
@@ -177,10 +179,7 @@ export async function bundleWithEsBuild({
 
     await fs.promises.unlink(tsconfigTempFile)
 
-    let meta = JSON.parse(
-        await (await fs.promises.readFile(metafile)).toString(),
-    )
-
+    let meta = buildResult.metafile!
     meta = runFunctionOnPaths(meta, (p) => {
         p = stripColon(p) // namespace:/path/to/file -> /path/to/file
         p = p.replace('$$virtual', 'virtual') // https://github.com/yarnpkg/berry/issues/2259
@@ -224,7 +223,7 @@ export function metafileToBundleMap(_options: {
     entryPoints: string[]
     root: string
     esbuildCwd: string
-    meta: Metadata
+    meta: Metafile
 }): BundleMap {
     const { entryPoints, meta, root, esbuildCwd } = _options
     const inputEntrypoints = new Set(
@@ -251,7 +250,7 @@ export function metafileToBundleMap(_options: {
 }
 
 function metafileToAnalysis(_options: {
-    meta: Metadata
+    meta: Metafile
     root: string
     esbuildCwd: string
 }): OptimizeAnalysisResult {
@@ -286,7 +285,7 @@ function metafileToAnalysis(_options: {
 }
 
 export function metafileToStats(_options: {
-    meta: Metadata
+    meta: Metafile
     destLoc: string
 }): DependencyStatsOutput {
     const { meta, destLoc } = _options

@@ -62,7 +62,6 @@ export async function build({
     await fs.remove(outDir)
     await fs.ensureDir(outDir)
     const publicDir = path.resolve(root, 'public')
-    const metafile = path.resolve(outDir, 'metafile.json')
     const esbuildCwd = process.cwd()
     if (fs.existsSync(publicDir)) {
         await fs.copy(publicDir, outDir)
@@ -132,10 +131,10 @@ export async function build({
 
     logger.log(`building ${JSON.stringify(entryPoints, [], 4)}\n`)
 
-    const { rebuild } = await esbuild.build({
+    let { rebuild, metafile } = await esbuild.build({
         ...commonEsbuildOptions(config),
         incremental,
-        metafile,
+        metafile: true,
         entryPoints,
         bundle: true,
         platform,
@@ -156,16 +155,15 @@ export async function build({
         minify: Boolean(minify),
     })
 
+    let meta: esbuild.Metafile = metafile!
+
     if (config.printStats && !logger.silent) {
         console.info(pluginsExecutor.printProfilingResult())
     }
 
     logger.debug('finished esbuild build')
 
-    let meta: esbuild.Metadata = JSON.parse(
-        await (await fs.promises.readFile(metafile)).toString(),
-    )
-    meta = runFunctionOnPaths(meta, (p) => {
+    meta = runFunctionOnPaths(meta!, (p) => {
         p = stripColon(p) // namespace:/path/to/file -> /path/to/file
         return p
     })
