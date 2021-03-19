@@ -251,11 +251,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             const webBundle = bundleMap[relativePath]
             if (!webBundle) {
                 throw new Error(
-                    `Bundle for '${relativePath}' was not generated in prebundling phase\n${JSON.stringify(
-                        bundleMap,
-                        null,
-                        4,
-                    )}`,
+                    `Bundle for '${relativePath}' was not generated in prebundling phase`,
                 )
             }
             return path.resolve(root, webBundle)
