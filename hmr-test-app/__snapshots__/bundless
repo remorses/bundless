@@ -33,36 +33,22 @@ Set {
 exports[`hmr 3 src/file.css bundless: messages 1`] = `
 Array [
   Object {
-    "namespace": "file",
-    "path": "/src/file.css",
-    "type": "update",
-    "updateID": 1,
+    "type": "reload",
   },
 ]
 `;
 
-exports[`hmr 3 src/file.css bundless: urls 1`] = `
-Set {
-  "http://127.0.0.1:4000/src/file.css?namespace=file&t=1",
-}
-`;
+exports[`hmr 3 src/file.css bundless: urls 1`] = `Set {}`;
 
 exports[`hmr 4 src/file.module.css bundless: messages 1`] = `
 Array [
   Object {
-    "namespace": "file",
-    "path": "/src/file.module.css",
-    "type": "update",
-    "updateID": 1,
+    "type": "reload",
   },
 ]
 `;
 
-exports[`hmr 4 src/file.module.css bundless: urls 1`] = `
-Set {
-  "http://127.0.0.1:4000/src/file.module.css?namespace=file&t=1",
-}
-`;
+exports[`hmr 4 src/file.module.css bundless: urls 1`] = `Set {}`;
 
 exports[`hmr 5 src/file.json bundless: messages 1`] = `
 Array [

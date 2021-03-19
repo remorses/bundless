@@ -41,7 +41,6 @@ export async function traverseWithEsbuild({
     config,
 }: Args): Promise<string[]> {
     const define = generateDefineObject({ config })
-    const stopTraversing = (p) => needsPrebundle(config, p)
     const userPlugins = config.plugins || []
     const destLoc = await fsp.realpath(
         path.resolve(await fsp.mkdtemp(path.join(os.tmpdir(), 'dest'))),
@@ -73,15 +72,7 @@ export async function traverseWithEsbuild({
                 ...defaultResolvableExtensions,
                 ...(config.importableAssetsExtensions || []),
             ],
-            onResolved: function external(resolved) {
-                if (stopTraversing && stopTraversing(resolved)) {
-                    return {
-                        external: true,
-                        path: resolved,
-                    }
-                }
-                return
-            },
+            // TODO use different plugin that only runs on bare imports
             onNonResolved: (p, importer) => {
                 logger.warn(
                     `Cannot resolve '${p}' from '${importer}' during traversal, using yarn pnp: ${isRunningWithYarnPnp}`,
@@ -112,7 +103,14 @@ export async function traverseWithEsbuild({
             entryPoints,
             outdir: destLoc,
             plugins: [
-                traversalGraphPlugin({ executor: pluginsExecutor, graph, filter }),
+                traversalGraphPlugin({
+                    executor: pluginsExecutor,
+                    graph,
+                    filter,
+                    stopTraversing(p) {
+                        return needsPrebundle(config, p)
+                    },
+                }),
                 ...pluginsExecutor.esbuildPlugins(),
             ],
         })
@@ -138,10 +136,12 @@ export function traversalGraphPlugin({
     filter,
     graph,
     executor,
+    stopTraversing,
 }: {
     filter?: RegExp
     graph: TraversalGraph
     executor: PluginsExecutor
+    stopTraversing: Function
 }): esbuild.Plugin {
     return {
         name: 'register-modules',
@@ -170,6 +170,9 @@ export function traversalGraphPlugin({
                 }
                 if (!graph[importee]) {
                     graph[importee] = []
+                }
+                if (stopTraversing(res.path)) {
+                    return { external: true }
                 }
             })
         },

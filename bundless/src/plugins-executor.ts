@@ -76,10 +76,15 @@ type PluginInternalObject<CB> = {
     callback: CB
 }
 
+export type OnResolved = (
+    result: esbuild.OnResolveResult & { importer: string },
+) => Promise<Maybe<esbuild.OnResolveResult>> | Maybe<esbuild.OnResolveResult>
+
 export class PluginsExecutor {
     ctx: PluginsExecutorCtx
     plugins: Plugin[]
     isProfiling: boolean
+    onResolved?: OnResolved
 
     private transforms: PluginInternalObject<OnTransformCallback>[] = []
     private resolvers: PluginInternalObject<OnResolveCallback>[] = []
@@ -90,10 +95,12 @@ export class PluginsExecutor {
         plugins: Plugin[]
         ctx: PluginsExecutorCtx
         isProfiling?: boolean
+        onResolved?: OnResolved
     }) {
-        const { ctx, plugins, isProfiling = false } = _args
+        const { ctx, plugins, isProfiling = false, onResolved } = _args
 
         this.ctx = ctx
+        this.onResolved = onResolved
         this.plugins = plugins
         this.isProfiling = isProfiling
 
@@ -242,7 +249,18 @@ export class PluginsExecutor {
             }
         }
         if (result) {
-            return { ...result, namespace: result.namespace || 'file' }
+            result = { ...result, namespace: result.namespace || 'file' }
+            if (this.onResolved) {
+                const newResult = await this.onResolved({
+                    ...result,
+                    importer: arg.importer,
+                })
+
+                if (newResult) {
+                    return newResult
+                }
+            }
+            return result
         }
     }
     async close() {

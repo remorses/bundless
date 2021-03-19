@@ -29,6 +29,7 @@ import { logger } from './logger'
 import * as middlewares from './middleware'
 import * as plugins from './plugins'
 import {
+    OnResolved,
     PluginsExecutor,
     PluginsExecutorCtx,
     sortPlugins,
@@ -116,11 +117,78 @@ export async function createDevApp(server: net.Server, config: Config) {
         watcher,
     }
 
+    // when resolving if we encounter a node_module run the prebundling phase and invalidate some caches
+    const onResolved: OnResolved = async function onResolved(arg) {
+        const { path: resolvedPath, importer } = arg
+        if (!resolvedPath) {
+            return
+        }
+        try {
+            // lock browser requests until not prebundled
+            await onResolveLock.wait()
+            if (!needsPrebundle(config, resolvedPath)) {
+                return
+            }
+            const relativePath = slash(path.relative(root, resolvedPath))
+            if (bundleMap && bundleMap[relativePath]) {
+                const webBundle = bundleMap[relativePath]
+                return { ...arg, path: path.resolve(root, webBundle!) }
+            }
+            onResolveLock.lock()
+            // TODO do not rerun prebundle if file extension is an asset like css?
+            logger.log(
+                `Found still not bundled module '${relativePath}' imported by '${importer}', running prebundle phase:`,
+            )
+            logger.debug(resolvedPath)
+            graph.sendHmrMessage({
+                type: 'overlay-info-open',
+                info: {
+                    message: `Prebundling dependencies, please wait`,
+                    showSpinner: true,
+                },
+            })
+            // node module path not bundled, rerun bundling
+            const entryPoints = await getEntries(pluginsExecutor, config)
+            bundleMap = await prebundle({
+                entryPoints,
+                dest: path.resolve(root, WEB_MODULES_PATH),
+                config,
+                root,
+            }).catch((e) => {
+                graph.sendHmrMessage({
+                    type: 'overlay-info-close',
+                })
+                graph.sendHmrMessage({
+                    type: 'overlay-error',
+                    err: prepareError(e),
+                })
+                throw e
+            })
+            graph.sendHmrMessage({
+                type: 'overlay-info-close',
+            })
+            await updateHash(hashPath, depsHash)
+
+            graph.sendHmrMessage({ type: 'reload' })
+            const webBundle = bundleMap[relativePath]
+            if (!webBundle) {
+                throw new Error(
+                    `Bundle for '${relativePath}' was not generated in prebundling phase`,
+                )
+            }
+            return { ...arg, path: path.resolve(root, webBundle) }
+        } catch (e) {
+            throw e
+        } finally {
+            onResolveLock.ready()
+        }
+    }
     const [prePlugins, postPlugins] = sortPlugins(config.plugins)
     // most of the logic is in plugins
     const pluginsExecutor = new PluginsExecutor({
         ctx: executorCtx,
         isProfiling: config.printStats,
+        onResolved,
         plugins: [
             ...prePlugins,
             // TODO resolve data: imports, rollup emits imports with data: ...
@@ -135,7 +203,6 @@ export async function createDevApp(server: net.Server, config: Config) {
                 name: 'node-resolve',
                 mainFields: MAIN_FIELDS,
                 extensions: [...JS_EXTENSIONS],
-                onResolved,
             }),
             plugins.AssetsPlugin({
                 extensions: [
@@ -196,70 +263,6 @@ export async function createDevApp(server: net.Server, config: Config) {
             root,
         })
         await updateHash(hashPath, depsHash)
-    }
-
-    // when resolving if we encounter a node_module run the prebundling phase and invalidate some caches
-    // TODO use a different plugin instead of node resolve. should be applied to everything
-    async function onResolved(resolvedPath: string, importer: string) {
-        try {
-            // lock browser requests until not prebundled
-            await onResolveLock.wait()
-            if (!needsPrebundle(config, resolvedPath)) {
-                return
-            }
-            const relativePath = slash(path.relative(root, resolvedPath))
-            if (bundleMap && bundleMap[relativePath]) {
-                const webBundle = bundleMap[relativePath]
-                return path.resolve(root, webBundle!)
-            }
-            onResolveLock.lock()
-            // TODO do not rerun prebundle if file extension is an asset like css
-            logger.log(
-                `Found still not bundled module '${relativePath}' imported by '${importer}', running prebundle phase:`,
-            )
-            logger.debug(resolvedPath)
-            graph.sendHmrMessage({
-                type: 'overlay-info-open',
-                info: {
-                    message: `Prebundling dependencies, please wait`,
-                    showSpinner: true,
-                },
-            })
-            // node module path not bundled, rerun bundling
-            const entryPoints = await getEntries(pluginsExecutor, config)
-            bundleMap = await prebundle({
-                entryPoints,
-                dest: path.resolve(root, WEB_MODULES_PATH),
-                config,
-                root,
-            }).catch((e) => {
-                graph.sendHmrMessage({
-                    type: 'overlay-info-close',
-                })
-                graph.sendHmrMessage({
-                    type: 'overlay-error',
-                    err: prepareError(e),
-                })
-                throw e
-            })
-            graph.sendHmrMessage({
-                type: 'overlay-info-close',
-            })
-            await updateHash(hashPath, depsHash)
-
-            graph.sendHmrMessage({ type: 'reload' })
-            const webBundle = bundleMap[relativePath]
-            if (!webBundle) {
-                throw new Error(
-                    `Bundle for '${relativePath}' was not generated in prebundling phase`,
-                )
-            }
-            return path.resolve(root, webBundle)
-        } catch (e) {
-            throw e
-        } finally {
-            onResolveLock.ready()
-        }
     }
 
     server.once('close', async () => {
