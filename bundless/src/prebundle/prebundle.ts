@@ -18,8 +18,7 @@ export async function prebundle({ entryPoints, config, root, dest }) {
             entryPoints,
             root,
             config,
-
-            esbuildCwd: process.cwd(),
+            filter: /^[\w@][^:]/, // bare name imports (no relative imports)
         })
 
         const dependenciesPaths = traversalResult.filter((p) =>

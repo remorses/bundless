@@ -17,7 +17,7 @@ afterAll(() => {
     stop && stop()
 })
 
-describe('pages paths return html', () => {
+describe.skip('pages paths return html', () => {
     const baseUrl = `http://localhost:${PORT}`
     for (let page of pages) {
         test(page, async () => {

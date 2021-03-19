@@ -224,9 +224,6 @@ export function metafileToBundleMap(_options: {
     meta: Metafile
 }): BundleMap {
     const { entryPoints, meta, root, esbuildCwd } = _options
-    const inputEntrypoints = new Set(
-        entryPoints.map((x) => path.resolve(root, x)),
-    )
 
     const maps: Array<[string, string]> = Object.keys(meta.outputs)
         .map((output): [string, string] | undefined => {

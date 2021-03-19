@@ -1,8 +1,9 @@
 import deepmerge from 'deepmerge'
+import * as esbuild from 'esbuild'
 import { build, BuildOptions, Metafile, Plugin } from 'esbuild'
 import fromEntries from 'fromentries'
 import { promises as fsp } from 'fs'
-
+import { resolveAsync } from '@esbuild-plugins/all'
 import fsx from 'fs-extra'
 import os from 'os'
 import path from 'path'
@@ -20,14 +21,14 @@ import {
 
 import { runFunctionOnPaths, stripColon, unique } from './support'
 import { rewriteScriptUrlsTransform } from '../serve'
-import { resolveAsync } from '@esbuild-plugins/all'
+
 import { Config } from '../config'
 
 type Args = {
-    esbuildCwd: string
     root: string
     entryPoints: string[]
     config: Config
+    filter?: RegExp
     esbuildOptions?: Partial<BuildOptions>
     // resolver?: (cwd: string, id: string) => string
     stopTraversing?: (resolvedPath: string) => boolean
@@ -35,7 +36,7 @@ type Args = {
 
 export async function traverseWithEsbuild({
     entryPoints,
-    esbuildCwd,
+    filter,
     root,
     config,
 }: Args): Promise<string[]> {
@@ -59,7 +60,6 @@ export async function traverseWithEsbuild({
     const allPlugins = [
         // TODO esbuild does not let overriding plugins, this means that if user is using plugin to alias a package to a file it will skip ExternalButInMetafile and break everything
         ...(userPlugins || []),
-        ExternalButInMetafile(),
         plugins.NodeModulesPolyfillPlugin(),
         plugins.HtmlResolverPlugin(),
         plugins.HtmlTransformUrlsPlugin({
@@ -76,7 +76,7 @@ export async function traverseWithEsbuild({
             onResolved: function external(resolved) {
                 if (stopTraversing && stopTraversing(resolved)) {
                     return {
-                        namespace: externalNamespace,
+                        external: true,
                         path: resolved,
                     }
                 }
@@ -102,7 +102,7 @@ export async function traverseWithEsbuild({
             root,
         },
     })
-
+    let graph: TraversalGraph = {}
     try {
         // logger.log(`Running esbuild in cwd '${process.cwd()}'`)
 
@@ -111,18 +111,13 @@ export async function traverseWithEsbuild({
             define,
             entryPoints,
             outdir: destLoc,
-            plugins: pluginsExecutor.esbuildPlugins(),
+            plugins: [
+                traversalGraphPlugin({ executor: pluginsExecutor, graph, filter }),
+                ...pluginsExecutor.esbuildPlugins(),
+            ],
         })
 
         // console.log(JSON.stringify(meta, null, 4))
-        meta = runFunctionOnPaths(meta!, stripColon)
-        const res = metaToTraversalResult({
-            meta: meta!,
-            entryPoints,
-            root,
-            esbuildCwd,
-        })
-
         let knownModules = pluginsExecutor.modulesToPrebundle()
         knownModules = await Promise.all(
             knownModules.map((x) =>
@@ -133,46 +128,50 @@ export async function traverseWithEsbuild({
             ),
         )
         knownModules = knownModules.filter(Boolean)
-        return unique([...Object.keys(res), ...knownModules])
+        return unique([...Object.keys(graph), ...knownModules])
     } finally {
         await fsx.remove(destLoc)
     }
 }
 
-const externalNamespace = 'external-but-keep-in-metafile'
-function ExternalButInMetafile(): Plugin {
+export function traversalGraphPlugin({
+    filter,
+    graph,
+    executor,
+}: {
+    filter?: RegExp
+    graph: TraversalGraph
+    executor: PluginsExecutor
+}): esbuild.Plugin {
     return {
-        name: externalNamespace,
-        setup(build) {
-            const externalModule = 'externalModuleXXX'
-            build.onResolve(
-                {
-                    filter: new RegExp(externalModule),
-                    namespace: externalNamespace,
-                },
-                (args) => {
-                    if (args.path !== externalModule) {
-                        return
+        name: 'register-modules',
+        setup({ onResolve }) {
+            onResolve({ filter: filter || /()/ }, async (args) => {
+                const res = await executor.resolve({
+                    importer: args.importer,
+                    path: args.path,
+                    resolveDir: args.resolveDir,
+                })
+                if (!res || !res.path) {
+                    return null
+                }
+
+                const importer = osAgnosticPath(
+                    args.importer,
+                    executor.ctx.root,
+                )
+                const importee = osAgnosticPath(res.path, executor.ctx.root)
+                if (importer) {
+                    if (!graph[importer]) {
+                        graph[importer] = [importee]
+                    } else {
+                        graph[importer].push(importee)
                     }
-                    return {
-                        external: true,
-                    }
-                },
-            )
-            build.onLoad(
-                {
-                    filter: /.*/,
-                    namespace: externalNamespace,
-                },
-                (args) => {
-                    const contents = `export * from '${externalModule}'`
-                    return {
-                        contents,
-                        loader: 'js',
-                        // resolveDir: path.dirname(args.path),
-                    }
-                },
-            )
+                }
+                if (!graph[importee]) {
+                    graph[importee] = []
+                }
+            })
         },
     }
 }

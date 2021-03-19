@@ -6,7 +6,7 @@ test('traverseWithEsbuild', async () => {
     const entry = path.resolve('fixtures/with-many-dependencies/index.html')
     const deps = await traverseWithEsbuild({
         entryPoints: [entry],
-        esbuildCwd: process.cwd(),
+        // esbuildCwd: process.cwd(),
         config: {},
         root: path.dirname(entry),
     })
