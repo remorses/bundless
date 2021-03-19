@@ -116,9 +116,8 @@ export async function traverseWithEsbuild({
 
         // console.log(JSON.stringify(meta, null, 4))
         meta = runFunctionOnPaths(meta!, stripColon)
-
         const res = metaToTraversalResult({
-            meta,
+            meta: meta!,
             entryPoints,
             root,
             esbuildCwd,

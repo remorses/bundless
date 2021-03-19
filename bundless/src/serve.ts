@@ -205,9 +205,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             if (!needsPrebundle(config, resolvedPath)) {
                 return
             }
-            const relativePath = slash(
-                path.relative(root, resolvedPath),
-            ).replace('$$virtual', 'virtual')
+            const relativePath = slash(path.relative(root, resolvedPath))
             if (bundleMap && bundleMap[relativePath]) {
                 const webBundle = bundleMap[relativePath]
                 return path.resolve(root, webBundle!)

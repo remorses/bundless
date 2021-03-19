@@ -172,7 +172,7 @@ export async function bundleWithEsBuild({
 
     // TODO use esbuild write to not load files in memory after https://github.com/yarnpkg/berry/issues/2259 gets fixed or we have onEmit in plugins
     for (let outputFile of buildResult.outputFiles || []) {
-        const filePath = outputFile.path.replace('$$virtual', 'virtual')
+        const filePath = outputFile.path
         await fs.createFile(filePath)
         await fs.writeFile(filePath, outputFile.contents)
     }
@@ -182,13 +182,11 @@ export async function bundleWithEsBuild({
     let meta = buildResult.metafile!
     meta = runFunctionOnPaths(meta, (p) => {
         p = stripColon(p) // namespace:/path/to/file -> /path/to/file
-        p = p.replace('$$virtual', 'virtual') // https://github.com/yarnpkg/berry/issues/2259
         return p
     })
-
     const esbuildCwd = process.cwd()
     const bundleMap = metafileToBundleMap({
-        entryPoints: entryPoints.map((p) => p.replace('$$virtual', 'virtual')),
+        entryPoints,
         meta,
         esbuildCwd,
         root,

@@ -4,7 +4,7 @@
     "version": "0.0.4",
     "dependencies": {
         "es-module-traversal": "^0.0.50",
-        "@bundless/cli": "0.2.6",
+        "@bundless/cli": "0.2.11",
         "glob": "^7.1.6",
         "jasmine-fail-fast": "^2.0.1",
         "jest-specific-snapshot": "^4.0.0",

@@ -1,7 +1,7 @@
 {
-    "../node_modules/react/index.js": ".bundless/web_modules/react/index.js",
-    "../node_modules/react-dom/index.js": ".bundless/web_modules/react-dom/index.js",
-    "../node_modules/react-router-dom/esm/react-router-dom.js": ".bundless/web_modules/react-router-dom/esm/react-router-dom.js",
-    "../node_modules/swr/esm/index.js": ".bundless/web_modules/swr/esm/index.js",
-    "../node_modules/@loadable/component/dist/loadable.esm.js": ".bundless/web_modules/@loadable/component/dist/loadable.esm.js"
+    "../node_modules/react/index.js": ".bundless/web_modules/index-V3344356.js",
+    "../node_modules/react-dom/index.js": ".bundless/web_modules/index-3RER33FG.js",
+    "../node_modules/react-router-dom/esm/react-router-dom.js": ".bundless/web_modules/react-router-dom-Y63UCTP4.js",
+    "../node_modules/swr/esm/index.js": ".bundless/web_modules/index-MIURPKYR.js",
+    "../node_modules/@loadable/component/dist/loadable.esm.js": ".bundless/web_modules/loadable.esm-PH5CIX7H.js"
 }
