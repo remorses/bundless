@@ -18,7 +18,7 @@
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
     "devDependencies": {
-        "@bundless/cli": "0.2.13",
+        "@bundless/cli": "0.2.14",
         "@types/node": "^14.14.13",
         "svelte": "^3.32.1"
     },

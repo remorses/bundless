@@ -1,5 +1,5 @@
 import image from '/image.png?namespace=file'
-import '/file.css?namespace=file'
+import '/file.css.cssjs?namespace=file'
 
 console.log(image)
 

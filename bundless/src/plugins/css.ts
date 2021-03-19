@@ -1,8 +1,9 @@
-import { NodeResolvePlugin } from '@esbuild-plugins/all'
+import { NodeResolvePlugin, resolveAsync } from '@esbuild-plugins/all'
 import { transform } from 'esbuild'
 import escapeStringRegexp from 'escape-string-regexp'
 import hash_sum from 'hash-sum'
 import path from 'path'
+import fs from 'fs-extra'
 import { CLIENT_PUBLIC_PATH, hmrPreamble } from '../constants'
 import { PluginHooks } from '../plugins-executor'
 
@@ -27,18 +28,40 @@ export function CssPlugin({} = {}) {
             onResolve,
             onTransform,
         }: PluginHooks) => {
-            if (isBuild) {
-                return
-            }
-
             // TODO use custom resolver that adds the .js extension to css paths?
-            NodeResolvePlugin({
-                name: 'css-node-resolve',
-                isExtensionRequiredInImportPath: true,
-                extensions: ['.css'],
-            }).setup({
-                onLoad,
-                onResolve,
+            onResolve({ filter: /\.css$/ }, async (args) => {
+                try {
+                    const res = await resolveAsync(args.path, {
+                        basedir: args.resolveDir,
+                    })
+                    if (res) {
+                        return {
+                            path: res + '.cssjs',
+                        }
+                    }
+                } catch {}
+            })
+            onLoad({ filter: /\.css\.cssjs$/ }, async (args) => {
+                try {
+                    const css = await (
+                        await fs.readFile(args.path.replace(/\.cssjs$/, ''))
+                    ).toString()
+                    // const id = hash_sum(args.path)
+
+                    let contents = await codegenCssForDev(css, args.path)
+                    if (!isBuild) {
+                        contents = hmrPreamble + '\n' + contents
+                    }
+                    return { contents, loader: 'js' }
+                } catch {}
+            })
+            // needed for other plugins that return css and are not resolved by this plugin
+            onTransform({ filter: /\.css$/ }, async (args) => {
+                let contents = await codegenCssForDev(args.contents, args.path)
+                if (!isBuild) {
+                    contents = hmrPreamble + '\n' + contents
+                }
+                return { contents, loader: 'js' }
             })
 
             onResolve(
@@ -58,14 +81,6 @@ export function CssPlugin({} = {}) {
                     }
                 },
             )
-
-            onTransform({ filter: /\.css$/ }, async (args) => {
-                const css = args.contents
-                // const id = hash_sum(args.path)
-
-                const contents = await codegenCssForDev(css, args.path)
-                return { contents }
-            })
         },
     }
 }
@@ -94,9 +109,7 @@ export async function codegenCssForDev(
     sourcefile: string,
     modules?: Record<string, string>,
 ) {
-    let code =
-        hmrPreamble +
-        `
+    let code = `
 const css = ${JSON.stringify(css)};
 
 if (typeof document !== 'undefined') {

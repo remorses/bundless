@@ -152,6 +152,7 @@ export async function bundleWithEsBuild({
                 plugins.NodeModulesPolyfillPlugin({
                     namespace: 'node-modules-polyfills',
                 }),
+                plugins.CssPlugin(),
                 plugins.NodeResolvePlugin({
                     name: 'prebundle-node-resolve',
                     mainFields: MAIN_FIELDS,

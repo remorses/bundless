@@ -1,4 +1,4 @@
-import '/.bundless/web_modules/base-4GOPGEBN.css?namespace=file'
+import '/__..__/__..__/node_modules/tailwindcss/dist/base.css.cssjs?namespace=file'
 
 console.log('Hello world!!!!!')
 

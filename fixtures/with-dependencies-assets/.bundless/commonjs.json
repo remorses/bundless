@@ -1,3 +1,5 @@
 {
-    "isCommonjs": {}
+    "isCommonjs": {
+        ".bundless/web_modules/base.css-2DM3KFED.js": true
+    }
 }

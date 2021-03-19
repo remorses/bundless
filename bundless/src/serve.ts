@@ -101,7 +101,7 @@ export async function createDevApp(server: net.Server, config: Config) {
 
     const watcher = chokidar.watch(root, {
         ignored: [
-            /(^|[/\\])(node_modules|\.git|\.DS_Store|web_modules)([/\\]|$)/,
+            /(^|[/\\])(node_modules|\.git|\.DS_Store|\.bundless)([/\\]|$)/,
         ],
         useFsEvents: shouldUseFsEvents(),
         ignoreInitial: true,
@@ -129,6 +129,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             plugins.HmrClientPlugin({
                 getPort: () => server.address()?.['port'],
             }),
+            plugins.CssPlugin(),
             // NodeResolvePlugin must be called first, to not skip prebundling
             plugins.NodeResolvePlugin({
                 name: 'node-resolve',
@@ -144,7 +145,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             }),
             plugins.NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
             plugins.EsbuildTransformPlugin(),
-            plugins.CssPlugin(),
+
             plugins.JSONPlugin(),
             plugins.ResolveSourcemapPlugin(),
             plugins.HtmlTransformUrlsPlugin({
@@ -198,6 +199,7 @@ export async function createDevApp(server: net.Server, config: Config) {
     }
 
     // when resolving if we encounter a node_module run the prebundling phase and invalidate some caches
+    // TODO use a different plugin instead of node resolve. should be applied to everything
     async function onResolved(resolvedPath: string, importer: string) {
         try {
             // lock browser requests until not prebundled
@@ -325,6 +327,7 @@ export async function createDevApp(server: net.Server, config: Config) {
 }
 
 // hash assumes that import paths can only grow when installed dependencies grow, this is not the case for deep paths like `lodash/path`, in these cases you will need to use `--force`
+// TODO include config in hash
 async function getDepsHash(root: string) {
     const lockfileLoc = await findUp(
         ['package-lock.json', 'yarn.lock', 'pnpm-lock.yaml'],

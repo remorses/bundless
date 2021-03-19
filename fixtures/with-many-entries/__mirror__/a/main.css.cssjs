@@ -1,5 +1,6 @@
 import * as  __HMR__ from '/_hmr_client.js?namespace=hmr-client'; import.meta.hot = __HMR__.createHotContext(import.meta.url); 
-const css = "a {\n    background: blue;\n}\n";
+
+const css = "body {\n    background: lightcoral;\n}\n";
 
 if (typeof document !== 'undefined') {
     import.meta.hot.accept();
