@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "ES2019",
+        "module": "commonjs",
+        "allowJs": true,
+        "moduleResolution": "Node",
+        "lib": ["es2017", "es7", "ESNext", "dom"],
+        "declaration": true,
+        "declarationMap": true,
+        "strict": true,
+        "esModuleInterop": true,
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "downlevelIteration": true,
+        "jsx": "react",
+        "skipLibCheck": true
+    }
+}

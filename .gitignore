@@ -16,3 +16,4 @@ with-pages/out
 *_dist
 _hmr_client.js
 .bundless
+scripts/metafile.json
