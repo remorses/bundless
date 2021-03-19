@@ -1,9 +1,9 @@
 import { CONFIG_NAME, DEFAULT_PORT } from './constants'
 import findUp from 'find-up'
 import fs from 'fs'
-import * as esbuild from 'esbuild'
 import { Plugin, PluginsExecutor } from './plugins-executor'
 import path from 'path'
+import * as esbuild from 'esbuild'
 import deepmerge from 'deepmerge'
 
 export async function getEntries(
@@ -63,6 +63,13 @@ export function normalizeConfig(config: Config) {
     return config
 }
 
+// TODO add config.mainFields
+// TODO add config.build.chunkNames, assetNames, entryNames
+// TODO add config.inject
+// TODO add config.watch
+// TODO add config.resolveExtensions
+// TODO add config.jsxFactory, jsxFragment
+
 export interface Config {
     server?: ServerConfig
     define?: Record<string, string>
@@ -74,6 +81,7 @@ export interface Config {
     // env?: Record<string, string>
     entries?: string[]
     plugins?: Plugin[]
+    // TODO rename to loader to stay closer to esbuild
     importableAssetsExtensions?: string[]
     jsx?:
         | 'vue'
