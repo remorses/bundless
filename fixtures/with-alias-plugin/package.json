@@ -1,0 +1,9 @@
+{
+    "name": "fixtures-with-alias",
+    "version": "0.0.0",
+    "private": true,
+    "dependencies": {
+        "preact": "*",
+        "react-dom": "experimental"
+    }
+}
