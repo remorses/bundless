@@ -2,12 +2,11 @@
 
 exports[`snapshots fixtures/with-custom-assets: build 1`] = `
 Array [
-  "file.3I42H3S6.dat",
+  "file-3I42H3S6.dat",
+  "index-V4IF2OV4.js",
   "index.html",
-  "index.js",
-  "metafile.json",
-  "x.3I42H3S6.DAC",
-  "x.js",
+  "x-3I42H3S6.DAC",
+  "x-FKPDYK5W.js",
 ]
 `;
 

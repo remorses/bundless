@@ -2,9 +2,8 @@
 
 exports[`snapshots fixtures/with-tsx: build 1`] = `
 Array [
+  "index-4PFTOX6G.js",
   "index.html",
-  "index.js",
-  "metafile.json",
 ]
 `;
 

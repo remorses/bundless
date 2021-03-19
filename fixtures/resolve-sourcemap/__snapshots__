@@ -2,9 +2,8 @@
 
 exports[`snapshots fixtures/resolve-sourcemap: build 1`] = `
 Array [
+  "index-4JWM547Q.js",
   "index.html",
-  "index.js",
-  "metafile.json",
 ]
 `;
 

@@ -2,12 +2,11 @@
 
 exports[`snapshots fixtures/with-assets-imports: build 1`] = `
 Array [
-  "dynamic-import.js",
-  "image.WYWSOB4S.png",
-  "index.css",
+  "dynamic-import-BLT43UQD.js",
+  "image-WYWSOB4S.png",
+  "index-4FKQTH4F.css",
+  "index-PANSVF32.js",
   "index.html",
-  "index.js",
-  "metafile.json",
 ]
 `;
 

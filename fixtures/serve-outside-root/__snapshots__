@@ -2,9 +2,8 @@
 
 exports[`snapshots fixtures/serve-outside-root: build 1`] = `
 Array [
+  "index-7WCD5XGM.js",
   "index.html",
-  "index.js",
-  "metafile.json",
 ]
 `;
 

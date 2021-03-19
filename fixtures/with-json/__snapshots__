@@ -2,9 +2,8 @@
 
 exports[`snapshots fixtures/with-json: build 1`] = `
 Array [
+  "index-RLDJTRFH.js",
   "index.html",
-  "index.js",
-  "metafile.json",
 ]
 `;
 

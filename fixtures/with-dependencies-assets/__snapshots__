@@ -2,16 +2,15 @@
 
 exports[`snapshots fixtures/with-dependencies-assets: build 1`] = `
 Array [
-  "index.css",
+  "index-DUY72R33.js",
+  "index-TNQREJPH.css",
   "index.html",
-  "index.js",
-  "metafile.json",
 ]
 `;
 
 exports[`snapshots fixtures/with-dependencies-assets: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/web_modules/base.css?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/base-4GOPGEBN.css?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
@@ -30,7 +29,7 @@ exports[`snapshots fixtures/with-dependencies-assets: traverse result 1`] = `
 Array [
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/base.css?namespace=file",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/base-4GOPGEBN.css?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
@@ -39,9 +38,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/web_modules/base.css?namespace=file",
+    "importPath": "/.bundless/web_modules/base-4GOPGEBN.css?namespace=file",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/base.css?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/base-4GOPGEBN.css?namespace=file",
   },
   Object {
     "importPath": "/main.js?namespace=file",

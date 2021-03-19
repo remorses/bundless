@@ -2,10 +2,9 @@
 
 exports[`snapshots fixtures/with-links: build 1`] = `
 Array [
+  "index-DVQWUXEM.js",
   "index.html",
-  "index.js",
   "manifest.json",
-  "metafile.json",
   "styles1.css",
 ]
 `;

@@ -2,9 +2,8 @@
 
 exports[`snapshots fixtures/with-imports: build 1`] = `
 Array [
+  "index-GDY5JEUF.js",
   "index.html",
-  "index.js",
-  "metafile.json",
 ]
 `;
 

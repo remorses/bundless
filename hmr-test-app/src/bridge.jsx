@@ -24,6 +24,6 @@ export function App() {
     )
 }
 
-console.log(new Error('i am here'))
+console.log(new Error('i am here, line 27'))
 
 // export const x = 9

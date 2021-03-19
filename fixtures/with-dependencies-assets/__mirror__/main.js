@@ -1,4 +1,4 @@
-import '/.bundless/web_modules/base.css?namespace=file'
+import '/.bundless/web_modules/base-4GOPGEBN.css?namespace=file'
 
 console.log('Hello world!!!!!')
 

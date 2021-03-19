@@ -2,9 +2,8 @@
 
 exports[`snapshots fixtures/with-typescript: build 1`] = `
 Array [
+  "index-DXPGEVAU.js",
   "index.html",
-  "index.js",
-  "metafile.json",
 ]
 `;
 
