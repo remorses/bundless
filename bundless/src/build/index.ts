@@ -146,7 +146,9 @@ export async function build({
         minifySyntax: Boolean(minify),
         minifyWhitespace: Boolean(minify),
         mainFields,
-        define: generateDefineObject({ config, platform }),
+        define: {
+            ...generateDefineObject({ config, platform, isProd: true }),
+        },
         plugins: pluginsExecutor.esbuildPlugins(),
         // tsconfig: tsconfigTempFile,
         format: isBrowser ? 'esm' : 'cjs',

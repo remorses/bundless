@@ -71,7 +71,7 @@ export interface Config {
     printStats?: boolean
     platform?: Platform
     root?: string
-    env?: Record<string, string>
+    // env?: Record<string, string>
     entries?: string[]
     plugins?: Plugin[]
     importableAssetsExtensions?: string[]

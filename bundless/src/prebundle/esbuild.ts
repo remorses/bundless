@@ -60,8 +60,9 @@ export const commonEsbuildOptions = (
 })
 
 export function generateDefineObject({
-    config,
+    config = {} as Config,
     platform = 'browser' as Platform,
+    isProd = false,
 }) {
     if (platform === 'node') {
         return {
@@ -72,9 +73,9 @@ export function generateDefineObject({
     const noop = 'String'
     return {
         'process.env.NODE_ENV': JSON.stringify(
-            process.env.NODE_ENV || 'development',
+            process.env.NODE_ENV || isProd ? 'production' : 'development',
         ),
-        ...generateEnvReplacements(config.env || {}),
+        // ...generateEnvReplacements(config.env || {}),
         'process.pid': '0',
         // global: 'window',
         __filename: '""',
