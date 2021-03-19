@@ -149,6 +149,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             })
             // node module path not bundled, rerun bundling
             const entryPoints = await getEntries(pluginsExecutor, config)
+            // TODO make prebundled files cachable indefinitley given they are named with an hash
             bundleMap = await prebundle({
                 entryPoints,
                 dest: path.resolve(root, WEB_MODULES_PATH),
@@ -191,7 +192,7 @@ export async function createDevApp(server: net.Server, config: Config) {
         onResolved,
         plugins: [
             ...prePlugins,
-            // TODO resolve data: imports, rollup emits imports with data: ...
+            // TODO resolve `data:` imports, rollup emits imports with data: ...
             plugins.HtmlResolverPlugin(),
             plugins.UrlResolverPlugin(), // resolves urls with queries
             plugins.HmrClientPlugin({

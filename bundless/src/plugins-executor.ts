@@ -230,7 +230,7 @@ export class PluginsExecutor {
                     pluginData: undefined,
                     resolveDir: '',
                     path: '',
-                    kind: 'import-statement', // TODO fix this
+                    kind: 'import-statement', // TODO fix wrong kind in resolve
                     ...arg,
                 })
                 if (newResult && newResult.path) {

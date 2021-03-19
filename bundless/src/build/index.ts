@@ -35,7 +35,6 @@ interface OwnArgs {
 
 // how to get entrypoints? to support multi entry i should let the user pass them, for the single entry i can just get public/index.html or index.html
 // TODO add watch feature for build
-// TODO esbuild creates too many chunks
 export async function build({
     logger = new Logger(),
     incremental,
@@ -88,7 +87,7 @@ export async function build({
                 }
                 // needed for linked workspaces
                 // const isOutside = path.relative(root, p).startsWith('..')
-                // TODO should i bundle linked dependencies?
+                // TODO should i bundle linked dependencies in ssr build?
                 if (p.endsWith('.js') && p.includes('node_modules')) {
                     return {
                         path: p,
@@ -414,7 +413,7 @@ export async function build({
 
     return {
         bundleMap,
-        // TODO rebuild should also trigger index.html rewrite, ask esbuild to add an event emitter that emits rebuild methods
+        // TODO rebuild should also trigger index.html rewrite, wrap rebuild function
         rebuild,
         traversalGraph,
     }

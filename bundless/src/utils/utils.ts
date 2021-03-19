@@ -15,15 +15,6 @@ import { Config } from '../config'
 import { cleanUrl, queryRE } from './path'
 import { JS_EXTENSIONS } from '../constants'
 
-const imageRE = /\.(png|jpe?g|gif|svg|ico|webp)(\?.*)?$/
-const mediaRE = /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/
-const fontsRE = /\.(woff2?|eot|ttf|otf)(\?.*)?$/i
-
-export const isStaticAsset = (file: string) => {
-    // TODO adds configurable assets extensions
-    return imageRE.test(file) || mediaRE.test(file) || fontsRE.test(file)
-}
-
 export const jsSrcRE = /\.(?:(?:j|t)sx?|vue)$|\.mjs$/
 export const urlRE = /url\(\s*('[^']+'|"[^"]+"|[^'")]+)\s*\)/
 export const cssPreprocessLangRE = /\.(less|sass|scss|styl|stylus|postcss)$/

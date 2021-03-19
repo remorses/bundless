@@ -97,7 +97,6 @@ export async function rewriteImports({
 
         const magicString = new MagicString(source)
 
-        // TODO add the client script in html, this way i can make the page reload also when there is an error during rewrite
         if (isHmrEnabled) {
             magicString.prepend(hmrPreamble)
         }
@@ -169,7 +168,7 @@ export async function rewriteImports({
                 }
 
                 const newNamespace = encodeURIComponent(
-                    resolveResult.namespace || namespace, // TODO in esbuild do loaded files inherit namespace?
+                    resolveResult.namespace || namespace,
                 )
                 resolvedImportPath = appendQuery(
                     resolvedImportPath,

@@ -24,7 +24,7 @@ export function ResolveSourcemapPlugin({} = {}) {
                 }
                 let filePath = match[1]
                 if (!filePath || filePath.startsWith('data:')) {
-                    // TODO skip other data: like formats in sourcemaps
+                    // TODO skip other data: non base64 formats in sourcemaps
                     return
                 }
                 if (!filePath.startsWith('.') && !filePath.startsWith('/')) {

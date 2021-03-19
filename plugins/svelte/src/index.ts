@@ -174,7 +174,7 @@ export function SveltePlugin(options: PluginOptions = {}): Plugin {
 export interface PluginOptions {
     compilerOptions?: CompileOptions
     preprocess?: PreprocessorGroup[]
-    hmrOptions?: any // TODO find types for svelte-hmr
+    hmrOptions?: any 
     typescript?: boolean
 }
 
