@@ -29,7 +29,7 @@ export function CssPlugin({} = {}) {
             onTransform,
         }: PluginHooks) => {
             // TODO use custom resolver that adds the .js extension to css paths?
-            onResolve({ filter: /\.css$/ }, async (args) => {
+            async function cssResolver(args) {
                 try {
                     const res = await resolveAsync(args.path, {
                         basedir: args.resolveDir,
@@ -40,8 +40,22 @@ export function CssPlugin({} = {}) {
                         }
                     }
                 } catch {}
-            })
-            onLoad({ filter: /\.css\.cssjs$/ }, async (args) => {
+            }
+            onResolve({ filter: /\.css$/ }, cssResolver)
+            onResolve(
+                {
+                    filter: new RegExp(
+                        '(' +
+                            Object.keys(config.loader || {})
+                                .filter((k) => config.loader?.[k] === 'css')
+                                .map(escapeStringRegexp)
+                                .join('|') +
+                            ')$',
+                    ),
+                },
+                cssResolver,
+            )
+            onLoad({ filter: /\.cssjs$/ }, async (args) => {
                 try {
                     const css = await (
                         await fs.readFile(args.path.replace(/\.cssjs$/, ''))

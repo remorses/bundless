@@ -4,5 +4,6 @@ module.exports = {
         '.DAC': 'file',
         '.svg': 'dataurl',
         '.fakejs': 'ts',
+        '.fakecss': 'css',
     },
 }

@@ -1,4 +1,5 @@
 import { text } from './file'
+import './file.fakecss'
 import fakejs from './file.fakejs'
 
 const node = document.createElement('pre')

@@ -82,7 +82,7 @@ export interface Config {
     entries?: string[]
     plugins?: Plugin[]
     // TODO rename to loader to stay closer to esbuild
-    loader?: Record<string, 'file'> // TODO support more than file
+    loader?: Record<string, esbuild.Loader> // TODO support more than file
     jsx?:
         | 'vue'
         | 'preact'
