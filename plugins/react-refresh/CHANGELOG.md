@@ -1,5 +1,11 @@
 # @bundless/plugin-react-refresh
 
+## 2.1.0
+
+### Minor Changes
+
+-   Many improvements
+
 ## 2.0.3
 
 ### Patch Changes

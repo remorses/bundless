@@ -12,8 +12,8 @@
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
     "devDependencies": {
-        "@bundless/cli": "0.2.14",
-        "@bundless/plugin-react-refresh": "2.0.3",
+        "@bundless/cli": "0.3.0",
+        "@bundless/plugin-react-refresh": "2.1.0",
         "@snowpack/plugin-react-refresh": "^2.3.9",
         "es-module-traversal": "^0.0.50",
         "execa": "^5.0.0",

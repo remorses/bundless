@@ -1,6 +1,6 @@
 {
     "name": "@bundless/cli",
-    "version": "0.2.14",
+    "version": "0.3.0",
     "description": "",
     "main": "dist/index.js",
     "module": "esm/index.js",

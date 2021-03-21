@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.3.0
+
+### Minor Changes
+
+-   Many improvements
+
 ## 0.2.6
 
 ### Patch Changes
