@@ -8,7 +8,7 @@ import fs from 'fs'
 import slash from 'slash'
 import { parse as _parse, ParserPlugin } from '@babel/parser'
 import { Plugin, logger } from '@bundless/cli'
-import { babelParserOpts } from '@bundless/cli/dist/utils'
+import { babelParserOpts, osAgnosticPath } from '@bundless/cli/dist/utils'
 import { transform } from '@babel/core'
 import path, { relative } from 'path'
 
@@ -137,11 +137,12 @@ export function ReactRefreshPlugin({
                 const nonComponentExports = result.ast
                     ? getNonComponentExports(result.ast as any)
                     : []
-                const hmrDisabledMessage = `${
-                    args.path
-                } disabled react-refresh because it has non react components as exports! Exports are ${JSON.stringify(
+                const hmrDisabledMessage = `${osAgnosticPath(
+                    args.path,
+                    root,
+                )} has non react components exports ${JSON.stringify(
                     nonComponentExports,
-                )}`
+                )}!`
                 if (nonComponentExports.length) {
                     logger.warn(hmrDisabledMessage)
                 }
