@@ -1,5 +1,5 @@
 import {text} from "/text.ts?namespace=file";
-import react_cjsImport1 from "/.bundless/web_modules/preact-UKZ3522J.js?namespace=file"; const React = react_cjsImport1 && react_cjsImport1.__esModule ? react_cjsImport1.default : react_cjsImport1;;
+import React from "/.bundless/web_modules/compat.module-AJYWWOYA.js?namespace=file";
 const node = document.createElement("pre");
 node.appendChild(document.createTextNode(text));
 document.body.appendChild(node);

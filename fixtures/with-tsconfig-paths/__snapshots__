@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`snapshots fixtures/with-alias-plugin: build 1`] = `
+exports[`snapshots fixtures/with-tsconfig-paths: build 1`] = `
 Array [
-  "index-K2XMZ3V7.js",
+  "index-K5OOHVOG.js",
   "index.html",
 ]
 `;
 
-exports[`snapshots fixtures/with-alias-plugin: content-type headers 1`] = `
+exports[`snapshots fixtures/with-tsconfig-paths: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/web_modules/compat.module-AJYWWOYA.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/index-ILCVHTSW.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.tsx?namespace=file": "application/javascript; charset=utf-8",
@@ -17,7 +17,7 @@ Object {
 }
 `;
 
-exports[`snapshots fixtures/with-alias-plugin: mirror 1`] = `
+exports[`snapshots fixtures/with-tsconfig-paths: mirror 1`] = `
 Array [
   "_hmr_client.js",
   "index.html",
@@ -26,7 +26,7 @@ Array [
 ]
 `;
 
-exports[`snapshots fixtures/with-alias-plugin: traverse result 1`] = `
+exports[`snapshots fixtures/with-tsconfig-paths: traverse result 1`] = `
 Array [
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
@@ -34,9 +34,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/web_modules/compat.module-AJYWWOYA.js?namespace=file",
+    "importPath": "/.bundless/web_modules/index-ILCVHTSW.js?namespace=file",
     "importer": "http://127.0.0.1:9000/main.tsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/compat.module-AJYWWOYA.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-ILCVHTSW.js?namespace=file",
   },
   Object {
     "importPath": "/main.tsx?namespace=file",

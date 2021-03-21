@@ -11,7 +11,7 @@ export function TsconfigPathsPlugin(options: PluginOptions): Plugin {
         enforce: 'pre',
         setup({ onResolve, pluginsExecutor, ctx: { root, config } }) {
             const matchPath = createMatchPath(
-                '',
+                root,
                 options.paths,
                 MAIN_FIELDS, // TODO allow customization with config.mainFields
                 true,
@@ -23,9 +23,7 @@ export function TsconfigPathsPlugin(options: PluginOptions): Plugin {
 
             regexes.forEach((filter) => {
                 onResolve({ filter: filter! }, async (args) => {
-                    console.log(args.path)
                     const resolved = matchPath(args.path)
-                    console.log(resolved)
                     if (!resolved) {
                         return null
                     }
@@ -47,12 +45,5 @@ export function TsconfigPathsPlugin(options: PluginOptions): Plugin {
 }
 
 type PluginOptions = {
-    /**
-     * Implicit extensions used when resolving an import path
-     * like `./App` which has no explicit extension like `./App.vue` does.
-     *
-     * TypeScript and JavaScript extensions are used by default.
-     */
-    baseUrl?: string
     paths: Record<string, string[]>
 }
