@@ -42,19 +42,19 @@ export function CssPlugin({} = {}) {
                 } catch {}
             }
             onResolve({ filter: /\.css$/ }, cssResolver)
-            onResolve(
-                {
-                    filter: new RegExp(
-                        '(' +
-                            Object.keys(config.loader || {})
-                                .filter((k) => config.loader?.[k] === 'css')
-                                .map(escapeStringRegexp)
-                                .join('|') +
-                            ')$',
-                    ),
-                },
-                cssResolver,
-            )
+            const cssExtensions = Object.keys(config.loader || {})
+                .filter((k) => config.loader?.[k] === 'css')
+                .map(escapeStringRegexp)
+            if (cssExtensions.length) {
+                onResolve(
+                    {
+                        filter: new RegExp(
+                            '(' + cssExtensions.join('|') + ')$',
+                        ),
+                    },
+                    cssResolver,
+                )
+            }
             onLoad({ filter: /\.cssjs$/ }, async (args) => {
                 try {
                     const css = await (

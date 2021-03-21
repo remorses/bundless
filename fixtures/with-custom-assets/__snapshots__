@@ -3,7 +3,8 @@
 exports[`snapshots fixtures/with-custom-assets: build 1`] = `
 Array [
   "file-3I42H3S6.dat",
-  "index-5QHXEGW5.js",
+  "index-DPY2HB5D.js",
+  "index-EOXT7XSV.css",
   "index.html",
   "x-3I42H3S6.DAC",
   "x-FKPDYK5W.js",
@@ -14,6 +15,7 @@ exports[`snapshots fixtures/with-custom-assets: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/file.dat?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.fakecss.cssjs?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/file.fakejs?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/file.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/file.svg?namespace=file": "application/javascript; charset=utf-8",
@@ -27,6 +29,7 @@ exports[`snapshots fixtures/with-custom-assets: mirror 1`] = `
 Array [
   "_hmr_client.js",
   "file.dat",
+  "file.fakecss.cssjs",
   "file.fakejs",
   "file.js",
   "file.svg",
@@ -38,6 +41,11 @@ Array [
 
 exports[`snapshots fixtures/with-custom-assets: traverse result 1`] = `
 Array [
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/file.fakecss.cssjs?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
     "importer": "http://127.0.0.1:9000/index.html",
@@ -52,6 +60,11 @@ Array [
     "importPath": "/file.dat?namespace=file",
     "importer": "http://127.0.0.1:9000/file.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/file.dat?namespace=file",
+  },
+  Object {
+    "importPath": "/file.fakecss.cssjs?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.fakecss.cssjs?namespace=file",
   },
   Object {
     "importPath": "/file.fakejs?namespace=file",

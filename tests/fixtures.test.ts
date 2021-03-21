@@ -15,6 +15,7 @@ import { cleanUrl } from '@bundless/cli/dist/utils'
 const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
 
+jest.setTimeout(1000 * 20)
 describe('snapshots', () => {
     const casesPath = 'fixtures'
     const cases = fs
