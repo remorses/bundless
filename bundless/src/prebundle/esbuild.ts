@@ -48,13 +48,11 @@ export const commonEsbuildOptions = (
         // '.svg': 'dataurl', // TODO enable svg as data uri in development and in build
         ...Object.assign(
             {},
-            ...[
-                ...defaultImportableAssets,
-                ...(config.importableAssetsExtensions || []),
-            ].map((k) => ({
+            ...defaultImportableAssets.map((k) => ({
                 [k]: 'file',
             })),
         ),
+        ...config.loader,
     },
     define: generateDefineObject({ config }),
 })

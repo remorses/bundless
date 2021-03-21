@@ -206,10 +206,7 @@ export async function createDevApp(server: net.Server, config: Config) {
                 extensions: [...JS_EXTENSIONS],
             }),
             plugins.AssetsPlugin({
-                extensions: [
-                    ...defaultImportableAssets,
-                    ...(config.importableAssetsExtensions || []),
-                ],
+                loader: config.loader,
             }),
             plugins.NodeModulesPolyfillPlugin({ namespace: 'node-builtins' }),
             plugins.EsbuildTransformPlugin(),

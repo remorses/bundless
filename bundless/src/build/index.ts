@@ -98,7 +98,7 @@ export async function build({
             mainFields,
             extensions: [
                 ...defaultResolvableExtensions,
-                ...(config.importableAssetsExtensions || []),
+                ...(Object.keys(config.loader || {}) || []),
             ],
         }),
         ...(isBrowser ? [plugins.NodeModulesPolyfillPlugin()] : []),

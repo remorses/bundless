@@ -1,14 +1,32 @@
 import { NodeResolvePlugin } from '@esbuild-plugins/all'
 import escapeStringRegexp from 'escape-string-regexp'
 import path from 'path'
+import fs from 'fs-extra'
+import mime from 'mime-types'
 import { PluginHooks } from '../plugins-executor'
 import { fileToImportPath } from '../utils'
+import * as esbuild from 'esbuild'
+import { transform } from './esbuild'
+import { defaultImportableAssets } from '../constants'
 
-export function AssetsPlugin({ extensions }) {
+export function AssetsPlugin({
+    loader: _loader,
+}: {
+    loader?: Record<string, esbuild.Loader>
+}) {
+    let loader = _loader || {}
+    const extensions = Object.keys(loader)
     const extensionsSet = new Set(extensions)
+    loader = {
+        ...Object.assign(
+            {},
+            ...defaultImportableAssets.map((k) => ({ [k]: 'file' })),
+        ),
+        ...loader,
+    }
     return {
         name: 'assets',
-        setup: ({ onLoad, onResolve, ctx: { root } }: PluginHooks) => {
+        setup: ({ onLoad, onResolve, ctx: { root, config } }: PluginHooks) => {
             const filter = new RegExp(
                 '(' + extensions.map(escapeStringRegexp).join('|') + ')$',
             )
@@ -22,13 +40,56 @@ export function AssetsPlugin({ extensions }) {
                 onResolve,
             })
             onLoad({ filter }, async (args) => {
-                if (!extensionsSet.has(path.extname(args.path))) {
+                const extension = path.extname(args.path)
+                if (!extensionsSet.has(extension)) {
                     return
                 }
                 const publicPath = fileToImportPath(root, args.path)
-                return {
-                    contents: `export default ${JSON.stringify(publicPath)}`,
+                const loadedType = loader[extension]
+
+                if (loadedType === 'file') {
+                    return {
+                        contents: `export default ${JSON.stringify(
+                            publicPath,
+                        )}`,
+                    }
                 }
+                let data = await await fs.readFile(args.path)
+                if (loadedType === 'js') {
+                    return { contents: data.toString(), loader: 'js' }
+                }
+                if (
+                    loadedType === 'jsx' ||
+                    loadedType === 'ts' ||
+                    loadedType === 'tsx'
+                ) {
+                    const res = await transform({
+                        filePath: args.path,
+                        src: data.toString(),
+                        loader: loadedType,
+                        config,
+                    })
+                    return {
+                        contents: res.contents || '',
+                        loader: 'js',
+                    }
+                }
+                if (loadedType === 'base64') {
+                    return {
+                        contents: `export default "${data.toString('base64')}`,
+                        loader: 'js',
+                    }
+                }
+                if (loadedType === 'dataurl') {
+                    const mimeType = mime.lookup(args.path)
+                    return {
+                        contents: `export default "data:${mimeType};base64,${data.toString(
+                            'base64',
+                        )}"`,
+                        loader: 'js',
+                    }
+                }
+                return null
             })
         },
     }

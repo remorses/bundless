@@ -1,3 +1,8 @@
 module.exports = {
-    importableAssetsExtensions: ['.dat', '.DAC'],
+    loader: {
+        '.dat': 'file',
+        '.DAC': 'file',
+        '.svg': 'dataurl',
+        '.fakejs': 'ts',
+    },
 }

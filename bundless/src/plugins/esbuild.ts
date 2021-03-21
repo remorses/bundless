@@ -54,15 +54,17 @@ export function resolveJsxOptions(options: Config['jsx'] = 'react') {
 export const transform = async ({
     src,
     filePath,
+    loader,
     config,
 }: {
     src: string
     filePath: string
     config?: Config
+    loader?: esbuild.Loader
     exitOnFailure?: boolean
 }): Promise<OnTransformResult> => {
     const options: TransformOptions = {
-        loader: path.extname(filePath).slice(1) as Loader,
+        loader: loader || (path.extname(filePath).slice(1) as Loader),
         sourcemap: true,
         // format: 'esm', // passing format reorders exports https://github.com/evanw/esbuild/issues/710
         // ensure source file name contains full query

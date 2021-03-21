@@ -82,7 +82,7 @@ export interface Config {
     entries?: string[]
     plugins?: Plugin[]
     // TODO rename to loader to stay closer to esbuild
-    importableAssetsExtensions?: string[]
+    loader?: Record<string, 'file'> // TODO support more than file
     jsx?:
         | 'vue'
         | 'preact'
@@ -123,7 +123,7 @@ export const defaultConfig: Config = {
         outDir: './out', // output directory
     },
     platform: 'browser', // target platform, browser or node
-    importableAssetsExtensions: [], // extension that return their path when imported
+    loader: {}, // extension that return their path when imported
     jsx: 'react', // jsx preset
     plugins: [],
 }

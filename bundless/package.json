@@ -45,6 +45,7 @@
     "dependencies": {
         "@babel/parser": "^7.12.11",
         "@babel/types": "^7.12.10",
+        "mime-types": "^2.1.29",
         "@esbuild-plugins/all": "^0.0.20",
         "@koa/cors": "^3.1.0",
         "chalk": "^4.1.0",

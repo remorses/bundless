@@ -1,5 +1,11 @@
-import path from './file.dat'
+import dat from './file.dat'
+import svg from './file.svg'
 
 import('./x.DAC').then(console.log)
+console.log({ dat })
 
-export const text = 'This has been made in 2020, what a shitty year ' + path
+const node = document.createElement('img')
+node.setAttribute('src', svg)
+document.body.appendChild(node)
+
+export const text = dat

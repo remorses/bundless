@@ -70,7 +70,7 @@ export async function traverseWithEsbuild({
             mainFields: MAIN_FIELDS,
             extensions: [
                 ...defaultResolvableExtensions,
-                ...(config.importableAssetsExtensions || []),
+                ...(Object.keys(config.loader || {}) || []),
             ],
             // TODO use different plugin that only runs on bare imports
             onNonResolved: (p, importer) => {
