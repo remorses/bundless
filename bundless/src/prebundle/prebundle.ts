@@ -1,5 +1,6 @@
 import fs from 'fs-extra'
 import path from 'path'
+import chalk from 'chalk'
 import {
     BUNDLE_MAP_PATH,
     COMMONJS_ANALYSIS_PATH,
@@ -35,7 +36,9 @@ export async function prebundle({ entryPoints, config, root, dest }) {
         logger.spinStart('Prebundling modules')
         logger.log(
             `prebundling [\n    ${dependenciesPaths
-                .map((x) => osAgnosticPath(x, root))
+                .map((x) => getClearDependencyPath(x))
+                .map((x) => (path.isAbsolute(x) ? osAgnosticPath(x, root) : x))
+                .map((x) => chalk.green(x))
                 .join('\n    ')}\n]`,
         )
 
@@ -78,3 +81,16 @@ export async function prebundle({ entryPoints, config, root, dest }) {
 // save a commonjs modules list in web_modules folder
 // this can be a plugin that start building when finding a new node_modules plugin that should not be there
 // if it sees a path that has a node_modules inside it blocks the server, start bundling and restart everything
+
+function getClearDependencyPath(p: string) {
+    const index = p.lastIndexOf('node_modules')
+    if (index === -1) {
+        return p
+    }
+    let dependencySubPath = p.slice(index).replace(/\/?node_modules\//, '')
+    return dependencySubPath
+}
+
+function getScopedPackageName(path: string): any {
+    return path.match(/(@[\w-_\.]+\/[\w-_\.]+)/)?.[1] || ''
+}
