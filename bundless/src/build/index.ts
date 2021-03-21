@@ -128,7 +128,13 @@ export async function build({
         }),
     )
 
-    logger.log(`building ${JSON.stringify(entryPoints, [], 4)}\n`)
+    logger.log(
+        `building ${JSON.stringify(
+            entryPoints.map((x) => osAgnosticPath(x, root)),
+            [],
+            4,
+        )}\n`,
+    )
 
     let { rebuild, metafile } = await esbuild.build({
         ...commonEsbuildOptions(config),
