@@ -1,11 +1,10 @@
--   use data url for loading svgs
--   make a config for assetExtensions, to let user import any file and return its path
--   includeWorkspacePackages prebundles html files
--   put the onResolve function in the plugins executor, this way it does not depend on the presence of node-resolve plugin
--   replace node-resolve in the traversal with bare imports plugin
+-   ~~use data url for loading svgs~~
+-   ~~make a config for assetExtensions, to let user import any file and return its path~~
+-   ~~put the onResolve function in the plugins executor, this way it does not depend on the presence of node-resolve plugin~~
+-   ~~replace node-resolve in the traversal with bare imports plugin~~
 -   ~~add a way to order plugins after or before the builtin plugins~~
--   do not rely on the node resolve package for anything, add an additional plugin and add node-resolve only when in yarn pnp
--   replace external but in meta with a dummy plugin that registers imports
+-   ~~do not rely on the node resolve package for anything, add an additional plugin and add node-resolve only when in yarn pnp~~
+-   ~~replace external but in meta with a dummy plugin that registers imports~~
 -   add support for multiple errors in error panel
 -   ~~do not run esbuild transform if loader is already js~~
 -   ~~run all user plugins first, make react refresh use the js loader as output~~
@@ -18,7 +17,7 @@
 -   add warning for multiple node modules paths for same package when this package is peer of something
 -   watch ignore should be more strict, no regex
 -   remove require warnings from paged (only use require when platform is node)
--   investigate if using new extensions in a plugins require you to add a resolver, maybe add a universal resolver that resolves all extensions (if they are present in the import path)
+-   ~~investigate if using new extensions in a plugins require you to add a resolver, maybe add a universal resolver that resolves all extensions (if they are present in the import path)~~
 -   think about core feature for bundless for promotion in twitter (esbuild plugins, benchmarks, ssr, meta framework, build speed, monorepo support, hmr fixes, multiple entrypoints,)
 -   how to make project sustainable? offer migration support for react-scripts and stuff like that?
 -   make tests for esbuild plugins interoperability, tests fixture contain the plugins in the config
