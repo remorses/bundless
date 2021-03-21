@@ -39,11 +39,14 @@ export async function prebundle({ entryPoints, config, root, dest }) {
                 .join('\n    ')}\n]`,
         )
 
+        // TODO separate build for workspaces and dependencies, build workspaces in watch mode, also pass user plugins
+        // TODO do not stop traversal on workspaces, grab all dependencies including inside workspaces (to node duplicate deps)
+        // TODO build workspaces in separate build step, make external dependencies using the needsPrebundle logic
         const { bundleMap, analysis, stats } = await bundleWithEsBuild({
             dest,
             root,
             config,
-            entryPoints: dependenciesPaths.map((x) => path.resolve(root, x)),
+            entryPoints: dependenciesPaths.map((x) => path.resolve(root, x)), // TODO resolve to package names
         })
 
         logger.spinSucceed('\nFinish')

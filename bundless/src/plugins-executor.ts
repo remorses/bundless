@@ -80,6 +80,7 @@ export type OnResolved = (
     result: esbuild.OnResolveResult & { importer: string },
 ) => Promise<Maybe<esbuild.OnResolveResult>> | Maybe<esbuild.OnResolveResult>
 
+// TODO let plugins modify the options, pass an esbuild options as argument and you can access the mutated version as class instance
 export class PluginsExecutor {
     ctx: PluginsExecutorCtx
     plugins: Plugin[]
