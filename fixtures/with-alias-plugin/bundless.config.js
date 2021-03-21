@@ -1,22 +1,21 @@
 const path = require('path')
+const { AliasPlugin } = require('@bundless/plugin-alias')
 
 module.exports = {
+    build: {
+        minify: false,
+    },
     plugins: [
-        {
-            name: 'virtual', // alias plugins need to have enforce pre or node resolve will have higher priority
-            enforce: 'pre',
-            setup({ onResolve }) {
-                onResolve({ filter: /@virtual/ }, (arg) => {
-                    return {
-                        path: path.resolve(__dirname, 'text.ts'),
-                    }
-                })
-                onResolve({ filter: /^react$/ }, (arg) => {
-                    return {
-                        path: require.resolve('preact'),
-                    }
-                })
-            },
-        },
+        AliasPlugin({
+            entries: [
+                { find: 'react', replacement: 'preact/compat' },
+                { find: '@virtual', replacement: './text.ts' },
+            ],
+            // paths: {
+            //     'react/*': [require.resolve('preact/compat')],
+            //     react: [require.resolve('preact/compat')],
+            //     '@virtual': ['text.ts'],
+            // },
+        }),
     ],
 }

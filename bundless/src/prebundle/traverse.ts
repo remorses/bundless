@@ -153,7 +153,7 @@ export function traversalGraphPlugin({
                     resolveDir: args.resolveDir,
                 })
                 if (!res || !res.path) {
-                    return null
+                    return res
                 }
 
                 const importer = osAgnosticPath(

@@ -1,0 +1,32 @@
+{
+    "name": "@bundless/plugin-alias",
+    "version": "0.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "repository": "https://github.com/remorses/bundless.git",
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc -w",
+        "local": "yarn publish --force --registry http://localhost:4873 --access restricted --no-git-tag-version --patch --message 'Local registry publish'"
+    },
+    "files": [
+        "dist",
+        "src"
+    ],
+    "keywords": [],
+    "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "@bundless/cli": "0.3.0",
+        "@types/node": "^14.14.13",
+        "@types/globrex": "^0.1.0"
+    },
+    "dependencies": {
+        "escape-string-regexp": "^4.0.0",
+        "slash": "^3.0.0"
+    },
+    "peerDependencies": {
+        "@bundless/cli": "*"
+    }
+}
