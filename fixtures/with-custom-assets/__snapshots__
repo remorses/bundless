@@ -3,7 +3,7 @@
 exports[`snapshots fixtures/with-custom-assets: build 1`] = `
 Array [
   "file-3I42H3S6.dat",
-  "index-V4IF2OV4.js",
+  "index-5QHXEGW5.js",
   "index.html",
   "x-3I42H3S6.DAC",
   "x-FKPDYK5W.js",
@@ -14,7 +14,9 @@ exports[`snapshots fixtures/with-custom-assets: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/file.dat?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.fakejs?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/file.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.svg?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/x.DAC?namespace=file": "application/javascript; charset=utf-8",
@@ -25,7 +27,9 @@ exports[`snapshots fixtures/with-custom-assets: mirror 1`] = `
 Array [
   "_hmr_client.js",
   "file.dat",
+  "file.fakejs",
   "file.js",
+  "file.svg",
   "index.html",
   "main.js",
   "x.DAC",
@@ -50,9 +54,19 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/file.dat?namespace=file",
   },
   Object {
+    "importPath": "/file.fakejs?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.fakejs?namespace=file",
+  },
+  Object {
     "importPath": "/file.js?namespace=file",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/file.js?namespace=file",
+  },
+  Object {
+    "importPath": "/file.svg?namespace=file",
+    "importer": "http://127.0.0.1:9000/file.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.svg?namespace=file",
   },
   Object {
     "importPath": "/main.js?namespace=file",

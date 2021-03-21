@@ -15,8 +15,6 @@ export function AssetsPlugin({
     loader?: Record<string, esbuild.Loader>
 }) {
     let loader = _loader || {}
-    const extensions = Object.keys(loader)
-    const extensionsSet = new Set(extensions)
     loader = {
         ...Object.assign(
             {},
@@ -24,6 +22,8 @@ export function AssetsPlugin({
         ),
         ...loader,
     }
+    const extensions = Object.keys(loader)
+    const extensionsSet = new Set(extensions)
     return {
         name: 'assets',
         setup: ({ onLoad, onResolve, ctx: { root, config } }: PluginHooks) => {
@@ -47,6 +47,7 @@ export function AssetsPlugin({
                 const publicPath = fileToImportPath(root, args.path)
                 const loadedType = loader[extension]
 
+                console.log({ ...args, loadedType })
                 if (loadedType === 'file') {
                     return {
                         contents: `export default ${JSON.stringify(
