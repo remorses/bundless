@@ -7,7 +7,7 @@ export default TsconfigPathsPlugin
 
 export function TsconfigPathsPlugin(options: PluginOptions): Plugin {
     return {
-        name: 'alias-plugin', // alias plugins need to have enforce pre or node resolve will have higher priority
+        name: 'tsconfig-paths-plugin', // alias plugins need to have enforce pre or node resolve will have higher priority
         enforce: 'pre',
         setup({ onResolve, pluginsExecutor, ctx: { root, config } }) {
             const matchPath = createMatchPath(
