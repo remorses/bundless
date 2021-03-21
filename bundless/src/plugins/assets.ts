@@ -1,13 +1,13 @@
 import { NodeResolvePlugin } from '@esbuild-plugins/all'
+import * as esbuild from 'esbuild'
 import escapeStringRegexp from 'escape-string-regexp'
-import path from 'path'
 import fs from 'fs-extra'
 import mime from 'mime-types'
+import path from 'path'
+import { defaultLoader } from '../constants'
 import { PluginHooks } from '../plugins-executor'
 import { fileToImportPath } from '../utils'
-import * as esbuild from 'esbuild'
 import { transform } from './esbuild'
-import { defaultImportableAssets } from '../constants'
 
 export function AssetsPlugin({
     loader: _loader,
@@ -16,10 +16,7 @@ export function AssetsPlugin({
 }) {
     let loader = _loader || {}
     loader = {
-        ...Object.assign(
-            {},
-            ...defaultImportableAssets.map((k) => ({ [k]: 'file' })),
-        ),
+        ...defaultLoader,
         ...loader,
     }
     const extensions = Object.keys(loader)

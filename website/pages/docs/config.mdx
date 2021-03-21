@@ -8,7 +8,21 @@ module.exports = {
     entries: ['index.html'], // entry files
     platform: 'browser', // target platform, browser or node
     jsx: 'react', // jsx preset
-    importableAssetsExtensions: ['.3ds'], // extension that return their path when imported
+    loader: {
+        // like esbuild.loader, it lets you import custom extensions
+        '.jpg': 'file',
+        '.jpeg': 'file',
+        '.png': 'file',
+        '.svg': 'file',
+        '.gif': 'file',
+        '.ico': 'file',
+        '.webp': 'file',
+        '.jp2': 'file',
+        '.avif': 'file',
+        '.woff': 'file',
+        '.woff2': 'file',
+        '.ttf': 'file',
+    },
     plugins: [],
     server: {
         port: 3000,

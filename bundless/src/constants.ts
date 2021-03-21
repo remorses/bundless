@@ -1,4 +1,6 @@
 import { logger } from './logger'
+import * as esbuild from 'esbuild'
+
 export const hmrClientNamespace = 'hmr-client'
 export const DEFAULT_PORT = 3000
 export const CLIENT_PUBLIC_PATH = `/_hmr_client.js?namespace=${hmrClientNamespace}`
@@ -15,8 +17,6 @@ export const EXAMPLES_FOLDERS = [
     'svelte',
 ]
 
-
-
 export let isRunningWithYarnPnp: boolean = false
 try {
     isRunningWithYarnPnp = Boolean(require('pnpapi'))
@@ -29,20 +29,20 @@ export const showGraph = process.env.SHOW_HMR_GRAPH
 
 export const JS_EXTENSIONS = ['.ts', '.tsx', '.mjs', '.js', '.jsx', '.cjs']
 
-
-export const defaultImportableAssets = [
-    '.jpg',
-    '.jpeg',
-    '.png',
-    '.svg',
-    '.gif',
-    '.ico',
-    '.webp',
-    '.jp2',
-    '.avif',
-    '.woff',
-    '.woff2',
-    '.ttf',
-]
+export const defaultLoader: Record<string, esbuild.Loader> = {
+    '.jpg': 'file',
+    '.jpeg': 'file',
+    '.png': 'file',
+    '.svg': 'dataurl',
+    '.gif': 'file',
+    '.ico': 'file',
+    '.webp': 'file',
+    '.jp2': 'file',
+    '.avif': 'file',
+    '.woff': 'file',
+    '.woff2': 'file',
+    '.ttf': 'file',
+}
+export const defaultImportableAssets = Object.keys(defaultLoader)
 
 export const hmrPreamble = `import * as  __HMR__ from '${CLIENT_PUBLIC_PATH}'; import.meta.hot = __HMR__.createHotContext(import.meta.url); `

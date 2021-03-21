@@ -10,6 +10,7 @@ import { osAgnosticPath } from '../utils'
 import * as plugins from '../plugins'
 import {
     defaultImportableAssets as defaultImportableAssets,
+    defaultLoader,
     isRunningWithYarnPnp,
     JS_EXTENSIONS,
     MAIN_FIELDS,
@@ -46,12 +47,7 @@ export const commonEsbuildOptions = (
         '.js': 'jsx',
         '.cjs': 'js',
         // '.svg': 'dataurl', // TODO enable svg as data uri in development and in build
-        ...Object.assign(
-            {},
-            ...defaultImportableAssets.map((k) => ({
-                [k]: 'file',
-            })),
-        ),
+        ...defaultLoader,
         ...config.loader,
     },
     define: generateDefineObject({ config }),
@@ -93,13 +89,6 @@ export function generateDefineObject({
         setImmediate: noop,
         ...config.define,
     }
-}
-
-function generateEnvReplacements(env: Object): { [key: string]: string } {
-    return Object.keys(env).reduce((acc, key) => {
-        acc[`process.env.${key}`] = JSON.stringify(env[key])
-        return acc
-    }, {})
 }
 
 export const defaultResolvableExtensions = [
