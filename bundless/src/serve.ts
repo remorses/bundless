@@ -311,7 +311,7 @@ export async function createDevApp(server: net.Server, config: Config) {
         }),
     )
 
-    app.use(etagMiddleware())
+    // app.use(etagMiddleware())
 
     // cors
     if (config.server?.cors) {

@@ -65,10 +65,10 @@ export function generateDefineObject({
         }
     }
     const noop = 'String'
+    const nodeEnv =
+        process.env.NODE_ENV || (isProd ? 'production' : 'development')
     return {
-        'process.env.NODE_ENV': JSON.stringify(
-            process.env.NODE_ENV || isProd ? 'production' : 'development',
-        ),
+        'process.env.NODE_ENV': JSON.stringify(nodeEnv),
         // ...generateEnvReplacements(config.env || {}),
         'process.pid': '0',
         // global: 'window',

@@ -67,6 +67,11 @@ export function pluginsMiddleware({
         ctx.body = transformed.contents + sourcemap
         ctx.status = 200
         ctx.type = 'js'
+        const isDep = ctx.path.includes('.bundless/web_modules')
+        ctx.set(
+            'Cache-Control',
+            isDep ? 'max-age=31536000,immutable' : 'no-cache',
+        )
         return next()
     }
 }
