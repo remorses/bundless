@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.4.0
+
+### Minor Changes
+
+-   Cache dependencies, fix NODE_ENV variable always in production when prebundling
+
 ## 0.3.0
 
 ### Minor Changes
