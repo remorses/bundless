@@ -2,19 +2,19 @@
 
 exports[`snapshots fixtures/with-many-dependencies: build 1`] = `
 Array [
-  "index-3FU2F3E4.js",
+  "index-VRUDGYMT.js",
   "index.html",
 ]
 `;
 
 exports[`snapshots fixtures/with-many-dependencies: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-4Y2IK4HG.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-67MOMT4N.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/web_modules/hooks.module-5DX7CRS7.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/index-C6EVRSHH.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/index-CFYFU3OP.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/index-GLVO2XOV.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/web_modules/index-JDWPHD6C.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/index-USXUBFLL.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
@@ -37,28 +37,33 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-4Y2IK4HG.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-C6EVRSHH.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-4Y2IK4HG.js?namespace=file",
+    "importPath": "/.bundless/web_modules/chunks/chunk-67MOMT4N.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-CFYFU3OP.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-67MOMT4N.js?namespace=file",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-4Y2IK4HG.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-USXUBFLL.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-4Y2IK4HG.js?namespace=file",
+    "importPath": "/.bundless/web_modules/chunks/chunk-67MOMT4N.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-GLVO2XOV.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-67MOMT4N.js?namespace=file",
   },
   Object {
     "importPath": "/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-4Y2IK4HG.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-67MOMT4N.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file",
   },
   Object {
     "importPath": "/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-4Y2IK4HG.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-67MOMT4N.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file",
   },
   Object {
     "importPath": "/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-C6EVRSHH.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-CFYFU3OP.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file",
+  },
+  Object {
+    "importPath": "/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-GLVO2XOV.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file",
   },
   Object {
@@ -67,29 +72,24 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-USXUBFLL.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-WMHADU5J.js?namespace=file",
-  },
-  Object {
     "importPath": "/.bundless/web_modules/hooks.module-5DX7CRS7.js?namespace=file",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/hooks.module-5DX7CRS7.js?namespace=file",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-C6EVRSHH.js?namespace=file",
+    "importPath": "/.bundless/web_modules/index-CFYFU3OP.js?namespace=file",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-C6EVRSHH.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-CFYFU3OP.js?namespace=file",
+  },
+  Object {
+    "importPath": "/.bundless/web_modules/index-GLVO2XOV.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-GLVO2XOV.js?namespace=file",
   },
   Object {
     "importPath": "/.bundless/web_modules/index-JDWPHD6C.js?namespace=file",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-JDWPHD6C.js?namespace=file",
-  },
-  Object {
-    "importPath": "/.bundless/web_modules/index-USXUBFLL.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-USXUBFLL.js?namespace=file",
   },
   Object {
     "importPath": "/main.js?namespace=file",

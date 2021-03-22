@@ -2,14 +2,14 @@
 
 exports[`snapshots fixtures/with-tsconfig-paths: build 1`] = `
 Array [
-  "index-K5OOHVOG.js",
+  "index-NENS6DYK.js",
   "index.html",
 ]
 `;
 
 exports[`snapshots fixtures/with-tsconfig-paths: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/web_modules/index-ILCVHTSW.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/index-VIXMF3AR.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.tsx?namespace=file": "application/javascript; charset=utf-8",
@@ -34,9 +34,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-ILCVHTSW.js?namespace=file",
+    "importPath": "/.bundless/web_modules/index-VIXMF3AR.js?namespace=file",
     "importer": "http://127.0.0.1:9000/main.tsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-ILCVHTSW.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-VIXMF3AR.js?namespace=file",
   },
   Object {
     "importPath": "/main.tsx?namespace=file",
