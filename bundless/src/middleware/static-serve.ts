@@ -19,7 +19,6 @@ export function staticServeMiddleware(opts: SendOptions): Middleware {
 
         const isDep = ctx.path.includes('.bundless/web_modules')
         try {
-            console.log(ctx.path)
             await send(ctx, ctx.path, { ...opts, ...(isDep && cacheOptions) })
         } catch (err) {
             if (err.status !== 404 && err.code !== 'ENOENT') {
