@@ -1,4 +1,4 @@
-import {allCaps} from "/utils.ts?namespace=file";
+import {allCaps} from "/utils.ts?namespace=file&t=d0a7efef0";
 export const text = allCaps("works!");
 
 //# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9tb3JzZS9Eb2N1bWVudHMvR2l0SHViL2VzcGFjay9maXh0dXJlcy93aXRoLXR5cGVzY3JpcHQvdGV4dC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBhbGxDYXBzIH0gZnJvbSAnLi91dGlscydcbmV4cG9ydCBjb25zdCB0ZXh0ID0gYWxsQ2Fwcygnd29ya3MhJylcbiJdLCJtYXBwaW5ncyI6IkFBQUE7QUFDTyxhQUFNLE9BQU8sUUFBUTsiLCJuYW1lcyI6W119

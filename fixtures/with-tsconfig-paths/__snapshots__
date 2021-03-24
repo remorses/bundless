@@ -2,18 +2,18 @@
 
 exports[`snapshots fixtures/with-tsconfig-paths: build 1`] = `
 Array [
-  "index-NENS6DYK.js",
+  "index-LRGPJZKM.js",
   "index.html",
 ]
 `;
 
 exports[`snapshots fixtures/with-tsconfig-paths: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/web_modules/index-VIXMF3AR.js?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/index-2YZGLVVC.js?namespace=file&t=8a212e960": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.tsx?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/text.ts?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/text.ts?namespace=file&t=63ddbc270": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -34,9 +34,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-VIXMF3AR.js?namespace=file",
+    "importPath": "/.bundless/web_modules/index-2YZGLVVC.js?namespace=file&t=8a212e960",
     "importer": "http://127.0.0.1:9000/main.tsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-VIXMF3AR.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-2YZGLVVC.js?namespace=file&t=8a212e960",
   },
   Object {
     "importPath": "/main.tsx?namespace=file",
@@ -44,9 +44,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/main.tsx?namespace=file",
   },
   Object {
-    "importPath": "/text.ts?namespace=file",
+    "importPath": "/text.ts?namespace=file&t=63ddbc270",
     "importer": "http://127.0.0.1:9000/main.tsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/text.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/text.ts?namespace=file&t=63ddbc270",
   },
 ]
 `;

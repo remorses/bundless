@@ -11,8 +11,8 @@ Array [
 exports[`snapshots fixtures/with-css-modules: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/file.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/file.module.css.cssjs?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.js?namespace=file&t=197308810": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.module.css.cssjs?namespace=file&t=3d46776d0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
 }
@@ -32,7 +32,7 @@ exports[`snapshots fixtures/with-css-modules: traverse result 1`] = `
 Array [
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/file.module.css.cssjs?namespace=file",
+    "importer": "http://127.0.0.1:9000/file.module.css.cssjs?namespace=file&t=3d46776d0",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
@@ -46,14 +46,14 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/file.js?namespace=file",
+    "importPath": "/file.js?namespace=file&t=197308810",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/file.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.js?namespace=file&t=197308810",
   },
   Object {
-    "importPath": "/file.module.css.cssjs?namespace=file",
+    "importPath": "/file.module.css.cssjs?namespace=file&t=3d46776d0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/file.module.css.cssjs?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.module.css.cssjs?namespace=file&t=3d46776d0",
   },
   Object {
     "importPath": "/main.js?namespace=file",

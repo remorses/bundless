@@ -10,12 +10,12 @@ Array [
 
 exports[`snapshots fixtures/with-svelte: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/index-7O2PYHAX.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/proxy-adapter-dom-4PDRVMOD.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/App.svelte.css?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/App.svelte?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file&t=710d10c20": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file&t=07bc4a070": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/index-7O2PYHAX.js?namespace=file&t=89177b350": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/proxy-adapter-dom-4PDRVMOD.js?namespace=file&t=bb451d150": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/App.svelte.css?namespace=file&t=191b01b50": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/App.svelte?namespace=file&t=5c27cf320": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
@@ -36,12 +36,12 @@ exports[`snapshots fixtures/with-svelte: traverse result 1`] = `
 Array [
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file",
+    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file&t=5c27cf320",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/App.svelte.css?namespace=file",
+    "importer": "http://127.0.0.1:9000/App.svelte.css?namespace=file&t=191b01b50",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
@@ -50,39 +50,39 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file",
+    "importPath": "/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file&t=710d10c20",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file&t=07bc4a070",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file&t=710d10c20",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-7O2PYHAX.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file",
+    "importPath": "/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file&t=710d10c20",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-7O2PYHAX.js?namespace=file&t=89177b350",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file&t=710d10c20",
   },
   Object {
-    "importPath": "/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file",
+    "importPath": "/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file&t=07bc4a070",
+    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file&t=5c27cf320",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file&t=07bc4a070",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-7O2PYHAX.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-7O2PYHAX.js?namespace=file",
+    "importPath": "/.bundless/web_modules/index-7O2PYHAX.js?namespace=file&t=89177b350",
+    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file&t=5c27cf320",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-7O2PYHAX.js?namespace=file&t=89177b350",
   },
   Object {
-    "importPath": "/.bundless/web_modules/proxy-adapter-dom-4PDRVMOD.js?namespace=file",
-    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/proxy-adapter-dom-4PDRVMOD.js?namespace=file",
+    "importPath": "/.bundless/web_modules/proxy-adapter-dom-4PDRVMOD.js?namespace=file&t=bb451d150",
+    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file&t=5c27cf320",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/proxy-adapter-dom-4PDRVMOD.js?namespace=file&t=bb451d150",
   },
   Object {
-    "importPath": "/App.svelte?namespace=file",
+    "importPath": "/App.svelte?namespace=file&t=5c27cf320",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/App.svelte?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/App.svelte?namespace=file&t=5c27cf320",
   },
   Object {
-    "importPath": "/App.svelte.css?namespace=file",
-    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/App.svelte.css?namespace=file",
+    "importPath": "/App.svelte.css?namespace=file&t=191b01b50",
+    "importer": "http://127.0.0.1:9000/App.svelte?namespace=file&t=5c27cf320",
+    "resolvedImportPath": "http://127.0.0.1:9000/App.svelte.css?namespace=file&t=191b01b50",
   },
   Object {
     "importPath": "/main.js?namespace=file",

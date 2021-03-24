@@ -16,12 +16,12 @@ exports[`snapshots fixtures/with-many-entries: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/a/index.html": "text/html; charset=utf-8",
-  "http://127.0.0.1:9000/a/main.css.cssjs?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/a/main.css.cssjs?namespace=file&t=6ad6b6c50": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/a/main.js?namespace=file": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/b/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/b/main.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/b/text.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/common.css.cssjs?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/b/text.js?namespace=file&t=3973e5c20": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/common.css.cssjs?namespace=file&t=8418e9ae0": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -47,7 +47,7 @@ Array [
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/a/main.css.cssjs?namespace=file",
+    "importer": "http://127.0.0.1:9000/a/main.css.cssjs?namespace=file&t=6ad6b6c50",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
@@ -57,18 +57,18 @@ Array [
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/common.css.cssjs?namespace=file",
+    "importer": "http://127.0.0.1:9000/common.css.cssjs?namespace=file&t=8418e9ae0",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/common.css.cssjs?namespace=file",
+    "importer": "http://127.0.0.1:9000/common.css.cssjs?namespace=file&t=8418e9ae0",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/a/main.css.cssjs?namespace=file",
+    "importPath": "/a/main.css.cssjs?namespace=file&t=6ad6b6c50",
     "importer": "http://127.0.0.1:9000/a/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/a/main.css.cssjs?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/a/main.css.cssjs?namespace=file&t=6ad6b6c50",
   },
   Object {
     "importPath": "/a/main.js?namespace=file",
@@ -81,19 +81,19 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/b/main.js?namespace=file",
   },
   Object {
-    "importPath": "/b/text.js?namespace=file",
+    "importPath": "/b/text.js?namespace=file&t=3973e5c20",
     "importer": "http://127.0.0.1:9000/b/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/b/text.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/b/text.js?namespace=file&t=3973e5c20",
   },
   Object {
-    "importPath": "/common.css.cssjs?namespace=file",
+    "importPath": "/common.css.cssjs?namespace=file&t=8418e9ae0",
     "importer": "http://127.0.0.1:9000/a/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/common.css.cssjs?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/common.css.cssjs?namespace=file&t=8418e9ae0",
   },
   Object {
-    "importPath": "/common.css.cssjs?namespace=file",
+    "importPath": "/common.css.cssjs?namespace=file&t=8418e9ae0",
     "importer": "http://127.0.0.1:9000/b/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/common.css.cssjs?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/common.css.cssjs?namespace=file&t=8418e9ae0",
   },
 ]
 `;

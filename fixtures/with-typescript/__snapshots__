@@ -12,8 +12,8 @@ Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.ts?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/text.ts?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/utils.ts?namespace=file": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/text.ts?namespace=file&t=3f22980c0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/utils.ts?namespace=file&t=d0a7efef0": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -40,14 +40,14 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/main.ts?namespace=file",
   },
   Object {
-    "importPath": "/text.ts?namespace=file",
+    "importPath": "/text.ts?namespace=file&t=3f22980c0",
     "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/text.ts?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/text.ts?namespace=file&t=3f22980c0",
   },
   Object {
-    "importPath": "/utils.ts?namespace=file",
-    "importer": "http://127.0.0.1:9000/text.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/utils.ts?namespace=file",
+    "importPath": "/utils.ts?namespace=file&t=d0a7efef0",
+    "importer": "http://127.0.0.1:9000/text.ts?namespace=file&t=3f22980c0",
+    "resolvedImportPath": "http://127.0.0.1:9000/utils.ts?namespace=file&t=d0a7efef0",
   },
 ]
 `;

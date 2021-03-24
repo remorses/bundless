@@ -1,4 +1,4 @@
-import {text} from "/text.ts?namespace=file";
+import {text} from "/text.ts?namespace=file&t=d18044d90";
 function jsx(t, p, children) {
   var node = document.createElement(t);
   var textNode = document.createTextNode(children || p.children);

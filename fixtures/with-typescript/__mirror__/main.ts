@@ -1,4 +1,4 @@
-import {text} from "/text.ts?namespace=file";
+import {text} from "/text.ts?namespace=file&t=3f22980c0";
 console.log("Hello world!");
 var node = document.createElement("h1");
 var textNode = document.createTextNode(text);
