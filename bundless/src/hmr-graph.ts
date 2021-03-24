@@ -110,7 +110,9 @@ export class HmrGraph {
         }
 
         this.nodes[path] = {
-            hash: crypto.randomBytes(4).toString('hex'),
+            hash:
+                process.env.BUNDLESS_CONSISTENT_HMR_GRAPH ||
+                crypto.randomBytes(4).toString('hex'),
             dirtyImportersCount: 0,
             lastUsedTimestamp: 0,
             hasHmrAccept: false,

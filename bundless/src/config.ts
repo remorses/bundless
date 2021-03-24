@@ -128,6 +128,7 @@ export const defaultConfig: Config = {
     loader: {}, // extension that return their path when imported
     jsx: 'react', // jsx preset
     plugins: [],
+    define: {},
 }
 
 export function loadConfig(from: string, name = CONFIG_NAME): Config {

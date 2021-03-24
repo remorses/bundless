@@ -1,5 +1,6 @@
 import { Middleware } from 'koa'
 import send, { SendOptions } from 'koa-send'
+import { logger } from '../logger'
 
 // like koa static but executes other middlewares after serving, needed to transform html afterwards
 export function staticServeMiddleware(opts: SendOptions): Middleware {
@@ -19,6 +20,7 @@ export function staticServeMiddleware(opts: SendOptions): Middleware {
 
         const isDep = ctx.path.includes('.bundless/web_modules')
         try {
+            logger.debug('Statically serving ' + ctx.path)
             await send(ctx, ctx.path, { ...opts, ...(isDep && cacheOptions) })
         } catch (err) {
             if (err.status !== 404 && err.code !== 'ENOENT') {

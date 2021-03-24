@@ -190,6 +190,8 @@ export async function createDevApp(server: net.Server, config: Config) {
         loader: config.loader,
         bundle: false,
         minify: false,
+        
+        define: config.define,
     } // TODO better esbuild initialOptions for serve
     // most of the logic is in plugins
     const pluginsExecutor = new PluginsExecutor({
