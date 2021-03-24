@@ -1,13 +1,10 @@
-import { NodeResolvePlugin } from '@esbuild-plugins/all'
-import { transform, Plugin } from 'esbuild'
-import { PluginHooks } from '../plugins-executor'
-import { readFile } from '../utils'
 import dotenv from 'dotenv'
+import dotenvExpand from 'dotenv-expand'
+import findUp from 'find-up'
 import fs from 'fs-extra'
 import path from 'path'
-import findUp from 'find-up'
-import dotenvExpand from 'dotenv-expand'
 import { logger } from '../logger'
+import { PluginHooks } from '../plugins-executor'
 
 export function EnvPlugin({
     envFiles = [] as string[],
