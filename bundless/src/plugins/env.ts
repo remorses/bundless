@@ -11,6 +11,7 @@ import { logger } from '../logger'
 
 export function EnvPlugin({
     envFiles = [] as string[],
+    env = {} as Record<string, string>,
     findUp: isFindUp = false,
 } = {}) {
     return {
@@ -43,6 +44,9 @@ export function EnvPlugin({
                 for (const k in parsed) {
                     define[`process.env.${k}`] = JSON.stringify(parsed[k])
                 }
+            }
+            for (const k in env) {
+                define[`process.env.${k}`] = JSON.stringify(env[k])
             }
 
             Object.assign(initialOptions.define, define)
