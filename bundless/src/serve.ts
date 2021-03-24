@@ -238,7 +238,7 @@ export async function createDevApp(server: net.Server, config: Config) {
 
     if (config.prebundle?.force || isHashDifferent) {
         if (isHashDifferent) {
-            logger.log(`Dependencies changed, removing ${WEB_MODULES_PATH}`)
+            logger.log(`Dependencies changed, running prebundle phase`)
             logger.debug('isHashDifferent', isHashDifferent, prevHash, depsHash)
         }
         await fs.remove(path.resolve(root, '.bundless'))
