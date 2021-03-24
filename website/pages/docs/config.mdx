@@ -28,6 +28,7 @@ module.exports = {
         port: 3000,
         hmr: true,
         openBrowser: false, // opens browser on server start
+        experimentalImmutableCache: false, // makes server refresh much faster for big projects
     },
     prebundle: {
         includeWorkspacePackages: [], // linked packages to prebundle, can be a boolean

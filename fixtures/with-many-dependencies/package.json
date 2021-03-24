@@ -6,7 +6,7 @@
     "dependencies": {
         "react": "experimental",
         "slash": "^3.0.0",
-        "preact": "^10.5.7",
+        "preact": "*",
         "react-dom": "experimental"
     }
 }

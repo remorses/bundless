@@ -137,12 +137,12 @@ export function ReactRefreshPlugin({
                 const nonComponentExports = result.ast
                     ? getNonComponentExports(result.ast as any)
                     : []
-                const hmrDisabledMessage = `${osAgnosticPath(
+                const hmrDisabledMessage = `"${osAgnosticPath(
                     args.path,
                     root,
-                )} has non react components exports ${JSON.stringify(
-                    nonComponentExports,
-                )}!`
+                )}" has non react components exports ${nonComponentExports.join(
+                    ', ',
+                )}`
                 if (nonComponentExports.length) {
                     logger.warn(hmrDisabledMessage)
                 }

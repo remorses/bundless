@@ -15,6 +15,7 @@ import { traverseWithEsbuild } from './traverse'
 
 export async function prebundle({ entryPoints, config, root, dest }) {
     try {
+        logger.spinStart(`Prebundling modules in '${WEB_MODULES_PATH}'`)
         const traversalResult = await traverseWithEsbuild({
             entryPoints,
             root,
@@ -33,7 +34,6 @@ export async function prebundle({ entryPoints, config, root, dest }) {
             return {}
         }
 
-        logger.spinStart('Prebundling modules')
         logger.log(
             `prebundling [\n    ${dependenciesPaths
                 .map((x) => getClearDependencyPath(x))

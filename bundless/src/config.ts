@@ -99,6 +99,7 @@ export interface PrebundlingConfig {
 }
 
 export interface ServerConfig {
+    experimentalImmutableCache?: boolean
     openBrowser?: boolean
     cors?: boolean
     port?: number | string
@@ -111,6 +112,7 @@ export const defaultConfig: Config = {
         port: 3000,
         hmr: true,
         openBrowser: false, // opens browser on server start
+        experimentalImmutableCache: false, // makes server refresh much faster for big projects
     },
     prebundle: {
         includeWorkspacePackages: false, // linked packages to prebundle

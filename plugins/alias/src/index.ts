@@ -23,7 +23,7 @@ export function AliasPlugin(options: AliasOptions = {}): Plugin {
                 entries.map((x) => x.find as any),
             ).map((x: any) =>
                 typeof x === 'string'
-                    ? new RegExp('(' + escapeStringRegexp(x) + ')$')
+                    ? new RegExp('(' + escapeStringRegexp(x) + ')')
                     : x,
             )
             const resolver = (arg: esbuild.OnResolveArgs) => {

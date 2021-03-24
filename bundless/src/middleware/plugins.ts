@@ -68,9 +68,14 @@ export function pluginsMiddleware({
         ctx.status = 200
         ctx.type = 'js'
         const isDep = ctx.path.includes('.bundless/web_modules')
+        const isCacheableModule =
+            pluginsExecutor.ctx.config.server?.experimentalImmutableCache &&
+            ctx.query.t != null
         ctx.set(
             'Cache-Control',
-            isDep ? 'max-age=31536000,immutable' : 'no-cache',
+            isDep || isCacheableModule
+                ? 'max-age=31536000,immutable'
+                : 'no-cache',
         )
         return next()
     }

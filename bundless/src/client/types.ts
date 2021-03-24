@@ -15,7 +15,7 @@ interface ConnectedPayload {
 export interface UpdatePayload {
     type: 'update'
     path: string
-    updateID: number
+    updateID: string
     namespace: string
     // changeSrcPath: string
     // timestamp: number

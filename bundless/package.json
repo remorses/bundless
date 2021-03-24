@@ -1,6 +1,6 @@
 {
     "name": "@bundless/cli",
-    "version": "0.4.0",
+    "version": "0.4.2",
     "description": "",
     "main": "dist/index.js",
     "module": "esm/index.js",
@@ -45,7 +45,6 @@
     "dependencies": {
         "@babel/parser": "^7.12.11",
         "@babel/types": "^7.12.10",
-        "mime-types": "^2.1.29",
         "@esbuild-plugins/all": "^0.0.20",
         "@koa/cors": "^3.1.0",
         "chalk": "^4.1.0",
@@ -69,6 +68,7 @@
         "magic-string": "^0.25.7",
         "merge-source-map": "^1.1.0",
         "micro-memoize": "^4.0.9",
+        "mime-types": "^2.1.29",
         "ora": "^5.2.0",
         "picomatch": "^2.2.2",
         "posthtml": "^0.15.1",

@@ -80,7 +80,7 @@ export async function serve(config: Config) {
         )
     }
     await promisify(server.listen.bind(server) as any)(port)
-    console.info()
+    process.stdout.write('\n')
     logger.log(
         `Listening on ${chalk.cyan.underline(`http://localhost:${port}`)}`,
     )
@@ -251,9 +251,6 @@ export async function createDevApp(server: net.Server, config: Config) {
         })
 
     if (isEmpty(bundleMap)) {
-        logger.log(
-            `${BUNDLE_MAP_PATH} is empty: Prebundling modules in '${WEB_MODULES_PATH}'`,
-        )
         bundleMap = await prebundle({
             entryPoints: await getEntries(pluginsExecutor, config),
             config,
@@ -271,7 +268,7 @@ export async function createDevApp(server: net.Server, config: Config) {
 
     if (config.printStats) {
         process.on('SIGINT', () => {
-            console.info()
+            process.stdout.write('\n')
             console.info(pluginsExecutor.printProfilingResult())
             process.exit(0)
         })

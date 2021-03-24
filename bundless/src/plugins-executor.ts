@@ -3,6 +3,7 @@ import * as esbuild from 'esbuild'
 import { promises } from 'fs-extra'
 import { Config } from './config'
 import url from 'url'
+import fs from 'fs-extra'
 import { HmrGraph } from './hmr-graph'
 import { logger } from './logger'
 import { flatten, osAgnosticPath } from './utils'
@@ -11,6 +12,8 @@ import { mergeSourceMap } from './utils/sourcemaps'
 import path from 'path'
 import { ansiChart } from './utils/profiling'
 import { FSWatcher } from 'chokidar'
+import { resolveAsync } from '@esbuild-plugins/all'
+import { MAIN_FIELDS } from './constants'
 
 export interface Plugin {
     name: string
@@ -101,6 +104,7 @@ export class PluginsExecutor {
         const { ctx, plugins, isProfiling = false, onResolved } = _args
 
         this.ctx = ctx
+
         this.onResolved = onResolved
         this.plugins = plugins
         this.isProfiling = isProfiling
@@ -251,6 +255,26 @@ export class PluginsExecutor {
         }
         if (result) {
             result = { ...result, namespace: result.namespace || 'file' }
+
+            // register resolved modules that do not exist to real file paths, so that i can resolve them in onFileChange
+            if (this.ctx?.graph && arg.path && !fs.existsSync(result.path)) {
+                try {
+                    const realPath = await resolveAsync(arg.path, {
+                        basedir: arg.resolveDir || arg.importer,
+                        mainFields: MAIN_FIELDS,
+                    })
+                    if (realPath) {
+                        if (this.ctx.graph.realToFake[realPath]) {
+                            this.ctx.graph.realToFake[realPath].add(result.path)
+                        } else {
+                            this.ctx.graph.realToFake[realPath] = new Set([
+                                result.path,
+                            ])
+                        }
+                    }
+                } catch {}
+            }
+
             if (this.onResolved) {
                 const newResult = await this.onResolved({
                     ...result,
@@ -264,6 +288,7 @@ export class PluginsExecutor {
             return result
         }
     }
+
     async close() {
         let result
         for (let { callback, options, name } of this.closers) {

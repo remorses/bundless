@@ -1,15 +1,19 @@
-import React, { useState } from 'react'
-import { Comp } from './file'
+import React, { useLayoutEffect, useState } from 'react'
+import { Comp, staticVariable } from './file'
 import './file.css'
 import json from './file.json'
 import css from './file.module.css'
 
 export function App() {
     const [state, setState] = useState(0)
+    useLayoutEffect(() => {
+        staticVariable.count += 1
+    }, [])
     return (
         <React.StrictMode>
             <Comp />
             <pre>{JSON.stringify({ json, css })}</pre>
+            <pre>{JSON.stringify(staticVariable)}</pre>
             <br />
             <br />
             <br />

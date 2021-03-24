@@ -22,8 +22,6 @@ ReactDOM.render(
 
 const noop = (x) => x
 
-
-
 if (import.meta.hot) {
     import.meta.hot.accept()
 }

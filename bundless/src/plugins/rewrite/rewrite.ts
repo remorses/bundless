@@ -39,7 +39,7 @@ export function RewritePlugin({ filter = jsTypeRegex } = {}) {
                 const { contents, map } = await rewriteImports({
                     graph,
                     namespace: args.namespace || 'file',
-                    importerFilePath: args.path,
+                    importer: args.path,
                     root,
                     pluginsExecutor,
                     source: args.contents,
@@ -55,7 +55,7 @@ export function RewritePlugin({ filter = jsTypeRegex } = {}) {
 
 export async function rewriteImports({
     source,
-    importerFilePath,
+    importer,
     graph,
     pluginsExecutor,
     namespace,
@@ -63,7 +63,7 @@ export async function rewriteImports({
 }: {
     source: string
     namespace: string
-    importerFilePath: string
+    importer: string
     pluginsExecutor: PluginsExecutor
     root: string
     graph: HmrGraph
@@ -72,7 +72,8 @@ export async function rewriteImports({
     if (source.charCodeAt(0) === 0xfeff) {
         source = source.slice(1)
     }
-    graph.ensureEntry(importerFilePath)
+    // TODO how are computed files path removed?
+    graph.ensureEntry(importer)
     try {
         await onResolveLock.wait()
         let imports: ImportSpecifier[] = []
@@ -81,7 +82,7 @@ export async function rewriteImports({
         } catch (e) {
             throw new Error(
                 `Failed to parse ${chalk.cyan(
-                    importerFilePath,
+                    importer,
                 )} for import rewrite.\nIf you are using ` +
                     `JSX, make sure to named the file with the .jsx extension.`,
             )
@@ -91,7 +92,6 @@ export async function rewriteImports({
         const hasEnv = source.includes('import.meta.env')
 
         if (!imports.length && !isHmrEnabled && !hasEnv) {
-            // logger.log(`no imports found for ${importerFilePath}`)
             return { contents: source }
         }
 
@@ -100,7 +100,7 @@ export async function rewriteImports({
         if (isHmrEnabled) {
             magicString.prepend(hmrPreamble)
         }
-        const currentNode = graph.ensureEntry(importerFilePath, {
+        const currentNode = graph.ensureEntry(importer, {
             isHmrEnabled,
             importees: new Set(),
         })
@@ -134,23 +134,19 @@ export async function rewriteImports({
                 }
 
                 const resolveResult = await pluginsExecutor.resolve({
-                    importer: importerFilePath,
+                    importer,
                     namespace,
-                    resolveDir: path.dirname(importerFilePath),
+                    resolveDir: path.dirname(importer),
                     path: id,
                 })
 
-                if (!resolveResult) {
+                if (!resolveResult || !resolveResult.path) {
                     // do not fail on unresolved dynamic imports
                     if (isDynamicImport) {
-                        logger.log(
-                            `Cannot resolve '${id}' from '${importerFilePath}'`,
-                        )
+                        logger.log(`Cannot resolve '${id}' from '${importer}'`)
                         continue
                     }
-                    throw new Error(
-                        `Cannot resolve '${id}' from '${importerFilePath}'`,
-                    )
+                    throw new Error(`Cannot resolve '${id}' from '${importer}'`)
                 }
 
                 let resolvedImportPath = ''
@@ -177,25 +173,15 @@ export async function rewriteImports({
 
                 // TODO maybe also register virtual files, ok onFileChange will never get triggered but maybe there is virtual css file or stuff like that that needs to be updated?
                 if (!isVirtual) {
-                    const importeeNode = graph.ensureEntry(
-                        osAgnosticPath(resolveResult.path, root),
-                    )
+                    const importeeNode = graph.ensureEntry(resolveResult.path)
 
-                    // refetch modules that are dirty
-                    if (importeeNode?.dirtyImportersCount > 0) {
-                        const timestamp = ++importeeNode.lastUsedTimestamp
-                        resolvedImportPath = appendQuery(
-                            resolvedImportPath,
-                            `t=${timestamp}`,
-                        )
-                        importeeNode.dirtyImportersCount--
-                    } else if (importeeNode?.lastUsedTimestamp) {
-                        // do not use stale modules
-                        resolvedImportPath = appendQuery(
-                            resolvedImportPath,
-                            `t=${importeeNode.lastUsedTimestamp}`,
-                        )
-                    }
+                    // do not use stale modules
+                    resolvedImportPath = appendQuery(
+                        resolvedImportPath,
+                        `t=${
+                            importeeNode.hash + importeeNode.lastUsedTimestamp
+                        }`,
+                    )
                 }
 
                 if (resolvedImportPath !== id) {
@@ -243,7 +229,7 @@ export async function rewriteImports({
             } else if (id !== 'import.meta' && !hasIgnore) {
                 logger.log(
                     chalk.yellow(
-                        `Cannot rewrite dynamic import(${id}) in ${importerFilePath}.`,
+                        `Cannot rewrite dynamic import(${id}) in ${importer}.`,
                     ),
                 )
             }
@@ -254,8 +240,7 @@ export async function rewriteImports({
             map: undefined, // do i really need sourcemaps? code is readable enough
         }
     } catch (e) {
-        e.message =
-            `Error: module imports rewrite failed for ${importerFilePath}\n` + e
+        e.message = `Error: module imports rewrite failed for ${importer}\n` + e
         throw e
     }
 }

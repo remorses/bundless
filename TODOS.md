@@ -1,4 +1,5 @@
 -   ~~use data url for loading svgs~~
+-   resolved paths that map from a real file to a fake file won't receive HMR updates because there is no way to resolve them during file change
 -   ~~make a config for assetExtensions, to let user import any file and return its path~~
 -   ~~put the onResolve function in the plugins executor, this way it does not depend on the presence of node-resolve plugin~~
 -   ~~replace node-resolve in the traversal with bare imports plugin~~

@@ -6,6 +6,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import { CLIENT_PUBLIC_PATH, hmrPreamble } from '../constants'
 import { PluginHooks } from '../plugins-executor'
+import { osAgnosticPath } from '../utils'
 
 const CSS_UTILS_PATH = '_bundless_css_utils.js'
 
@@ -23,7 +24,7 @@ export function CssPlugin({} = {}) {
     return {
         name: 'css',
         setup: ({
-            ctx: { root, config, isBuild },
+            ctx: { root, config, isBuild, graph },
             onLoad,
             onResolve,
             onTransform,
@@ -34,9 +35,11 @@ export function CssPlugin({} = {}) {
                     const res = await resolveAsync(args.path, {
                         basedir: args.resolveDir,
                     })
+                    const virtualPath = res + '.cssjs'
+                    
                     if (res) {
                         return {
-                            path: res + '.cssjs',
+                            path: virtualPath,
                         }
                     }
                 } catch {}

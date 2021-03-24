@@ -1,14 +1,15 @@
 import path from 'path'
 import WebSocket from 'ws'
 import net from 'net'
+import crypto from 'crypto'
 import chalk from 'chalk'
 import { osAgnosticPath } from './utils'
 import { fileToImportPath, importPathToFile } from './utils'
 import { HMRPayload } from './client/types'
 import { logger } from './logger'
-import {} from './utils'
 import { HMR_SERVER_NAME } from './constants'
 import slash from 'slash'
+import { PluginsExecutor } from './plugins-executor'
 
 // examples are ./main.js and ../folder/main.js
 type OsAgnosticPath = string
@@ -16,6 +17,7 @@ type OsAgnosticPath = string
 // examples are /path/file.js or /__..__/file.js
 type ImportPath = string
 export interface HmrNode {
+    hash: string
     importers(): Set<OsAgnosticPath> // returns osAgnosticPaths
     importees: Set<ImportPath>
     dirtyImportersCount: number // modules that have imported this and have been updated
@@ -31,8 +33,10 @@ export class HmrGraph {
     root
     wss: WebSocket.Server
     server: net.Server
+    realToFake: Record<string, Set<string>>
 
     constructor({ root, server }: { root: string; server: net.Server }) {
+        this.realToFake = {}
         this.nodes = {}
         this.root = root
         this.server = server
@@ -106,6 +110,7 @@ export class HmrGraph {
         }
 
         this.nodes[path] = {
+            hash: crypto.randomBytes(4).toString('hex'),
             dirtyImportersCount: 0,
             lastUsedTimestamp: 0,
             hasHmrAccept: false,
@@ -159,73 +164,139 @@ export class HmrGraph {
 
     // TODO maybe rewrite should happen before to prune the graph from removed imports? in case old imports remain in the graph what could happen? the hmr algo only depend on the importers, this means that the worst thing could be that a non importer could be updated, but this is impossible because the only changed imports can only be the ones in the updated file, this means that only the current file imports could be invalid, which means that changed files importers will always be valid
     // TODO to make this work for vue and vite, i need to support virtual files?, vite files will be rewritten as js files with imports of virtual css files, the current implementation will see the change in the vite file, but it cannot know about changed virtual files, maybe i can put a property in the result of onTransform or onLoad to say `computedFiles: [virtualFile]`, save this info in graph (taken during rewrite) and in onChange i can send an update to these dependent modules too
+    // TODO batch changes? this way if user dopy pastes a directory i don't have to traverse the graph for every file
     async onFileChange({ filePath }: { filePath: string }) {
         const graph = this
-
         const root = this.root
+        const resolvedPaths = this.realToFake[filePath]
+            ? [...this.realToFake[filePath]]
+            : [filePath]
+        const initialRelativePaths = resolvedPaths.map((resolvedPath) =>
+            osAgnosticPath(resolvedPath, root),
+        )
 
-        const initialRelativePath = osAgnosticPath(filePath, root)
-
-        const toVisit: string[] = [initialRelativePath]
-        const visited: string[] = []
         const messages: HMRPayload[] = []
+
+        const nodesToBeFetched: Set<string> = new Set([])
+        // update all importers query fetch to not use browser cached module
+        await this.traverseUpwards({
+            entries: initialRelativePaths,
+            onTraverse: async (
+                relativePath: string,
+                node: HmrNode,
+                importers: Set<string>,
+            ) => {
+                // can be a non js file, like index.html
+                if (!node) {
+                    return true
+                }
+
+                nodesToBeFetched.add(relativePath)
+
+                if (node.computedModules) {
+                    for (let computed of node.computedModules) {
+                        const node = graph.nodes[computed]
+                        node.lastUsedTimestamp++
+                    }
+                }
+
+                for (let importer of importers) {
+                    nodesToBeFetched.add(importer)
+                }
+                return true
+            },
+        })
+
+        for (const relativePath of nodesToBeFetched) {
+            const node = graph.ensureEntry(relativePath)
+            node.lastUsedTimestamp++
+        }
+
+        await this.traverseUpwards({
+            entries: initialRelativePaths,
+            onTraverse: async (
+                relativePath: string,
+                node: HmrNode,
+                importers: Set<string>,
+            ) => {
+                const importPath = fileToImportPath(root, relativePath)
+                // can be a non js file, like index.html
+                if (!node) {
+                    logger.log(
+                        `node for '${relativePath}' not found in graph, reloading`,
+                    )
+                    this.sendHmrMessage({ type: 'reload' })
+                    return
+                }
+                // trigger an update if the module is able to handle it
+                if (node.isHmrEnabled) {
+                    messages.push({
+                        type: 'update',
+                        namespace: 'file',
+                        path: importPath,
+                        updateID: node.hash + node.lastUsedTimestamp,
+                    })
+                    // computed nodes are virtual nodes whose code depends on another node
+                    if (node.computedModules) {
+                        for (let computed of node.computedModules) {
+                            const node = graph.nodes[computed]
+                            node.dirtyImportersCount++
+                            messages.push({
+                                type: 'update',
+                                namespace: 'file', // TODO do not hard code namespace for computed nodes
+                                path: fileToImportPath(root, computed),
+                                updateID: node.hash + node.lastUsedTimestamp,
+                            })
+                        }
+                    }
+                }
+                // reached a boundary, stop hmr propagation
+                if (node.hasHmrAccept) {
+                    return
+                }
+                // reached another boundary, reload
+                if (!importers.size) {
+                    logger.log(
+                        `reached top boundary '${relativePath}', reloading`,
+                    )
+                    this.sendHmrMessage({ type: 'reload' })
+                    return
+                }
+                for (let importer of importers) {
+                    graph.ensureEntry(importer)
+                    // mark module as dirty, importers will refetch this module to see updates
+                    node.dirtyImportersCount++ // TODO this means that the current node t must be changed, not the importer one, but given that now i include the t on every one maybe no nee d for this?
+                }
+                return true
+            },
+        })
+
+        messages.forEach((m) => this.sendHmrMessage(m))
+    }
+
+    async traverseUpwards({ onTraverse, entries }) {
+        const graph = this
+
+        const toVisit: string[] = [...entries]
+        const visited: string[] = []
 
         while (toVisit.length) {
             const relativePath = toVisit.shift()
             if (!relativePath || visited.includes(relativePath)) {
                 continue
             }
-            const importPath = fileToImportPath(root, relativePath)
+
             visited.push(relativePath)
+            // TODO if plugin resolver like css changes filename, it won't be found in graph
             const node = graph.nodes[relativePath]
-            // can be a non js file, like index.html
             if (!node) {
-                logger.log(
-                    `node for '${relativePath}' not found in graph, reloading`,
-                )
-                this.sendHmrMessage({ type: 'reload' })
-                continue
-            }
-            // trigger an update if the module is able to handle it
-            if (node.isHmrEnabled) {
-                messages.push({
-                    type: 'update',
-                    namespace: 'file',
-                    path: importPath,
-                    updateID: ++node.lastUsedTimestamp,
-                })
-                // computed nodes are virtual nodes whose code depends on another node
-                if (node.computedModules) {
-                    for (let computed of node.computedModules) {
-                        const node = graph.nodes[computed]
-                        node.dirtyImportersCount++
-                        messages.push({
-                            type: 'update',
-                            namespace: 'file', // TODO do not hard code namespace for computed nodes
-                            path: fileToImportPath(root, computed),
-                            updateID: ++node.lastUsedTimestamp,
-                        })
-                    }
-                }
-            }
-            // reached a boundary, stop hmr propagation
-            if (node.hasHmrAccept) {
-                continue
+                return
             }
             const importers = node.importers()
-            // reached another boundary, reload
-            if (!importers.size) {
-                logger.log(`reached top boundary '${relativePath}', reloading`)
-                this.sendHmrMessage({ type: 'reload' })
-                continue
+            const res = await onTraverse(relativePath, node, importers)
+            if (res) {
+                toVisit.push(...importers)
             }
-            for (let importer of importers) {
-                graph.ensureEntry(importer)
-                // mark module as dirty, importers will refetch this module to see updates
-                node.dirtyImportersCount++
-            }
-            toVisit.push(...importers)
         }
-        messages.forEach((m) => this.sendHmrMessage(m))
     }
 }

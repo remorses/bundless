@@ -4,12 +4,12 @@
     "version": "0.0.6",
     "dependencies": {
         "es-module-traversal": "^0.0.50",
-        "@bundless/cli": "0.4.0",
+        "@bundless/cli": "0.4.2",
         "glob": "^7.1.6",
         "jasmine-fail-fast": "^2.0.1",
         "jest-specific-snapshot": "^4.0.0",
         "node-fetch": "^2.6.1",
-        "mime-types": "^2.1.28",
+        "mime-types": "^2.1.29",
         "slash": "^3.0.0"
     },
     "devDependencies": {
