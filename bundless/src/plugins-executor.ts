@@ -89,6 +89,7 @@ export class PluginsExecutor {
     plugins: Plugin[]
     isProfiling: boolean
     onResolved?: OnResolved
+    initialOptions: esbuild.BuildOptions
 
     private transforms: PluginInternalObject<OnTransformCallback>[] = []
     private resolvers: PluginInternalObject<OnResolveCallback>[] = []
@@ -98,13 +99,20 @@ export class PluginsExecutor {
     constructor(_args: {
         plugins: Plugin[]
         ctx: PluginsExecutorCtx
+        initialOptions: esbuild.BuildOptions
         isProfiling?: boolean
         onResolved?: OnResolved
     }) {
-        const { ctx, plugins, isProfiling = false, onResolved } = _args
+        const {
+            ctx,
+            plugins,
+            isProfiling = false,
+            onResolved,
+            initialOptions,
+        } = _args
 
         this.ctx = ctx
-
+        this.initialOptions = initialOptions
         this.onResolved = onResolved
         this.plugins = plugins
         this.isProfiling = isProfiling
@@ -116,6 +124,7 @@ export class PluginsExecutor {
             const { name, setup } = plugin
             setup({
                 ctx,
+                initialOptions,
                 pluginsExecutor: this,
                 onLoad: (options, callback) => {
                     this.loaders.push({ options, callback, name })
@@ -449,6 +458,7 @@ export class PluginsExecutor {
     private wrapPluginForEsbuild(plugin: Plugin): esbuild.Plugin {
         const pluginsExecutor: PluginsExecutor = this
         const ctx = this.ctx
+        const executor = this
         return {
             name: plugin.name,
             setup({ onLoad, onResolve }) {
@@ -459,7 +469,7 @@ export class PluginsExecutor {
                     onClose() {},
                     ctx,
                     pluginsExecutor,
-
+                    initialOptions: executor.initialOptions,
                     // wrap onLoad to execute other plugins transforms
                     onLoad(options, callback) {
                         onLoad(options, async (args) => {

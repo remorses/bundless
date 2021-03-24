@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import chokidar, { FSWatcher } from 'chokidar'
 import { createHash } from 'crypto'
-import deepmerge from 'deepmerge'
+import * as esbuild from 'esbuild'
 import findUp from 'find-up'
 import fs from 'fs-extra'
 import { getPort } from 'get-port-please'
@@ -185,10 +185,17 @@ export async function createDevApp(server: net.Server, config: Config) {
         }
     }
     const [prePlugins, postPlugins] = sortPlugins(config.plugins)
+
+    const initialOptions: esbuild.BuildOptions = {
+        loader: config.loader,
+        bundle: false,
+        minify: false,
+    } // TODO better esbuild initialOptions for serve
     // most of the logic is in plugins
     const pluginsExecutor = new PluginsExecutor({
         ctx: executorCtx,
         isProfiling: config.printStats,
+        initialOptions,
         onResolved,
         plugins: [
             ...prePlugins,

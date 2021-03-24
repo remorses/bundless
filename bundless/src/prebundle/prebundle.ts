@@ -35,11 +35,11 @@ export async function prebundle({ entryPoints, config, root, dest }) {
         }
 
         logger.log(
-            `Prebundling [\n    ${dependenciesPaths
+            `Prebundling \n    ${dependenciesPaths
                 .map((x) => getClearDependencyPath(x))
                 .map((x) => (path.isAbsolute(x) ? osAgnosticPath(x, root) : x))
                 .map((x) => chalk.green(x))
-                .join('\n    ')}\n]`,
+                .join('\n    ')}\n`,
         )
 
         // TODO separate build for workspaces and dependencies, build workspaces in watch mode, also pass user plugins

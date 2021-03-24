@@ -108,8 +108,35 @@ export async function build({
         name: 'build-' + plugin.name,
     }))
 
+    const initialOptions: esbuild.BuildOptions = {
+        ...commonEsbuildOptions(config),
+        incremental,
+        metafile: true,
+
+        bundle: true,
+        platform,
+        target: jsTarget,
+        publicPath: basePath,
+        splitting: isBrowser,
+        // external: externalPackages,
+        minifyIdentifiers: Boolean(minify),
+        minifySyntax: Boolean(minify),
+        minifyWhitespace: Boolean(minify),
+        mainFields,
+        define: {
+            ...generateDefineObject({ config, platform, isProd: true }),
+        },
+
+        // tsconfig: tsconfigTempFile,
+        format: isBrowser ? 'esm' : 'cjs',
+        write: true,
+        outdir: outDir,
+        minify: Boolean(minify),
+    }
+
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
+        initialOptions,
         isProfiling: config.printStats,
         ctx: { config, isBuild: true, root },
     })
@@ -137,29 +164,9 @@ export async function build({
     )
 
     let { rebuild, metafile } = await esbuild.build({
-        ...commonEsbuildOptions(config),
-        incremental,
-        metafile: true,
+        ...initialOptions,
         entryPoints,
-        bundle: true,
-        platform,
-        target: jsTarget,
-        publicPath: basePath,
-        splitting: isBrowser,
-        // external: externalPackages,
-        minifyIdentifiers: Boolean(minify),
-        minifySyntax: Boolean(minify),
-        minifyWhitespace: Boolean(minify),
-        mainFields,
-        define: {
-            ...generateDefineObject({ config, platform, isProd: true }),
-        },
         plugins: pluginsExecutor.esbuildPlugins(),
-        // tsconfig: tsconfigTempFile,
-        format: isBrowser ? 'esm' : 'cjs',
-        write: true,
-        outdir: outDir,
-        minify: Boolean(minify),
     })
 
     let meta: esbuild.Metafile = metafile!
@@ -241,6 +248,7 @@ export async function build({
 
     // needed to run the onTransform on html entries
     const htmlPluginsExecutor = new PluginsExecutor({
+        initialOptions: initialOptions,
         plugins: [plugins.HtmlResolverPlugin(), ...userPlugins],
         ctx: pluginsExecutor.ctx,
     })

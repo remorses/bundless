@@ -38,7 +38,7 @@ export async function exportPage({
         const transformResult = await pluginsExecutor.transform({
             contents: fullHtml,
             path: 'index.html',
-            loader: 'default'
+            loader: 'default',
         })
 
         fullHtml = transformResult.contents || ''
@@ -67,6 +67,7 @@ export async function staticExport({
 
     const pluginsExecutor = new PluginsExecutor({
         ctx: { isBuild: true, config: { root }, root },
+        initialOptions: {},
         plugins: [Plugin()],
     })
 

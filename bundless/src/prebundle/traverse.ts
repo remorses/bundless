@@ -40,7 +40,6 @@ export async function traverseWithEsbuild({
     root,
     config,
 }: Args): Promise<string[]> {
-    const define = generateDefineObject({ config })
     const userPlugins = config.plugins || []
     const destLoc = await fsp.realpath(
         path.resolve(await fsp.mkdtemp(path.join(os.tmpdir(), 'dest'))),
@@ -85,8 +84,14 @@ export async function traverseWithEsbuild({
         ...plugin,
         name: 'traversal-' + plugin.name,
     }))
+    const initialOptions: esbuild.BuildOptions = {
+        ...commonEsbuildOptions(config),
+        entryPoints,
+        outdir: destLoc,
+    }
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,
+        initialOptions,
         ctx: {
             isBuild: true,
             config: { root },
@@ -95,13 +100,8 @@ export async function traverseWithEsbuild({
     })
     let graph: TraversalGraph = {}
     try {
-        // logger.log(`Running esbuild in cwd '${process.cwd()}'`)
-
-        let { metafile: meta } = await build({
-            ...commonEsbuildOptions(config),
-            define,
-            entryPoints,
-            outdir: destLoc,
+        await build({
+            ...initialOptions,
             plugins: [
                 traversalGraphPlugin({
                     executor: pluginsExecutor,

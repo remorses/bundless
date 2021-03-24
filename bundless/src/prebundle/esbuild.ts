@@ -106,13 +106,13 @@ export async function bundleWithEsBuild({
     ...options
 }) {
     const { alias = {}, externalPackages = [], minify = false } = options
-    const define = generateDefineObject({ config })
 
     const tsconfigTempFile = tmpfile('.json')
     await fs.promises.writeFile(tsconfigTempFile, makeTsConfig({ alias }))
 
     // rimraf.sync(destLoc) // do not delete or on flight imports will return 404
-    const buildResult = await esbuild.build({
+
+    const initialOptions: esbuild.BuildOptions = {
         ...commonEsbuildOptions(config),
         splitting: true, // needed to dedupe modules
         external: externalPackages,
@@ -128,35 +128,41 @@ export async function bundleWithEsBuild({
         entryPoints,
         outdir: destLoc,
         metafile: true,
-        define,
-        plugins: new PluginsExecutor({
-            ctx: {
-                config: { root },
-                isBuild: true,
-                root,
-            },
-            plugins: [
-                ...(config.plugins || []),
-                plugins.NodeModulesPolyfillPlugin({
-                    namespace: 'node-modules-polyfills',
-                }),
-                plugins.CssPlugin(),
-                plugins.NodeResolvePlugin({
-                    name: 'prebundle-node-resolve',
-                    mainFields: MAIN_FIELDS,
-                    extensions: [
-                        ...defaultResolvableExtensions,
-                        ...(config.importableAssetsExtensions || []),
-                    ],
-                    onNonResolved: (p, importer) => {
-                        logger.warn(
-                            `Cannot resolve '${p}' from '${importer}' during traversal, using yarn pnp: ${isRunningWithYarnPnp}`,
-                        )
-                    },
-                }),
-                plugins.UrlResolverPlugin(),
-            ],
-        }).esbuildPlugins(),
+    }
+
+    const executor = new PluginsExecutor({
+        initialOptions,
+        ctx: {
+            config: { root },
+            isBuild: true,
+            root,
+        },
+        plugins: [
+            ...(config.plugins || []),
+            plugins.NodeModulesPolyfillPlugin({
+                namespace: 'node-modules-polyfills',
+            }),
+            plugins.CssPlugin(),
+            plugins.NodeResolvePlugin({
+                name: 'prebundle-node-resolve',
+                mainFields: MAIN_FIELDS,
+                extensions: [
+                    ...defaultResolvableExtensions,
+                    ...(config.importableAssetsExtensions || []),
+                ],
+                onNonResolved: (p, importer) => {
+                    logger.warn(
+                        `Cannot resolve '${p}' from '${importer}' during traversal, using yarn pnp: ${isRunningWithYarnPnp}`,
+                    )
+                },
+            }),
+            plugins.UrlResolverPlugin(),
+        ],
+    })
+
+    const buildResult = await esbuild.build({
+        ...initialOptions,
+        plugins: executor.esbuildPlugins(),
     })
 
     await fs.promises.unlink(tsconfigTempFile)
