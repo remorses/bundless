@@ -9,14 +9,14 @@ Array [
 
 exports[`snapshots fixtures/with-sourcemaps: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=66d0bcd10": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=140e2b1b0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/source-map-support-PKDMFKUA.js?namespace=file&t=3d524b990": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/source-map-support-PKDMFKUA.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
-  "http://127.0.0.1:9000/js.js?namespace=file&t=63ffab600": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/js.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/main.ts?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/text.js?namespace=file&t=83d243320": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/text.js?namespace=file&t=0": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -39,7 +39,7 @@ Array [
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/js.js?namespace=file&t=63ffab600",
+    "importer": "http://127.0.0.1:9000/js.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
@@ -48,49 +48,49 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=66d0bcd10",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=140e2b1b0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=66d0bcd10",
+    "importPath": "/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=66d0bcd10",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=140e2b1b0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=66d0bcd10",
+    "importPath": "/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=66d0bcd10",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/source-map-support-PKDMFKUA.js?namespace=file&t=3d524b990",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=66d0bcd10",
+    "importPath": "/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/source-map-support-PKDMFKUA.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-O3B7HPYW.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=140e2b1b0",
-    "importer": "http://127.0.0.1:9000/js.js?namespace=file&t=63ffab600",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=140e2b1b0",
+    "importPath": "/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/js.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=140e2b1b0",
-    "importer": "http://127.0.0.1:9000/js.js?namespace=file&t=63ffab600",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=140e2b1b0",
+    "importPath": "/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/js.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=140e2b1b0",
+    "importPath": "/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=140e2b1b0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=140e2b1b0",
+    "importPath": "/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=140e2b1b0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-XJQNLJI6.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/source-map-support-PKDMFKUA.js?namespace=file&t=3d524b990",
+    "importPath": "/.bundless/web_modules/source-map-support-PKDMFKUA.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/source-map-support-PKDMFKUA.js?namespace=file&t=3d524b990",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/source-map-support-PKDMFKUA.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/js.js?namespace=file&t=63ffab600",
+    "importPath": "/js.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/js.js?namespace=file&t=63ffab600",
+    "resolvedImportPath": "http://127.0.0.1:9000/js.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/main.ts?namespace=file",
@@ -98,14 +98,14 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/main.ts?namespace=file",
   },
   Object {
-    "importPath": "/text.js?namespace=file&t=83d243320",
-    "importer": "http://127.0.0.1:9000/js.js?namespace=file&t=63ffab600",
-    "resolvedImportPath": "http://127.0.0.1:9000/text.js?namespace=file&t=83d243320",
+    "importPath": "/text.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/js.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/text.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/text.js?namespace=file&t=83d243320",
+    "importPath": "/text.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/text.js?namespace=file&t=83d243320",
+    "resolvedImportPath": "http://127.0.0.1:9000/text.js?namespace=file&t=0",
   },
 ]
 `;

@@ -9,7 +9,7 @@ Array [
 
 exports[`snapshots fixtures/serve-outside-root: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/__..__/outsider.js?namespace=file&t=0b421b2b0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/__..__/outsider.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
@@ -28,9 +28,9 @@ Array [
 exports[`snapshots fixtures/serve-outside-root: traverse result 1`] = `
 Array [
   Object {
-    "importPath": "/__..__/outsider.js?namespace=file&t=0b421b2b0",
+    "importPath": "/__..__/outsider.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/__..__/outsider.js?namespace=file&t=0b421b2b0",
+    "resolvedImportPath": "http://127.0.0.1:9000/__..__/outsider.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",

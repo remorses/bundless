@@ -1,3 +1,3 @@
-import App from '/App.svelte?namespace=file&t=5c27cf320';
+import App from '/App.svelte?namespace=file&t=0';
 
 new App({ target: document.body });

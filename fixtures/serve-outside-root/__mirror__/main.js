@@ -1,4 +1,4 @@
-import text from '/__..__/outsider.js?namespace=file&t=0b421b2b0'
+import text from '/__..__/outsider.js?namespace=file&t=0'
 
 console.log(text)
 

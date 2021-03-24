@@ -1,5 +1,5 @@
-import '/a/main.css.cssjs?namespace=file&t=6ad6b6c50'
-import '/common.css.cssjs?namespace=file&t=8418e9ae0'
+import '/a/main.css.cssjs?namespace=file&t=0'
+import '/common.css.cssjs?namespace=file&t=0'
 
 const text = 'A'
 

@@ -1,5 +1,5 @@
-import * as  __HMR__ from '/_hmr_client.js?namespace=hmr-client'; import.meta.hot = __HMR__.createHotContext(import.meta.url); import classNames from '/file.module.css.cssjs?namespace=file&t=3d46776d0'
-import { text } from '/file.js?namespace=file&t=197308810'
+import * as  __HMR__ from '/_hmr_client.js?namespace=hmr-client'; import.meta.hot = __HMR__.createHotContext(import.meta.url); import classNames from '/file.module.css.cssjs?namespace=file&t=0'
+import { text } from '/file.js?namespace=file&t=0'
 
 console.log({ classNames })
 

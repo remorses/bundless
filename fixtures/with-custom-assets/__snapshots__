@@ -14,14 +14,14 @@ Array [
 exports[`snapshots fixtures/with-custom-assets: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/file.dat?namespace=file&t=4ae394500": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/file.fakecss.cssjs?namespace=file&t=a395b3f50": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/file.fakejs?namespace=file&t=fa60a7c50": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/file.js?namespace=file&t=2b3340ca0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/file.svg?namespace=file&t=a2ec20aa0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.dat?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.fakecss.cssjs?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.fakejs?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.svg?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/x.DAC?namespace=file&t=10f764680": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/x.DAC?namespace=file&t=0": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -43,7 +43,7 @@ exports[`snapshots fixtures/with-custom-assets: traverse result 1`] = `
 Array [
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/file.fakecss.cssjs?namespace=file&t=a395b3f50",
+    "importer": "http://127.0.0.1:9000/file.fakecss.cssjs?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
@@ -57,29 +57,29 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/file.dat?namespace=file&t=4ae394500",
-    "importer": "http://127.0.0.1:9000/file.js?namespace=file&t=2b3340ca0",
-    "resolvedImportPath": "http://127.0.0.1:9000/file.dat?namespace=file&t=4ae394500",
+    "importPath": "/file.dat?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/file.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.dat?namespace=file&t=0",
   },
   Object {
-    "importPath": "/file.fakecss.cssjs?namespace=file&t=a395b3f50",
+    "importPath": "/file.fakecss.cssjs?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/file.fakecss.cssjs?namespace=file&t=a395b3f50",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.fakecss.cssjs?namespace=file&t=0",
   },
   Object {
-    "importPath": "/file.fakejs?namespace=file&t=fa60a7c50",
+    "importPath": "/file.fakejs?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/file.fakejs?namespace=file&t=fa60a7c50",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.fakejs?namespace=file&t=0",
   },
   Object {
-    "importPath": "/file.js?namespace=file&t=2b3340ca0",
+    "importPath": "/file.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/file.js?namespace=file&t=2b3340ca0",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/file.svg?namespace=file&t=a2ec20aa0",
-    "importer": "http://127.0.0.1:9000/file.js?namespace=file&t=2b3340ca0",
-    "resolvedImportPath": "http://127.0.0.1:9000/file.svg?namespace=file&t=a2ec20aa0",
+    "importPath": "/file.svg?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/file.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.svg?namespace=file&t=0",
   },
   Object {
     "importPath": "/main.js?namespace=file",
@@ -87,9 +87,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
   },
   Object {
-    "importPath": "/x.DAC?namespace=file&t=10f764680",
-    "importer": "http://127.0.0.1:9000/file.js?namespace=file&t=2b3340ca0",
-    "resolvedImportPath": "http://127.0.0.1:9000/x.DAC?namespace=file&t=10f764680",
+    "importPath": "/x.DAC?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/file.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/x.DAC?namespace=file&t=0",
   },
 ]
 `;

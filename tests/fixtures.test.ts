@@ -1,3 +1,4 @@
+process.env.BUNDLESS_CONSISTENT_HMR_GRAPH_HASH = '' // makes all urls the same
 import { traverseEsModules, urlResolver } from 'es-module-traversal'
 import { build, serve, loadConfig } from '@bundless/cli'
 import fs from 'fs-extra'
@@ -16,6 +17,7 @@ const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
 
 jest.setTimeout(1000 * 20)
+
 describe('snapshots', () => {
     const casesPath = 'fixtures'
     const cases = fs

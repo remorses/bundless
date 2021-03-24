@@ -1,4 +1,4 @@
-import { text } from '/text.js?namespace=file&t=5c15a55d0'
+import { text } from '/text.js?namespace=file&t=0'
 
 console.log('Hello world!!!!!')
 

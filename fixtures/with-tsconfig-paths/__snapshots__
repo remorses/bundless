@@ -9,11 +9,11 @@ Array [
 
 exports[`snapshots fixtures/with-tsconfig-paths: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/web_modules/index-2YZGLVVC.js?namespace=file&t=8a212e960": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/index-2YZGLVVC.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.tsx?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/text.ts?namespace=file&t=63ddbc270": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/text.ts?namespace=file&t=0": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -34,9 +34,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-2YZGLVVC.js?namespace=file&t=8a212e960",
+    "importPath": "/.bundless/web_modules/index-2YZGLVVC.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.tsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-2YZGLVVC.js?namespace=file&t=8a212e960",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-2YZGLVVC.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/main.tsx?namespace=file",
@@ -44,9 +44,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/main.tsx?namespace=file",
   },
   Object {
-    "importPath": "/text.ts?namespace=file&t=63ddbc270",
+    "importPath": "/text.ts?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.tsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/text.ts?namespace=file&t=63ddbc270",
+    "resolvedImportPath": "http://127.0.0.1:9000/text.ts?namespace=file&t=0",
   },
 ]
 `;

@@ -12,7 +12,7 @@ Object {
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/text.json?namespace=file&t=a451f0320": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/text.json?namespace=file&t=0": "application/javascript; charset=utf-8",
 }
 `;
 
@@ -38,9 +38,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
   },
   Object {
-    "importPath": "/text.json?namespace=file&t=a451f0320",
+    "importPath": "/text.json?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/text.json?namespace=file&t=a451f0320",
+    "resolvedImportPath": "http://127.0.0.1:9000/text.json?namespace=file&t=0",
   },
 ]
 `;

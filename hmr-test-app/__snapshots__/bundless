@@ -6,7 +6,7 @@ Array [
     "namespace": "file",
     "path": "/src/main.jsx",
     "type": "update",
-    "updateID": "17ac2ea41",
+    "updateID": "adc81ea51",
   },
 ]
 `;
@@ -19,15 +19,15 @@ Array [
     "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
-    "updateID": "8dbcfef41",
+    "updateID": "327c5fa11",
   },
 ]
 `;
 
 exports[`hmr 2 src/file.jsx bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=da4446331",
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=8dbcfef41",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=f92126151",
+  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=327c5fa11",
 }
 `;
 
@@ -37,15 +37,15 @@ Array [
     "namespace": "file",
     "path": "/src/file.css.cssjs",
     "type": "update",
-    "updateID": "44d8e2e31",
+    "updateID": "6359997d1",
   },
 ]
 `;
 
 exports[`hmr 3 src/file.css bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=80ee69b31",
-  "http://127.0.0.1:4000/src/file.css.cssjs?namespace=file&t=44d8e2e31",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=a86aa1af1",
+  "http://127.0.0.1:4000/src/file.css.cssjs?namespace=file&t=6359997d1",
 }
 `;
 
@@ -55,15 +55,15 @@ Array [
     "namespace": "file",
     "path": "/src/file.module.css.cssjs",
     "type": "update",
-    "updateID": "866254e01",
+    "updateID": "b6620aa51",
   },
 ]
 `;
 
 exports[`hmr 4 src/file.module.css bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=d00e78ce1",
-  "http://127.0.0.1:4000/src/file.module.css.cssjs?namespace=file&t=866254e01",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=6b72382a1",
+  "http://127.0.0.1:4000/src/file.module.css.cssjs?namespace=file&t=b6620aa51",
 }
 `;
 
@@ -73,15 +73,15 @@ Array [
     "namespace": "file",
     "path": "/src/bridge.jsx",
     "type": "update",
-    "updateID": "38c384e41",
+    "updateID": "f3a0dbcc1",
   },
 ]
 `;
 
 exports[`hmr 5 src/file.json bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=38c384e41",
-  "http://127.0.0.1:4000/src/file.json?namespace=file&t=9bbaee541",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=f3a0dbcc1",
+  "http://127.0.0.1:4000/src/file.json?namespace=file&t=f78e59201",
 }
 `;
 
@@ -91,16 +91,16 @@ Array [
     "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
-    "updateID": "53da5cd91",
+    "updateID": "ecdb859f1",
   },
 ]
 `;
 
 exports[`hmr 6 src/file2.js bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=9bb560b01",
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=53da5cd91",
-  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=a05007031",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=f1dcc9ed1",
+  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=ecdb859f1",
+  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=c88e40331",
 }
 `;
 
@@ -110,22 +110,22 @@ Array [
     "namespace": "file",
     "path": "/src/main.jsx",
     "type": "update",
-    "updateID": "026f37181",
+    "updateID": "878be42a1",
   },
   Object {
     "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
-    "updateID": "0df878551",
+    "updateID": "d43d0bc21",
   },
 ]
 `;
 
 exports[`hmr 7 src/imported-many-times.js bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/imported-many-times.js?namespace=file&t=51b42d0b1",
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=5c43ded71",
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=0df878551",
+  "http://127.0.0.1:4000/src/imported-many-times.js?namespace=file&t=06810ad71",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=777d0f7d1",
+  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=d43d0bc21",
 }
 `;
 
@@ -135,7 +135,7 @@ Array [
     "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
-    "updateID": "3fc521e11",
+    "updateID": "5a316d8d1",
   },
 ]
 `;
@@ -146,23 +146,23 @@ Array [
     "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
-    "updateID": "3fc521e12",
+    "updateID": "5a316d8d2",
   },
 ]
 `;
 
 exports[`hmr 8 src/file2.js, src/file.jsx bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=1e37029a1",
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=3fc521e11",
-  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=7c1c52351",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=81f12ccd1",
+  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=5a316d8d1",
+  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=1433cf281",
 }
 `;
 
 exports[`hmr 8 src/file2.js, src/file.jsx bundless: urls 2`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=1e37029a2",
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=3fc521e12",
-  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=7c1c52351",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=81f12ccd2",
+  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=5a316d8d2",
+  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=1433cf281",
 }
 `;
