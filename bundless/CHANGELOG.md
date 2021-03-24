@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.5.0
+
+### Minor Changes
+
+-   Implemented immutable cache for all files, much faster refresh speed
+
 ## 0.4.0
 
 ### Minor Changes
