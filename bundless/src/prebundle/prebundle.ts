@@ -35,7 +35,7 @@ export async function prebundle({ entryPoints, config, root, dest }) {
         }
 
         logger.log(
-            `prebundling [\n    ${dependenciesPaths
+            `Prebundling [\n    ${dependenciesPaths
                 .map((x) => getClearDependencyPath(x))
                 .map((x) => (path.isAbsolute(x) ? osAgnosticPath(x, root) : x))
                 .map((x) => chalk.green(x))

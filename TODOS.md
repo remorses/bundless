@@ -1,3 +1,5 @@
+-   make node polyfills an optional plugin, but include it by default on default config
+-   add crypto polyfill
 -   ~~use data url for loading svgs~~
 -   resolved paths that map from a real file to a fake file won't receive HMR updates because there is no way to resolve them during file change
 -   ~~make a config for assetExtensions, to let user import any file and return its path~~
