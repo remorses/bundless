@@ -26,6 +26,7 @@ const testTargets = process.env.HRM_TESTS
 
 const PORT = 4000
 
+process.env.BUNDLESS_CONSISTENT_HMR_GRAPH_HASH = '' // makes all urls consistent in time
 jest.setTimeout(100000)
 
 type TestCase = {
