@@ -1,0 +1,18 @@
+# Alias node modules
+
+You can alias modules using the `@bundless/plugin-alias` plugin
+
+## Example
+
+```ts
+// bundless.config.js
+const { AliasPlugin } = require('@bundless/plugin-alias')
+
+module.exports = {
+    plugins: [
+        AliasPlugin({
+            entries: { react: 'preact/compat', /regex/: 'some-path' },
+        }),
+    ],
+}
+```
