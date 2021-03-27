@@ -1,7 +1,6 @@
-import { transform, TransformOptions } from '@babel/core'
+import { ParserOptions, transform, TransformOptions } from '@babel/core'
 import { ParserPlugin } from '@babel/parser'
 import { Plugin } from '@bundless/cli'
-import { babelParserOpts } from '@bundless/cli/dist/utils'
 
 export default BabelPlugin
 
@@ -70,4 +69,21 @@ export function BabelPlugin({
             })
         },
     }
+}
+
+const babelParserOpts: ParserOptions = {
+    sourceType: 'module',
+    allowAwaitOutsideFunction: true,
+    plugins: [
+        // required for import.meta.hot
+        'importMeta',
+        'jsx',
+        // by default we enable proposals slated for ES2020.
+        // full list at https://babeljs.io/docs/en/next/babel-parser#plugins
+        // this should be kept in async with @vue/compiler-core's support range
+        'bigInt',
+        'optionalChaining',
+        'classProperties',
+        'nullishCoalescingOperator',
+    ],
 }
