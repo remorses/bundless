@@ -156,11 +156,10 @@ export async function build({
     )
 
     logger.log(
-        `building ${JSON.stringify(
-            entryPoints.map((x) => osAgnosticPath(x, root)),
-            [],
-            4,
-        )}\n`,
+        `Building with esbuild ${entryPoints
+            .filter((f) => fs.existsSync(f))
+            .map((x) => osAgnosticPath(x, root))
+            .join(', ')}\n`,
     )
 
     let { rebuild, metafile } = await esbuild.build({
