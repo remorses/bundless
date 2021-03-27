@@ -4,7 +4,7 @@ You can use babel using the `@bundless/plugin-babel` package
 
 ## Example
 
-```ts
+```js
 // bundless.config.js
 const { BabelPlugin } = require('@bundless/plugin-babel')
 
@@ -21,4 +21,4 @@ module.exports = {
 
 Notice that you will need to pass your babel options explicitly and not using `.babelrc` files
 
-This API design choise has been made because usually .babelrc files contain babel presets that transpile jsx to js but this is already done in bundless, you only need to pass some specific plugins that you need
+This API design choice has been made because usually .babelrc files contain babel presets that transpile jsx to js but this is already done in bundless, you only need to pass some specific plugins that you need
