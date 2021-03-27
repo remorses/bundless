@@ -423,7 +423,7 @@ export async function build({
         )
     }
 
-    logger.log(`Built in ${computeDuration(startTime)}`)
+    logger.log(`Built to ${outDir} in ${computeDuration(startTime)}`)
 
     return {
         bundleMap,
