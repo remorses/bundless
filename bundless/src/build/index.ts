@@ -422,7 +422,11 @@ export async function build({
         )
     }
 
-    logger.log(`Built to ${outDir} in ${computeDuration(startTime)}`)
+    logger.log(
+        `Built to ${
+            /^\w/.test(outDir) ? './' + outDir : outDir
+        } in ${computeDuration(startTime)}`,
+    )
 
     return {
         bundleMap,
