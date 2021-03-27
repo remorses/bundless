@@ -22,6 +22,7 @@ export async function prebundle({ entryPoints, config, root, dest }) {
             config,
             filter: /^[\w@][^:]/, // bare name imports (no relative imports)
         })
+        logger.debug(`traversed files`)
 
         const dependenciesPaths = traversalResult.filter((p) =>
             needsPrebundle(config, p),

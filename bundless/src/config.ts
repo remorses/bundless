@@ -26,6 +26,7 @@ export async function getEntries(
                         .resolve({
                             path: x,
                             resolveDir: config.root,
+                            skipOnResolved: true,
                         })
                         .then((x) => x?.path || ''),
                 ),
@@ -38,6 +39,7 @@ export async function getEntries(
     // public folder logic is already in the html resolver plugin
     const index1 = await pluginsExecutor.resolve({
         path: 'index.html',
+        skipOnResolved: true,
         resolveDir: config.root,
     })
     if (index1?.path) {

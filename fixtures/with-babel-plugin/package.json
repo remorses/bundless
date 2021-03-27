@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "babel-plugin-macros": "3.0.1",
+        "styled-components": "^5.2.1",
         "ms.macro": "^2.0.0"
     }
 }

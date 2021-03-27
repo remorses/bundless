@@ -149,6 +149,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             })
             // node module path not bundled, rerun bundling
             const entryPoints = await getEntries(pluginsExecutor, config)
+            logger.debug(`got entries`)
             // TODO make prebundled files cachable indefinitley given they are named with an hash
             bundleMap = await prebundle({
                 entryPoints,
@@ -190,7 +191,7 @@ export async function createDevApp(server: net.Server, config: Config) {
         loader: config.loader,
         bundle: false,
         minify: false,
-        
+
         define: config.define,
     } // TODO better esbuild initialOptions for serve
     // most of the logic is in plugins

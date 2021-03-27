@@ -230,7 +230,7 @@ export class PluginsExecutor {
      * Resolve filter should match on basename and not rely on absolute path, "virtual" could be passed as absolute paths from root: /path/to/virtual_file
      */
     async resolve(
-        arg: Partial<esbuild.OnResolveArgs>,
+        arg: Partial<esbuild.OnResolveArgs> & { skipOnResolved?: boolean },
     ): Promise<Maybe<esbuild.OnResolveResult>> {
         let result
         // support for resolving paths with queries
@@ -284,7 +284,7 @@ export class PluginsExecutor {
                 } catch {}
             }
 
-            if (this.onResolved) {
+            if (!arg.skipOnResolved && this.onResolved) {
                 const newResult = await this.onResolved({
                     ...result,
                     importer: arg.importer,

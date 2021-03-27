@@ -15,7 +15,7 @@ import { cleanUrl } from '@bundless/cli/dist/utils'
 const jasmineEnv = (jasmine as any).getEnv()
 jasmineEnv.addReporter(failFast.init())
 
-jest.setTimeout(1000 * 20)
+jest.setTimeout(1000 * 50)
 
 process.env.BUNDLESS_CONSISTENT_HMR_GRAPH_HASH = '' // makes all urls consistent in time
 
