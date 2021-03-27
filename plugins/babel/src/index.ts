@@ -5,10 +5,15 @@ import { babelParserOpts } from '@bundless/cli/dist/utils'
 
 export default BabelPlugin
 
+interface Options {
+    babelOptions: TransformOptions
+    filter?: RegExp
+}
+
 export function BabelPlugin({
-    babelOptions = {} as TransformOptions,
+    babelOptions,
     filter = /\.(t|j)sx?$/,
-} = {}): Plugin {
+}: Options): Plugin {
     return {
         name: 'react-refresh',
         enforce: 'pre',
