@@ -23,7 +23,8 @@ export function AssetsPlugin({
     const extensionsSet = new Set(extensions)
     return {
         name: 'assets',
-        setup: ({ onLoad, onResolve, ctx: { root, config } }: PluginHooks) => {
+        setup: (hooks: PluginHooks) => {
+            const { onLoad, onResolve, ctx: { root, config } } = hooks
             const filter = new RegExp(
                 '(' +
                     extensions
@@ -38,8 +39,8 @@ export function AssetsPlugin({
                 isExtensionRequiredInImportPath: true,
                 extensions,
             }).setup({
+                ...hooks,
                 onLoad() {},
-                onResolve,
             })
             onLoad({ filter }, async (args) => {
                 const extension = path.extname(args.path)
