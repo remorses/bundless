@@ -6,17 +6,28 @@ import { babelParserOpts } from '@bundless/cli/dist/utils'
 export default BabelPlugin
 
 interface Options {
+    /**
+     * Options passed to babel
+     */
     babelOptions: TransformOptions
+    /**
+     * Filter which files should babel transform
+     */
     filter?: RegExp
+    /**
+     * Run the plugin before or after bundless builtin plugins (like esbuild transform)
+     */
+    enforce?: 'pre' | 'post'
 }
 
 export function BabelPlugin({
     babelOptions,
     filter = /\.(t|j)sx?$/,
+    enforce = 'pre',
 }: Options): Plugin {
     return {
         name: 'react-refresh',
-        enforce: 'pre',
+        enforce,
         setup({ onTransform, onResolve, onLoad, ctx: { root, isBuild } }) {
             onTransform({ filter }, async (args) => {
                 const parserPlugins: ParserPlugin[] = [
