@@ -60,7 +60,7 @@ export function AliasPlugin(options: AliasOptions = {}): Plugin {
                         if (!resolved) {
                             resolved = { path: updatedId }
                         }
-
+                        options?.onAlias?.(resolved.path || '')
                         return resolved
                     })
             }
@@ -116,6 +116,7 @@ function getEntries({ entries }: AliasOptions): readonly Alias[] {
 }
 
 export interface AliasOptions {
+    onAlias?: (resolved: string) => any
     entries?: readonly Alias[] | { [find: string]: string }
 }
 
