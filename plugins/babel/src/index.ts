@@ -29,6 +29,9 @@ export function BabelPlugin({
         enforce,
         setup({ onTransform, onResolve, onLoad, ctx: { root, isBuild } }) {
             onTransform({ filter }, async (args) => {
+                if (args.path.includes('node_modules')) {
+                    return null
+                }
                 const parserPlugins: ParserPlugin[] = [
                     'jsx',
                     'importMeta',
