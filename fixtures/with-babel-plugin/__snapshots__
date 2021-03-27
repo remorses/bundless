@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/with-babel-plugin: build 1`] = `
+Array [
+  "index-KKGBGB2E.js",
+  "index.html",
+]
+`;
+
+exports[`snapshots fixtures/with-babel-plugin: content-type headers 1`] = `
+Object {
+  "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
+  "http://127.0.0.1:9000/main.tsx?namespace=file": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/with-babel-plugin: mirror 1`] = `
+Array [
+  "_hmr_client.js",
+  "index.html",
+  "main.tsx",
+]
+`;
+
+exports[`snapshots fixtures/with-babel-plugin: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/main.tsx?namespace=file",
+    "importer": "http://127.0.0.1:9000/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/main.tsx?namespace=file",
+  },
+]
+`;
