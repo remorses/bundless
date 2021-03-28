@@ -11,9 +11,9 @@ Array [
 exports[`snapshots fixtures/with-svelte: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file&t=0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file&t=0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/index-7O2PYHAX.js?namespace=file&t=0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/proxy-adapter-dom-4PDRVMOD.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-XWRGGEOS.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/index-L3FOAT7R.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/proxy-adapter-dom-OCITUNPO.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/App.svelte.css?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/App.svelte?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
@@ -51,28 +51,28 @@ Array [
   },
   Object {
     "importPath": "/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-XWRGGEOS.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-7O2PYHAX.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-L3FOAT7R.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-2CADN2RZ.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file&t=0",
+    "importPath": "/.bundless/web_modules/hot-api-esm-XWRGGEOS.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/App.svelte?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-ZO7L2G4S.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/hot-api-esm-XWRGGEOS.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-7O2PYHAX.js?namespace=file&t=0",
+    "importPath": "/.bundless/web_modules/index-L3FOAT7R.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/App.svelte?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-7O2PYHAX.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-L3FOAT7R.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/proxy-adapter-dom-4PDRVMOD.js?namespace=file&t=0",
+    "importPath": "/.bundless/web_modules/proxy-adapter-dom-OCITUNPO.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/App.svelte?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/proxy-adapter-dom-4PDRVMOD.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/proxy-adapter-dom-OCITUNPO.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/App.svelte?namespace=file&t=0",

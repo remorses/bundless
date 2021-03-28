@@ -6,7 +6,7 @@ Array [
     "namespace": "file",
     "path": "/src/main.jsx",
     "type": "update",
-    "updateID": "adc81ea51",
+    "updateID": "1",
   },
 ]
 `;
@@ -19,15 +19,15 @@ Array [
     "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
-    "updateID": "327c5fa11",
+    "updateID": "1",
   },
 ]
 `;
 
 exports[`hmr 2 src/file.jsx bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=f92126151",
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=327c5fa11",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=1",
+  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=1",
 }
 `;
 
@@ -37,15 +37,15 @@ Array [
     "namespace": "file",
     "path": "/src/file.css.cssjs",
     "type": "update",
-    "updateID": "6359997d1",
+    "updateID": "1",
   },
 ]
 `;
 
 exports[`hmr 3 src/file.css bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=a86aa1af1",
-  "http://127.0.0.1:4000/src/file.css.cssjs?namespace=file&t=6359997d1",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=1",
+  "http://127.0.0.1:4000/src/file.css.cssjs?namespace=file&t=1",
 }
 `;
 
@@ -55,15 +55,15 @@ Array [
     "namespace": "file",
     "path": "/src/file.module.css.cssjs",
     "type": "update",
-    "updateID": "b6620aa51",
+    "updateID": "1",
   },
 ]
 `;
 
 exports[`hmr 4 src/file.module.css bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=6b72382a1",
-  "http://127.0.0.1:4000/src/file.module.css.cssjs?namespace=file&t=b6620aa51",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=1",
+  "http://127.0.0.1:4000/src/file.module.css.cssjs?namespace=file&t=1",
 }
 `;
 
@@ -73,15 +73,15 @@ Array [
     "namespace": "file",
     "path": "/src/bridge.jsx",
     "type": "update",
-    "updateID": "f3a0dbcc1",
+    "updateID": "1",
   },
 ]
 `;
 
 exports[`hmr 5 src/file.json bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=f3a0dbcc1",
-  "http://127.0.0.1:4000/src/file.json?namespace=file&t=f78e59201",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=1",
+  "http://127.0.0.1:4000/src/file.json?namespace=file&t=1",
 }
 `;
 
@@ -91,16 +91,16 @@ Array [
     "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
-    "updateID": "ecdb859f1",
+    "updateID": "1",
   },
 ]
 `;
 
 exports[`hmr 6 src/file2.js bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=f1dcc9ed1",
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=ecdb859f1",
-  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=c88e40331",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=1",
+  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=1",
+  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=1",
 }
 `;
 
@@ -110,22 +110,22 @@ Array [
     "namespace": "file",
     "path": "/src/main.jsx",
     "type": "update",
-    "updateID": "878be42a1",
+    "updateID": "1",
   },
   Object {
     "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
-    "updateID": "d43d0bc21",
+    "updateID": "1",
   },
 ]
 `;
 
 exports[`hmr 7 src/imported-many-times.js bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/imported-many-times.js?namespace=file&t=06810ad71",
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=777d0f7d1",
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=d43d0bc21",
+  "http://127.0.0.1:4000/src/imported-many-times.js?namespace=file&t=1",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=1",
+  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=1",
 }
 `;
 
@@ -135,7 +135,7 @@ Array [
     "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
-    "updateID": "5a316d8d1",
+    "updateID": "1",
   },
 ]
 `;
@@ -146,23 +146,23 @@ Array [
     "namespace": "file",
     "path": "/src/file.jsx",
     "type": "update",
-    "updateID": "5a316d8d2",
+    "updateID": "2",
   },
 ]
 `;
 
 exports[`hmr 8 src/file2.js, src/file.jsx bundless: urls 1`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=81f12ccd1",
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=5a316d8d1",
-  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=1433cf281",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=1",
+  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=1",
+  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=1",
 }
 `;
 
 exports[`hmr 8 src/file2.js, src/file.jsx bundless: urls 2`] = `
 Set {
-  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=81f12ccd2",
-  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=5a316d8d2",
-  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=1433cf281",
+  "http://127.0.0.1:4000/src/bridge.jsx?namespace=file&t=2",
+  "http://127.0.0.1:4000/src/file.jsx?namespace=file&t=2",
+  "http://127.0.0.1:4000/src/file2.js?namespace=file&t=1",
 }
 `;

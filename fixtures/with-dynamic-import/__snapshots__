@@ -4,7 +4,7 @@ exports[`snapshots fixtures/with-dynamic-import: build 1`] = `
 Array [
   "index-7O3PFVQW.js",
   "index.html",
-  "text-33PGKMM3.js",
+  "text-LYIMNOC6.js",
 ]
 `;
 

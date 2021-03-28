@@ -10,7 +10,7 @@ Array [
 
 exports[`snapshots fixtures/with-dependencies-assets: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/web_modules/base.css-2DM3KFED.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/web_modules/base.css-25KMKLRM.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
@@ -29,7 +29,7 @@ exports[`snapshots fixtures/with-dependencies-assets: traverse result 1`] = `
 Array [
   Object {
     "importPath": "/_hmr_client.js?namespace=hmr-client",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/base.css-2DM3KFED.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/web_modules/base.css-25KMKLRM.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
@@ -38,9 +38,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/web_modules/base.css-2DM3KFED.js?namespace=file&t=0",
+    "importPath": "/.bundless/web_modules/base.css-25KMKLRM.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/base.css-2DM3KFED.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/base.css-25KMKLRM.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/main.js?namespace=file",
