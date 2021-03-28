@@ -48,6 +48,7 @@ export function SveltePlugin(options: PluginOptions = {}): Plugin {
                 extensions: ['.svelte'],
                 isExtensionRequiredInImportPath: true,
             }).setup({
+                ...build,
                 onResolve,
                 onLoad() {},
             })
