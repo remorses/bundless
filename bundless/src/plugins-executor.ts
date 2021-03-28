@@ -97,7 +97,7 @@ export class PluginsExecutor {
     private closers: PluginInternalObject<OnCloseCallback>[] = []
 
     constructor(_args: {
-        plugins: Plugin[]
+        plugins: Array<Plugin | esbuild.Plugin>
         ctx: PluginsExecutorCtx
         initialOptions: esbuild.BuildOptions
         isProfiling?: boolean

@@ -3,6 +3,7 @@ import * as esbuild from 'esbuild'
 import fromEntries from 'fromentries'
 import fs from 'fs-extra'
 import path from 'path'
+import { Plugin } from '../plugins-executor'
 import posthtml, { Node } from 'posthtml'
 import slash from 'slash'
 import { Config, defaultConfig, getEntries, normalizeConfig } from '../config'
@@ -67,7 +68,7 @@ export async function build({
     }
 
     const mainFields = isBrowser ? MAIN_FIELDS : ['main', 'module']
-    const allPlugins = [
+    const allPlugins: Plugin[] = [
         ...userPlugins,
         plugins.HtmlResolverPlugin(),
         plugins.HtmlIngestPlugin({

@@ -6,14 +6,15 @@ import { readFile } from '../utils'
 export function JSONPlugin({} = {}) {
     return {
         name: 'json',
-        setup: ({ onLoad, onResolve }: PluginHooks) => {
+        setup: (hooks: PluginHooks) => {
+            const { onLoad, onResolve } = hooks
             NodeResolvePlugin({
                 name: 'json-node-resolve',
                 isExtensionRequiredInImportPath: true,
                 extensions: ['.json'],
             }).setup({
+                ...hooks,
                 onLoad() {},
-                onResolve,
             })
             onLoad({ filter: /\.json$/ }, async (args) => {
                 const json = await readFile(args.path)
