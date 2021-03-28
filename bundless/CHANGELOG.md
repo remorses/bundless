@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.5.1
+
+### Patch Changes
+
+-   Fix dead lock when not passing entries during prebundle
+
 ## 0.5.0
 
 ### Minor Changes
