@@ -1,6 +1,6 @@
 {
-    "../../node_modules/slash/index.js": ".bundless/web_modules/index-4XDDS7MV.js",
-    "../../node_modules/react/index.js": ".bundless/web_modules/index-S7T5C766.js",
-    "../with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js": ".bundless/web_modules/hooks.module-4QFCDL4M.js",
-    "../../node_modules/react-dom/index.js": ".bundless/web_modules/index-QCHN32SC.js"
+    "../../node_modules/slash/index.js": ".bundless/node_modules/index-ERUYHHMV.js",
+    "../../node_modules/react/index.js": ".bundless/node_modules/index-HGESVD3A.js",
+    "../with-many-dependencies/node_modules/preact/hooks/dist/hooks.module.js": ".bundless/node_modules/hooks.module-Z3PD46S4.js",
+    "../../node_modules/react-dom/index.js": ".bundless/node_modules/index-7XULCDYT.js"
 }

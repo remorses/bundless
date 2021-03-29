@@ -1,4 +1,4 @@
-import slash_cjsImport0 from "/.bundless/web_modules/index-KXHSGJ5Q.js?namespace=file&t=0"; const slash = slash_cjsImport0 && slash_cjsImport0.__esModule ? slash_cjsImport0.default : slash_cjsImport0;
+import slash_cjsImport0 from "/.bundless/node_modules/index-7XCFWBJJ.js?namespace=file&t=0"; const slash = slash_cjsImport0 && slash_cjsImport0.__esModule ? slash_cjsImport0.default : slash_cjsImport0;
 
 console.log('Hello world!')
 

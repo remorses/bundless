@@ -1,5 +1,5 @@
 {
-    "../../node_modules/svelte/internal/index.mjs": ".bundless/web_modules/index-L3FOAT7R.js",
-    "../../node_modules/svelte-hmr/runtime/hot-api-esm.js": ".bundless/web_modules/hot-api-esm-XWRGGEOS.js",
-    "../../node_modules/svelte-hmr/runtime/proxy-adapter-dom.js": ".bundless/web_modules/proxy-adapter-dom-OCITUNPO.js"
+    "../../node_modules/svelte/internal/index.mjs": ".bundless/node_modules/index-L3FOAT7R.js",
+    "../../node_modules/svelte-hmr/runtime/hot-api-esm.js": ".bundless/node_modules/hot-api-esm-XWRGGEOS.js",
+    "../../node_modules/svelte-hmr/runtime/proxy-adapter-dom.js": ".bundless/node_modules/proxy-adapter-dom-OCITUNPO.js"
 }

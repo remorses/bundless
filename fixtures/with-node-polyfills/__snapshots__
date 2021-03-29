@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-node-polyfills: build 1`] = `
 Array [
-  "index-IA75KF3L.js",
+  "index-FKHYUMRV.js",
   "index.html",
 ]
 `;

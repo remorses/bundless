@@ -2,18 +2,18 @@
 
 exports[`snapshots fixtures/with-commonjs-transform: build 1`] = `
 Array [
-  "chunks/chunk-5AA3ZGGN.js",
-  "index-WQC2H2JF.js",
-  "index-ZC5CWNX3.js",
+  "chunks/chunk-N5MX3FT3.js",
+  "chunks/react-dom-RA54QFDR.js",
+  "index-3S6FVIR5.js",
   "index.html",
 ]
 `;
 
 exports[`snapshots fixtures/with-commonjs-transform: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-H777VUN7.js?namespace=file&t=0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/index-FCT2KFPK.js?namespace=file&t=0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/web_modules/index-PQMUPLMU.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-YTMT6MWQ.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/index-QEBGUOC5.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/index-T7LHT5LE.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.jsx?namespace=file": "application/javascript; charset=utf-8",
@@ -36,44 +36,44 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-H777VUN7.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-FCT2KFPK.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-H777VUN7.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-YTMT6MWQ.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/index-QEBGUOC5.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-YTMT6MWQ.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-H777VUN7.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-FCT2KFPK.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-H777VUN7.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-YTMT6MWQ.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/index-T7LHT5LE.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-YTMT6MWQ.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-H777VUN7.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-FCT2KFPK.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-H777VUN7.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-YTMT6MWQ.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/index-T7LHT5LE.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-YTMT6MWQ.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/chunks/chunk-H777VUN7.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/web_modules/index-PQMUPLMU.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/chunks/chunk-H777VUN7.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-YTMT6MWQ.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/index-T7LHT5LE.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-YTMT6MWQ.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-FCT2KFPK.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/index-QEBGUOC5.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.jsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-FCT2KFPK.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-QEBGUOC5.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-FCT2KFPK.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/index-T7LHT5LE.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.jsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-FCT2KFPK.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-T7LHT5LE.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-FCT2KFPK.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/index-T7LHT5LE.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.jsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-FCT2KFPK.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-T7LHT5LE.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/web_modules/index-PQMUPLMU.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/index-T7LHT5LE.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.jsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/web_modules/index-PQMUPLMU.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-T7LHT5LE.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/main.jsx?namespace=file",

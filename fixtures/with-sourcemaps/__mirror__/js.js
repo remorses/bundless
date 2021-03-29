@@ -1,5 +1,5 @@
-import * as  __HMR__ from '/_hmr_client.js?namespace=hmr-client'; import.meta.hot = __HMR__.createHotContext(import.meta.url); import react_cjsImport0 from "/.bundless/web_modules/index-C3BVLXQA.js?namespace=file&t=0"; const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0; const createElement = react_cjsImport0["createElement"];
-import react_cjsImport1 from "/.bundless/web_modules/index-C3BVLXQA.js?namespace=file&t=0"; const useState = react_cjsImport1["useState"];
+import * as  __HMR__ from '/_hmr_client.js?namespace=hmr-client'; import.meta.hot = __HMR__.createHotContext(import.meta.url); import react_cjsImport0 from "/.bundless/node_modules/index-RZBTOBWE.js?namespace=file&t=0"; const React = react_cjsImport0 && react_cjsImport0.__esModule ? react_cjsImport0.default : react_cjsImport0; const createElement = react_cjsImport0["createElement"];
+import react_cjsImport1 from "/.bundless/node_modules/index-RZBTOBWE.js?namespace=file&t=0"; const useState = react_cjsImport1["useState"];
 import { text } from '/text.js?namespace=file&t=0'
 
 console.log('Hello world!!!!!')
