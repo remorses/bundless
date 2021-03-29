@@ -102,7 +102,9 @@ export async function createDevApp(server: net.Server, config: Config) {
 
     const watcher = chokidar.watch(root, {
         ignored: [
-            /(^|[/\\])(node_modules|\.git|\.DS_Store|\.bundless)([/\\]|$)/,
+            '**/node_modules/**',
+            '**/.git/**',
+            '**/.bundless',
         ],
         useFsEvents: shouldUseFsEvents(),
         ignoreInitial: true,
