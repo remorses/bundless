@@ -145,7 +145,7 @@ export function flatten<T>(arr: T[][]): T[] {
 }
 
 export function needsPrebundle(config: Config, p: string) {
-    if (p.includes('node_modules') && !p.includes('web_modules')) {
+    if (p.includes('node_modules') && !p.includes('.bundless')) {
         return true
     }
     const includeWorkspacePackages = config.prebundle?.includeWorkspacePackages

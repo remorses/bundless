@@ -1,5 +1,6 @@
 import { FSWatcher } from 'chokidar'
 import { Middleware } from 'koa'
+import { WEB_MODULES_PATH } from '../constants'
 import { PluginsExecutor } from '../plugins-executor'
 import { importPathToFile, dotdotEncoding, genSourceMapString } from '../utils'
 
@@ -67,7 +68,7 @@ export function pluginsMiddleware({
         ctx.body = transformed.contents + sourcemap
         ctx.status = 200
         ctx.type = 'js'
-        const isDep = ctx.path.includes('.bundless/web_modules')
+        const isDep = ctx.path.includes(WEB_MODULES_PATH)
         const isCacheableModule =
             pluginsExecutor.ctx.config.server?.experimentalImmutableCache &&
             ctx.query.t != null

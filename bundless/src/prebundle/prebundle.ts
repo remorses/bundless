@@ -39,7 +39,7 @@ export async function prebundle({ entryPoints, config, root, dest }) {
             `Prebundling \n    ${dependenciesPaths
                 .map((x) => getClearDependencyPath(x))
                 .map((x) => (path.isAbsolute(x) ? osAgnosticPath(x, root) : x))
-                .map((x) => chalk.green(x))
+                .map((x) => chalk.cyanBright(x))
                 .join('\n    ')}\n`,
         )
 
@@ -75,13 +75,6 @@ export async function prebundle({ entryPoints, config, root, dest }) {
         clearCommonjsAnalysisCache()
     }
 }
-
-// on start, check if already optimized dependencies, else
-// traverse from entrypoints and get all imported paths, stopping when finding a node_module
-// start bundling these modules and store them in a web_modules folder
-// save a commonjs modules list in web_modules folder
-// this can be a plugin that start building when finding a new node_modules plugin that should not be there
-// if it sees a path that has a node_modules inside it blocks the server, start bundling and restart everything
 
 function getClearDependencyPath(p: string) {
     const index = p.lastIndexOf('node_modules')

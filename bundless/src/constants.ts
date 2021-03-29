@@ -5,7 +5,7 @@ export const hmrClientNamespace = 'hmr-client'
 export const DEFAULT_PORT = 3000
 export const CLIENT_PUBLIC_PATH = `/_hmr_client.js?namespace=${hmrClientNamespace}`
 export const COMMONJS_ANALYSIS_PATH = '.bundless/commonjs.json'
-export const WEB_MODULES_PATH = '.bundless/web_modules'
+export const WEB_MODULES_PATH = '.bundless/node_modules'
 export const BUNDLE_MAP_PATH = '.bundless/bundleMap.json'
 export const HMR_SERVER_NAME = 'esm-hmr'
 export const CONFIG_NAME = 'bundless.config.js'
