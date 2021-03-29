@@ -83,7 +83,7 @@ function getClearDependencyPath(p: string) {
     if (index === -1) {
         return p
     }
-    let dependencySubPath = p.slice(index).replace(/\/?node_modules\//, '')
+    let dependencySubPath = p.slice(index).replace(/\/?node_modules(\/|\\)/, '')
     return dependencySubPath
 }
 
@@ -97,7 +97,11 @@ function getPackageName(p: string) {
     if (dependencySubPath.startsWith('@')) {
         dependency = getScopedPackageName(dependencySubPath) || ''
     } else {
-        dependency = dependencySubPath.slice(0, dependencySubPath.indexOf('/'))
+        const lastIndex = dependencySubPath.indexOf('/')
+        dependency = dependencySubPath.slice(
+            0,
+            lastIndex === -1 ? undefined : lastIndex,
+        )
     }
     return dependency
 }
