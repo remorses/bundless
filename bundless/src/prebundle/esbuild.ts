@@ -29,7 +29,7 @@ export const commonEsbuildOptions = (
     config: Config = {},
 ): esbuild.BuildOptions => ({
     target: 'es2020',
-    entryNames: '[name]-[hash]',
+    entryNames: '[dir]/[name]-[hash]',
     chunkNames: 'chunks/[name]-[hash]',
     minify: false,
     minifyIdentifiers: false,
@@ -114,6 +114,7 @@ export async function bundleWithEsBuild({
     // rimraf.sync(destLoc) // do not delete or on flight imports will return 404
 
     const initialOptions: esbuild.BuildOptions = {
+        entryPoints,
         ...commonEsbuildOptions(config),
         splitting: true, // needed to dedupe modules
         external: externalPackages,
@@ -126,7 +127,6 @@ export async function bundleWithEsBuild({
         sourcemap: 'inline',
         bundle: true,
         write: true,
-        entryPoints,
         outdir: destLoc,
         metafile: true,
     }

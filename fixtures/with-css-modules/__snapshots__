@@ -2,8 +2,8 @@
 
 exports[`snapshots fixtures/with-css-modules: build 1`] = `
 Array [
-  "index-JYLSEHUB.js",
-  "index-RC7AQUZQ.css",
+  "index-362QSEEH.css",
+  "index-A73ULLK7.js",
   "index.html",
 ]
 `;

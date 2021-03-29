@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-imports: build 1`] = `
 Array [
-  "index-KXRBBFQH.js",
+  "index-L2UPMKGW.js",
   "index.html",
 ]
 `;

@@ -50,7 +50,9 @@ export async function prebundle({ entryPoints, config, root, dest }) {
             dest,
             root,
             config,
-            entryPoints: dependenciesPaths.map((x) => path.resolve(root, x)), // TODO resolve to package names
+            entryPoints: makeEntryObject(
+                dependenciesPaths.map((x) => path.resolve(root, x)),
+            ),
         })
 
         logger.spinSucceed('\nFinish')
@@ -87,4 +89,33 @@ function getClearDependencyPath(p: string) {
 
 function getScopedPackageName(path: string): any {
     return path.match(/(@[\w-_\.]+\/[\w-_\.]+)/)?.[1] || ''
+}
+
+function getPackageName(p: string) {
+    const dependencySubPath = getClearDependencyPath(p)
+    let dependency = ''
+    if (dependencySubPath.startsWith('@')) {
+        dependency = getScopedPackageName(dependencySubPath) || ''
+    } else {
+        dependency = dependencySubPath.slice(0, dependencySubPath.indexOf('/'))
+    }
+    return dependency
+}
+
+function makeEntryObject(dependenciesPaths: string[]) {
+    const names: string[] = []
+    return Object.assign(
+        {},
+        ...dependenciesPaths.map((f) => {
+            let outputPath = getClearDependencyPath(f)
+            const sameNames = names.filter((x) => x === outputPath)
+            if (sameNames.length) {
+                outputPath += String(sameNames.length)
+            }
+            names.push(outputPath)
+            return {
+                [outputPath]: f,
+            }
+        }),
+    )
 }

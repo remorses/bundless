@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-sourcemaps: build 1`] = `
 Array [
-  "index-BDMLTM2C.js",
+  "index-AKY63UUZ.js",
   "index.html",
 ]
 `;
@@ -10,8 +10,8 @@ Array [
 exports[`snapshots fixtures/with-sourcemaps: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-FQVOTQVO.js?namespace=file&t=0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/node_modules/index-SIB4QKI4.js?namespace=file&t=0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/node_modules/source-map-support-DQRBDHYP.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/react/index.js-UONWFYMP.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/source-map-support/source-map-support.js-R7WERCAE.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/js.js?namespace=file&t=0": "application/javascript; charset=utf-8",
@@ -49,43 +49,43 @@ Array [
   },
   Object {
     "importPath": "/.bundless/node_modules/chunks/chunk-FQVOTQVO.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/node_modules/index-SIB4QKI4.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js-UONWFYMP.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-FQVOTQVO.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/.bundless/node_modules/chunks/chunk-FQVOTQVO.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/node_modules/index-SIB4QKI4.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js-UONWFYMP.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-FQVOTQVO.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/.bundless/node_modules/chunks/chunk-FQVOTQVO.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/node_modules/source-map-support-DQRBDHYP.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/source-map-support/source-map-support.js-R7WERCAE.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-FQVOTQVO.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/index-SIB4QKI4.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/react/index.js-UONWFYMP.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/js.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-SIB4QKI4.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js-UONWFYMP.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/index-SIB4QKI4.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/react/index.js-UONWFYMP.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/js.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-SIB4QKI4.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js-UONWFYMP.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/index-SIB4QKI4.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/react/index.js-UONWFYMP.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-SIB4QKI4.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js-UONWFYMP.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/index-SIB4QKI4.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/react/index.js-UONWFYMP.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-SIB4QKI4.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js-UONWFYMP.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/source-map-support-DQRBDHYP.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/source-map-support/source-map-support.js-R7WERCAE.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.ts?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/source-map-support-DQRBDHYP.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/source-map-support/source-map-support.js-R7WERCAE.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/js.js?namespace=file&t=0",

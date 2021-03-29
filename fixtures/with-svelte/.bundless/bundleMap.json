@@ -1,5 +1,5 @@
 {
-    "../../node_modules/svelte/internal/index.mjs": ".bundless/node_modules/index-YLGC4THO.js",
-    "../../node_modules/svelte-hmr/runtime/hot-api-esm.js": ".bundless/node_modules/hot-api-esm-ETUSFXYS.js",
-    "../../node_modules/svelte-hmr/runtime/proxy-adapter-dom.js": ".bundless/node_modules/proxy-adapter-dom-PYS6SWGQ.js"
+    "../../node_modules/svelte/internal/index.mjs": ".bundless/node_modules/svelte/internal/index.mjs-ZUNFQ53T.js",
+    "../../node_modules/svelte-hmr/runtime/hot-api-esm.js": ".bundless/node_modules/svelte-hmr/runtime/hot-api-esm.js-QFTXB3J3.js",
+    "../../node_modules/svelte-hmr/runtime/proxy-adapter-dom.js": ".bundless/node_modules/svelte-hmr/runtime/proxy-adapter-dom.js-7VQ2LR3L.js"
 }

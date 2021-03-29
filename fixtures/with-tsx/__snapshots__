@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-tsx: build 1`] = `
 Array [
-  "index-3MF6VUJP.js",
+  "index-QDH5R2GL.js",
   "index.html",
 ]
 `;

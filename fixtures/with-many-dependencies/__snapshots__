@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-many-dependencies: build 1`] = `
 Array [
-  "index-RXJ24C2Y.js",
+  "index-N7UFAXNK.js",
   "index.html",
 ]
 `;
@@ -11,10 +11,10 @@ exports[`snapshots fixtures/with-many-dependencies: content-type headers 1`] = `
 Object {
   "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-IX2332O4.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-W4S5JLRG.js?namespace=file&t=0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/node_modules/hooks.module-NIOZX2G3.js?namespace=file&t=0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/node_modules/index-ITCH7DKG.js?namespace=file&t=0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/node_modules/index-MQRADO2L.js?namespace=file&t=0": "application/javascript; charset=utf-8",
-  "http://127.0.0.1:9000/.bundless/node_modules/index-ZTP6K7DF.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/preact/hooks/dist/hooks.module.js-OHY2X7LD.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/react-dom/index.js-LCUL2F4T.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/react/index.js-YOCJ5JXR.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/slash/index.js-XWXN5YBF.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
@@ -48,48 +48,48 @@ Array [
   },
   Object {
     "importPath": "/.bundless/node_modules/chunks/chunk-IX2332O4.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/node_modules/index-ITCH7DKG.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/react-dom/index.js-LCUL2F4T.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-IX2332O4.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/.bundless/node_modules/chunks/chunk-IX2332O4.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/node_modules/index-MQRADO2L.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js-YOCJ5JXR.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-IX2332O4.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/.bundless/node_modules/chunks/chunk-IX2332O4.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/node_modules/index-ZTP6K7DF.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/slash/index.js-XWXN5YBF.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-IX2332O4.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/.bundless/node_modules/chunks/chunk-W4S5JLRG.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/node_modules/index-ITCH7DKG.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/react-dom/index.js-LCUL2F4T.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-W4S5JLRG.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/.bundless/node_modules/chunks/chunk-W4S5JLRG.js?namespace=file&t=0",
-    "importer": "http://127.0.0.1:9000/.bundless/node_modules/index-MQRADO2L.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js-YOCJ5JXR.js?namespace=file&t=0",
     "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-W4S5JLRG.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/hooks.module-NIOZX2G3.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/preact/hooks/dist/hooks.module.js-OHY2X7LD.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/hooks.module-NIOZX2G3.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/preact/hooks/dist/hooks.module.js-OHY2X7LD.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/index-ITCH7DKG.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/react-dom/index.js-LCUL2F4T.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-ITCH7DKG.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/react-dom/index.js-LCUL2F4T.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/index-MQRADO2L.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/react/index.js-YOCJ5JXR.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-MQRADO2L.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js-YOCJ5JXR.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/index-ZTP6K7DF.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/slash/index.js-XWXN5YBF.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-ZTP6K7DF.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/slash/index.js-XWXN5YBF.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/main.js?namespace=file",

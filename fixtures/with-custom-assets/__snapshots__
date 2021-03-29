@@ -4,8 +4,8 @@ exports[`snapshots fixtures/with-custom-assets: build 1`] = `
 Array [
   "chunks/x-EGXMUYZG.js",
   "file-3I42H3S6.dat",
-  "index-EOXT7XSV.css",
-  "index-YJG6BGFK.js",
+  "index-274RXWWK.css",
+  "index-55T5JRHX.js",
   "index.html",
   "x-3I42H3S6.DAC",
 ]

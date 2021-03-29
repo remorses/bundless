@@ -2,14 +2,14 @@
 
 exports[`snapshots fixtures/with-dependencies: build 1`] = `
 Array [
-  "index-LTLSS3A5.js",
+  "index-FJCZQM4L.js",
   "index.html",
 ]
 `;
 
 exports[`snapshots fixtures/with-dependencies: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/node_modules/index-BNF6SZ63.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/slash/index.js-XXRBVX66.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
@@ -32,9 +32,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/node_modules/index-BNF6SZ63.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/slash/index.js-XXRBVX66.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.js?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/index-BNF6SZ63.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/slash/index.js-XXRBVX66.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/main.js?namespace=file",

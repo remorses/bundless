@@ -3,7 +3,7 @@
 exports[`snapshots fixtures/with-dynamic-import: build 1`] = `
 Array [
   "chunks/text-JYFJTIJH.js",
-  "index-GRO4YDME.js",
+  "index-WDJ6ELZH.js",
   "index.html",
 ]
 `;

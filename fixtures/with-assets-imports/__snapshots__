@@ -4,8 +4,8 @@ exports[`snapshots fixtures/with-assets-imports: build 1`] = `
 Array [
   "chunks/dynamic-import-3LVX57HN.js",
   "image-WYWSOB4S.png",
-  "index-4FKQTH4F.css",
-  "index-ZUIANZZL.js",
+  "index-G3RQ7CCN.js",
+  "index-RRI6H5IY.css",
   "index.html",
 ]
 `;
