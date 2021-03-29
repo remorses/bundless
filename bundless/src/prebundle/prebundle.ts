@@ -107,7 +107,7 @@ function makeEntryObject(dependenciesPaths: string[]) {
     return Object.assign(
         {},
         ...dependenciesPaths.map((f) => {
-            let outputPath = getClearDependencyPath(f)
+            let outputPath = getClearDependencyPath(f) || 'unknown'
             const sameNames = names.filter((x) => x === outputPath)
             if (sameNames.length) {
                 outputPath += String(sameNames.length)
