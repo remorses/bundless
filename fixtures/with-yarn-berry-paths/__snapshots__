@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-yarn-berry-paths: build 1`] = `
 Array [
-  "index-F4EDEZEJ.js",
+  "index-FXB5S6V4.js",
   "index.html",
 ]
 `;

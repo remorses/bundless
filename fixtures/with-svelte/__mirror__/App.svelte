@@ -18,7 +18,7 @@ import {
 	space,
 	text,
 	validate_slots
-} from "/.bundless/node_modules/index-L3FOAT7R.js?namespace=file&t=0";
+} from "/.bundless/node_modules/index-YLGC4THO.js?namespace=file&t=0";
 
 const file = "fixtures/with-svelte/App.svelte";
 
@@ -137,7 +137,7 @@ class App extends SvelteComponentDev {
 		});
 	}
 }
-import * as ___SVELTE_HMR_HOT_API from '/.bundless/node_modules/hot-api-esm-XWRGGEOS.js?namespace=file&t=0';import svelteHmr_runtime_proxyAdapterDom_js_cjsImport3 from "/.bundless/node_modules/proxy-adapter-dom-OCITUNPO.js?namespace=file&t=0"; const ___SVELTE_HMR_HOT_API_PROXY_ADAPTER = svelteHmr_runtime_proxyAdapterDom_js_cjsImport3 && svelteHmr_runtime_proxyAdapterDom_js_cjsImport3.__esModule ? svelteHmr_runtime_proxyAdapterDom_js_cjsImport3.default : svelteHmr_runtime_proxyAdapterDom_js_cjsImport3;;if (import.meta && import.meta.hot) { App = ___SVELTE_HMR_HOT_API.applyHmr({ m: import.meta, id: "/Users/morse/Documents/GitHub/espack/fixtures/with-svelte/App.svelte", hotOptions: {"preserveLocalState":true,"noPreserveStateKey":["@hmr:reset","@!hmr"],"preserveAllLocalStateKey":"@hmr:keep-all","preserveLocalStateKey":"@hmr:keep","noReload":false,"optimistic":true,"acceptNamedExports":true,"acceptAccessors":true,"injectCss":true,"cssEjectDelay":100,"native":false,"compatVite":false,"importAdapterName":"___SVELTE_HMR_HOT_API_PROXY_ADAPTER","absoluteImports":false,"noOverlay":true}, Component: App, ProxyAdapter: ___SVELTE_HMR_HOT_API_PROXY_ADAPTER, acceptable: true, cssId: "svelte-1x83jhu-style", nonCssHash: "564uli", }); }
+import * as ___SVELTE_HMR_HOT_API from '/.bundless/node_modules/hot-api-esm-ETUSFXYS.js?namespace=file&t=0';import svelteHmr_runtime_proxyAdapterDom_js_cjsImport3 from "/.bundless/node_modules/proxy-adapter-dom-PYS6SWGQ.js?namespace=file&t=0"; const ___SVELTE_HMR_HOT_API_PROXY_ADAPTER = svelteHmr_runtime_proxyAdapterDom_js_cjsImport3 && svelteHmr_runtime_proxyAdapterDom_js_cjsImport3.__esModule ? svelteHmr_runtime_proxyAdapterDom_js_cjsImport3.default : svelteHmr_runtime_proxyAdapterDom_js_cjsImport3;;if (import.meta && import.meta.hot) { App = ___SVELTE_HMR_HOT_API.applyHmr({ m: import.meta, id: "/Users/morse/Documents/GitHub/espack/fixtures/with-svelte/App.svelte", hotOptions: {"preserveLocalState":true,"noPreserveStateKey":["@hmr:reset","@!hmr"],"preserveAllLocalStateKey":"@hmr:keep-all","preserveLocalStateKey":"@hmr:keep","noReload":false,"optimistic":true,"acceptNamedExports":true,"acceptAccessors":true,"injectCss":true,"cssEjectDelay":100,"native":false,"compatVite":false,"importAdapterName":"___SVELTE_HMR_HOT_API_PROXY_ADAPTER","absoluteImports":false,"noOverlay":true}, Component: App, ProxyAdapter: ___SVELTE_HMR_HOT_API_PROXY_ADAPTER, acceptable: true, cssId: "svelte-1x83jhu-style", nonCssHash: "564uli", }); }
 export default App;
 
 if (typeof add_css !== 'undefined' && !document.getElementById("svelte-1x83jhu-style")) add_css();

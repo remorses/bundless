@@ -2,14 +2,14 @@
 
 exports[`snapshots fixtures/with-alias-plugin: build 1`] = `
 Array [
-  "index-K2XMZ3V7.js",
+  "index-N5F6UDVH.js",
   "index.html",
 ]
 `;
 
 exports[`snapshots fixtures/with-alias-plugin: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/node_modules/compat.module-TL5KLAOF.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/compat.module-EQ7IKRCX.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
   "http://127.0.0.1:9000/main.tsx?namespace=file": "application/javascript; charset=utf-8",
@@ -34,9 +34,9 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/node_modules/compat.module-TL5KLAOF.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/compat.module-EQ7IKRCX.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/main.tsx?namespace=file",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/compat.module-TL5KLAOF.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/compat.module-EQ7IKRCX.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/main.tsx?namespace=file",

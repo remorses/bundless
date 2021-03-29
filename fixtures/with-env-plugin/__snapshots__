@@ -2,7 +2,7 @@
 
 exports[`snapshots fixtures/with-env-plugin: build 1`] = `
 Array [
-  "index-C5V7NJQB.js",
+  "index-RZDSRYOO.js",
   "index.html",
 ]
 `;
