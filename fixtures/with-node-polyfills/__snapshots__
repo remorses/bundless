@@ -2,8 +2,8 @@
 
 exports[`snapshots fixtures/with-node-polyfills: build 1`] = `
 Array [
-  "index-QRIOQPAV.js",
   "index.html",
+  "index.js",
 ]
 `;
 

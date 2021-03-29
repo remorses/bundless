@@ -1,5 +1,5 @@
 import {text} from "/text.ts?namespace=file&t=0";
-import React from "/.bundless/node_modules/preact/compat/dist/compat.module.js-AHARJL3A.js?namespace=file&t=0";
+import React from "/.bundless/node_modules/preact/compat/dist/compat.module.js.js?namespace=file&t=0";
 const node = document.createElement("pre");
 node.appendChild(document.createTextNode(text));
 document.body.appendChild(node);

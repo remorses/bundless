@@ -2,8 +2,8 @@
 
 exports[`snapshots fixtures/serve-outside-root: build 1`] = `
 Array [
-  "index-UCC2RBVN.js",
   "index.html",
+  "index.js",
 ]
 `;
 

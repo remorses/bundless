@@ -2,11 +2,11 @@
 
 exports[`snapshots fixtures/with-assets-imports: build 1`] = `
 Array [
-  "chunks/dynamic-import-3LVX57HN.js",
+  "chunks/dynamic-import-3I42H3S6.js",
   "image-WYWSOB4S.png",
-  "index-G3RQ7CCN.js",
-  "index-RRI6H5IY.css",
+  "index.css",
   "index.html",
+  "index.js",
 ]
 `;
 

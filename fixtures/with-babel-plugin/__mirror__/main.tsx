@@ -1,6 +1,6 @@
-import _styled from "/.bundless/node_modules/styled-components/dist/styled-components.esm.js-ZA6EELDJ.js?namespace=file&t=0";
-import react_cjsImport1 from "/.bundless/node_modules/react/index.js-LF67JOFJ.js?namespace=file&t=0"; const React = react_cjsImport1 && react_cjsImport1.__esModule ? react_cjsImport1.default : react_cjsImport1;;
-import reactDom_cjsImport2 from "/.bundless/node_modules/react-dom/index.js-S4AYTVK4.js?namespace=file&t=0"; const dom = reactDom_cjsImport2 && reactDom_cjsImport2.__esModule ? reactDom_cjsImport2.default : reactDom_cjsImport2;;
+import _styled from "/.bundless/node_modules/styled-components/dist/styled-components.esm.js.js?namespace=file&t=0";
+import react_cjsImport1 from "/.bundless/node_modules/react/index.js.js?namespace=file&t=0"; const React = react_cjsImport1 && react_cjsImport1.__esModule ? react_cjsImport1.default : react_cjsImport1;;
+import reactDom_cjsImport2 from "/.bundless/node_modules/react-dom/index.js.js?namespace=file&t=0"; const dom = reactDom_cjsImport2 && reactDom_cjsImport2.__esModule ? reactDom_cjsImport2.default : reactDom_cjsImport2;;
 const ONE_DAY = 864e5;
 const TWO_DAYS = 1728e5;
 console.log(TWO_DAYS);

@@ -23,35 +23,37 @@ import {
     stripColon,
 } from './support'
 import { PluginsExecutor } from '../plugins-executor'
-import { HmrGraph } from '../hmr-graph'
 
 export const commonEsbuildOptions = (
     config: Config = {},
-): esbuild.BuildOptions => ({
-    target: 'es2020',
-    entryNames: '[dir]/[name]-[hash]',
-    chunkNames: 'chunks/[name]-[hash]',
-    minify: false,
-    minifyIdentifiers: false,
-    minifySyntax: false,
-    metafile: true,
-    minifyWhitespace: false,
-    mainFields: MAIN_FIELDS,
-    sourcemap: false,
-    bundle: true,
-    platform: 'browser',
-    format: 'esm',
-    write: true,
-    logLevel: 'error',
-    loader: {
-        '.js': 'jsx',
-        '.cjs': 'js',
-        // '.svg': 'dataurl', // TODO enable svg as data uri in development and in build
-        ...defaultLoader,
-        ...config.loader,
-    },
-    define: generateDefineObject({ config }),
-})
+): esbuild.BuildOptions => {
+    const omitHashes = process.env.BUNDLESS_CONSISTENT_HMR_GRAPH_HASH != null
+    return {
+        target: 'es2020',
+        entryNames: !omitHashes ? '[dir]/[name]-[hash]' : '[dir]/[name]',
+        chunkNames: 'chunks/[name]-[hash]',
+        minify: false,
+        minifyIdentifiers: false,
+        minifySyntax: false,
+        metafile: true,
+        minifyWhitespace: false,
+        mainFields: MAIN_FIELDS,
+        sourcemap: false,
+        bundle: true,
+        platform: 'browser',
+        format: 'esm',
+        write: true,
+        logLevel: 'error',
+        loader: {
+            '.js': 'jsx',
+            '.cjs': 'js',
+            // '.svg': 'dataurl', // TODO enable svg as data uri in development and in build
+            ...defaultLoader,
+            ...config.loader,
+        },
+        define: generateDefineObject({ config }),
+    }
+}
 
 export function generateDefineObject({
     config = {} as Config,

@@ -2,11 +2,11 @@
 
 exports[`snapshots fixtures/with-many-entries: build 1`] = `
 Array [
-  "a/index-4TIXAHT7.css",
-  "a/index-NENYCQJX.js",
+  "a/index.css",
   "a/index.html",
-  "b/index-7BY573K7.js",
+  "a/index.js",
   "b/index.html",
+  "b/index.js",
   "chunks/chunk-6CZZJFZN.css",
   "chunks/chunk-UNICZJVM.js",
 ]

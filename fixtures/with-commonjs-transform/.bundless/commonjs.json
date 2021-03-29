@@ -1,6 +1,6 @@
 {
     "isCommonjs": {
-        ".bundless/node_modules/react/index.js-XIMGNP6T.js": true,
-        ".bundless/node_modules/react-dom/index.js-LD6IMCTH.js": true
+        ".bundless/node_modules/react/index.js.js": true,
+        ".bundless/node_modules/react-dom/index.js.js": true
     }
 }

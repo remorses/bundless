@@ -2,8 +2,8 @@
 
 exports[`snapshots fixtures/html-page: build 1`] = `
 Array [
-  "index-ZNKRXZJC.js",
   "index.html",
+  "index.js",
 ]
 `;
 

@@ -1,7 +1,7 @@
 {
     "isCommonjs": {
-        ".bundless/node_modules/slash/index.js-XWXN5YBF.js": true,
-        ".bundless/node_modules/react/index.js-YOCJ5JXR.js": true,
-        ".bundless/node_modules/react-dom/index.js-LCUL2F4T.js": true
+        ".bundless/node_modules/slash/index.js.js": true,
+        ".bundless/node_modules/react/index.js.js": true,
+        ".bundless/node_modules/react-dom/index.js.js": true
     }
 }
