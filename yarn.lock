@@ -1468,15 +1468,15 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@esbuild-plugins/all@^0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/all/-/all-0.0.21.tgz#263f9b92bbd7d0e90cc24a781b81f8a98554966d"
-  integrity sha512-SIxt3r8C5AH6EvfUxS/qFmpRWXleTVbUDFS2HR1D615D6/qex+uEX9b2oKyHcLh9NnaBuLzyufjx9gnFJ6EEiw==
+"@esbuild-plugins/all@^0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/all/-/all-0.0.22.tgz#490e3131127a6ccaa8e293b78dece1feed42021d"
+  integrity sha512-Sh5pJI0u4JLmhnjYf/Nm/rEphi2RXGbLACRX826VjnyKIfT2iWOJIzdbcNXNUxXlO4OeaJfIob8U+0vJ9hmg8Q==
   dependencies:
     "@esbuild-plugins/esm-externals" "0.0.5"
     "@esbuild-plugins/html" "0.0.18"
     "@esbuild-plugins/node-globals-polyfill" "0.1.0"
-    "@esbuild-plugins/node-modules-polyfill" "0.1.0"
+    "@esbuild-plugins/node-modules-polyfill" "0.1.1"
     "@esbuild-plugins/node-resolve" "0.0.15"
 
 "@esbuild-plugins/esm-externals@0.0.5":
@@ -1501,10 +1501,10 @@
   resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-globals-polyfill/-/node-globals-polyfill-0.1.0.tgz#520e719cda7b601f51d5e39719762fdf95c67525"
   integrity sha512-kZFvuxGb2puY7USbS/HtKaNrvR2FUlU6iddcYwGOz6nlv4ficSHYmhZ4x0WrJnLNBYzla+Y3P6YvC0DPrb0M/Q==
 
-"@esbuild-plugins/node-modules-polyfill@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-modules-polyfill/-/node-modules-polyfill-0.1.0.tgz#56c246edfcf63203eb71f35ee642abe82dca8af3"
-  integrity sha512-gHOz7qxKwBR7PODhaSwAWGv/fdty28mVxWc9o1GfmEG1kWpaSQLqfKGbSlKferXBC/UYD/h/nP3XPK+VarrUZw==
+"@esbuild-plugins/node-modules-polyfill@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-modules-polyfill/-/node-modules-polyfill-0.1.1.tgz#c830e47b2a193ea1ae4fee5e6f8a231b94024a32"
+  integrity sha512-nfaj343BMA1pWJW4e2gLZUbC50rgUY+jsI55j9fKb0CgXbDyIEL8nxPzE1OMoyqvu7W0RMgI+TjmMAuXhC96Ow==
   dependencies:
     escape-string-regexp "^4.0.0"
     rollup-plugin-node-polyfills "^0.2.1"

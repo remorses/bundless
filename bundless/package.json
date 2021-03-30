@@ -46,7 +46,7 @@
     "dependencies": {
         "@babel/parser": "^7.12.11",
         "@babel/types": "^7.12.10",
-        "@esbuild-plugins/all": "^0.0.21",
+        "@esbuild-plugins/all": "^0.0.22",
         "@koa/cors": "^3.1.0",
         "chalk": "^4.1.0",
         "chokidar": "^3.5.1",
