@@ -149,6 +149,12 @@ export async function rewriteImports({
                     throw new Error(`Cannot resolve '${id}' from '${importer}'`)
                 }
 
+                if (resolveResult?.pluginData) {
+                    logger.warn(
+                        `esbuild pluginData is not supported by bundless, used by plugin ${resolveResult.pluginName}`,
+                    )
+                }
+
                 let resolvedImportPath = ''
                 const isVirtual =
                     resolveResult.namespace &&

@@ -1,6 +1,7 @@
 import { FSWatcher } from 'chokidar'
 import { Middleware } from 'koa'
 import { WEB_MODULES_PATH } from '../constants'
+import { logger } from '../logger'
 import { PluginsExecutor } from '../plugins-executor'
 import { importPathToFile, dotdotEncoding, genSourceMapString } from '../utils'
 
@@ -48,6 +49,11 @@ export function pluginsMiddleware({
             pluginData: undefined,
             namespace,
         })
+
+        if (loaded?.pluginData) {
+            logger.warn(`esbuild pluginData is not supported by bundless, used by plugin ${loaded.pluginName}`)
+        }
+
         if (loaded == null || loaded.contents == null) {
             return next()
         }

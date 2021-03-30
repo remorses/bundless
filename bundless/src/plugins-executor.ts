@@ -178,6 +178,9 @@ export class PluginsExecutor {
                     const newResult = await callback(arg)
                     if (newResult) {
                         result = newResult
+                        if (!result.pluginName) {
+                            result.pluginName = name
+                        }
                         break
                     }
                 } catch (e) {
@@ -257,6 +260,9 @@ export class PluginsExecutor {
                         )}'`,
                     )
                     result = newResult
+                    if (!result.pluginName) {
+                        result.pluginName = name
+                    }
                     break
                 }
                 // break
@@ -328,9 +334,15 @@ export class PluginsExecutor {
             path: p,
             resolveDir,
         })
+        if (resolved?.pluginData) {
+            logger.warn(
+                `pluginData is not supported by bundless, used by plugin ${resolved.pluginName}`,
+            )
+        }
         if (!resolved || !resolved.path) {
             return {}
         }
+
         if (
             expectedExtensions &&
             !expectedExtensions.includes(path.extname(resolved.path))
@@ -342,6 +354,11 @@ export class PluginsExecutor {
             path: resolved.path,
             pluginData: undefined,
         })
+        if (loaded?.pluginData) {
+            logger.warn(
+                `esbuild pluginData is not supported by bundless, used by plugin ${loaded.pluginName}`,
+            )
+        }
         if (!loaded) {
             return {}
         }
