@@ -1,5 +1,6 @@
 import { O_TRUNC } from 'constants'
 import * as esbuild from 'esbuild'
+import { cloneDeep } from 'lodash'
 import { promises } from 'fs-extra'
 import { Config } from './config'
 import url from 'url'
@@ -90,6 +91,7 @@ export class PluginsExecutor {
     isProfiling: boolean
     onResolved?: OnResolved
     initialOptions: esbuild.BuildOptions
+    private startingInitialOptions: esbuild.BuildOptions
 
     private transforms: PluginInternalObject<OnTransformCallback>[] = []
     private resolvers: PluginInternalObject<OnResolveCallback>[] = []
@@ -113,6 +115,7 @@ export class PluginsExecutor {
 
         this.ctx = ctx
         this.initialOptions = initialOptions
+        this.startingInitialOptions = cloneDeep(initialOptions)
         this.onResolved = onResolved
         this.plugins = plugins
         this.isProfiling = isProfiling
@@ -459,6 +462,7 @@ export class PluginsExecutor {
 
         return {
             name,
+
             setup(hooks) {
                 plugin.setup({
                     ...hooks,
@@ -479,6 +483,7 @@ export class PluginsExecutor {
         return {
             name: plugin.name,
             setup({ onLoad, onResolve }) {
+                // TODO running setup 2 times
                 plugin.setup({
                     onResolve,
                     // the plugin transform is already inside pluginsExecutor
@@ -486,7 +491,7 @@ export class PluginsExecutor {
                     onClose() {},
                     ctx,
                     pluginsExecutor,
-                    initialOptions: executor.initialOptions,
+                    initialOptions: executor.startingInitialOptions,
                     // wrap onLoad to execute other plugins transforms
                     onLoad(options, callback) {
                         onLoad(options, async (args) => {

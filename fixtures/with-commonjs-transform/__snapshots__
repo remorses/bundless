@@ -2,8 +2,8 @@
 
 exports[`snapshots fixtures/with-commonjs-transform: build 1`] = `
 Array [
-  "chunks/chunk-TF4NVX64.js",
-  "chunks/react-dom-YO6S2VIB.js",
+  "chunks/chunk-KJCOP5LZ.js",
+  "chunks/react-dom-GQZS7XND.js",
   "index.html",
   "index.js",
 ]
@@ -11,7 +11,7 @@ Array [
 
 exports[`snapshots fixtures/with-commonjs-transform: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-6ZR7O52Z.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-W2EPDPQZ.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/node_modules/react-dom/index.js.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/node_modules/react/index.js.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
@@ -36,24 +36,24 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/node_modules/chunks/chunk-6ZR7O52Z.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-W2EPDPQZ.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/.bundless/node_modules/react-dom/index.js.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-6ZR7O52Z.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-W2EPDPQZ.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/chunks/chunk-6ZR7O52Z.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-W2EPDPQZ.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-6ZR7O52Z.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-W2EPDPQZ.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/chunks/chunk-6ZR7O52Z.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-W2EPDPQZ.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-6ZR7O52Z.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-W2EPDPQZ.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/chunks/chunk-6ZR7O52Z.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-W2EPDPQZ.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-6ZR7O52Z.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-W2EPDPQZ.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/.bundless/node_modules/react-dom/index.js.js?namespace=file&t=0",

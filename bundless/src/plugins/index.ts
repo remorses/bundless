@@ -14,4 +14,5 @@ export { EnvPlugin } from './env'
 export {
     NodeModulesPolyfillPlugin,
     NodeResolvePlugin,
+    NodeGlobalsPolyfillPlugin
 } from '@esbuild-plugins/all'

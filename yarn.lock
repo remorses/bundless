@@ -1468,15 +1468,15 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@esbuild-plugins/all@^0.0.20":
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/all/-/all-0.0.20.tgz#89375fe31e4a8ce0fb6f5331252e167974fe5a26"
-  integrity sha512-wyUKfAosZ2zzCDlu5D4G4KqL3iklRCPEU2S3JTdjszJ5/sDwi7D2waFkfjQv8FIusiJAvGxfIKAFCyjnJVlscA==
+"@esbuild-plugins/all@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/all/-/all-0.0.21.tgz#263f9b92bbd7d0e90cc24a781b81f8a98554966d"
+  integrity sha512-SIxt3r8C5AH6EvfUxS/qFmpRWXleTVbUDFS2HR1D615D6/qex+uEX9b2oKyHcLh9NnaBuLzyufjx9gnFJ6EEiw==
   dependencies:
     "@esbuild-plugins/esm-externals" "0.0.5"
     "@esbuild-plugins/html" "0.0.18"
-    "@esbuild-plugins/node-globals-polyfill" "0.0.5"
-    "@esbuild-plugins/node-modules-polyfill" "0.0.2"
+    "@esbuild-plugins/node-globals-polyfill" "0.1.0"
+    "@esbuild-plugins/node-modules-polyfill" "0.1.0"
     "@esbuild-plugins/node-resolve" "0.0.15"
 
 "@esbuild-plugins/esm-externals@0.0.5":
@@ -1496,23 +1496,18 @@
     debug "^4.3.1"
     posthtml "^0.15.1"
 
-"@esbuild-plugins/node-globals-polyfill@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-globals-polyfill/-/node-globals-polyfill-0.0.5.tgz#3a9ab355befd394af77c5a4966d4706b9bedf415"
-  integrity sha512-Xz66k/M8ZtkHghnuuGYrJt4E/68O0d/acYX5rU0PzDB1znLwZkm9m5dho27il63C2MIit1uNCpdBn2VfTw9/uQ==
-  dependencies:
-    debug "^4.3.1"
-    rollup-plugin-node-polyfills "^0.2.1"
+"@esbuild-plugins/node-globals-polyfill@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-globals-polyfill/-/node-globals-polyfill-0.1.0.tgz#520e719cda7b601f51d5e39719762fdf95c67525"
+  integrity sha512-kZFvuxGb2puY7USbS/HtKaNrvR2FUlU6iddcYwGOz6nlv4ficSHYmhZ4x0WrJnLNBYzla+Y3P6YvC0DPrb0M/Q==
 
-"@esbuild-plugins/node-modules-polyfill@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-modules-polyfill/-/node-modules-polyfill-0.0.2.tgz#1a3f956cff4b4833ff1a0f8b955de1250c7f4bf6"
-  integrity sha512-ugSpQk7oIfzc0OmNG9i/B+64NXWK3LFBzM8T1zGJpuTldT1tQPUQDLsO6h6jrhHoqTSzuC72LBEycbrPLLKQvQ==
+"@esbuild-plugins/node-modules-polyfill@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@esbuild-plugins/node-modules-polyfill/-/node-modules-polyfill-0.1.0.tgz#56c246edfcf63203eb71f35ee642abe82dca8af3"
+  integrity sha512-gHOz7qxKwBR7PODhaSwAWGv/fdty28mVxWc9o1GfmEG1kWpaSQLqfKGbSlKferXBC/UYD/h/nP3XPK+VarrUZw==
   dependencies:
-    debug "^4.3.1"
     escape-string-regexp "^4.0.0"
-    resolve "^1.19.0"
-    rollup-plugin-node-polyfills "0.2.1"
+    rollup-plugin-node-polyfills "^0.2.1"
 
 "@esbuild-plugins/node-resolve@0.0.15":
   version "0.0.15"
@@ -10738,7 +10733,7 @@ rollup-plugin-inject@^3.0.0:
     magic-string "^0.25.3"
     rollup-pluginutils "^2.8.1"
 
-rollup-plugin-node-polyfills@0.2.1, rollup-plugin-node-polyfills@^0.2.1:
+rollup-plugin-node-polyfills@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/rollup-plugin-node-polyfills/-/rollup-plugin-node-polyfills-0.2.1.tgz#53092a2744837164d5b8a28812ba5f3ff61109fd"
   integrity sha512-4kCrKPTJ6sK4/gLL/U5QzVT8cxJcofO0OU74tnB19F40cmuAKSzH5/siithxlofFEjwvw1YAhPmbvGNA6jEroA==

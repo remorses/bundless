@@ -86,8 +86,8 @@ export function generateDefineObject({
         // 'process.argv': '[]',
         // module: '{}',
         // Buffer: noop,
-        'process.cwd': noop,
-        'process.chdir': noop,
+        // 'process.cwd': noop,
+        // 'process.chdir': noop,
         clearImmediate: noop,
         setImmediate: noop,
         ...config.define,
@@ -142,6 +142,11 @@ export async function bundleWithEsBuild({
         },
         plugins: [
             ...(config.plugins || []),
+            plugins.NodeGlobalsPolyfillPlugin({
+                buffer: true,
+                process: true,
+                define: initialOptions.define,
+            }),
             plugins.NodeModulesPolyfillPlugin({
                 namespace: 'node-modules-polyfills',
             }),
