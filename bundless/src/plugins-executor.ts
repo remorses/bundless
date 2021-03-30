@@ -532,7 +532,7 @@ export function sortPlugins(plugins?: Plugin[]): [Plugin[], Plugin[]] {
         } else if (plugin.enforce === 'post') {
             post.push(plugin)
         } else {
-            post.push(plugin)
+            pre.push(plugin)
         }
     }
     return [pre, post]

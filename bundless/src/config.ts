@@ -61,7 +61,7 @@ export function normalizeConfig(config: Config) {
     config = deepmerge(defaultConfig, config)
     config.plugins = (config.plugins || [])
         .filter(Boolean)
-        .map((x) => ({ ...x, enforce: x.enforce || 'post' }))
+        .map((x) => ({ ...x, enforce: x.enforce || 'pre' }))
     return config
 }
 
