@@ -72,7 +72,8 @@ export async function traverseWithEsbuild({
                 ...(Object.keys(config.loader || {}) || []),
             ],
             // TODO use different plugin that only runs on bare imports
-            onNonResolved: (p, importer) => {
+            onNonResolved: (p, importer, e) => {
+                logger.debug(e.message + '\n' + e.stack)
                 logger.warn(
                     `Cannot resolve '${p}' from '${importer}' during traversal, using yarn pnp: ${isRunningWithYarnPnp}`,
                 )
@@ -80,10 +81,7 @@ export async function traverseWithEsbuild({
         }),
 
         plugins.UrlResolverPlugin(),
-    ].map((plugin) => ({
-        ...plugin,
-        name: 'traversal-' + plugin.name,
-    }))
+    ]
     const initialOptions: esbuild.BuildOptions = {
         ...commonEsbuildOptions(config),
         entryPoints,
@@ -150,7 +148,11 @@ export function traversalGraphPlugin({
                 const res = await executor.resolve({
                     importer: args.importer,
                     path: args.path,
-                    resolveDir: args.resolveDir,
+                    namespace: 'file',
+                    resolveDir: args.importer
+                        ? path.dirname(args.importer)
+                        : args.resolveDir,
+                    skipOnResolved: true,
                 })
                 if (!res || !res.path) {
                     return res
@@ -161,6 +163,7 @@ export function traversalGraphPlugin({
                     executor.ctx.root,
                 )
                 const importee = osAgnosticPath(res.path, executor.ctx.root)
+
                 if (importer) {
                     if (!graph[importer]) {
                         graph[importer] = [importee]
@@ -172,6 +175,9 @@ export function traversalGraphPlugin({
                     graph[importee] = []
                 }
                 if (stopTraversing(res.path)) {
+                    logger.debug(
+                        `Stopping traversing at ${res.path}, ${args.path}`,
+                    )
                     return { external: true }
                 }
             })

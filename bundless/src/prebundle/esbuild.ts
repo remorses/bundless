@@ -156,9 +156,10 @@ export async function bundleWithEsBuild({
                 mainFields: MAIN_FIELDS,
                 extensions: [
                     ...defaultResolvableExtensions,
-                    ...(config.importableAssetsExtensions || []),
+                    ...(Object.keys(config.loader || {}) || []),
                 ],
-                onNonResolved: (p, importer) => {
+                onNonResolved: (p, importer, e) => {
+                    logger.debug(e.message + '\n' + e.stack)
                     logger.warn(
                         `Cannot resolve '${p}' from '${importer}' during traversal, using yarn pnp: ${isRunningWithYarnPnp}`,
                     )

@@ -48,6 +48,7 @@ export function historyFallbackMiddleware({
             path: resolveHtmlPath,
         } = await pluginsExecutor.resolveLoadTransform({
             path: importPathToFile(root, filePath),
+            skipOnResolved: true,
             expectedExtensions: ['.html'],
         })
 
@@ -66,6 +67,7 @@ export function historyFallbackMiddleware({
             contents: resolvedTopHtml,
         } = await pluginsExecutor.resolveLoadTransform({
             path: path.resolve(root, 'index.html'),
+            skipOnResolved: true,
             expectedExtensions: ['.html'],
         })
 

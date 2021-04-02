@@ -4,6 +4,7 @@ import chalk from 'chalk'
 import {
     BUNDLE_MAP_PATH,
     COMMONJS_ANALYSIS_PATH,
+    pnpapi,
     WEB_MODULES_PATH,
 } from '../constants'
 import { logger } from '../logger'
@@ -46,7 +47,7 @@ export async function prebundle({ entryPoints, config, root, dest }) {
         // TODO separate build for workspaces and dependencies, build workspaces in watch mode, also pass user plugins
         // TODO do not stop traversal on workspaces, grab all dependencies including inside workspaces (to node duplicate deps)
         // TODO build workspaces in separate build step, make external dependencies using the needsPrebundle logic
-        const { bundleMap, analysis, stats } = await bundleWithEsBuild({
+        let { bundleMap, analysis, stats } = await bundleWithEsBuild({
             dest,
             root,
             config,
@@ -54,6 +55,7 @@ export async function prebundle({ entryPoints, config, root, dest }) {
                 dependenciesPaths.map((x) => path.resolve(root, x)),
             ),
         })
+
 
         logger.spinSucceed('\nFinish')
 
@@ -91,6 +93,7 @@ function getScopedPackageName(path: string): any {
     return path.match(/(@[\w-_\.]+\/[\w-_\.]+)/)?.[1] || ''
 }
 
+
 function getPackageName(p: string) {
     const dependencySubPath = getClearDependencyPath(p)
     let dependency = ''
@@ -106,17 +109,20 @@ function getPackageName(p: string) {
     return dependency
 }
 
-function makeEntryObject(dependenciesPaths: string[]) {
-    const names: string[] = []
+export function makeEntryObject(dependenciesPaths: string[]) {
+    const names: Record<string, number> = {}
     return Object.assign(
         {},
         ...dependenciesPaths.map((f) => {
             let outputPath = getClearDependencyPath(f) || 'unknown'
-            const sameNames = names.filter((x) => x === outputPath)
-            if (sameNames.length) {
-                outputPath += String(sameNames.length)
+            const sameNamesCount = names[outputPath]
+            if (sameNamesCount) {
+                names[outputPath] += 1
+                outputPath += String(sameNamesCount)
+            } else {
+                names[outputPath] = 1
             }
-            names.push(outputPath)
+
             return {
                 [outputPath]: f,
             }

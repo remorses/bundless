@@ -23,6 +23,7 @@ import {
     MAIN_FIELDS,
     showGraph,
     WEB_MODULES_PATH,
+    pnpapi,
 } from './constants'
 import { HmrGraph } from './hmr-graph'
 import { logger } from './logger'
@@ -42,6 +43,7 @@ import {
     isEmpty,
     Lock,
     needsPrebundle,
+    osAgnosticPath,
     parseWithQuery,
     prepareError,
 } from './utils'
@@ -101,11 +103,7 @@ export async function createDevApp(server: net.Server, config: Config) {
     const graph = new HmrGraph({ root, server })
 
     const watcher = chokidar.watch(root, {
-        ignored: [
-            '**/node_modules/**',
-            '**/.git/**',
-            '**/.bundless',
-        ],
+        ignored: ['**/node_modules/**', '**/.git/**', '**/.bundless'],
         useFsEvents: shouldUseFsEvents(),
         ignoreInitial: true,
         //   ...chokidarWatchOptions
@@ -131,7 +129,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             if (!needsPrebundle(config, resolvedPath)) {
                 return
             }
-            const relativePath = slash(path.relative(root, resolvedPath))
+            let relativePath = osAgnosticPath(resolvedPath, root)
             if (bundleMap && bundleMap[relativePath]) {
                 const webBundle = bundleMap[relativePath]
                 return { ...arg, path: path.resolve(root, webBundle!) }
@@ -232,10 +230,7 @@ export async function createDevApp(server: net.Server, config: Config) {
             plugins.SourceMapSupportPlugin(), // adds source map to errors traces, must be after hmr client plugin
             ...postPlugins,
             plugins.RewritePlugin(),
-        ].map((plugin) => ({
-            ...plugin,
-            name: 'serve-' + plugin.name,
-        })),
+        ],
     })
 
     const bundleMapCachePath = path.resolve(root, BUNDLE_MAP_PATH)
@@ -371,7 +366,7 @@ export const rewriteScriptUrlsTransform = (tree: Node) => {
             let importPath = node.attrs['src']
             if (node.attrs['type'] !== 'module') {
                 logger.warn(
-                    `<script src="${importPath}"> is missing type="module". Only module scripts are handled by Bundless`,
+                    `<script src="${importPath}"> is missing type="module". Only module scripts are processed by Bundless`,
                 )
             }
             const { query } = parseWithQuery(importPath)

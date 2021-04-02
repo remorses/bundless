@@ -73,7 +73,7 @@ export async function build({
         ...commonEsbuildOptions(config),
         incremental,
         metafile: true,
-
+        logLevel: 'warning',
         bundle: true,
         platform,
         target: jsTarget,
@@ -140,10 +140,7 @@ export async function build({
               ]
             : []),
         // html ingest should override other html plugins in build, this is because html is transformed to js
-    ].map((plugin) => ({
-        ...plugin,
-        name: 'build-' + plugin.name,
-    }))
+    ]
 
     const pluginsExecutor = new PluginsExecutor({
         plugins: allPlugins,

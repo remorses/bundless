@@ -321,10 +321,12 @@ export class PluginsExecutor {
         importer = '',
         namespace = 'file',
         expectedExtensions,
+        skipOnResolved,
     }: {
         path: string
         importer?: string
         namespace?: string
+        skipOnResolved?: boolean
         expectedExtensions?: string[]
     }): Promise<{ path?: string; contents?: string }> {
         let resolveDir = path.dirname(p)
@@ -336,6 +338,7 @@ export class PluginsExecutor {
             namespace,
             path: p,
             resolveDir,
+            skipOnResolved,
         })
         if (resolved?.pluginData) {
             logger.warn(

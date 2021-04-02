@@ -65,6 +65,7 @@ export const transform = async ({
 }): Promise<OnTransformResult> => {
     const options: TransformOptions = {
         loader: loader || (path.extname(filePath).slice(1) as Loader),
+        logLevel: 'error',
         sourcemap: true,
         // format: 'esm', // passing format reorders exports https://github.com/evanw/esbuild/issues/710
         // ensure source file name contains full query
@@ -75,12 +76,7 @@ export const transform = async ({
     }
     try {
         const result = await esbuild.transform(src, options)
-        if (result.warnings.length) {
-            console.error(
-                `warnings while transforming ${filePath} with esbuild:`,
-            )
-            result.warnings.forEach((m) => printMessage(m, src))
-        }
+        
 
         let contents = result.code
         // if transpiling (j|t)sx file, inject the imports for the jsx helper and
