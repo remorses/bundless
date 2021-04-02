@@ -1,5 +1,12 @@
 # tests
 
+## 0.0.9
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   @bundless/cli@0.6.0
+
 ## 0.0.8
 
 ### Patch Changes

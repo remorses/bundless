@@ -1,5 +1,11 @@
 # @bundless/cli
 
+## 0.6.0
+
+### Minor Changes
+
+-   Fixed problems with yarn berry and missing prebundled packages, better console messages
+
 ## 0.5.1
 
 ### Patch Changes
