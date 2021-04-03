@@ -1,0 +1,4 @@
+interface Node {
+    x: String
+    y: String
+}

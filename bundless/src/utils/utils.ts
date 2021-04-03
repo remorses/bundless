@@ -131,7 +131,7 @@ export async function readFile(p: string) {
         return await (await fs.promises.readFile(p)).toString()
     } catch (e) {
         // maintains error.code property
-        e.message = `cannot read ${p}, ${e.message}`
+        e.message = `cannot read file ${p}, ${e.message}`
         throw e
     }
 }

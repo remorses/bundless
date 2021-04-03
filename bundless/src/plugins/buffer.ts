@@ -4,7 +4,7 @@ import { importPathToFile, readFile } from '../utils'
 
 const BUFFER_PATH = '_bundless-node-buffer-polyfill_.js'
 
-export function NodeBufferGlobal(enties): Plugin {
+export function NodeBufferGlobal(): Plugin {
     return {
         name: 'buffer-global',
         setup({ onResolve, onLoad, onTransform }) {

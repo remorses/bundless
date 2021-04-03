@@ -72,6 +72,7 @@ export async function rewriteImports({
     if (source.charCodeAt(0) === 0xfeff) {
         source = source.slice(1)
     }
+    const relativeImporter = osAgnosticPath(importer, root)
     // TODO how are computed files path removed?
     graph.ensureEntry(importer)
     try {
@@ -143,10 +144,14 @@ export async function rewriteImports({
                 if (!resolveResult || !resolveResult.path) {
                     // do not fail on unresolved dynamic imports
                     if (isDynamicImport) {
-                        logger.log(`Cannot resolve '${id}' from '${importer}'`)
+                        logger.log(
+                            `Cannot resolve '${id}' from '${relativeImporter}'`,
+                        )
                         continue
                     }
-                    throw new Error(`Cannot resolve '${id}' from '${importer}'`)
+                    throw new Error(
+                        `Cannot resolve '${id}' from '${relativeImporter}'`,
+                    )
                 }
 
                 if (resolveResult?.pluginData) {
@@ -230,12 +235,11 @@ export async function rewriteImports({
                     cleanImportee !== CLIENT_PUBLIC_PATH
                 ) {
                     currentNode.importees.add(cleanImportee)
-                    // logger.log(`${importerFilePath} imports ${cleanImportee}`)
                 }
             } else if (id !== 'import.meta' && !hasIgnore) {
                 logger.log(
                     chalk.yellow(
-                        `Cannot rewrite dynamic import(${id}) in ${importer}.`,
+                        `Cannot rewrite dynamic import(${id}) in ${relativeImporter}.`,
                     ),
                 )
             }
@@ -246,7 +250,7 @@ export async function rewriteImports({
             map: undefined, // do i really need sourcemaps? code is readable enough
         }
     } catch (e) {
-        e.message = `Error: module imports rewrite failed for ${importer}\n` + e
+        e.message = `Invalid module ${relativeImporter}\n` + e
         throw e
     }
 }

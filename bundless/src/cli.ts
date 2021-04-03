@@ -31,7 +31,7 @@ const serveCommand: CommandModule = {
         })
         return argv
     },
-    handler: async (argv: any) => {
+    handler: prettyPrintErrors(async (argv: any) => {
         const loadedConfig = loadConfig(process.cwd(), argv.config)
         const configFromArgv: Config = {
             prebundle: { force: argv.force },
@@ -42,7 +42,7 @@ const serveCommand: CommandModule = {
         }
         let config: Config = deepMerge(loadedConfig, configFromArgv)
         return await serve(config)
-    },
+    }),
 }
 
 const buildCommand: CommandModule = {
@@ -56,7 +56,7 @@ const buildCommand: CommandModule = {
 
         return argv
     },
-    handler: async (argv: any) => {
+    handler: prettyPrintErrors(async (argv: any) => {
         let config = loadConfig(process.cwd(), argv.config)
         const configFromArgv: Config = {
             build: {
@@ -68,7 +68,7 @@ const buildCommand: CommandModule = {
         return await build({
             ...config,
         })
-    },
+    }),
 }
 
 const quickstartCommand: CommandModule = {

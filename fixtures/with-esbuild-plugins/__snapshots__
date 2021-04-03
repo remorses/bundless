@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots fixtures/with-esbuild-plugins: build 1`] = `
+Array [
+  "index.html",
+  "index.js",
+]
+`;
+
+exports[`snapshots fixtures/with-esbuild-plugins: content-type headers 1`] = `
+Object {
+  "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/fake.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/file.gql?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/index.html": "text/html; charset=utf-8",
+  "http://127.0.0.1:9000/main.js?namespace=file": "application/javascript; charset=utf-8",
+}
+`;
+
+exports[`snapshots fixtures/with-esbuild-plugins: mirror 1`] = `
+Array [
+  "_hmr_client.js",
+  "fake.js",
+  "file.gql",
+  "index.html",
+  "main.js",
+]
+`;
+
+exports[`snapshots fixtures/with-esbuild-plugins: traverse result 1`] = `
+Array [
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/_hmr_client.js?namespace=hmr-client",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
+  },
+  Object {
+    "importPath": "/fake.js?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/fake.js?namespace=file&t=0",
+  },
+  Object {
+    "importPath": "/file.gql?namespace=file&t=0",
+    "importer": "http://127.0.0.1:9000/main.js?namespace=file",
+    "resolvedImportPath": "http://127.0.0.1:9000/file.gql?namespace=file&t=0",
+  },
+  Object {
+    "importPath": "/main.js?namespace=file",
+    "importer": "http://127.0.0.1:9000/index.html",
+    "resolvedImportPath": "http://127.0.0.1:9000/main.js?namespace=file",
+  },
+]
+`;

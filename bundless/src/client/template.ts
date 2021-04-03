@@ -188,11 +188,13 @@ function getErrorMessageMappedSource(message) {
 function getErrorStackMappedSource(stack) {
     if (typeof sourceMapSupport !== 'undefined') {
         return (
-            sourceMapSupport.getErrorSource({
-                stack,
-                message: '',
-                name: '',
-            }) || stack
+            sourceMapSupport
+                .getErrorSource({
+                    stack,
+                    message: '',
+                    name: '',
+                })
+                ?.trim?.() || stack
         )
     }
     return stack
@@ -391,7 +393,9 @@ code {
 }
 </style>
 <div class="window">
-  <pre class="message"><span class="plugin"></span><span class="message-body"></span></pre>
+  <pre class="message">
+    <span class="plugin"></span><span class="message-body"></span>
+  </pre>
   <pre class="file"></pre>
   <pre class="frame"></pre>
   <pre class="stack"></pre>
@@ -438,6 +442,7 @@ class CommonOverlay extends HTMLElement {
         if (!linkFiles) {
             el.textContent = text
         } else {
+            // TODO also match normal file paths
             const matches = getAllMatches(text, /(https?:\/\/.*)/g)
             for (let { frag, matched } of matches) {
                 el.appendChild(document.createTextNode(frag))
@@ -484,6 +489,7 @@ export class ErrorOverlay extends CommonOverlay {
     static overlayId = 'bundless-error-overlay'
 
     constructor(err: OverlayErrorPayload['err']) {
+        console.log({ err })
         super()
         this.root = this.attachShadow({ mode: 'open' })
         this.root.innerHTML = template({

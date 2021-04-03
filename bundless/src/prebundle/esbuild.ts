@@ -160,9 +160,9 @@ export async function bundleWithEsBuild({
                 ],
                 onNonResolved: (p, importer, e) => {
                     logger.debug(e.message + '\n' + e.stack)
-                    logger.warn(
-                        `Cannot resolve '${p}' from '${importer}' during traversal, using yarn pnp: ${isRunningWithYarnPnp}`,
-                    )
+                    // logger.warn(
+                    //     `Cannot resolve '${p}' from '${importer}' during traversal, using yarn pnp: ${isRunningWithYarnPnp}`,
+                    // )
                 },
             }),
             plugins.UrlResolverPlugin(),

@@ -187,7 +187,9 @@ export class PluginsExecutor {
                         break
                     }
                 } catch (e) {
-                    e.message = `plugin ${name}: ${e.message}`
+                    if (e && e?.message) {
+                        e.plugin = name
+                    }
                     throw e
                 }
             }
@@ -225,7 +227,9 @@ export class PluginsExecutor {
                     }
                 }
             } catch (e) {
-                e.message = `plugin ${name}: ${e.message}`
+                if (e && e?.message) {
+                    e.plugin = name
+                }
                 throw e
             }
         }

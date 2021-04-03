@@ -1,0 +1,1 @@
+export default "interface Node {\n    x: String\n    y: String\n}"

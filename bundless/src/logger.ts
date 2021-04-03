@@ -38,7 +38,7 @@ export class Logger {
         if (this.silent) {
             return
         }
-        this.spinner = ora(text).start()
+        this.spinner = ora(text + '\n\n').start()
     }
     spinSucceed(text: string) {
         if (this.spinner) {
@@ -48,7 +48,7 @@ export class Logger {
     }
     spinFail(text: string) {
         if (this.spinner) {
-            this.spinner.fail(chalk.red(text))
+            this.spinner.fail(chalk.redBright(text))
         }
         this.spinner = undefined
     }

@@ -56,7 +56,6 @@ export async function prebundle({ entryPoints, config, root, dest }) {
             ),
         })
 
-
         logger.spinSucceed('\nFinish')
 
         const analysisFile = path.resolve(root, COMMONJS_ANALYSIS_PATH)
@@ -72,8 +71,7 @@ export async function prebundle({ entryPoints, config, root, dest }) {
         }
         return bundleMap
     } catch (e) {
-        logger.spinFail(String(e) + '\n')
-        e.message = `Cannot prebundle: ${e.message}`
+        logger.spinFail('Cannot prebundle\n')
         throw e
     } finally {
         clearCommonjsAnalysisCache()
@@ -92,7 +90,6 @@ function getClearDependencyPath(p: string) {
 function getScopedPackageName(path: string): any {
     return path.match(/(@[\w-_\.]+\/[\w-_\.]+)/)?.[1] || ''
 }
-
 
 function getPackageName(p: string) {
     const dependencySubPath = getClearDependencyPath(p)
