@@ -54,6 +54,7 @@
         "degit": "^2.8.0",
         "dotenv": "^8.2.0",
         "dotenv-expand": "^5.1.0",
+        "@esbuild-plugins/node-globals-polyfill": "^0.1.0",
         "es-module-lexer": "^0.3.26",
         "esbuild": "^0.11.3",
         "escape-string-regexp": "^4.0.0",

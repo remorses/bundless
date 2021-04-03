@@ -183,7 +183,6 @@ export async function bundleWithEsBuild({
     })
     const esbuildCwd = process.cwd()
     const bundleMap = metafileToBundleMap({
-        entryPoints,
         meta,
         esbuildCwd,
         root,
@@ -215,12 +214,11 @@ export type BundleMap = Partial<Record<string, string>>
  * Returns aon object that maps from entry (relative path from root) to output (relative path from root too)
  */
 export function metafileToBundleMap(_options: {
-    entryPoints: string[]
     root: string
     esbuildCwd: string
     meta: Metafile
 }): BundleMap {
-    const { entryPoints, meta, root, esbuildCwd } = _options
+    const { meta, root, esbuildCwd } = _options
 
     const maps: Array<[string, string]> = Object.keys(meta.outputs)
         .map((output): [string, string] | undefined => {

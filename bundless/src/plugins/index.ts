@@ -11,6 +11,7 @@ export { HtmlResolverPlugin } from './html-resolver'
 export { HtmlIngestPlugin } from './html-ingest'
 export { SourceMapSupportPlugin } from './source-map-support'
 export { EnvPlugin } from './env'
+export { NodeBufferGlobal } from './buffer'
 export {
     NodeModulesPolyfillPlugin,
     NodeResolvePlugin,

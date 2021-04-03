@@ -190,7 +190,6 @@ export async function build({
     })
 
     const bundleMap = metafileToBundleMap({
-        entryPoints,
         esbuildCwd,
         meta,
         root,
