@@ -1,5 +1,9 @@
--   make node polyfills an optional plugin, but include it by default on default config
+-   fix stack trace parsing in client, use https://github.com/marvinhagemeister/errorstacks
+-   make node polyfills an optional plugins list, but include it by default on default config
+-   add support for multiple errors in error panel
+-   check that inline sourcemaps are used by esbuild transformer
 -   add crypto polyfill
+-   when there is an error and using HMR, do not refresh, instead try to run react refresh and see if it works
 -   ~~use data url for loading svgs~~
 -   ~~resolved paths that map from a real file to a fake file won't receive HMR updates because there is no way to resolve them during file change~~
 -   ~~make a config for assetExtensions, to let user import any file and return its path~~
@@ -8,27 +12,19 @@
 -   ~~add a way to order plugins after or before the builtin plugins~~
 -   ~~do not rely on the node resolve package for anything, add an additional plugin and add node-resolve only when in yarn pnp~~
 -   ~~replace external but in meta with a dummy plugin that registers imports~~
--   add support for multiple errors in error panel
 -   ~~do not run esbuild transform if loader is already js~~
 -   ~~run all user plugins first, make react refresh use the js loader as output~~
--   check that inline sourcemaps are used by esbuild transformer
--   instead of using source-map-support for the error panel use source-map package directly, this way there is not need for sync xhr
 -   only use sourcemaps on user packages, npm packages seem to not publish src directory
 -   ~~dynamic imports should not reorder exports, depend on esbuild~~
--   when there is an error and using HMR, do not refresh, instead try to run react refresh and see if it works
--   investigate dynamic imports with ssr interoperability, now dynamic imports are fetched only on client
 -   add warning for multiple node modules paths for same package when this package is peer of something
--   watch ignore should be more strict, no regex
 -   remove require warnings from paged (only use require when platform is node)
 -   ~~investigate if using new extensions in a plugins require you to add a resolver, maybe add a universal resolver that resolves all extensions (if they are present in the import path)~~
 -   think about core feature for bundless for promotion in twitter (esbuild plugins, benchmarks, ssr, meta framework, build speed, monorepo support, hmr fixes, multiple entrypoints,)
 -   how to make project sustainable? offer migration support for react-scripts and stuff like that?
--   make tests for esbuild plugins interoperability, tests fixture contain the plugins in the config
--   makes bundless internal stuff paths start with .bundless, makes easier to analyze network requests
+-   ~~makes bundless internal stuff paths start with .bundless, makes easier to analyze network requests~~
 -   ~~put everything inside .bundless, make this directory path configurable, this way tools like vitro can use .vitro~~
 -   use basePath to change the index.html page relative urls, this way there is no need to %PUBLIC_URL% need, / -> /base-path/
 -   more tests for hmr, using puppeteer
--   test basepath feature
 -   test sourcemaps are correct, throwing errors and checking the browser error line
 -   test the html entries resolution (public, name.html, html paths in entries, ...)
 -   implement postcss processing to enable sass, tailwind, ...
