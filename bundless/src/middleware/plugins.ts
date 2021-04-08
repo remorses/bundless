@@ -51,7 +51,9 @@ export function pluginsMiddleware({
         })
 
         if (loaded?.pluginData) {
-            logger.warn(`esbuild pluginData is not supported by bundless, used by plugin ${loaded.pluginName}`)
+            logger.warn(
+                `esbuild pluginData is not supported by bundless, used by plugin ${loaded.pluginName}`,
+            )
         }
 
         if (loaded == null || loaded.contents == null) {
@@ -75,9 +77,7 @@ export function pluginsMiddleware({
         ctx.status = 200
         ctx.type = 'js'
         const isDep = ctx.path.includes(WEB_MODULES_PATH)
-        const isCacheableModule =
-            pluginsExecutor.ctx.config.server?.experimentalImmutableCache &&
-            ctx.query.t != null
+        const isCacheableModule = ctx.query.t != null
         ctx.set(
             'Cache-Control',
             isDep || isCacheableModule
