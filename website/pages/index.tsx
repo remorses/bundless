@@ -41,6 +41,42 @@ bundless quickstart ./my-app
 
 `
 
+const benchmarks = `
+server ready (without any cache), less is better
+
+  ▇▇▇▇▇▇▇▇▇▇▇▇▇           [19.075 secs] - yarn snowpack dev --reload
+  ▇▇▇▇▇▇▇▇                [12.201 secs] - yarn cross-env BROWSER=none craco start
+  ▇▇▇                     [3.763 secs] - yarn vite --force
+  ▇▇                      [3.552 secs] - yarn bundless dev --force
+
+server ready (with cache), less is better
+
+  ▇                       [0.719 secs] - yarn bundless dev
+  ▇                       [0.641 secs] - yarn snowpack dev
+  ▇                       [0.465 secs] - yarn vite
+
+static build, less is better
+
+  ▇▇▇▇▇▇▇▇▇               [14.058 secs] - yarn craco build
+  ▇▇▇▇▇▇▇▇                [12.599 secs] - yarn vite build
+  ▇▇▇▇▇▇▇                 [10.461 secs] - yarn snowpack build
+  ▇▇▇                     [3.967 secs] - yarn bundless build
+
+browser first page refresh, less is better
+
+  ▇▇▇▇                    [5.446 secs] - yarn snowpack dev --port 9070
+  ▇▇▇                     [5.174 secs] - yarn bundless dev --port 9070
+  ▇▇▇                     [3.858 secs] - yarn vite --port 9070
+  ▇                       [1.220 secs] - yarn cross-env BROWSER=none PORT=9070 craco start
+
+browser second page refresh, less is better
+
+  ▇▇                      [2.902 secs] - yarn vite --port 9070
+  ▇▇                      [2.889 secs] - yarn snowpack dev --port 9070
+  ▇▇                      [2.469 secs] - yarn bundless dev --port 9070
+  ▇                       [1.122 secs] - yarn cross-env BROWSER=none PORT=9070 craco start
+`
+
 const Page = () => {
     return (
         <DarkMode>
@@ -185,32 +221,18 @@ const Page = () => {
                         color='#888'
                         scatter={-30}
                         alignSelf='center'
-                        maxWidth='600px'
                         minWidth={['400px', null, null, '600px']}
                         position='relative'
                     >
-                        <Stack
-                            p='12'
-                            pb='6'
-                            bg='#111'
-                            overflow='hidden'
-                            borderRadius='md'
-                        >
-                            <Benchmark
-                                benchmarks={[
-                                    { name: 'Bundless', value: 1.2 },
-                                    { name: 'Webpack', value: 20.3 },
-                                    { name: 'Parcel', value: 24.5 },
-                                ]}
-                            />
-                            <Box m='6' />
+                        <Stack p='12' pb='6' bg='#111' borderRadius='md'>
+                            <Box as='pre'>{benchmarks}</Box>
+                            <Box m='8' />
                             <Box alignSelf='center' fontSize='18px'>
-                                Benchmarks available on{' '}
                                 <Link
                                     target='_blank'
                                     href='https://github.com/remorses/bundless-benchmark'
                                 >
-                                    github
+                                    Benchmarks available on Github
                                 </Link>
                             </Box>
                         </Stack>
