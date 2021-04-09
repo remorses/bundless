@@ -34,6 +34,8 @@ import { GITHUB_LINK } from '../constants'
 import { GradientBg } from '../components/GradientBg'
 // import GradientBgImg from '../public/gradient-bg.svg'
 
+// TODO easy to debug code directly on browser, support for super fast HMR with react refresh, take advantage of esbuild for super fast production builds,
+
 const heroCode = `
 
 npm i -g @bundless/cli
@@ -161,7 +163,8 @@ const Page = () => {
 
                 <Feature
                     flip
-                    heading='Fastest dev server'
+                    bullet='dev server'
+                    heading='Super fast dev server experience'
                     cta={<Link href='/docs'>Read the docs</Link>}
                     image={
                         <PatternBackground
@@ -181,6 +184,7 @@ const Page = () => {
                 />
 
                 <Feature
+                    bullet='bundler'
                     heading='Fastest build speed'
                     cta={<Link href='/docs'>Read the docs</Link>}
                     image={
@@ -212,8 +216,8 @@ const Page = () => {
                     />
 
                     <SectionTitle
-                        heading='10x faster than other bundlers'
-                        subheading='Most productive way to experiment, showcase your components'
+                        heading='Fast at any scale'
+                        subheading='Bundless has been built with performance and scale in mind'
                     />
                     <Box m='6' />
                     <PatternBackground
