@@ -141,6 +141,8 @@ export class PluginsExecutor {
                 onClose: (options, callback) => {
                     this.closers.push({ options, callback, name })
                 },
+                onStart: () => void 0,
+                onEnd: () => void 0,
             })
         }
     }
@@ -525,6 +527,8 @@ export class PluginsExecutor {
                             }
                         })
                     },
+                    onStart: () => void 0,
+                    onEnd: () => void 0,
                 })
             },
         }

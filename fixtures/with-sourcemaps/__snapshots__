@@ -9,7 +9,7 @@ Array [
 
 exports[`snapshots fixtures/with-sourcemaps: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-WGKZP7G7.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-UPFVJA7O.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/node_modules/react/index.js.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/node_modules/source-map-support/source-map-support.js.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client": "application/javascript; charset=utf-8",
@@ -48,19 +48,19 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/node_modules/chunks/chunk-WGKZP7G7.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-UPFVJA7O.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-WGKZP7G7.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-UPFVJA7O.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/chunks/chunk-WGKZP7G7.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-UPFVJA7O.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/.bundless/node_modules/react/index.js.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-WGKZP7G7.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-UPFVJA7O.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/chunks/chunk-WGKZP7G7.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-UPFVJA7O.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/.bundless/node_modules/source-map-support/source-map-support.js.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-WGKZP7G7.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-UPFVJA7O.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/.bundless/node_modules/react/index.js.js?namespace=file&t=0",

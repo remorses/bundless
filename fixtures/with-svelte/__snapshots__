@@ -10,7 +10,7 @@ Array [
 
 exports[`snapshots fixtures/with-svelte: content-type headers 1`] = `
 Object {
-  "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-2B7GGVDY.js?namespace=file&t=0": "application/javascript; charset=utf-8",
+  "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-CRMC3IKU.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/node_modules/svelte-hmr/runtime/hot-api-esm.js.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/node_modules/svelte-hmr/runtime/proxy-adapter-dom.js.js?namespace=file&t=0": "application/javascript; charset=utf-8",
   "http://127.0.0.1:9000/.bundless/node_modules/svelte/internal/index.mjs.js?namespace=file&t=0": "application/javascript; charset=utf-8",
@@ -50,14 +50,14 @@ Array [
     "resolvedImportPath": "http://127.0.0.1:9000/_hmr_client.js?namespace=hmr-client",
   },
   Object {
-    "importPath": "/.bundless/node_modules/chunks/chunk-2B7GGVDY.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-CRMC3IKU.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/.bundless/node_modules/svelte-hmr/runtime/hot-api-esm.js.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-2B7GGVDY.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-CRMC3IKU.js?namespace=file&t=0",
   },
   Object {
-    "importPath": "/.bundless/node_modules/chunks/chunk-2B7GGVDY.js?namespace=file&t=0",
+    "importPath": "/.bundless/node_modules/chunks/chunk-CRMC3IKU.js?namespace=file&t=0",
     "importer": "http://127.0.0.1:9000/.bundless/node_modules/svelte/internal/index.mjs.js?namespace=file&t=0",
-    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-2B7GGVDY.js?namespace=file&t=0",
+    "resolvedImportPath": "http://127.0.0.1:9000/.bundless/node_modules/chunks/chunk-CRMC3IKU.js?namespace=file&t=0",
   },
   Object {
     "importPath": "/.bundless/node_modules/svelte-hmr/runtime/hot-api-esm.js.js?namespace=file&t=0",
