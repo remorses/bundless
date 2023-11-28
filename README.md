@@ -3,7 +3,7 @@
     <br/>
     <h3>bundless</h3>
     <p>Next gen dev server and bundler</p>
-    <p>project under heavy development</p>
+    <p>this project was a Vite alternative with many improvements like plugins, monorepo support, etc, most of them were added back to Vite 2, use Vite instead</p>
     <br/>
 </div>
 
